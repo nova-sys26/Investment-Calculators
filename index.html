@@ -1,49 +1,103 @@
 <!DOCTYPE html>
 <html>
+
 <head>
-<title>Investment Calculators</title>
+<title>Average Price Calculator</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<style>
+
+body{
+font-family: Arial;
+background:#f4f6fb;
+text-align:center;
+padding:40px;
+}
+
+.calculator{
+background:white;
+padding:30px;
+max-width:450px;
+margin:auto;
+border-radius:10px;
+box-shadow:0 10px 20px rgba(0,0,0,0.1);
+}
+
+.buy-row{
+margin-bottom:10px;
+}
+
+input{
+padding:10px;
+margin:5px;
+width:110px;
+}
+
+button{
+padding:8px 12px;
+margin:5px;
+background:#2f6df6;
+color:white;
+border:none;
+border-radius:6px;
+cursor:pointer;
+}
+
+button:hover{
+background:#1c4fd1;
+}
+
+.remove{
+background:#e74c3c;
+}
+
+.remove:hover{
+background:#c0392b;
+}
+
+</style>
+
 </head>
 
 <body>
 
-<h1>Investment Calculators</h1>
+<h1>Average Price Calculator</h1>
 
-<h2>Average Price Calculator</h2>
+<div class="calculator">
+
 <div id="buys"></div>
 
 <button onclick="addBuy()">Add Buy</button>
 
-<br><br>
+<br>
 
 <button onclick="calculate()">Calculate</button>
 
 <p id="result"></p>
-<input id="price1" placeholder="First buy price">
-<input id="amount1" placeholder="First amount">
 
-<br><br>
-
-<input id="price2" placeholder="Second buy price">
-<input id="amount2" placeholder="Second amount">
-
-<br><br>
-
-<button onclick="calc()">Calculate</button>
-
-<p id="result"></p>
+</div>
 
 <script>
-function calc()function addBuy(){
+
+function addBuy(){
 
 let div=document.createElement("div");
+
+div.className="buy-row";
 
 div.innerHTML=`
 <input class="price" placeholder="Price">
 <input class="amount" placeholder="Amount">
+<button class="remove" onclick="removeBuy(this)">Remove</button>
 `;
 
 document.getElementById("buys").appendChild(div);
+
+}
+
+function removeBuy(button){
+
+button.parentElement.remove();
 
 }
 
@@ -67,6 +121,11 @@ totalAmount+=a;
 
 }
 
+if(totalAmount===0){
+document.getElementById("result").innerText="Enter values";
+return;
+}
+
 let avg=totalCost/totalAmount;
 
 document.getElementById("result").innerText="Average price: "+avg;
@@ -76,17 +135,6 @@ document.getElementById("result").innerText="Average price: "+avg;
 addBuy();
 addBuy();
 
-let p1=parseFloat(document.getElementById("price1").value);
-let a1=parseFloat(document.getElementById("amount1").value);
-
-let p2=parseFloat(document.getElementById("price2").value);
-let a2=parseFloat(document.getElementById("amount2").value);
-
-let avg=((p1*a1)+(p2*a2))/(a1+a2);
-
-document.getElementById("result").innerText="Average price: "+avg;
-
-}
 </script>
 
 </body>
