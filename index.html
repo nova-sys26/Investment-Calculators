@@ -10,7 +10,15 @@
 <h1>Investment Calculators</h1>
 
 <h2>Average Price Calculator</h2>
+<div id="buys"></div>
 
+<button onclick="addBuy()">Add Buy</button>
+
+<br><br>
+
+<button onclick="calculate()">Calculate</button>
+
+<p id="result"></p>
 <input id="price1" placeholder="First buy price">
 <input id="amount1" placeholder="First amount">
 
@@ -26,7 +34,47 @@
 <p id="result"></p>
 
 <script>
-function calc(){
+function calc()function addBuy(){
+
+let div=document.createElement("div");
+
+div.innerHTML=`
+<input class="price" placeholder="Price">
+<input class="amount" placeholder="Amount">
+`;
+
+document.getElementById("buys").appendChild(div);
+
+}
+
+function calculate(){
+
+let prices=document.querySelectorAll(".price");
+let amounts=document.querySelectorAll(".amount");
+
+let totalCost=0;
+let totalAmount=0;
+
+for(let i=0;i<prices.length;i++){
+
+let p=parseFloat(prices[i].value);
+let a=parseFloat(amounts[i].value);
+
+if(!isNaN(p) && !isNaN(a)){
+totalCost+=p*a;
+totalAmount+=a;
+}
+
+}
+
+let avg=totalCost/totalAmount;
+
+document.getElementById("result").innerText="Average price: "+avg;
+
+}
+
+addBuy();
+addBuy();
 
 let p1=parseFloat(document.getElementById("price1").value);
 let a1=parseFloat(document.getElementById("amount1").value);
