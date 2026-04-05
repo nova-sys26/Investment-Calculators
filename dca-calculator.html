@@ -97,9 +97,30 @@ document.getElementById("result").innerHTML =
 "Coins bought: " + coins.toFixed(4) +
 "<br>Current value: $" + value.toFixed(2) +
 "<br>Profit/Loss: $" + profit.toFixed(2)
+drawChart(investment,value) 
+}
+let chart;
 
+function drawChart(investment,value){
+
+let ctx = document.getElementById('myChart');
+
+if(chart){
+chart.destroy();
 }
 
+chart = new Chart(ctx,{
+type:'bar',
+data:{
+labels:['Invested','Current Value'],
+datasets:[{
+label:'Portfolio',
+data:[investment,value]
+}]
+}
+});
+
+  }
 </script>
 
 </body>
