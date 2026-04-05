@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Investment Calculators</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
+
+<body>
+
+<h1>Investment Calculators</h1>
+
+<h2>Average Price Calculator</h2>
+
+<input id="price1" placeholder="First buy price">
+<input id="amount1" placeholder="First amount">
+
+<br><br>
+
+<input id="price2" placeholder="Second buy price">
+<input id="amount2" placeholder="Second amount">
+
+<br><br>
+
+<button onclick="calc()">Calculate</button>
+
+<p id="result"></p>
+
+<script>
+function calc(){
+
+let p1=parseFloat(document.getElementById("price1").value);
+let a1=parseFloat(document.getElementById("amount1").value);
+
+let p2=parseFloat(document.getElementById("price2").value);
+let a2=parseFloat(document.getElementById("amount2").value);
+
+let avg=((p1*a1)+(p2*a2))/(a1+a2);
+
+document.getElementById("result").innerText="Average price: "+avg;
+
+}
+</script>
+
+</body>
+</html>
