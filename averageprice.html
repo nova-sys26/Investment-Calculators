@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+<title>Average Price Calculator</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<style>
+
+body{
+font-family: Arial;
+background:#f4f6fb;
+text-align:center;
+padding:40px;
+}
+
+.calculator{
+background:white;
+padding:30px;
+max-width:450px;
+margin:auto;
+border-radius:10px;
+box-shadow:0 10px 20px rgba(0,0,0,0.1);
+}
+
+.buy-row{
+margin-bottom:10px;
+}
+
+input{
+padding:10px;
+margin:5px;
+width:110px;
+}
+
+button{
+padding:8px 12px;
+margin:5px;
+background:#2f6df6;
+color:white;
+border:none;
+border-radius:6px;
+cursor:pointer;
+}
+
+button:hover{
+background:#1c4fd1;
+}
+
+.remove{
+background:#e74c3c;
+}
+
+.remove:hover{
+background:#c0392b;
+}
+
+</style>
+
+</head>
+
+<body>
+
+<h1>Average Price Calculator</h1>
+
+<div class="calculator">
+
+<div id="buys"></div>
+
+<button onclick="addBuy()">Add Buy</button>
+
+<br>
+
+<button onclick="calculate()">Calculate</button>
+
+<p id="result"></p>
+
+</div>
+
+<script>
+
+function addBuy(){
+
+let div=document.createElement("div");
+
+div.className="buy-row";
+
+div.innerHTML=`
+<input class="price" placeholder="Price">
+<input class="amount" placeholder="Amount">
+<button class="remove" onclick="removeBuy(this)">Remove</button>
+`;
+
+document.getElementById("buys").appendChild(div);
+
+}
+
+function removeBuy(button){
+
+button.parentElement.remove();
+
+}
+
+function calculate(){
+
+let prices=document.querySelectorAll(".price");
+let amounts=document.querySelectorAll(".amount");
+
+let totalCost=0;
+let totalAmount=0;
+
+for(let i=0;i<prices.length;i++){
+
+let p=parseFloat(prices[i].value);
+let a=parseFloat(amounts[i].value);
+
+if(!isNaN(p) && !isNaN(a)){
+totalCost+=p*a;
+totalAmount+=a;
+}
+
+}
+
+if(totalAmount===0){
+document.getElementById("result").innerText="Enter values";
+return;
+}
+
+let avg=totalCost/totalAmount;
+
+document.getElementById("result").innerText="Average price: "+avg;
+
+}
+
+addBuy();
+addBuy();
+
+</script>
+
+</body>
+</html>
