@@ -9,3 +9,5 @@ Free investment calculators for stocks and crypto
 <button onclick="calculate()">Calculate</button>
 
 <p id="result"></p>
+addBuy();
+addBuy();
