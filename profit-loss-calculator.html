@@ -1,9 +1,12 @@
 <!DOCTYPE html>
 <html>
+
 <head>
 
 <title>Profit Loss Calculator</title>
+
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
 <style>
@@ -50,6 +53,7 @@ margin-top:30px;
 }
 
 </style>
+
 </head>
 
 <body>
@@ -58,9 +62,9 @@ margin-top:30px;
 
 <div class="container">
 
-<input id="buy" placeholder="Buy price">
-<input id="sell" placeholder="Sell price">
-<input id="amount" placeholder="Amount invested">
+<input id="buy" placeholder="Buy price ($)">
+<input id="sell" placeholder="Sell price ($)">
+<input id="amount" placeholder="Asset amount">
 
 <button onclick="calculate()">Calculate</button>
 
@@ -76,35 +80,35 @@ let chart;
 
 function calculate(){
 
-let buy=parseFloat(document.getElementById("buy").value)
-let sell=parseFloat(document.getElementById("sell").value)
-let amount=parseFloat(document.getElementById("amount").value)
+let buy = parseFloat(document.getElementById("buy").value)
+let sell = parseFloat(document.getElementById("sell").value)
+let amount = parseFloat(document.getElementById("amount").value)
 
-  
 let investment = buy * amount
 let value = sell * amount
 let profit = value - investment
 
+document.getElementById("result").innerHTML =
+"Profit / Loss: $" + profit.toFixed(2)
 
-document.getElementById("result").innerHTML=
-"Profit/Loss: $" + profit.toFixed(2)
-
-drawChart(amount,value)
+drawChart(investment,value)
 
 }
 
 function drawChart(investment,value){
 
-let ctx=document.getElementById('myChart')
+let ctx = document.getElementById('myChart')
 
-if(chart){chart.destroy()}
+if(chart){
+chart.destroy()
+}
 
-chart=new Chart(ctx,{
+chart = new Chart(ctx,{
 type:'bar',
 data:{
 labels:['Investment','Final Value'],
 datasets:[{
-label:'Result',
+label:'Portfolio',
 data:[investment,value]
 }]
 }
@@ -115,4 +119,5 @@ data:[investment,value]
 </script>
 
 </body>
+
 </html>
