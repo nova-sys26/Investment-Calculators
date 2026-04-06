@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+<title>Compound Interest Calculator</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<style>
+
+body{
+font-family: Arial;
+background:#0b1a33;
+color:white;
+margin:0;
+display:flex;
+justify-content:center;
+align-items:center;
+min-height:100vh;
+flex-direction:column;
+}
+
+.container{
+background:#1e293b;
+padding:30px;
+border-radius:12px;
+width:90%;
+max-width:500px;
+}
+
+input{
+width:100%;
+padding:12px;
+margin:10px 0;
+border-radius:6px;
+border:none;
+}
+
+button{
+padding:12px 20px;
+background:#3b82f6;
+border:none;
+border-radius:8px;
+color:white;
+cursor:pointer;
+}
+
+canvas{
+margin-top:30px;
+}
+
+</style>
+</head>
+
+<body>
+
+<h1>Compound Interest Calculator</h1>
+
+<div class="container">
+
+<input id="principal" placeholder="Initial investment ($)">
+<input id="rate" placeholder="Annual interest rate (%)">
+<input id="years" placeholder="Years">
+
+<button onclick="calculate()">Calculate</button>
+
+<h3 id="result"></h3>
+
+<canvas id="myChart"></canvas>
+
+</div>
+
+<script>
+
+let chart;
+
+function calculate(){
+
+let principal=parseFloat(document.getElementById("principal").value)
+let rate=parseFloat(document.getElementById("rate").value)/100
+let years=parseFloat(document.getElementById("years").value)
+
+let value=principal*Math.pow((1+rate),years)
+
+document.getElementById("result").innerHTML=
+"Future Value: $" + value.toFixed(2)
+
+drawChart(principal,value)
+
+}
+
+function drawChart(investment,value){
+
+let ctx=document.getElementById('myChart')
+
+if(chart){chart.destroy()}
+
+chart=new Chart(ctx,{
+type:'bar',
+data:{
+labels:['Initial Investment','Future Value'],
+datasets:[{
+label:'Growth',
+data:[investment,value]
+}]
+}
+})
+
+}
+
+</script>
+
+</body>
+  </html>
