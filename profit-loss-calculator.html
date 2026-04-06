@@ -80,9 +80,11 @@ let buy=parseFloat(document.getElementById("buy").value)
 let sell=parseFloat(document.getElementById("sell").value)
 let amount=parseFloat(document.getElementById("amount").value)
 
-let coins=amount/buy
-let value=coins*sell
-let profit=value-amount
+  
+let investment = buy * amount
+let value = sell * amount
+let profit = value - investment
+
 
 document.getElementById("result").innerHTML=
 "Profit/Loss: $" + profit.toFixed(2)
