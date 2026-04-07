@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+
+<title>Risk Reward Calculator</title>
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<style>
+
+body{
+font-family:Arial;
+background:#0b1a33;
+color:white;
+margin:0;
+display:flex;
+justify-content:center;
+align-items:center;
+flex-direction:column;
+min-height:100vh;
+}
+
+.container{
+background:#1e293b;
+padding:30px;
+border-radius:12px;
+width:90%;
+max-width:500px;
+}
+
+input{
+width:100%;
+padding:12px;
+margin:10px 0;
+border-radius:6px;
+border:none;
+}
+
+button{
+padding:12px 20px;
+background:#3b82f6;
+border:none;
+border-radius:8px;
+color:white;
+cursor:pointer;
+margin-top:10px;
+}
+
+canvas{
+margin-top:25px;
+}
+
+</style>
+
+</head>
+
+<body>
+
+<h1>Risk Reward Calculator</h1>
+
+<div class="container">
+
+<input id="entry" placeholder="Entry Price">
+
+<input id="position" placeholder="Position Size (units)">
+
+<input id="stop" placeholder="Stop Loss Price">
+
+<input id="take" placeholder="Take Profit Price">
+
+<button onclick="calculate()">Calculate</button>
+
+<h3 id="risk"></h3>
+<h3 id="reward"></h3>
+<h3 id="ratio"></h3>
+
+<canvas id="myChart"></canvas>
+
+</div>
+
+<script>
+
+let chart;
+
+function calculate(){
+
+let entry = parseFloat(document.getElementById("entry").value)
+let position = parseFloat(document.getElementById("position").value)
+let stop = parseFloat(document.getElementById("stop").value)
+let take = parseFloat(document.getElementById("take").value)
+
+let risk = (entry - stop) * position
+let reward = (take - entry) * position
+
+let ratio = reward / risk
+
+document.getElementById("risk").innerHTML =
+"Risk: $" + risk.toFixed(2)
+
+document.getElementById("reward").innerHTML =
+"Reward: $" + reward.toFixed(2)
+
+document.getElementById("ratio").innerHTML =
+"Risk / Reward Ratio: 1 : " + ratio.toFixed(2)
+
+drawChart(risk,reward)
+
+}
+
+function drawChart(risk,reward){
+
+let ctx = document.getElementById('myChart')
+
+if(chart){
+chart.destroy()
+}
+
+chart = new Chart(ctx,{
+type:'bar',
+data:{
+labels:['Risk','Reward'],
+datasets:[{
+label:'Trade Analysis',
+data:[risk,reward]
+}]
+}
+})
+
+}
+
+</script>
+
+</body>
+
+  </html>
