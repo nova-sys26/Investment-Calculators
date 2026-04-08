@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+<title>ROI Calculator - Return on Investment</title>
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<style>
+
+body{
+font-family:Arial;
+background:#0f172a;
+color:white;
+display:flex;
+justify-content:center;
+align-items:center;
+flex-direction:column;
+min-height:100vh;
+}
+
+.container{
+background:#1e293b;
+padding:30px;
+border-radius:16px;
+width:90%;
+max-width:500px;
+box-shadow:0 10px 25px rgba(0,0,0,0.35);
+}
+
+input{
+width:100%;
+padding:14px;
+margin:12px 0;
+border-radius:10px;
+border:none;
+background:#e5e7eb;
+font-size:16px;
+}
+
+button{
+padding:14px;
+background:#3b82f6;
+border:none;
+border-radius:10px;
+color:white;
+cursor:pointer;
+margin-top:10px;
+width:100%;
+}
+
+button:hover{
+background:#2563eb;
+}
+
+canvas{
+margin-top:30px;
+}
+.menu{
+margin-bottom:25px;
+}
+
+.menu a{
+color:#3b82f6;
+margin:10px;
+text-decoration:none;
+}
+</style>
+
+</head>
+
+<body>
+<div class="menu">
+<a href="index.html">Home</a>
+</div>
+<div class="container">
+
+<h1>ROI Calculator</h1>
+
+<input id="investment" placeholder="Initial Investment">
+
+<input id="finalValue" placeholder="Final Value">
+
+<button onclick="calculateROI()">Calculate ROI</button>
+
+<h3 id="result"></h3>
+
+<canvas id="myChart"></canvas>
+
+</div>
+
+<script>
+
+let chart;
+
+function drawChart(investment,value){
+
+let ctx=document.getElementById('myChart');
+
+if(chart){
+chart.destroy();
+}
+
+chart=new Chart(ctx,{
+type:'bar',
+data:{
+labels:['Investment','Final Value'],
+datasets:[{
+data:[investment,value],
+backgroundColor:['#3b82f6','#22c55e']
+}]
+},
+options:{
+plugins:{
+legend:{display:false},
+title:{
+display:true,
+text:'Investment vs Final Value'
+}
+},
+scales:{
+y:{
+grid:{color:'rgba(255,255,255,0.05)'}
+},
+x:{
+grid:{display:false}
+}
+}
+}
+});
+
+}
+
+function calculateROI(){
+
+let investment=parseFloat(document.getElementById("investment").value);
+let finalValue=parseFloat(document.getElementById("finalValue").value);
+
+let profit=finalValue-investment;
+
+let roi=(profit/investment)*100;
+
+document.getElementById("result").innerHTML=
+
+"Profit: "+profit.toFixed(2)+"<br>"+
+"ROI: "+roi.toFixed(2)+"%";
+
+drawChart(investment,finalValue);
+
+}
+
+</script>
+
+</body>
+</html>
