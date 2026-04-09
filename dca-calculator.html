@@ -99,19 +99,9 @@ Always conduct your own research before making financial decisions.
 </p>
 </div>
 
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
 <script>
-
-function calculate(){
-
-let investment = parseFloat(document.getElementById("investment").value)
-let price = parseFloat(document.getElementById("price").value)
-let finalprice = parseFloat(document.getElementById("finalprice").value)
-
-let coins = investment / price
-
-let value = coins * finalprice
-
-let profit = value - investment
 
 let chart;
 
@@ -142,19 +132,24 @@ if(chart){
 chart.destroy()
 }
 
+let color = value >= investment ? "green" : "red"
+
 chart = new Chart(ctx,{
 type:"bar",
 data:{
 labels:["Investment","Current Value"],
 datasets:[{
-label:"Comparison",
-data:[investment,value]
+label:"Investment vs Value",
+data:[investment,value],
+backgroundColor:["gray", color]
 }]
+},
+options:{
+responsive:true
 }
 })
 
 }
-
 
 </script>
 
