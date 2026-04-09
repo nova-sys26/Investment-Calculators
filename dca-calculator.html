@@ -126,6 +126,7 @@ let ctx = document.getElementById('myChart');
 
 if(chart){
 chart.destroy();
+drawProfitChart("myChart", totalInvested, portfolioValue);
 }
 
 chart = new Chart(ctx,{
