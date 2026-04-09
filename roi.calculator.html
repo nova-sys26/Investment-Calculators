@@ -115,46 +115,45 @@ Always conduct your own research before making financial decisions.
 </p>
 </div>
 <script>
-
 let chart;
 
-function drawChart(investment,value){
+function drawChart(investment, value){
 
-let ctx=document.getElementById('myChart');
+let ctx = document.getElementById('myChart');
 
 if(chart){
 chart.destroy();
 }
 
-chart=new Chart(ctx,{
+let profit = value - investment;
+
+/* KAR - ZARAR RENK KONTROLÜ */
+
+let finalColor;
+
+if(profit >= 0){
+finalColor = '#22c55e'; // yeşil
+}else{
+finalColor = '#ef4444'; // kırmızı
+}
+
+chart = new Chart(ctx,{
 type:'bar',
 data:{
 labels:['Investment','Final Value'],
 datasets:[{
+label:'Value',
 data:[investment,value],
-backgroundColor:['#3b82f6','#22c55e']
+backgroundColor:[
+'#3b82f6', // investment sabit mavi
+finalColor  // final value kar/zarara göre
+]
 }]
-},
-options:{
-plugins:{
-legend:{display:false},
-title:{
-display:true,
-text:'Investment vs Final Value'
-}
-},
-scales:{
-y:{
-grid:{color:'rgba(255,255,255,0.05)'}
-},
-x:{
-grid:{display:false}
-}
-}
 }
 });
 
-}
+  }
+
 
 function calculateROI(){
 
