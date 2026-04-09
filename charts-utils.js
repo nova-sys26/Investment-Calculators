@@ -13,17 +13,16 @@ let profit = value - investment;
 let finalColor;
 
 if(profit >= 0){
-finalColor = '#22c55e'; // profit → green
+finalColor = '#22c55e'; // profit
 }else{
-finalColor = '#ef4444'; // loss → red
+finalColor = '#ef4444'; // loss
 }
 
 chart = new Chart(ctx,{
 type:'bar',
 data:{
-labels:['Investment','Value'],
+labels:['Invested','Current Value'],
 datasets:[{
-label:'Result',
 data:[investment,value],
 backgroundColor:[
 '#3b82f6',
@@ -39,4 +38,4 @@ legend:{display:false}
 }
 });
 
-  }
+}
