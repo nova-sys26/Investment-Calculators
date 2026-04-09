@@ -98,7 +98,7 @@ All results are estimates based on the values entered and do not constitute fina
 Always conduct your own research before making financial decisions.
 </p>
 </div>
-<script src="charts-utils.js"></script>
+
 <script>
 
 function calculate(){
@@ -113,11 +113,46 @@ let value = coins * finalprice
 
 let profit = value - investment
 
+let chart;
+
+function calculate(){
+
+let investment = parseFloat(document.getElementById("investment").value)
+let price = parseFloat(document.getElementById("price").value)
+let finalprice = parseFloat(document.getElementById("finalprice").value)
+
+let coins = investment / price
+let value = coins * finalprice
+let profit = value - investment
+
 document.getElementById("result").innerHTML =
 "Coins bought: " + coins.toFixed(4) +
 "<br>Current value: $" + value.toFixed(2) +
 "<br>Profit/Loss: $" + profit.toFixed(2)
-drawProfitChart("myChart", investment, value)
+
+drawChart(investment,value)
+
+}
+
+function drawChart(investment,value){
+
+let ctx = document.getElementById("myChart")
+
+if(chart){
+chart.destroy()
+}
+
+chart = new Chart(ctx,{
+type:"bar",
+data:{
+labels:["Investment","Current Value"],
+datasets:[{
+label:"Comparison",
+data:[investment,value]
+}]
+}
+})
+
 }
 
 
