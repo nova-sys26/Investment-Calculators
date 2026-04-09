@@ -98,7 +98,7 @@ All results are estimates based on the values entered and do not constitute fina
 Always conduct your own research before making financial decisions.
 </p>
 </div>
-<script src="chart-utils.js"></script>
+
 <script>
 
 function calculate(){
@@ -117,31 +117,9 @@ document.getElementById("result").innerHTML =
 "Coins bought: " + coins.toFixed(4) +
 "<br>Current value: $" + value.toFixed(2) +
 "<br>Profit/Loss: $" + profit.toFixed(2)
-drawChart(investment,value) 
-}
-let chart;
-
-function drawChart(investment,value){
-
-let ctx = document.getElementById('myChart');
-
-if(chart){
-chart.destroy();
-drawProfitChart("myChart", totalInvested, portfolioValue);
+drawProfitChart("myChart", investment, value)
 }
 
-chart = new Chart(ctx,{
-type:'bar',
-data:{
-labels:['Invested','Current Value'],
-datasets:[{
-label:'Portfolio',
-data:[investment,value]
-}]
-}
-});
-
-  }
 
 </script>
 
