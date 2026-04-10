@@ -120,7 +120,14 @@ Always conduct your own research before making financial decisions.
 <script>
 
 let chart;
-
+function formatNumber(num) {
+    return Number.isInteger(num)
+        ? num.toString()
+        : num.toLocaleString(undefined, {
+            minimumFractionDigits: 2,
+            maximumFractionDigits: 4
+        });
+  }
 function calculate(){
 
 let balance = parseFloat(document.getElementById("balance").value);
@@ -145,7 +152,7 @@ let positionSize = riskAmount / stopDistance;
 let positionValue = positionSize * entry;
 
 document.getElementById("result").innerHTML =
-"Position Size: " + positionSize.toFixed(4) + " units" +
+"Position Size: " + formatNumber(positionSize) + " units"
 "<br>Position Value: $" + positionValue.toFixed(2) +
 "<br>Risk Amount: $" + riskAmount.toFixed(2);
 
