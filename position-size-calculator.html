@@ -163,8 +163,9 @@ if(chart){
 chart = new Chart(ctx, {
   type: 'bar',
   data: {
-    labels: ["Risk", "Position Value"],
+    labels: ["Risk Amount", "Position Value"],
     datasets: [{
+      label: "Trade Overview", 
       data: [riskAmount, positionValue],
       backgroundColor: ["#ef4444", "#22c55e"]
     }]
