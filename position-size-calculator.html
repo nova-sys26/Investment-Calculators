@@ -84,16 +84,17 @@ line-height:1.6;
 <h1>Position Size Calculator</h1>
 
 <div class="container">
-
-<input id="balance" placeholder="Account balance ($)">
-<input id="risk" placeholder="Risk per trade (%)">
-<input id="stop" placeholder="Stop loss (%)">
+<input id="balance" placeholder="Account Balance ($)">
+<input id="risk" placeholder="Risk % per trade">
+<input id="entry" placeholder="Entry Price">
+<input id="stop" placeholder="Stop Loss Price">
 
 <button onclick="calculate()">Calculate</button>
 
 <h3 id="result"></h3>
 
 <canvas id="myChart"></canvas>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
 </div>
 <h3>What is Position Size Calculator?</h3>
@@ -122,39 +123,54 @@ let chart;
 
 function calculate(){
 
-let balance=parseFloat(document.getElementById("balance").value)
-let risk=parseFloat(document.getElementById("risk").value)/100
-let stop=parseFloat(document.getElementById("stop").value)/100
+let balance = parseFloat(document.getElementById("balance").value);
+let riskPercent = parseFloat(document.getElementById("risk").value);
+let entry = parseFloat(document.getElementById("entry").value);
+let stop = parseFloat(document.getElementById("stop").value);
 
-let riskAmount=balance*risk
-let position=riskAmount/stop
-
-document.getElementById("result").innerHTML=
-"Position Size: $" + position.toFixed(2)
-
-drawChart(riskAmount,position)
-
+if(!balance || !riskPercent || !entry || !stop){
+  alert("Fill all fields");
+  return;
 }
 
-function drawChart(riskAmount,position){
+let riskAmount = balance * (riskPercent / 100);
+let stopDistance = Math.abs(entry - stop);
 
-let ctx=document.getElementById('myChart')
-
-if(chart){chart.destroy()}
-
-chart=new Chart(ctx,{
-type:'bar',
-data:{
-labels:['Risk Amount','Position Size'],
-datasets:[{
-label:'Trade',
-data:[riskAmount,position]
-}]
-}
-})
-
+if(stopDistance === 0){
+  alert("Stop cannot equal entry");
+  return;
 }
 
+let positionSize = riskAmount / stopDistance;
+let positionValue = positionSize * entry;
+
+document.getElementById("result").innerHTML =
+"Position Size: " + positionSize.toFixed(4) + " units" +
+"<br>Position Value: $" + positionValue.toFixed(2) +
+"<br>Risk Amount: $" + riskAmount.toFixed(2);
+
+drawChart(riskAmount, positionValue);
+}
+
+function drawChart(riskAmount, positionValue){
+
+let ctx = document.getElementById("myChart");
+
+if(chart){
+  chart.destroy();
+}
+
+chart = new Chart(ctx, {
+  type: 'bar',
+  data: {
+    labels: ["Risk", "Position Value"],
+    datasets: [{
+      data: [riskAmount, positionValue],
+      backgroundColor: ["#ef4444", "#22c55e"]
+    }]
+  }
+});
+  }
 </script>
 
 </body>
