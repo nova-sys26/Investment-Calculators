@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+
+<title>Leverage Calculator</title>
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<style>
+
+body{
+font-family: Arial;
+background:#0b1a33;
+color:white;
+margin:0;
+display:flex;
+justify-content:center;
+align-items:center;
+min-height:100vh;
+flex-direction:column;
+}
+
+.container{
+background:#1e293b;
+padding:30px;
+border-radius:12px;
+width:90%;
+max-width:500px;
+}
+
+input{
+width:100%;
+padding:12px;
+margin:10px 0;
+border-radius:6px;
+border:none;
+}
+
+button{
+padding:12px 20px;
+background:#3b82f6;
+border:none;
+border-radius:8px;
+color:white;
+cursor:pointer;
+}
+
+canvas{
+margin-top:30px;
+}
+
+.menu{
+margin-bottom:25px;
+}
+
+.menu a{
+color:#3b82f6;
+margin:10px;
+text-decoration:none;
+}
+
+.toptext{
+font-size:14px;
+color:#6b7a99;
+margin-bottom:5px;
+}
+
+.disclaimer{
+margin-top:40px;
+padding-top:20px;
+border-top:1px solid rgba(255,255,255,0.1);
+font-size:13px;
+color:#9ca3af;
+max-width:500px;
+text-align:center;
+line-height:1.6;
+}
+
+</style>
+
+</head>
+
+<body>
+
+<p class="toptext">Explore more calculators</p> 
+
+<div class="menu">
+<a href="index.html">Home</a>
+</div>
+
+<h1>Leverage Calculator</h1>
+
+<div class="container">
+
+<input id="margin" placeholder="Margin ($)">
+<input id="leverage" placeholder="Leverage (e.g. 10x)">
+<input id="entry" placeholder="Entry price">
+<input id="exit" placeholder="Exit price">
+
+<button onclick="calculate()">Calculate</button>
+
+<h3 id="result"></h3>
+
+<canvas id="myChart"></canvas>
+
+</div>
+
+<h3>What is Leverage Calculator?</h3>
+<p>This tool shows how leverage affects your position size and profit or loss.</p>
+
+<h3>How to use it?</h3>
+<ul>
+<li>Enter your margin (your own money)</li>
+<li>Enter leverage (e.g. 10 for 10x)</li>
+<li>Enter entry price</li>
+<li>Enter exit price</li>
+<li>Click calculate</li>
+</ul>
+
+<h3>Who uses this?</h3>
+<p>Traders who use leverage to amplify their gains or losses.</p>
+
+<div class="disclaimer">
+<p>
+<strong>Disclaimer:</strong> Leverage trading is risky. This tool is for educational purposes only.
+</p>
+</div>
+
+<script>
+
+let chart;
+
+function calculate(){
+
+let margin = parseFloat(document.getElementById("margin").value)
+let leverage = parseFloat(document.getElementById("leverage").value)
+let entry = parseFloat(document.getElementById("entry").value)
+let exit = parseFloat(document.getElementById("exit").value)
+
+if(!margin || !leverage || !entry || !exit){
+alert("Fill all fields")
+return
+}
+
+let positionSize = margin * leverage
+
+let priceChange = (exit - entry) / entry
+
+let pnl = positionSize * priceChange
+
+document.getElementById("result").innerHTML =
+`Position Size: $${positionSize.toFixed(2)}
+<br>Profit / Loss: $${pnl.toFixed(2)}`
+
+drawChart(margin, positionSize)
+
+}
+
+function drawChart(margin, positionSize){
+
+let ctx = document.getElementById('myChart')
+
+if(chart){
+chart.destroy()
+}
+
+chart = new Chart(ctx,{
+type:'bar',
+data:{
+labels:['Your Money','Leveraged Position'],
+datasets:[{
+label:'Leverage Effect',
+data:[margin, positionSize],
+backgroundColor:['red','green']
+}]
+}
+})
+
+}
+
+</script>
+
+</body>
+
+</html>
