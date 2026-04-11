@@ -179,6 +179,12 @@ background:#334155;
 <p id="noResult" style="display:none;">No calculator found</p>
   
 <script>
+
+function handleSearch(){
+  showSuggestions();
+  searchTools();
+}
+
 function searchTools(){
 
 let input = document.getElementById("search").value.toLowerCase()
