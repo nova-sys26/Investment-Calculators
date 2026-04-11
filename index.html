@@ -242,7 +242,9 @@ searchTools() // mevcut filter fonksiyonunu da çalıştırır
 box.appendChild(div)
 
 }
-
+if(box.innerHTML === ""){
+box.innerHTML = "<div class='suggestion-item'>No result</div>"
+  }
 })
 
 }
