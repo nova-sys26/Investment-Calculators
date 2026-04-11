@@ -158,6 +158,11 @@ color:white;
 <p id="noResult" style="display:none;">No calculator found</p>
   
 <script>
+function searchTools(){
+
+let input = document.getElementById("search").value.toLowerCase()
+let cards = document.querySelectorAll(".tool")
+
   let visible = 0
 
 cards.forEach(card => {
@@ -174,6 +179,7 @@ card.style.display = "none"
 document.getElementById("noResult").style.display =
 visible === 0 ? "block" : "none"
 
+  }
 <script>
 
 </body>
