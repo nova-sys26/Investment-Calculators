@@ -37,55 +37,105 @@ border-radius:6px;
 a:hover{
 background:#2563eb;
 }
+/* HERO */
+.hero{
+text-align:center;
+margin:40px 20px;
+}
+
+.hero h1{
+font-size:32px;
+margin-bottom:10px;
+}
+
+.hero p{
+color:#9ca3af;
+}
+
+/* GRID */
+.grid{
+display:grid;
+grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+gap:20px;
+width:90%;
+max-width:900px;
+margin-bottom:50px;
+}
+
+/* CARD */
+.card{
+background:#1e293b;
+padding:20px;
+border-radius:14px;
+text-align:center;
+transition:0.2s;
+}
+
+.card:hover{
+transform:translateY(-5px);
+box-shadow:0 10px 25px rgba(0,0,0,0.3);
+}
+
+/* TEXT */
+.card h3{
+margin-bottom:10px;
+}
+
+.card p{
+font-size:14px;
+color:#9ca3af;
+margin-bottom:15px;
+}
+
+/* BUTTON */
+.card a{
+display:inline-block;
+padding:10px 16px;
+background:#3b82f6;
+color:white;
+border-radius:8px;
+text-decoration:none;
+transition:0.2s;
+}
+
+.card a:hover{
+background:#2563eb;
+}
 </style>
 
 </head>
 
 <body>
+<div class="hero">
+  <h1>Trading Calculators</h1>
+  <p>Simple tools to manage risk, profit and strategy</p>
+</div>
 
-<h1>Investment Calculators</h1>
+<div class="grid">
 
-<div class="container">
+  <div class="card">
+    <h3>Position Size</h3>
+    <p>Manage your risk per trade</p>
+    <a href="position.html">Open</a>
+  </div>
 
-<a href="average-price-calculator.html">
-Average Price Calculator
-</a>
+  <div class="card">
+    <h3>Profit / Loss</h3>
+    <p>Calculate your trade outcome</p>
+    <a href="profit.html">Open</a>
+  </div>
 
-<a href="dca-calculator.html">
-DCA Calculator
-</a>
-  
-<a href="compound-interest-calculator.html">
-Compound Interest Calculator
-</a>
-  
-<a href="profit-loss-calculator.html">
-Profit Loss Calculator
-</a>
-  
-<a href="position-size-calculator.html">
-Position Size Calculator
-</a>
+  <div class="card">
+    <h3>DCA Calculator</h3>
+    <p>Average your entry price</p>
+    <a href="dca.html">Open</a>
+  </div>
 
-<a href="risk-rewardcalculator.html">
-Risk Reward Calculator
-</a>
-  
-<a href="roi.calculator.html">
-ROI Calculator
-</a>
-
-<a href="leverage-calculator.html">
-Leverage Calculator
-</a>
-
-<a href="liquidation-price-calculator.html">
-Liquidation Price Calculator
-</a>
-  
-<a href="break-even-calculator.html">
-Break Even Calculator
-</a>
+  <div class="card">
+    <h3>Break Even</h3>
+    <p>Recover from losses</p>
+    <a href="breakeven.html">Open</a>
+  </div>
 
 </div>
 
