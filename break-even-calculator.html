@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+
+<title>Break Even Calculator</title>
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<style>
+
+body{
+font-family: Arial;
+background:#0b1a33;
+color:white;
+margin:0;
+display:flex;
+justify-content:center;
+align-items:center;
+min-height:100vh;
+flex-direction:column;
+}
+
+.container{
+background:#1e293b;
+padding:30px;
+border-radius:12px;
+width:90%;
+max-width:500px;
+}
+
+input{
+width:100%;
+padding:12px;
+margin:10px 0;
+border-radius:6px;
+border:none;
+}
+
+button{
+padding:12px 20px;
+background:#3b82f6;
+border:none;
+border-radius:8px;
+color:white;
+cursor:pointer;
+}
+
+canvas{
+margin-top:30px;
+}
+
+.menu{
+margin-bottom:25px;
+}
+
+.menu a{
+color:#3b82f6;
+margin:10px;
+text-decoration:none;
+}
+
+.toptext{
+font-size:14px;
+color:#6b7a99;
+margin-bottom:5px;
+}
+
+.disclaimer{
+margin-top:40px;
+padding-top:20px;
+border-top:1px solid rgba(255,255,255,0.1);
+font-size:13px;
+color:#9ca3af;
+max-width:500px;
+text-align:center;
+line-height:1.6;
+}
+
+</style>
+
+</head>
+
+<body>
+
+<p class="toptext">Explore more calculators</p> 
+
+<div class="menu">
+<a href="index.html">Home</a>
+</div>
+
+<h1>Break Even Calculator</h1>
+
+<div class="container">
+
+<input id="buy" placeholder="Buy price ($)">
+<input id="lossPercent" placeholder="Loss % (e.g. 20)">
+
+<button onclick="calculate()">Calculate</button>
+
+<h3 id="result"></h3>
+
+<canvas id="myChart"></canvas>
+
+</div>
+
+<h3>What is Break Even?</h3>
+<p>This tool shows how much price must increase to recover from a loss.</p>
+
+<h3>How to use it?</h3>
+<ul>
+<li>Enter your buy price</li>
+<li>Enter how much you are down (%)</li>
+<li>Click calculate</li>
+</ul>
+
+<h3>Who uses this?</h3>
+<p>Investors who want to understand recovery after a loss.</p>
+
+<div class="disclaimer">
+<p>
+<strong>Disclaimer:</strong> This tool provides estimates and is not financial advice.
+</p>
+</div>
+
+<script>
+
+let chart;
+
+function calculate(){
+
+let buy = parseFloat(document.getElementById("buy").value)
+let lossPercent = parseFloat(document.getElementById("lossPercent").value)
+
+if(!buy || !lossPercent){
+alert("Fill all fields")
+return
+}
+
+let lossFactor = 1 - (lossPercent / 100)
+let breakEvenPrice = buy / lossFactor
+
+let neededGain = ((breakEvenPrice - buy) / buy) * 100
+
+document.getElementById("result").innerHTML =
+`Break Even Price: $${breakEvenPrice.toFixed(2)}
+<br>Required Gain: ${neededGain.toFixed(2)}%`
+
+drawChart(buy, breakEvenPrice)
+
+}
+
+function drawChart(buy, breakEvenPrice){
+
+let ctx = document.getElementById('myChart')
+
+if(chart){
+chart.destroy()
+}
+
+chart = new Chart(ctx,{
+type:'bar',
+data:{
+labels:['Buy Price','Break Even Price'],
+datasets:[{
+label:'Recovery',
+data:[buy, breakEvenPrice],
+backgroundColor:['#ef4444','#22c55e']
+}]
+}
+})
+
+}
+
+</script>
+
+</body>
+
+  </html>
