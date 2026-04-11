@@ -116,6 +116,25 @@ font-size:14px;
 background:#1e293b;
 color:white;
   }
+#suggestions{
+width:90%;
+max-width:400px;
+background:#1e293b;
+border-radius:10px;
+margin-top:5px;
+overflow:hidden;
+}
+
+.suggestion-item{
+padding:10px;
+cursor:pointer;
+border-bottom:1px solid rgba(255,255,255,0.05);
+}
+
+.suggestion-item:hover{
+background:#334155;
+  }
+  
 </style>
 
 </head>
@@ -126,6 +145,9 @@ color:white;
   <p>Simple tools to manage risk, profit and strategy</p>
 
 <input type="text" id="search" placeholder="Search calculator..." onkeyup="searchTools()">
+<input type="text" id="search" placeholder="Search calculator..." onkeyup="showSuggestions()">
+
+<div id="suggestions"></div>
 </div>
 
 <div class="grid">
@@ -180,6 +202,52 @@ document.getElementById("noResult").style.display =
 visible === 0 ? "block" : "none"
 
   }
+
+
+let tools = [
+"Position Size Calculator",
+"Profit Loss Calculator",
+"DCA Calculator",
+"Break Even Calculator",
+"Leverage Calculator",
+"Liquidation Price Calculator",
+"Risk Reward Calculator"
+];
+
+function showSuggestions(){
+
+let input = document.getElementById("search").value.toLowerCase()
+let box = document.getElementById("suggestions")
+
+box.innerHTML = ""
+
+if(input === ""){
+return
+}
+
+tools.forEach(tool => {
+
+if(tool.toLowerCase().includes(input)){
+
+let div = document.createElement("div")
+div.classList.add("suggestion-item")
+div.innerText = tool
+
+div.onclick = function(){
+document.getElementById("search").value = tool
+box.innerHTML = ""
+searchTools() // mevcut filter fonksiyonunu da çalıştırır
+}
+
+box.appendChild(div)
+
+}
+
+})
+
+}
+
+
 </script>
 </body>
 </html>
