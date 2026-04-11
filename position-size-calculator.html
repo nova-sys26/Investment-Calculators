@@ -152,7 +152,7 @@ let positionSize = riskAmount / stopDistance;
 let positionValue = positionSize * entry;
 
 document.getElementById("result").innerHTML =
-"Position Size: " + formatNumber(positionSize) + " units"
+"Position Size: " + formatNumber(positionSize) + " units" +
 "<br>Position Value: $" + positionValue.toFixed(2) +
 "<br>Risk Amount: $" + riskAmount.toFixed(2);
 
