@@ -1,0 +1,33 @@
+h3 {
+  font-size: 20px;
+  font-weight: 600;
+  color: #ffffff;
+  
+  margin-top: 28px;
+  margin-bottom: 12px;
+  
+  position: relative;
+  padding-left: 14px;
+  
+  letter-spacing: 0.3px;
+}
+
+h3::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 4px;
+  
+  width: 4px;
+  height: 70%;
+  
+  background: linear-gradient(180deg, #4facfe, #00f2fe);
+  border-radius: 2px;
+}
+h3 {
+  transition: all 0.2s ease;
+}
+
+h3:hover {
+  color: #4facfe;
+}
