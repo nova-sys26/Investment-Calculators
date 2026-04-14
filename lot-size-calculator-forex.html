@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+
+<meta charset="UTF-8">
+<title>Lot Size Calculator – Forex Position Size Tool</title>
+<meta name="description" content="Calculate the perfect lot size based on risk and stop loss. Essential forex trading tool.">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<link rel="stylesheet" href="style.css">
+
+<style>
+
+body{
+font-family:Arial;
+background:#0f172a;
+color:white;
+display:flex;
+justify-content:center;
+align-items:center;
+flex-direction:column;
+min-height:100vh;
+}
+  
+.container{
+background:#1e293b;
+padding:30px;
+border-radius:10px;
+width:320px;
+margin:auto;
+}
+
+input{
+width:90%;
+padding:10px;
+margin:8px;
+border-radius:5px;
+border:none;
+}
+
+button{
+padding:10px 20px;
+background:#3b82f6;
+border:none;
+border-radius:6px;
+color:white;
+cursor:pointer;
+}
+
+button:hover{
+background:#2563eb;
+}
+
+.menu{
+margin-bottom:25px;
+}
+
+.menu a{
+color:#3b82f6;
+margin:10px;
+text-decoration:none;
+}
+.toptext{
+font-size:14px;
+color:#6b7a99;
+margin-bottom:5px;
+  }
+.disclaimer{
+margin-top:40px;
+padding-top:20px;
+border-top:1px solid rgba(255,255,255,0.1);
+font-size:13px;
+color:#9ca3af;
+max-width:500px;
+text-align:center;
+line-height:1.6;
+  }
+</style>
+
+</head>
+
+<body>
+
+<p class="toptext">Explore more calculators</p> 
+
+<div class="menu">
+<a href="index.html">Home</a>
+</div>
+
+<h1>Lot Size Calculator (Forex)</h1>
+
+<div class="container">
+
+<input id="balance" placeholder="Account balance ($)">
+<input id="risk" placeholder="Risk % (e.g. 2)">
+<input id="stoploss" placeholder="Stop loss (pips)">
+
+<button onclick="calculate()">Calculate</button>
+
+<h3 id="result"></h3>
+
+<canvas id="myChart"></canvas>
+
+</div>
+
+<script>
+
+let chart;
+
+function calculate(){
+
+let balance = parseFloat(document.getElementById("balance").value)
+let risk = parseFloat(document.getElementById("risk").value)
+let stoploss = parseFloat(document.getElementById("stoploss").value)
+
+if(!balance || !risk || !stoploss){
+alert("Fill all fields")
+return
+}
+
+// Forex standart pip değeri (1 lot = $10 per pip)
+let riskAmount = balance * (risk / 100)
+let lotSize = riskAmount / (stoploss * 10)
+
+document.getElementById("result").innerHTML =
+`Lot Size: ${lotSize.toFixed(2)} lots`
+
+drawChart(riskAmount, lotSize)
+
+}
+
+function drawChart(riskAmount, lotSize){
+
+let ctx = document.getElementById('myChart')
+
+if(chart){
+chart.destroy()
+}
+
+chart = new Chart(ctx,{
+type:'bar',
+data:{
+labels:['Risk Amount ($)','Lot Size'],
+datasets:[{
+label:'Trade Data',
+data:[riskAmount, lotSize],
+backgroundColor:['#ef4444','#3b82f6']
+}]
+}
+})
+
+}
+
+</script>
+
+</body>
+  </html>
