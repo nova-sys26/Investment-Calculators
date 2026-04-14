@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+
+<meta charset="UTF-8">
+<title>Stop Loss Calculator – Manage Your Trading Risk</title>
+<meta name="description" content="Calculate your stop loss level easily. Manage risk and protect your capital in trading.">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<link rel="stylesheet" href="style.css">
+
+<style>
+/* aynı CSS */
+</style>
+
+</head>
+
+<body>
+
+<p class="toptext">Explore more calculators</p> 
+
+<div class="menu">
+<a href="index.html">Home</a>
+</div>
+
+<h1>Stop Loss Calculator</h1>
+
+<div class="container">
+
+<input id="entry" placeholder="Entry price">
+<input id="risk" placeholder="Risk % (e.g. 2)">
+<input id="type" placeholder="Type (long/short)">
+
+<button onclick="calculate()">Calculate</button>
+
+<h3 id="result"></h3>
+
+<canvas id="myChart"></canvas>
+
+</div>
+
+<script>
+
+let chart;
+
+function calculate(){
+
+let entry = parseFloat(document.getElementById("entry").value)
+let risk = parseFloat(document.getElementById("risk").value)
+let type = document.getElementById("type").value.toLowerCase()
+
+if(!entry || !risk || !type){
+alert("Fill all fields")
+return
+}
+
+let stopLoss;
+
+if(type === "long"){
+stopLoss = entry * (1 - risk/100)
+} else if(type === "short"){
+stopLoss = entry * (1 + risk/100)
+} else {
+alert("Type must be long or short")
+return
+}
+
+document.getElementById("result").innerHTML =
+`Stop Loss Price: $${stopLoss.toFixed(2)}`
+
+drawChart(entry, stopLoss)
+
+}
+
+function drawChart(entry, stopLoss){
+
+let ctx = document.getElementById('myChart')
+
+if(chart){
+chart.destroy()
+}
+
+chart = new Chart(ctx,{
+type:'bar',
+data:{
+labels:['Entry Price','Stop Loss'],
+datasets:[{
+label:'Trade Levels',
+data:[entry, stopLoss],
+backgroundColor:['#22c55e','#ef4444']
+}]
+}
+})
+
+}
+
+</script>
+
+</body>
+  </html>
