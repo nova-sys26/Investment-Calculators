@@ -237,27 +237,26 @@ function handleSearch(){
 }
 
 function searchCalc(){
+function searchCalc(){
+  let input = document.getElementById("search").value.toLowerCase();
+  let items = document.querySelectorAll(".tool");
 
-let input = document.getElementById("search").value.toLowerCase();
-let items = document.querySelectorAll(".calc-item");
-let resultBox = document.getElementById("results");
+  let found = false;
 
-resultBox.innerHTML = "";
+  items.forEach(item => {
+    let text = item.innerText.toLowerCase();
 
-let found = false;
+    if(text.includes(input)){
+      item.style.display = "block";
+      found = true;
+    } else {
+      item.style.display = "none";
+    }
+  });
 
-items.forEach(item => {
-
-let name = item.innerText.toLowerCase();
-
-if(name.includes(input)){
-found = true;
-
-let div = document.createElement("div");
-div.classList.add("calc-item"); // style korunsun diye
-div.innerHTML = item.innerHTML;
-resultBox.appendChild(div);
-}
+  document.getElementById("results").innerHTML =
+    found ? "" : "<p>No result</p>";
+  }
 
 });
 
