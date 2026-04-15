@@ -156,7 +156,7 @@ return;
 }
 
 // pip value formula
-let pipValue = (lot * 100000 * pip) / price;
+let pipValue = (pip / price) * (lot * 100000);
 
 document.getElementById("result").innerHTML =
 "Pip Value: $" + pipValue.toFixed(4);
