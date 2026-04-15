@@ -149,8 +149,8 @@ background:#334155;
   <h1>Trading Calculators</h1>
   <p>Simple tools to manage risk, profit and strategy</p>
 
-<input id="search" oninput="searchCalc()" placeholder="Search calculators...">
-</div>
+<input id="search" oninput="handleSearch()" placeholder="Search calculators...">
+<div id="suggestions"></div>
 
 <div class="grid">
 
@@ -237,9 +237,9 @@ function handleSearch(){
 }
 
 function searchCalc(){
-function searchCalc(){
   let input = document.getElementById("search").value.toLowerCase();
   let items = document.querySelectorAll(".tool");
+  let noResult = document.getElementById("noResult");
 
   let found = false;
 
@@ -254,18 +254,12 @@ function searchCalc(){
     }
   });
 
-  document.getElementById("results").innerHTML =
-    found ? "" : "<p>No result</p>";
+  if(!found && input.length > 0){
+    noResult.style.display = "block";
+  } else {
+    noResult.style.display = "none";
   }
-
-});
-
-if(!found && input.length > 0){
-resultBox.innerHTML = "<p>No result</p>";
 }
-
-  }
-
 
 let tools = [
 "Position Size Calculator",
@@ -283,40 +277,37 @@ let tools = [
 ];
 
 function showSuggestions(){
+  let input = document.getElementById("search").value.toLowerCase();
+  let box = document.getElementById("suggestions");
 
-let input = document.getElementById("search").value.toLowerCase()
-let box = document.getElementById("suggestions")
+  box.innerHTML = "";
 
-box.innerHTML = ""
+  if(input === "") return;
 
-if(input === ""){
-return
-}
+  let found = false;
 
-tools.forEach(tool => {
+  tools.forEach(tool => {
+    if(tool.toLowerCase().includes(input)){
+      found = true;
 
-if(tool.toLowerCase().includes(input)){
+      let div = document.createElement("div");
+      div.classList.add("suggestion-item");
+      div.innerText = tool;
 
-let div = document.createElement("div")
-div.classList.add("suggestion-item")
-div.innerText = tool
+      div.onclick = function(){
+        document.getElementById("search").value = tool;
+        box.innerHTML = "";
+        searchCalc();
+      }
 
-div.onclick = function(){
-document.getElementById("search").value = tool
-box.innerHTML = ""
-searchTools() // mevcut filter fonksiyonunu da çalıştırır
-}
+      box.appendChild(div);
+    }
+  });
 
-box.appendChild(div)
-
-}
-if(box.innerHTML === ""){
-box.innerHTML = "<div class='suggestion-item'>No result</div>"
+  if(!found){
+    box.innerHTML = "<div class='suggestion-item'>No result</div>";
   }
-})
-
 }
-
 
 </script>
 </body>
