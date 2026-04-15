@@ -151,7 +151,7 @@ background:#334155;
 
 <input type="text" id="search" placeholder="Search..." onkeyup="handleSearch()">
 <div id="suggestions"></div>
-
+<input id="search" oninput="searchCalc()" placeholder="Search calculators...">
 </div>
 
 <div class="grid">
@@ -235,29 +235,37 @@ background:#334155;
 
 function handleSearch(){
   showSuggestions();
-  searchTools();
+  searchCalc();
 }
 
-function searchTools(){
+function searchCalc(){
 
-let input = document.getElementById("search").value.toLowerCase()
-let cards = document.querySelectorAll(".tool")
+let input = document.getElementById("search").value.toLowerCase();
+let items = document.querySelectorAll(".calc-item");
+let resultBox = document.getElementById("results");
 
-  let visible = 0
+resultBox.innerHTML = "";
 
-cards.forEach(card => {
-let text = card.innerText.toLowerCase()
+let found = false;
 
-if(text.includes(input)){
-card.style.display = "block"
-visible++
-} else {
-card.style.display = "none"
+items.forEach(item => {
+
+let name = item.innerText.toLowerCase();
+
+if(name.includes(input)){
+found = true;
+
+let div = document.createElement("div");
+div.classList.add("calc-item"); // style korunsun diye
+div.innerHTML = item.innerHTML;
+resultBox.appendChild(div);
 }
-})
 
-document.getElementById("noResult").style.display =
-visible === 0 ? "block" : "none"
+});
+
+if(!found && input.length > 0){
+resultBox.innerHTML = "<p>No result</p>";
+}
 
   }
 
