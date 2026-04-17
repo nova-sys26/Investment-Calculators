@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+<meta charset="UTF-8">
+<title>Mortgage Calculator – Estimate Monthly Payments</title>
+<meta name="description" content="Calculate your monthly mortgage payment, total interest, and loan cost easily. Plan your home financing easily.">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<link rel="stylesheet" href="style.css">
+
+<style>
+body{
+font-family:Arial;
+background:#0f172a;
+color:white;
+display:flex;
+justify-content:center;
+align-items:center;
+flex-direction:column;
+min-height:100vh;
+}
+
+.container{
+background:#1e293b;
+padding:30px;
+border-radius:16px;
+width:90%;
+max-width:500px;
+box-shadow:0 10px 25px rgba(0,0,0,0.35);
+}
+
+input{
+width:100%;
+padding:14px;
+margin:12px 0;
+border-radius:10px;
+border:none;
+background:#e5e7eb;
+font-size:16px;
+}
+
+button{
+padding:14px;
+background:#3b82f6;
+border:none;
+border-radius:10px;
+color:white;
+cursor:pointer;
+margin-top:10px;
+width:100%;
+}
+
+button:hover{
+background:#2563eb;
+}
+
+canvas{
+margin-top:30px;
+}
+
+.menu{
+margin-bottom:25px;
+}
+
+.menu a{
+color:#3b82f6;
+margin:10px;
+text-decoration:none;
+}
+
+.disclaimer{
+margin-top:40px;
+padding-top:20px;
+border-top:1px solid rgba(255,255,255,0.1);
+font-size:13px;
+color:#9ca3af;
+max-width:500px;
+text-align:center;
+line-height:1.6;
+}
+</style>
+
+</head>
+
+<body>
+
+<div class="menu">
+<a href="index.html">Home</a>
+</div>
+
+<div class="container">
+
+<h1>Mortgage Calculator</h1>
+
+<input id="loan" placeholder="Loan Amount ($)">
+<input id="rate" placeholder="Interest Rate (% per year)">
+<input id="years" placeholder="Loan Term (years)">
+
+<button onclick="calculateMortgage()">Calculate</button>
+
+<h3 id="result"></h3>
+
+<canvas id="myChart"></canvas>
+
+</div>
+
+<h3>What is a Mortgage Calculator?</h3>
+<p>This mortgage calculator helps you estimate your monthly payment for a home loan. It considers your loan amount, interest rate, and loan term to calculate accurate payments.</p>
+
+<h3>How to use it?</h3>
+<ul>
+<li>Enter loan amount</li>
+<li>Enter annual interest rate</li>
+<li>Enter loan term in years</li>
+<li>Click calculate</li>
+</ul>
+
+<h3>Who uses this?</h3>
+<p>Home buyers who want to estimate monthly mortgage costs.</p>
+
+<div class="disclaimer">
+<p><strong>Disclaimer:</strong> Results are estimates and may vary depending on lender terms and fees.</p>
+</div>
+
+<script>
+
+let chart;
+
+function calculateMortgage(){
+
+let loan = parseFloat(document.getElementById("loan").value);
+let annualRate = parseFloat(document.getElementById("rate").value);
+let years = parseFloat(document.getElementById("years").value);
+
+if(!loan || !annualRate || !years){
+alert("Fill all fields");
+return;
+}
+
+// aylık faiz
+let monthlyRate = (annualRate / 100) / 12;
+
+// toplam ödeme sayısı
+let payments = years * 12;
+
+// mortgage formülü
+let monthlyPayment = loan * (monthlyRate * Math.pow(1 + monthlyRate, payments)) / 
+                     (Math.pow(1 + monthlyRate, payments) - 1);
+
+let totalPayment = monthlyPayment * payments;
+let totalInterest = totalPayment - loan;
+
+document.getElementById("result").innerHTML =
+"Monthly Payment: $" + monthlyPayment.toFixed(2) + "<br>" +
+"Total Payment: $" + totalPayment.toFixed(2) + "<br>" +
+"Total Interest: $" + totalInterest.toFixed(2);
+
+drawChart(loan, totalInterest);
+
+}
+
+function drawChart(principal, interest){
+
+let ctx = document.getElementById('myChart');
+
+if(chart){
+chart.destroy();
+}
+
+chart = new Chart(ctx,{
+type:'pie',
+data:{
+labels:['Loan Amount','Interest'],
+datasets:[{
+data:[principal, interest],
+backgroundColor:['#3b82f6','#ef4444']
+}]
+}
+});
+
+}
+
+</script>
+
+</body>
+  </html>
