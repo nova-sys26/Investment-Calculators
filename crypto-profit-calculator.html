@@ -197,26 +197,30 @@ alert("Fill required fields");
 return;
 }
 
-// toplam alış ve satış
 let cost = buy * amount;
 let revenue = sell * amount;
 
-// fee hesaplama
 let feeCost = (fee / 100) * (cost + revenue);
 
-// net profit
-let profit = revenue - cost - feeCost;
+let profit;
+
+if(type === "long"){
+  profit = revenue - cost - feeCost;
+} else {
+  profit = cost - revenue - feeCost;
+}
+
 let profitPercent = (profit / cost) * 100;
 
 document.getElementById("result").innerHTML =
 "Profit: $" + profit.toFixed(2) + "<br>" +
 "Return: " + profitPercent.toFixed(2) + "%";
 
-drawChart(cost, revenue);
+drawChart(cost, profit);
 
 }
 
-function drawChart(cost, revenue){
+function drawChart(cost, profit){
 
 let ctx = document.getElementById('myChart');
 
@@ -224,24 +228,14 @@ if(chart){
 chart.destroy();
 }
 
-let profit;
-
-if(type === "long"){
-  profit = revenue - cost - feeCost;
-} else {
-  // short: fiyat düşünce kazanırsın
-  profit = cost - revenue - feeCost;
-}
-
 let color = profit >= 0 ? '#22c55e' : '#ef4444';
 
 chart = new Chart(ctx,{
 type:'bar',
 data:{
-labels:['Cost','Revenue'],
+labels:['Cost','Result'],
 datasets:[{
-label:'Trade',
-data:[cost, revenue],
+data:[cost, cost + profit],
 backgroundColor:['#3b82f6', color]
 }]
 }
