@@ -97,6 +97,7 @@ line-height:1.6;
 <input id="loan" placeholder="Loan Amount ($)">
 <input id="rate" placeholder="Interest Rate (% per year)">
 <input id="years" placeholder="Loan Term (years)">
+<input id="extra" placeholder="Extra Monthly Payment ($) (optional)">
 
 <button onclick="calculateMortgage()">Calculate</button>
 
@@ -137,7 +138,8 @@ function calculateMortgage(){
 let loan = parseFloat(document.getElementById("loan").value);
 let annualRate = parseFloat(document.getElementById("rate").value);
 let years = parseFloat(document.getElementById("years").value);
-
+let extra = parseFloat(document.getElementById("extra").value) || 0;
+  
 if(!loan || !annualRate || !years){
 alert("Fill all fields");
 return;
@@ -150,15 +152,37 @@ let monthlyRate = (annualRate / 100) / 12;
 let payments = years * 12;
 
 // mortgage formülü
-let monthlyPayment = loan * (monthlyRate * Math.pow(1 + monthlyRate, payments)) / 
-                     (Math.pow(1 + monthlyRate, payments) - 1);
+let basePayment = loan * (monthlyRate * Math.pow(1 + monthlyRate, payments)) / 
+                 (Math.pow(1 + monthlyRate, payments) - 1);
 
-let totalPayment = monthlyPayment * payments;
-let totalInterest = totalPayment - loan;
+let monthlyPayment = basePayment + extra;
 
+let balance = loan;
+let totalInterest = 0;
+let months = 0;
+
+while(balance > 0){
+
+  let interest = balance * monthlyRate;
+  let payment = basePayment + extra;
+
+  let principal = payment - interest;
+
+  if(principal > balance){
+    principal = balance;
+    payment = interest + principal;
+  }
+
+  balance -= principal;
+  totalInterest += interest;
+  months++;
+
+  if(months > 1000) break;
+}
+let totalPayment = loan + totalInterest;
 document.getElementById("result").innerHTML =
-"Monthly Payment: $" + monthlyPayment.toFixed(2) + "<br>" +
-"Total Payment: $" + totalPayment.toFixed(2) + "<br>" +
+"Monthly Payment: $" + (basePayment + extra).toFixed(2) + "<br>" +
+"Loan Duration: " + months + " months<br>" +
 "Total Interest: $" + totalInterest.toFixed(2);
 
 drawChart(loan, totalInterest);
@@ -176,7 +200,7 @@ chart.destroy();
 chart = new Chart(ctx,{
 type:'pie',
 data:{
-labels:['Loan Amount','Interest'],
+labels:['Principal','Interest Rate'],
 datasets:[{
 data:[principal, interest],
 backgroundColor:['#3b82f6','#ef4444']
