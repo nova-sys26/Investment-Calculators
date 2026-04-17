@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+<meta charset="UTF-8">
+<title>Crypto Profit Calculator – Calculate Trading Profit & Loss</title>
+<meta name="description" content="Calculate crypto profit, loss, and fees instantly. Perfect for traders and investors.">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<link rel="stylesheet" href="style.css">
+
+<style>
+body{
+font-family:Arial;
+background:#0f172a;
+color:white;
+display:flex;
+justify-content:center;
+align-items:center;
+flex-direction:column;
+min-height:100vh;
+}
+
+.container{
+background:#1e293b;
+padding:30px;
+border-radius:16px;
+width:90%;
+max-width:500px;
+box-shadow:0 10px 25px rgba(0,0,0,0.35);
+}
+
+input{
+width:100%;
+padding:14px;
+margin:12px 0;
+border-radius:10px;
+border:none;
+background:#e5e7eb;
+font-size:16px;
+}
+
+button{
+padding:14px;
+background:#3b82f6;
+border:none;
+border-radius:10px;
+color:white;
+cursor:pointer;
+margin-top:10px;
+width:100%;
+}
+
+button:hover{
+background:#2563eb;
+}
+
+canvas{
+margin-top:30px;
+}
+
+.menu{
+margin-bottom:25px;
+}
+
+.menu a{
+color:#3b82f6;
+margin:10px;
+text-decoration:none;
+}
+
+.disclaimer{
+margin-top:40px;
+padding-top:20px;
+border-top:1px solid rgba(255,255,255,0.1);
+font-size:13px;
+color:#9ca3af;
+max-width:500px;
+text-align:center;
+}
+  
+.toggle {
+  display: flex;
+  margin: 10px 0;
+}
+
+.toggle button {
+  flex: 1;
+  padding: 12px;
+  border: none;
+  cursor: pointer;
+  background: #334155;
+  color: white;
+  transition: 0.2s;
+}
+
+.toggle button:first-child {
+  border-radius: 6px 0 0 6px;
+}
+
+.toggle button:last-child {
+  border-radius: 0 6px 6px 0;
+}
+
+.toggle button.active {
+  background: #3b82f6;
+}  
+</style>
+
+</head>
+
+<body>
+
+<div class="menu">
+<a href="index.html">Home</a>
+</div>
+
+<div class="container">
+
+<h1>Crypto Profit Calculator</h1>
+
+ <div class="toggle">
+  <button id="longBtn" class="active" onclick="setType('long')">Long</button>
+  <button id="shortBtn" onclick="setType('short')">Short</button>
+ </div> 
+<input id="buyPrice" placeholder="Buy Price ($)">
+<input id="sellPrice" placeholder="Sell Price ($)">
+<input id="amount" placeholder="Amount of Crypto">
+<input id="fee" placeholder="Trading Fee (%) (optional)">
+
+<button onclick="calculateProfit()">Calculate</button>
+
+<h3 id="result"></h3>
+
+<canvas id="myChart"></canvas>
+
+</div>
+
+<h3>What is a Crypto Profit Calculator?</h3>
+<p>This tool helps you calculate your profit or loss from a crypto trade. It includes buy price, sell price, trade size, and optional trading fees.</p>
+
+<h3>How to use it?</h3>
+<ul>
+<li>Enter buy price</li>
+<li>Enter sell price</li>
+<li>Enter amount</li>
+<li>Optional: enter fee</li>
+<li>Click calculate</li>
+</ul>
+
+<h3>Who uses this?</h3>
+<p>Crypto traders who want to evaluate if a trade is worth taking.</p>
+
+<div class="disclaimer">
+<p><strong>Disclaimer:</strong> Results are estimates and may vary depending on exchange fees.</p>
+</div>
+
+<script>
+  
+let type = "long";
+
+function setType(selected){
+  type = selected;
+
+  document.getElementById("longBtn").classList.remove("active");
+  document.getElementById("shortBtn").classList.remove("active");
+
+  if(selected === "long"){
+    document.getElementById("longBtn").classList.add("active");
+  } else {
+    document.getElementById("shortBtn").classList.add("active");
+  }
+}
+let chart;
+
+function calculateProfit(){
+
+let buy = parseFloat(document.getElementById("buyPrice").value);
+let sell = parseFloat(document.getElementById("sellPrice").value);
+let amount = parseFloat(document.getElementById("amount").value);
+let fee = parseFloat(document.getElementById("fee").value) || 0;
+
+if(!buy || !sell || !amount){
+alert("Fill required fields");
+return;
+}
+
+// toplam alış ve satış
+let cost = buy * amount;
+let revenue = sell * amount;
+
+// fee hesaplama
+let feeCost = (fee / 100) * (cost + revenue);
+
+// net profit
+let profit = revenue - cost - feeCost;
+let profitPercent = (profit / cost) * 100;
+
+document.getElementById("result").innerHTML =
+"Profit: $" + profit.toFixed(2) + "<br>" +
+"Return: " + profitPercent.toFixed(2) + "%";
+
+drawChart(cost, revenue);
+
+}
+
+function drawChart(cost, revenue){
+
+let ctx = document.getElementById('myChart');
+
+if(chart){
+chart.destroy();
+}
+
+let profit;
+
+if(type === "long"){
+  profit = revenue - cost - feeCost;
+} else {
+  // short: fiyat düşünce kazanırsın
+  profit = cost - revenue - feeCost;
+}
+
+let color = profit >= 0 ? '#22c55e' : '#ef4444';
+
+chart = new Chart(ctx,{
+type:'bar',
+data:{
+labels:['Cost','Revenue'],
+datasets:[{
+label:'Trade',
+data:[cost, revenue],
+backgroundColor:['#3b82f6', color]
+}]
+}
+});
+
+}
+
+</script>
+
+</body>
+</html>
