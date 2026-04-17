@@ -152,8 +152,15 @@ let monthlyRate = (annualRate / 100) / 12;
 let payments = years * 12;
 
 // mortgage formülü
-let basePayment = loan * (monthlyRate * Math.pow(1 + monthlyRate, payments)) / 
-                 (Math.pow(1 + monthlyRate, payments) - 1);
+let basePayment;
+
+if(monthlyRate === 0){
+  // faiz yoksa düz bölme
+  basePayment = loan / payments;
+} else {
+  basePayment = loan * (monthlyRate * Math.pow(1 + monthlyRate, payments)) /
+  (Math.pow(1 + monthlyRate, payments) - 1);
+  }
 
 let monthlyPayment = basePayment + extra;
 
