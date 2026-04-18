@@ -32,23 +32,37 @@ h3:hover {
   color: #4facfe;
 }
 
-.footer{
-  margin-top:40px;
-  padding:25px;
-  background:#020617; /* koyu siyah-mavi (daha premium) */
-  border-top:1px solid rgba(255,255,255,0.08);
+.apple-footer{
+  width:100%;
+  background:#020617;
+  padding:40px 20px;
+  margin-top:60px;
   text-align:center;
+}
+
+/* linkler */
+.footer-links a{
+  color:rgba(148,163,184,0.8);
+  margin:0 14px;
   font-size:13px;
-  box-shadow: 0 -5px 20px rgba(0,0,0,0.3);
-}
-
-
-.footer a{
-  color:#60a5fa; /* biraz daha soft mavi */
-  margin:0 12px;
   text-decoration:none;
+  transition:0.2s;
 }
 
-.footer a:hover{
+.footer-links a:hover{
   color:white;
+}
+
+/* ince çizgi (Apple hissi burada gelir) */
+.footer-divider{
+  width:80%;
+  height:1px;
+  background:rgba(255,255,255,0.08);
+  margin:20px auto;
+}
+
+/* copyright */
+.footer-copy{
+  font-size:12px;
+  color:rgba(148,163,184,0.6);
 }
