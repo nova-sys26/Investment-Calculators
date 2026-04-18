@@ -175,6 +175,13 @@ function setMode(selected){
   }
 
   document.getElementById("result").innerHTML = "";
+
+  if(chart){
+    chart.destroy();
+    chart = null;
+  }
+
+  document.getElementById("myChart").style.display = "none";
 }
 
 function calculate(){
