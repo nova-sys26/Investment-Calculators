@@ -78,6 +78,23 @@ color:#6b7a99;
 margin-bottom:5px;
 }
 
+<div class="toggle">
+  <button id="aprBtn" class="active" onclick="setMode('apr')">Find APR</button>
+  <button id="payBtn" onclick="setMode('payment')">Find Payment</button>
+</div>
+
+<input id="loan" placeholder="Loan Amount ($)">
+<input id="months" placeholder="Loan Term (months)">
+
+<!-- MODE'A GÖRE DEĞİŞECEK -->
+<input id="dynamicInput" placeholder="Monthly Payment ($)">
+
+<button onclick="calculate()">Calculate</button>
+
+<h3 id="result"></h3>
+
+<canvas id="myChart"></canvas>
+
 </style>
 
 </head>
@@ -94,6 +111,23 @@ margin-bottom:5px;
 
 <h1>APR Calculator</h1>
 
+<div class="toggle">
+  <button id="aprBtn" class="active" onclick="setMode('apr')">Find APR</button>
+  <button id="payBtn" onclick="setMode('payment')">Find Payment</button>
+</div>
+
+<input id="loan" placeholder="Loan Amount ($)">
+<input id="months" placeholder="Loan Term (months)">
+
+<!-- MODE'A GÖRE DEĞİŞECEK -->
+<input id="dynamicInput" placeholder="Monthly Payment ($)">
+
+<button onclick="calculate()">Calculate</button>
+
+<h3 id="result"></h3>
+
+<canvas id="myChart"></canvas>
+  
 <input id="loan" placeholder="Loan Amount ($)">
 <input id="monthlyPayment" placeholder="Monthly Payment ($)">
 <input id="months" placeholder="Loan Term (months)">
@@ -118,22 +152,52 @@ This makes APR more accurate than simple interest rates when comparing loans.
 <script>
 
 let chart;
+let mode = "apr"; // default
 
-function calculateAPR(){
+function setMode(selected){
+  mode = selected;
+
+  document.getElementById("aprBtn").classList.remove("active");
+  document.getElementById("payBtn").classList.remove("active");
+
+  if(selected === "apr"){
+    document.getElementById("aprBtn").classList.add("active");
+    document.getElementById("dynamicInput").placeholder = "Monthly Payment ($)";
+  } else {
+    document.getElementById("payBtn").classList.add("active");
+    document.getElementById("dynamicInput").placeholder = "APR (%)";
+  }
+
+  document.getElementById("result").innerHTML = "";
+}
+
+function calculate(){
 
 let loan = parseFloat(document.getElementById("loan").value);
-let payment = parseFloat(document.getElementById("monthlyPayment").value);
 let months = parseFloat(document.getElementById("months").value);
+let input = parseFloat(document.getElementById("dynamicInput").value);
 
-if(!loan || !payment || !months){
-alert("Fill all fields");
-return;
+if(!loan || !months || !input){
+  alert("Fill all fields");
+  return;
 }
+
+if(mode === "apr"){
+  calculateAPR(loan, input, months);
+} else {
+  calculatePayment(loan, input, months);
+}
+
+}
+
+// 🔵 MODE 1 → APR hesapla
+function calculateAPR(loan, payment, months){
+
 if(payment * months < loan){
   alert("Payment too low for this loan");
   return;
 }
-// APR bulmak için iteratif yaklaşım (binary search)
+
 let low = 0;
 let high = 1;
 let rate;
@@ -143,11 +207,11 @@ for(let i = 0; i < 100; i++){
 
   let calcPayment;
 
-if(rate === 0){
-  calcPayment = loan / months;
-} else {
-  calcPayment = loan * (rate * Math.pow(1+rate, months)) / (Math.pow(1+rate, months) - 1);
-}
+  if(rate === 0){
+    calcPayment = loan / months;
+  } else {
+    calcPayment = loan * (rate * Math.pow(1+rate, months)) / (Math.pow(1+rate, months) - 1);
+  }
 
   if(calcPayment > payment){
     high = rate;
@@ -156,10 +220,7 @@ if(rate === 0){
   }
 }
 
-// aylık → yıllık
 let apr = (Math.pow(1 + rate, 12) - 1) * 100;
-
-// toplam ödeme
 let totalPayment = payment * months;
 let totalInterest = totalPayment - loan;
 
@@ -171,6 +232,31 @@ drawChart(loan, totalInterest);
 
 }
 
+// 🟢 MODE 2 → Monthly Payment hesapla
+function calculatePayment(loan, apr, months){
+
+let monthlyRate = (apr / 100) / 12;
+
+let payment;
+
+if(monthlyRate === 0){
+  payment = loan / months;
+} else {
+  payment = loan * (monthlyRate * Math.pow(1+monthlyRate, months)) / (Math.pow(1+monthlyRate, months) - 1);
+}
+
+let totalPayment = payment * months;
+let totalInterest = totalPayment - loan;
+
+document.getElementById("result").innerHTML =
+"Monthly Payment: $" + payment.toFixed(2) + "<br>" +
+"Total Interest: $" + totalInterest.toFixed(2);
+
+drawChart(loan, totalInterest);
+
+}
+
+// 📊 chart
 function drawChart(principal, interest){
 
 let ctx = document.getElementById('myChart');
@@ -182,7 +268,7 @@ chart.destroy();
 chart = new Chart(ctx,{
 type:'pie',
 data:{
-labels:['Loan Amount','Interest'],
+labels:['Loan','Interest'],
 datasets:[{
 data:[principal, interest],
 backgroundColor:['#3b82f6','#ef4444']
@@ -193,6 +279,5 @@ backgroundColor:['#3b82f6','#ef4444']
 }
 
 </script>
-
 </body>
 </html>
