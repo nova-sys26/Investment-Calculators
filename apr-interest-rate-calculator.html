@@ -120,10 +120,7 @@ This makes APR more accurate than simple interest rates when comparing loans.
 let chart;
 
 function calculateAPR(){
-if(payment * months < loan){
-  alert("Payment too low for this loan");
-  return;
-}
+
 let loan = parseFloat(document.getElementById("loan").value);
 let payment = parseFloat(document.getElementById("monthlyPayment").value);
 let months = parseFloat(document.getElementById("months").value);
@@ -132,7 +129,10 @@ if(!loan || !payment || !months){
 alert("Fill all fields");
 return;
 }
-
+if(payment * months < loan){
+  alert("Payment too low for this loan");
+  return;
+}
 // APR bulmak için iteratif yaklaşım (binary search)
 let low = 0;
 let high = 1;
