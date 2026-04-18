@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+<meta charset="UTF-8">
+<title>APR Calculator – Calculate Annual Percentage Rate</title>
+<meta name="description" content="Calculate APR and total loan cost easily. Understand real borrowing cost in seconds.">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<link rel="stylesheet" href="style.css">
+  
+<style>
+
+body{
+font-family:Arial;
+background:#0f172a;
+color:white;
+display:flex;
+justify-content:center;
+align-items:center;
+flex-direction:column;
+min-height:100vh;
+}
+
+.container{
+background:#1e293b;
+padding:30px;
+border-radius:16px;
+width:90%;
+max-width:500px;
+box-shadow:0 10px 25px rgba(0,0,0,0.35);
+}
+
+input{
+width:100%;
+padding:14px;
+margin:12px 0;
+border-radius:10px;
+border:none;
+background:#e5e7eb;
+font-size:16px;
+}
+
+button{
+padding:14px;
+background:#3b82f6;
+border:none;
+border-radius:10px;
+color:white;
+cursor:pointer;
+margin-top:10px;
+width:100%;
+}
+
+button:hover{
+background:#2563eb;
+}
+
+canvas{
+margin-top:30px;
+}
+
+.menu{
+margin-bottom:25px;
+}
+
+.menu a{
+color:#3b82f6;
+margin:10px;
+text-decoration:none;
+}
+
+.toptext{
+font-size:14px;
+color:#6b7a99;
+margin-bottom:5px;
+}
+
+</style>
+
+</head>
+
+<p class="toptext">Explore more calculators</p>
+
+<body>
+
+<div class="menu">
+<a href="index.html">Home</a>
+</div>
+
+<div class="container">
+
+<h1>APR Calculator</h1>
+
+<input id="loan" placeholder="Loan Amount ($)">
+<input id="monthlyPayment" placeholder="Monthly Payment ($)">
+<input id="months" placeholder="Loan Term (months)">
+
+<button onclick="calculateAPR()">Calculate APR</button>
+
+<h3 id="result"></h3>
+
+<canvas id="myChart"></canvas>
+
+</div>
+
+<h3>What is APR?</h3>
+<p>
+APR (Annual Percentage Rate) represents the real yearly cost of borrowing money. 
+It includes not only the interest rate but also how payments are structured over time. 
+This makes APR more accurate than simple interest rates when comparing loans.
+</p>
+
+<script src="footer.js"></script>
+
+<script>
+
+let chart;
+
+function calculateAPR(){
+
+let loan = parseFloat(document.getElementById("loan").value);
+let payment = parseFloat(document.getElementById("monthlyPayment").value);
+let months = parseFloat(document.getElementById("months").value);
+
+if(!loan || !payment || !months){
+alert("Fill all fields");
+return;
+}
+
+// APR bulmak için iteratif yaklaşım (binary search)
+let low = 0;
+let high = 1;
+let rate;
+
+for(let i = 0; i < 50; i++){
+  rate = (low + high) / 2;
+
+  let calcPayment = loan * (rate * Math.pow(1+rate, months)) / (Math.pow(1+rate, months) - 1);
+
+  if(calcPayment > payment){
+    high = rate;
+  } else {
+    low = rate;
+  }
+}
+
+// aylık → yıllık
+let apr = rate * 12 * 100;
+
+// toplam ödeme
+let totalPayment = payment * months;
+let totalInterest = totalPayment - loan;
+
+document.getElementById("result").innerHTML =
+"APR: " + apr.toFixed(2) + "%<br>" +
+"Total Interest: $" + totalInterest.toFixed(2);
+
+drawChart(loan, totalInterest);
+
+}
+
+function drawChart(principal, interest){
+
+let ctx = document.getElementById('myChart');
+
+if(chart){
+chart.destroy();
+}
+
+chart = new Chart(ctx,{
+type:'pie',
+data:{
+labels:['Loan Amount','Interest'],
+datasets:[{
+data:[principal, interest],
+backgroundColor:['#3b82f6','#ef4444']
+}]
+}
+});
+
+}
+
+</script>
+
+</body>
+</html>
