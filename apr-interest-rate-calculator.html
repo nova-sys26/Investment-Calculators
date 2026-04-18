@@ -190,7 +190,11 @@ let loan = parseFloat(document.getElementById("loan").value);
 let months = parseFloat(document.getElementById("months").value);
 let input = parseFloat(document.getElementById("dynamicInput").value);
 
-if(!loan || !months || !input){
+if(
+  isNaN(loan) ||
+  isNaN(months) ||
+  isNaN(input)
+){
   alert("Fill all fields");
   return;
 }
