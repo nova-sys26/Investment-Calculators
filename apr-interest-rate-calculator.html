@@ -127,7 +127,7 @@ margin-bottom:5px;
 
 <h3 id="result"></h3>
 
-<canvas id="myChart"></canvas>
+<canvas id="myChart" style="display:none;"></canvas>
   
 
 
@@ -255,7 +255,7 @@ drawChart(loan, totalInterest);
 
 // 📊 chart
 function drawChart(principal, interest){
-
+document.getElementById("myChart").style.display = "block";
 let ctx = document.getElementById('myChart');
 
 if(chart){
