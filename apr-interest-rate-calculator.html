@@ -132,7 +132,7 @@ return;
 
 // APR bulmak için iteratif yaklaşım (binary search)
 let low = 0;
-let high = 1;
+let high = 0.2;
 let rate;
 
 for(let i = 0; i < 50; i++){
@@ -148,7 +148,7 @@ for(let i = 0; i < 50; i++){
 }
 
 // aylık → yıllık
-let apr = rate * 12 * 100;
+let apr = (Math.pow(1 + rate, 12) - 1) * 100;
 
 // toplam ödeme
 let totalPayment = payment * months;
