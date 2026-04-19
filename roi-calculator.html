@@ -208,7 +208,7 @@ let chart;
 
 function drawChart(investment, netFinal){
 
-let ctx = document.getElementById('myChart');
+let ctx = document.getElementById('myChart').getContext('2d');
 
 if(chart){
 chart.destroy();
