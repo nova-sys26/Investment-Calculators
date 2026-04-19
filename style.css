@@ -66,3 +66,17 @@ h3:hover {
   font-size:12px;
   color:rgba(148,163,184,0.6);
 }
+.related a{
+  display:block;
+  padding:10px;
+  margin:5px 0;
+  background:#0f172a;
+  border-radius:8px;
+  color:#3b82f6;
+  transition:0.2s;
+}
+
+.related a:hover{
+  background:#1e293b;
+  transform:translateX(4px);
+}
