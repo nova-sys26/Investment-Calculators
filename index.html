@@ -7,14 +7,7 @@
 <title>Nova Investment Calculators – Fast & Simple Trading Tools</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 <meta name="description" content="Free online investment calculators for stocks and crypto. Calculate profit, DCA, ROI, leverage, and more in seconds.">
-<script type="application/ld+json">
-{
-  "@context": "https://schema.org",
-  "@type": "WebSite",
-  "name": "Nova Investment Calculators",
-  "url": "https://nova-sys26.github.io/"
-}
-</script>
+
 <link rel="icon" href="/favicon.png">
 <link rel="apple-touch-icon" href="/favicon.png">
   
@@ -42,10 +35,14 @@ width:300px;
 margin:auto;
 }
 
-.card a{
-display:inline-block;
-margin-top:10px;
-padding:10px 18px;
+a{
+display:block;
+margin:15px;
+padding:12px;
+background:#3b82f6;
+color:white;
+text-decoration:none;
+border-radius:6px;
 }
 
 a:hover{
@@ -53,10 +50,8 @@ background:#2563eb;
 }
 
 .hero{
-  max-width: 1100px;
-  width: 100%;
-  margin: 30px auto;
-  padding: 0 15px;
+text-align:center;
+margin:30px 20px 10px;
 }
 
 .hero h1{
@@ -75,9 +70,47 @@ font-size:15px;
 color:#9ca3af;
 }
 
+/* GRID */
+.grid{
+display:grid;
+grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+gap:25px;
+width:90%;
+max-width:1100px;
+margin-bottom:60px;
+  }
+
+/* CARD */
+.card{
+background: rgba(30,41,59,0.6);
+backdrop-filter: blur(10px);
+padding:16px;
+border-radius:16px;
+text-align:center;
+transition:0.3s;
+border:1px solid rgba(255,255,255,0.05);
+}
+
+.card:hover{
+transform:translateY(-8px) scale(1.02);
+box-shadow:0 20px 40px rgba(0,0,0,0.5);
+border:1px solid rgba(59,130,246,0.4);
+  }
 
 /* BUTTON */
+.card a{
+display:inline-block;
+padding:10px 18px;
+background: linear-gradient(135deg,#3b82f6,#2563eb);
+color:white;
+border-radius:10px;
+text-decoration:none;
+transition:0.2s;
+}
 
+.card a:hover{
+transform:scale(1.05);
+  }
 
 #search{
 width:90%;
@@ -109,59 +142,7 @@ border-bottom:1px solid rgba(255,255,255,0.05);
 .suggestion-item:hover{
 background:#334155;
   }
-
-.category{
-  width: 100%;
-  max-width: 1100px;
-  margin: 40px auto; /* ortalar */
-  padding: 0 15px;   /* kenar boşluk */
-}
-
-
-.category h2{
-  font-size: 22px;
-  font-weight: 600;
-  margin-bottom: 20px;
-  color: #e2e8f0;
-  text-align: left;
-}
-
-/* grid */
-.card-grid{
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-  gap: 20px;
-  width: 100%;
-}
-
-/* kart */
-.card{
-  background: rgba(30,41,59,0.6);
-  backdrop-filter: blur(10px);
-  padding: 18px;
-  border-radius: 16px;
-  text-align: center;
-  transition: 0.3s;
-  border:1px solid rgba(255,255,255,0.05);
-}
-
-.card:hover{
-  transform: translateY(-6px) scale(1.01);
-  box-shadow: 0 20px 50px rgba(0,0,0,0.6);
-  border: 1px solid rgba(59,130,246,0.4);
-}
-  }
-.card h3{
-  font-size: 20px;
-  margin-bottom: 12px;
-}
-
-.card p{
-  font-size: 14px;
-  color: #94a3b8;
-  margin-bottom: 20px;
-}
-
+  
 </style>
 
 </head>
@@ -175,130 +156,110 @@ background:#334155;
 <input id="search" oninput="handleSearch()" placeholder="Search calculators...">
 <div id="suggestions"></div></div>
 </div>
-<section class="category">
-  <h2>Trading Calculators</h2>
+<div class="grid">
 
-  <div class="card-grid">
+  <div class="card tool">
+    <h3>APR/Interest Rate Calculator</h3>
+    <p>Calculate real loan cost with APR instantly</p>
+    <a href="apr-interest-rate-calculator.html">Open</a>
+  </div>
+  
     <div class="card tool">
     <h3>Average Price Calculator</h3>
     <p>Calculate the average of multiple buys</p>
     <a href="average-price-calculator.html">Open</a>
     </div>
 
-    <div class="card tool">
-    <h3>Crypto Profit Calculator</h3>
-    <p>Calculate crypto profit, loss, and fees instantly</p>
-    <a href="crypto-profit-calculator.html">Open</a>
-    </div>
-
-    <div class="card tool">
-    <h3>Leverage Calculator</h3>
-    <p>See how leverage affects your trade</p>
-    <a href="leverage-calculator.html">Open</a>
-    </div>
-
-    <div class="card tool">
-    <h3>Liquidation Price Calculator</h3>
-    <p>Estimate your liquidation level</p>
-    <a href="liquidation-price-calculator.html">Open</a>
-    </div>
-
-    <div class="card tool">
-    <h3>Lot Size Calculator (Forex) </h3>
-    <p>Find the perfect lot size based on your risk</p>
-    <a href="lot-size-calculator-forex.html">Open</a>
-    </div>
-
-      <div class="card tool">
-    <h3>Pip Calculator (Forex)</h3>
-    <p>Calculate pip value instantly for forex trades</p>
-    <a href="pip-calculator-forex.html">Open</a>
-      </div>
-
-    <div class="card tool">
-    <h3>Position Size Calculator</h3>
-    <p>Manage your risk per trade</p>
-    <a href="position-size-calculator.html">Open</a>
-    </div>
-
-      <div class="card tool">
-    <h3>Profit / Loss Calculator</h3>
-    <p>Calculate your trade outcome</p>
-    <a href="profit-loss-calculator.html">Open</a>
-      </div>
-
-    <div class="card tool">
-    <h3>Risk Reward Calculator</h3>
-    <p>Compare risk and potential profit</p>
-    <a href="risk-reward-calculator.html">Open</a>
-    </div>
-
-    <div class="card tool">
-    <h3>Stop Loss Calculator</h3>
-    <p>Calculate your stop loss level instantly</p>
-    <a href="stop-loss-calculator.html">Open</a>
-    </div>
-    <!-- kartlar -->
-  </div>
-</section>
-
-<section class="category">
-  <h2>Investment Calculators</h2>
-
-  <div class="card-grid">
-   <div class="card tool">
+     <div class="card tool">
     <h3>Break Even Calculator</h3>
     <p>Recover from losses</p>
     <a href="break-even-calculator.html">Open</a>
-   </div>
+     </div>
 
-    <div class="card tool">
+  <div class="card tool">
     <h3>Compound Interest Calculator</h3>
     <p>Track long-term investment growth</p>
     <a href="compound-interest-calculator.html">Open</a>
-    </div>
-
+  </div>
+  
+  <div class="card tool">
+    <h3>Crypto Profit Calculator</h3>
+    <p>Calculate crypto profit, loss, and fees instantly</p>
+    <a href="crypto-profit-calculator.html">Open</a>
+</div>
+  
     <div class="card tool">
     <h3>DCA Calculator</h3>
     <p>Average your entry price</p>
     <a href="dca-calculator.html">Open</a>
     </div>
 
-    <div class="card tool">
-    <h3>ROI Calculator</h3>
-    <p>Calculate your investment return</p>
-    <a href="roi-calculator.html">Open</a>
-    </div>
-    <!-- kartlar -->
+      <div class="card tool">
+    <h3>Leverage Calculator</h3>
+    <p>See how leverage affects your trade</p>
+    <a href="leverage-calculator.html">Open</a>
+      </div>
+
+  <div class="card tool">
+    <h3>Liquidation Price Calculator</h3>
+    <p>Estimate your liquidation level</p>
+    <a href="liquidation-price-calculator.html">Open</a>
   </div>
-</section>
-
-<section class="category">
-  <h2>Loan & Finance Calculators</h2>
-
-  <div class="card-grid">
-   <div class="card tool">
-    <h3>APR/Interest Rate Calculator</h3>
-    <p>Calculate real loan cost with APR instantly</p>
-    <a href="apr-interest-rate-calculator.html">Open</a>
-   </div>
 
   <div class="card tool">
     <h3>Loan Calculator</h3>
     <p>Estimate loan payments, interest, and total cost quickly</p>
     <a href="loan-calculator.html">Open</a>
   </div>
-   
-   <div class="card tool">
+  
+  <div class="card tool">
+    <h3>Lot Size Calculator (Forex) </h3>
+    <p>Find the perfect lot size based on your risk</p>
+    <a href="lot-size-calculator-forex.html">Open</a>
+  </div>
+
+  <div class="card tool">
     <h3>Mortgage Calculator</h3>
     <p>Estimate monthly mortgage payments and total loan cost</p>
     <a href="mortgage-calculator.html">Open</a>
   </div>
- 
-    <!-- kartlar -->
-    
+
+  <div class="card tool">
+    <h3>Pip Calculator (Forex)</h3>
+    <p>Calculate pip value instantly for forex trades</p>
+    <a href="pip-calculator-forex.html">Open</a>
   </div>
-</section>
+
+  <div class="card tool">
+    <h3>Position Size Calculator</h3>
+    <p>Manage your risk per trade</p>
+    <a href="position-size-calculator.html">Open</a>
+  </div>
+
+  <div class="card tool">
+    <h3>Profit / Loss Calculator</h3>
+    <p>Calculate your trade outcome</p>
+    <a href="profit-loss-calculator.html">Open</a>
+  </div>
+  
+  <div class="card tool">
+    <h3>Risk Reward Calculator</h3>
+    <p>Compare risk and potential profit</p>
+    <a href="risk-reward-calculator.html">Open</a>
+  </div>
+ 
+    <div class="card tool">
+    <h3>ROI Calculator</h3>
+    <p>Calculate your investment return</p>
+    <a href="roi-calculator.html">Open</a>
+    </div>
+  
+  <div class="card tool">
+    <h3>Stop Loss Calculator</h3>
+    <p>Calculate your stop loss level instantly</p>
+    <a href="stop-loss-calculator.html">Open</a>
+  </div>
+    
 </div>
 
 <p id="noResult" style="display:none;">No calculator found</p>
@@ -390,4 +351,4 @@ function showSuggestions(){
 
 </script>
 </body>
-</html>
+  </html>
