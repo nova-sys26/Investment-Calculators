@@ -252,7 +252,7 @@ let profit = finalValue - investment;
 // FEES düş
 let feeCost = (fees / 100) * finalValue;
 profit -= feeCost;
-
+let netFinal = finalValue - feeCost;
 // ROI
 let roi = (profit / investment) * 100;
 
