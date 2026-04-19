@@ -90,7 +90,7 @@ line-height:1.6;
 </style>
 
 </head>
-<p class="toptext"Explore more calculators</p>
+<p class="toptext"Explore more calculators"
 <body>
 <div class="menu">
 <a href="index.html">Home</a>
@@ -175,39 +175,41 @@ Always conduct your own research before making financial decisions.
 <script>
 let chart;
 
-function drawChart(investment, finalValue, fees){
+function drawChart(investment, value){
 
 let ctx = document.getElementById('myChart');
 
 if(chart){
-  chart.destroy();
+chart.destroy();
 }
 
-let feeCost = (fees / 100) * finalValue;
-let netFinal = finalValue - feeCost;
-let profit = netFinal - investment;
+let profit = value - investment;
 
-let color = profit >= 0 ? '#22c55e' : '#ef4444';
+/* KAR - ZARAR RENK KONTROLÜ */
+
+let finalColor;
+
+if(profit >= 0){
+finalColor = '#22c55e'; // yeşil
+}else{
+finalColor = '#ef4444'; // kırmızı
+}
 
 chart = new Chart(ctx,{
-  type:'doughnut',
-  data:{
-    labels:['Investment','Net Profit'],
-    datasets:[{
-      data:[investment, Math.abs(profit)],
-      backgroundColor:['#3b82f6', color],
-      borderWidth:0
-    }]
-  },
-  options:{
-    cutout:'70%',
-    plugins:{
-      legend:{
-        labels:{ color:'#e2e8f0' }
-      }
-    }
-  }
+type:'bar',
+data:{
+labels:['Investment','Final Value'],
+datasets:[{
+label:'Value',
+data:[investment,value],
+backgroundColor:[
+'#3b82f6', // investment sabit mavi
+finalColor  // final value kar/zarara göre
+]
+}]
+}
 });
+
 }
 
 
