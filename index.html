@@ -79,19 +79,7 @@ color:#9ca3af;
 
 
 /* BUTTON */
-.card a{
-display:inline-block;
-padding:10px 18px;
-background: linear-gradient(135deg,#3b82f6,#2563eb);
-color:white;
-border-radius:10px;
-text-decoration:none;
-transition:0.2s;
-}
 
-.card a:hover{
-transform:scale(1.05);
-  }
 
 #search{
 width:90%;
@@ -143,33 +131,42 @@ background:#334155;
 /* grid */
 .card-grid{
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-  gap: 20px;
+  grid-template-columns: 1fr; /* mobilde tek sütun */
+  gap: 25px;
+  padding: 0 15px; /* kenardan boşluk */
 }
 
 /* kart */
 .card{
-  background: #1e293b;
-  padding: 25px;
-  border-radius: 16px;
+  background: linear-gradient(145deg, #1e293b, #111827);
+  padding: 30px 20px;
+  border-radius: 20px;
   text-align: center;
-  transition: 0.2s;
+  transition: 0.3s;
+
+  /* 🔥 EKLE */
+  margin: 5px 0;
+  box-shadow: 0 10px 25px rgba(0,0,0,0.35);
+  border: 1px solid rgba(255,255,255,0.05);
 }
 
 .card:hover{
-  transform: translateY(-5px);
-  box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+  transform: translateY(-6px) scale(1.01);
+  box-shadow: 0 20px 50px rgba(0,0,0,0.6);
+  border: 1px solid rgba(59,130,246,0.4);
 }
-
+  }
 .card h3{
-  font-size: 18px;
-  margin-bottom: 10px;
+  font-size: 20px;
+  margin-bottom: 12px;
 }
 
 .card p{
   font-size: 14px;
   color: #94a3b8;
+  margin-bottom: 20px;
 }
+
 </style>
 
 </head>
