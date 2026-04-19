@@ -4,7 +4,7 @@
 
 <meta charset="UTF-8">
 <title>ROI Calculator – Measure Your Investment Returns</title>
-<meta name="description" content="Free ROI calculator to measure your investment returns. Learn how to calculate ROI with formula, examples, and tips to maximize profits.">">
+<meta name="description" content="Free ROI calculator to measure your investment returns. Learn how to calculate ROI with formula, examples, and tips to maximize profits.">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
@@ -92,7 +92,7 @@ line-height:1.6;
 </head>
 <body>
   
-<p class="toptext"Explore more calculators"</p>
+<p class="toptext">Explore more calculators</p>
 <div class="menu">
 <a href="index.html">Home</a>
 </div>
@@ -214,17 +214,9 @@ if(chart){
 chart.destroy();
 }
 
-let profit = net final- investment;
+let profit = netFinal - investment;
 
-/* KAR - ZARAR RENK KONTROLÜ */
-
-let finalColor;
-
-if(profit >= 0){
-finalColor = '#22c55e'; // yeşil
-}else{
-finalColor = '#ef4444'; // kırmızı
-}
+let finalColor = profit >= 0 ? '#22c55e' : '#ef4444';
 
 chart = new Chart(ctx,{
 type:'bar',
@@ -232,18 +224,15 @@ data:{
 labels:['Investment','Final Value'],
 datasets:[{
 label:'Value',
-data:[investment,value],
+data:[investment, netFinal],
 backgroundColor:[
-'#3b82f6', // investment sabit mavi
-finalColor  // final value kar/zarara göre
+'#3b82f6',
+finalColor
 ]
 }]
 }
 });
-
 }
-
-
 function calculateROI(){
 
 let investment = parseFloat(document.getElementById("investment").value);
@@ -263,7 +252,7 @@ let profit = finalValue - investment;
 // FEES düş
 let feeCost = (fees / 100) * finalValue;
 profit -= feeCost;
-
+let netFinal = finalValue - feeCost;
 // ROI
 let roi = (profit / investment) * 100;
 
