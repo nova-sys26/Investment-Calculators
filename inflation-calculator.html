@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+<meta charset="UTF-8">
+<title>Inflation Calculator – Future Value of Money</title>
+
+<meta name="description" content="Calculate how inflation affects the value of your money over time. See future purchasing power instantly.">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<link rel="stylesheet" href="style.css">
+
+<style>
+
+body{
+font-family:Arial;
+background:#0f172a;
+color:white;
+display:flex;
+justify-content:center;
+align-items:center;
+flex-direction:column;
+min-height:100vh;
+}
+
+.container{
+background:#1e293b;
+padding:30px;
+border-radius:16px;
+width:90%;
+max-width:500px;
+box-shadow:0 10px 25px rgba(0,0,0,0.35);
+}
+
+input{
+width:100%;
+padding:14px;
+margin:12px 0;
+border-radius:10px;
+border:none;
+background:#e5e7eb;
+font-size:16px;
+}
+
+button{
+padding:14px;
+background:#3b82f6;
+border:none;
+border-radius:10px;
+color:white;
+cursor:pointer;
+margin-top:10px;
+width:100%;
+}
+
+button:hover{
+background:#2563eb;
+}
+
+canvas{
+margin-top:30px;
+}
+
+.menu{
+margin-bottom:25px;
+}
+
+.menu a{
+color:#3b82f6;
+margin:10px;
+text-decoration:none;
+}
+
+.toptext{
+font-size:14px;
+color:#6b7a99;
+margin-bottom:5px;
+}
+
+.disclaimer{
+margin-top:40px;
+padding-top:20px;
+border-top:1px solid rgba(255,255,255,0.1);
+font-size:13px;
+color:#9ca3af;
+max-width:500px;
+text-align:center;
+line-height:1.6;
+}
+
+</style>
+
+</head>
+
+<p class="toptext">Explore more calculators</p>
+
+<body>
+
+<div class="menu">
+<a href="index.html">Home</a>
+</div>
+
+<div class="container">
+
+<h1>Inflation Calculator</h1>
+
+<input id="amount" placeholder="Initial Amount ($)">
+<input id="inflation" placeholder="Annual Inflation Rate (%)">
+<input id="years" placeholder="Number of Years">
+
+<button onclick="calculateInflation()">Calculate</button>
+
+<h3 id="result"></h3>
+
+<canvas id="myChart"></canvas>
+
+</div>
+
+<h3>What is Inflation Calculator?</h3>
+<p>
+The Inflation Calculator shows how inflation reduces the purchasing power of money over time.
+It helps you understand what your money today will be worth in the future.
+</p>
+
+<h3>How to use it?</h3>
+<ul>
+<li>Enter your current amount</li>
+<li>Enter expected inflation rate</li>
+<li>Enter number of years</li>
+<li>Click calculate</li>
+</ul>
+
+<h3>Who uses this?</h3>
+<p>Investors, economists, and anyone planning long-term finances.</p>
+
+<div class="disclaimer">
+<p>
+<strong>Disclaimer:</strong> The calculators on this website are for informational purposes only.
+They do not provide financial advice.
+</p>
+</div>
+
+<script src="footer.js"></script>
+
+<script>
+
+let chart;
+
+function calculateInflation(){
+
+let amount = parseFloat(document.getElementById("amount").value);
+let inflation = parseFloat(document.getElementById("inflation").value);
+let years = parseFloat(document.getElementById("years").value);
+
+let futureValue = amount / Math.pow(1 + inflation/100, years);
+
+document.getElementById("result").innerHTML =
+"Future Value: " + futureValue.toFixed(2) + " $";
+
+drawChart(amount, futureValue);
+
+}
+
+function drawChart(amount, futureValue){
+
+let ctx = document.getElementById('myChart');
+
+if(chart){
+chart.destroy();
+}
+
+chart = new Chart(ctx,{
+type:'bar',
+data:{
+labels:['Today Value','Future Value'],
+datasets:[{
+label:'Value',
+data:[amount, futureValue],
+backgroundColor:[
+'#3b82f6',
+'#ef4444'
+]
+}]
+}
+});
+
+}
+
+</script>
+
+</body>
+</html>
