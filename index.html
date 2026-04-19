@@ -77,32 +77,6 @@ font-size:15px;
 color:#9ca3af;
 }
 
-/* GRID */
-.grid{
-display:grid;
-grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
-gap:25px;
-width:90%;
-max-width:1100px;
-margin-bottom:60px;
-  }
-
-/* CARD */
-.card{
-background: rgba(30,41,59,0.6);
-backdrop-filter: blur(10px);
-padding:16px;
-border-radius:16px;
-text-align:center;
-transition:0.3s;
-border:1px solid rgba(255,255,255,0.05);
-}
-
-.card:hover{
-transform:translateY(-8px) scale(1.02);
-box-shadow:0 20px 40px rgba(0,0,0,0.5);
-border:1px solid rgba(59,130,246,0.4);
-  }
 
 /* BUTTON */
 .card a{
@@ -149,7 +123,51 @@ border-bottom:1px solid rgba(255,255,255,0.05);
 .suggestion-item:hover{
 background:#334155;
   }
-  
+
+.category{
+  width: 100%;
+  max-width: 1100px;
+  margin-top: 40px;
+}
+
+.category h2{
+  font-size: 22px;
+  font-weight: 600;
+  margin-bottom: 20px;
+  color: #e2e8f0;
+  text-align: left;
+}
+
+/* grid */
+.card-grid{
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 20px;
+}
+
+/* kart */
+.card{
+  background: #1e293b;
+  padding: 25px;
+  border-radius: 16px;
+  text-align: center;
+  transition: 0.2s;
+}
+
+.card:hover{
+  transform: translateY(-5px);
+  box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+}
+
+.card h3{
+  font-size: 18px;
+  margin-bottom: 10px;
+}
+
+.card p{
+  font-size: 14px;
+  color: #94a3b8;
+}
 </style>
 
 </head>
@@ -166,7 +184,7 @@ background:#334155;
 <section class="category">
   <h2>Trading Calculators</h2>
 
-  <div class="grid">
+  <div class=".card-grid">
     <div class="card tool">
     <h3>Average Price Calculator</h3>
     <p>Calculate the average of multiple buys</p>
@@ -233,7 +251,7 @@ background:#334155;
 <section class="category">
   <h2>Investment Calculators</h2>
 
-  <div class="grid">
+  <div class=".card-grid">
    <div class="card tool">
     <h3>Break Even Calculator</h3>
     <p>Recover from losses</p>
@@ -264,7 +282,7 @@ background:#334155;
 <section class="category">
   <h2>Loan & Finance Calculators</h2>
 
-  <div class="grid">
+  <div class=".card-grid">
    <div class="card tool">
     <h3>APR/Interest Rate Calculator</h3>
     <p>Calculate real loan cost with APR instantly</p>
@@ -284,45 +302,9 @@ background:#334155;
   </div>
  
     <!-- kartlar -->
-
     
   </div>
 </section>
-
-
-  
-  
-    
-
-     
-
-  
-  
-  
-  
-    
-
-      
-
-  
-
-  
-  
-  
-
-  
-
-
-  
-
-
-  
-  
- 
-    
-  
-  
-    
 </div>
 
 <p id="noResult" style="display:none;">No calculator found</p>
