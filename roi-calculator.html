@@ -102,7 +102,12 @@ line-height:1.6;
 <input id="investment" placeholder="Initial Investment">
 
 <input id="finalValue" placeholder="Final Value">
+<p style="margin-top:10px; font-size:13px; color:#94a3b8;">
+Optional (advanced)
+</p>
 
+<input id="fees" placeholder="Fees (%)">
+<input id="years" placeholder="Time (years)">
 <button onclick="calculateROI()">Calculate ROI</button>
 
 <h3 id="result"></h3>
@@ -210,13 +215,33 @@ finalColor  // final value kar/zarara göre
 
 function calculateROI(){
 
-let investment=parseFloat(document.getElementById("investment").value);
-let finalValue=parseFloat(document.getElementById("finalValue").value);
+let investment = parseFloat(document.getElementById("investment").value);
+let finalValue = parseFloat(document.getElementById("finalValue").value);
 
-let profit=finalValue-investment;
+let fees = parseFloat(document.getElementById("fees").value) || 0;
+let years = parseFloat(document.getElementById("years").value) || 0;
 
-let roi=(profit/investment)*100;
+if(!investment || !finalValue){
+  alert("Fill required fields");
+  return;
+}
 
+// PROFIT
+let profit = finalValue - investment;
+
+// FEES düş
+let feeCost = (fees / 100) * finalValue;
+profit -= feeCost;
+
+// ROI
+let roi = (profit / investment) * 100;
+
+// ANNUAL ROI (opsiyonel)
+let annualROI = null;
+
+if(years > 0){
+  annualROI = (Math.pow(finalValue / investment, 1 / years) - 1) * 100;
+}
 document.getElementById("result").innerHTML=
 
 "Profit: "+profit.toFixed(2)+"<br>"+
