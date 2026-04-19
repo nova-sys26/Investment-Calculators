@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+<meta charset="UTF-8">
+<title>Amortization Calculator – Full Loan Schedule</title>
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<style>
+body{
+font-family:Arial;
+background:#0f172a;
+color:white;
+display:flex;
+flex-direction:column;
+align-items:center;
+}
+
+.container{
+background:#1e293b;
+padding:30px;
+border-radius:16px;
+width:90%;
+max-width:600px;
+margin-top:20px;
+}
+
+input,button{
+width:100%;
+padding:12px;
+margin:10px 0;
+border-radius:8px;
+border:none;
+}
+
+button{
+background:#3b82f6;
+color:white;
+cursor:pointer;
+}
+
+table{
+width:100%;
+margin-top:20px;
+border-collapse:collapse;
+font-size:12px;
+}
+
+td,th{
+border:1px solid rgba(255,255,255,0.1);
+padding:6px;
+text-align:center;
+}
+
+canvas{
+margin-top:30px;
+}
+</style>
+
+</head>
+<body>
+
+<div class="container">
+
+<h1>Amortization Calculator</h1>
+
+<input id="loan" placeholder="Loan Amount">
+<input id="rate" placeholder="Interest Rate (%)">
+<input id="years" placeholder="Years">
+
+<button onclick="calculate()">Calculate</button>
+
+<h3 id="result"></h3>
+
+<canvas id="balanceChart"></canvas>
+<canvas id="interestChart"></canvas>
+
+<div id="tableContainer"></div>
+
+</div>
+
+<script>
+
+let balanceChart, interestChart;
+
+function calculate(){
+
+let loan = parseFloat(document.getElementById("loan").value);
+let rate = parseFloat(document.getElementById("rate").value)/100/12;
+let months = parseFloat(document.getElementById("years").value)*12;
+
+let payment = loan*(rate*Math.pow(1+rate,months))/(Math.pow(1+rate,months)-1);
+
+let balance = loan;
+
+let yearlyData = [];
+let balanceData = [];
+let interestData = [];
+let principalData = [];
+
+let table = "<table><tr><th>Year</th><th>Interest</th><th>Principal</th><th>Balance</th></tr>";
+
+for(let y=1; y<=months; y++){
+
+let interest = balance*rate;
+let principal = payment - interest;
+
+balance -= principal;
+
+let yearIndex = Math.ceil(y/12)-1;
+
+if(!yearlyData[yearIndex]){
+yearlyData[yearIndex]={interest:0,principal:0};
+}
+
+yearlyData[yearIndex].interest += interest;
+yearlyData[yearIndex].principal += principal;
+
+if(y%12===0){
+balanceData.push(balance.toFixed(2));
+interestData.push(yearlyData[yearIndex].interest.toFixed(2));
+principalData.push(yearlyData[yearIndex].principal.toFixed(2));
+
+table += `<tr>
+<td>${yearIndex+1}</td>
+<td>${yearlyData[yearIndex].interest.toFixed(2)}</td>
+<td>${yearlyData[yearIndex].principal.toFixed(2)}</td>
+<td>${balance.toFixed(2)}</td>
+</tr>`;
+}
+
+}
+
+table += "</table>";
+document.getElementById("tableContainer").innerHTML = table;
+
+document.getElementById("result").innerHTML =
+"Monthly Payment: "+payment.toFixed(2);
+
+drawCharts(balanceData, interestData, principalData);
+
+}
+
+function drawCharts(balanceData, interestData, principalData){
+
+let years = balanceData.length;
+let labels = Array.from({length:years},(_,i)=>"Year "+(i+1));
+
+if(balanceChart) balanceChart.destroy();
+if(interestChart) interestChart.destroy();
+
+balanceChart = new Chart(document.getElementById("balanceChart"),{
+type:'line',
+data:{
+labels:labels,
+datasets:[{
+label:'Remaining Balance',
+data:balanceData,
+borderColor:'#3b82f6'
+}]
+}
+});
+
+interestChart = new Chart(document.getElementById("interestChart"),{
+type:'bar',
+data:{
+labels:labels,
+datasets:[
+{
+label:'Interest',
+data:interestData,
+backgroundColor:'#ef4444'
+},
+{
+label:'Principal',
+data:principalData,
+backgroundColor:'#22c55e'
+}
+]
+}
+});
+
+}
+
+</script>
+
+</body>
+</html>
