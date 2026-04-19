@@ -175,42 +175,40 @@ Always conduct your own research before making financial decisions.
 <script>
 let chart;
 
-function drawChart(investment, value){
+function drawChart(investment, finalValue, fees){
 
 let ctx = document.getElementById('myChart');
 
 if(chart){
-chart.destroy();
+  chart.destroy();
 }
 
-let profit = value - investment;
+let feeCost = (fees / 100) * finalValue;
+let netFinal = finalValue - feeCost;
+let profit = netFinal - investment;
 
-/* KAR - ZARAR RENK KONTROLÜ */
-
-let finalColor;
-
-if(profit >= 0){
-finalColor = '#22c55e'; // yeşil
-}else{
-finalColor = '#ef4444'; // kırmızı
-}
+let color = profit >= 0 ? '#22c55e' : '#ef4444';
 
 chart = new Chart(ctx,{
-type:'bar',
-data:{
-labels:['Investment','Final Value'],
-datasets:[{
-label:'Value',
-data:[investment,value],
-backgroundColor:[
-'#3b82f6', // investment sabit mavi
-finalColor  // final value kar/zarara göre
-]
-}]
-}
-});
-
+  type:'doughnut',
+  data:{
+    labels:['Investment','Net Profit'],
+    datasets:[{
+      data:[investment, Math.abs(profit)],
+      backgroundColor:['#3b82f6', color],
+      borderWidth:0
+    }]
+  },
+  options:{
+    cutout:'70%',
+    plugins:{
+      legend:{
+        labels:{ color:'#e2e8f0' }
+      }
+    }
   }
+});
+}
 
 
 function calculateROI(){
@@ -245,11 +243,10 @@ if(years > 0){
 let resultHTML =
 "Profit: " + profit.toFixed(2) + "<br>" +
 "ROI: " + roi.toFixed(2) + "%";
-
+resultHTML += "<br>Fees Paid: $" + feeCost.toFixed(2);
 if(annualROI !== null){
   resultHTML += "<br>Annual ROI: " + annualROI.toFixed(2) + "%";
 }
-
 document.getElementById("result").innerHTML = resultHTML;
 
 drawChart(investment,finalValue);
