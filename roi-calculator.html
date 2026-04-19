@@ -242,10 +242,15 @@ let annualROI = null;
 if(years > 0){
   annualROI = (Math.pow(finalValue / investment, 1 / years) - 1) * 100;
 }
-document.getElementById("result").innerHTML=
+let resultHTML =
+"Profit: " + profit.toFixed(2) + "<br>" +
+"ROI: " + roi.toFixed(2) + "%";
 
-"Profit: "+profit.toFixed(2)+"<br>"+
-"ROI: "+roi.toFixed(2)+"%";
+if(annualROI !== null){
+  resultHTML += "<br>Annual ROI: " + annualROI.toFixed(2) + "%";
+}
+
+document.getElementById("result").innerHTML = resultHTML;
 
 drawChart(investment,finalValue);
 
