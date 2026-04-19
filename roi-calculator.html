@@ -206,7 +206,7 @@ Always conduct your own research before making financial decisions.
 <script>
 let chart;
 
-function drawChart(investment, finalValue){
+function drawChart(investment, netFinal){
 
 let ctx = document.getElementById('myChart');
 
@@ -271,7 +271,7 @@ if(annualROI !== null){
 }
 document.getElementById("result").innerHTML = resultHTML;
 
-drawChart(investment,finalValue);
+drawChart(investment, netFinal);
 
 }
 
