@@ -222,17 +222,83 @@ Even small improvements in your annual return can lead to significantly higher f
 <p>
 This tool helps you quickly estimate how your investment grows over time using compound interest.
 </p>
-<h3>How to use it?</h3>
-<ul>
-<li>Enter initial amount</li>
-<li>Enter interest rate</li>
-<li>Enter time period</li>
-<li>Select compounding frequency</li>
-<li>Click calculate</li>
-</ul>
+<h3>Frequently Asked Questions</h3>
 
-<h3>Who uses this?</h3>
-<p>Investors who want to see long-term growth and the power of compounding.</p> 
+<div class="faq">
+
+  <div class="faq-item">
+    <button class="faq-question">
+      Is compound interest calculated daily, monthly, or yearly?
+      <span class="arrow">▼</span>
+    </button>
+    <div class="faq-answer">
+      <p>
+        Compound interest can be calculated at different intervals such as daily, monthly, or yearly. This calculator uses annual compounding for simplicity.
+      </p>
+    </div>
+  </div>
+
+  <div class="faq-item">
+    <button class="faq-question">
+      What happens if I leave my investment for a longer time?
+      <span class="arrow">▼</span>
+    </button>
+    <div class="faq-answer">
+      <p>
+        The longer your investment stays, the more powerful compounding becomes, leading to exponential growth over time.
+      </p>
+    </div>
+  </div>
+
+  <div class="faq-item">
+    <button class="faq-question">
+      Does a higher interest rate make a big difference?
+      <span class="arrow">▼</span>
+    </button>
+    <div class="faq-answer">
+      <p>
+        Yes. Even small increases in the annual interest rate can significantly boost your final value over long periods.
+      </p>
+    </div>
+  </div>
+
+  <div class="faq-item">
+    <button class="faq-question">
+      Can compound interest make me rich?
+      <span class="arrow">▼</span>
+    </button>
+    <div class="faq-answer">
+      <p>
+        Compound interest can grow your wealth significantly, especially when combined with long-term investing and consistent returns.
+      </p>
+    </div>
+  </div>
+
+  <div class="faq-item">
+    <button class="faq-question">
+      What is a good annual interest rate?
+      <span class="arrow">▼</span>
+    </button>
+    <div class="faq-answer">
+      <p>
+        A good interest rate depends on the investment type, but historically, stock markets average around 7–10% annually.
+      </p>
+    </div>
+  </div>
+
+  <div class="faq-item">
+    <button class="faq-question">
+      Should I reinvest my earnings?
+      <span class="arrow">▼</span>
+    </button>
+    <div class="faq-answer">
+      <p>
+        Yes. Reinvesting earnings is essential to benefit fully from compound interest.
+      </p>
+    </div>
+  </div>
+
+</div>
 
 <div class="related">
 <h3>Related Calculators</h3>
@@ -290,6 +356,14 @@ data:[investment,value]
 })
 
 }
+
+document.querySelectorAll(".faq-question").forEach(btn => {
+  btn.addEventListener("click", () => {
+    let item = btn.parentElement;
+
+    item.classList.toggle("active");
+  });
+});
 
 </script>
 
