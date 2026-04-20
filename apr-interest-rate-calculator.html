@@ -249,7 +249,95 @@ Your monthly payment directly affects your APR. A higher monthly payment usually
 <p>
 The calculator will estimate your APR based on the inputs.
 </p>
+<h3>Frequently Asked Questions</h3>
 
+<div class="faq">
+
+  <div class="faq-item">
+    <button class="faq-question">
+      Why is APR higher than the interest rate?
+      <span class="arrow">▼</span>
+    </button>
+    <div class="faq-answer">
+      <p>
+        APR includes not only the interest rate but also fees and additional costs associated with the loan. This makes APR a more accurate measure of the total borrowing cost.
+      </p>
+    </div>
+  </div>
+
+  <div class="faq-item">
+    <button class="faq-question">
+      Is APR the real cost of a loan?
+      <span class="arrow">▼</span>
+    </button>
+    <div class="faq-answer">
+      <p>
+        Yes. APR reflects the true yearly cost of a loan, including interest and most fees, making it the best metric for comparing loan offers.
+      </p>
+    </div>
+  </div>
+
+  <div class="faq-item">
+    <button class="faq-question">
+      Does APR include all fees?
+      <span class="arrow">▼</span>
+    </button>
+    <div class="faq-answer">
+      <p>
+        APR usually includes most mandatory fees, but it may not include optional costs such as late fees or penalties. Always review loan terms carefully.
+      </p>
+    </div>
+  </div>
+
+  <div class="faq-item">
+    <button class="faq-question">
+      How does loan term affect APR?
+      <span class="arrow">▼</span>
+    </button>
+    <div class="faq-answer">
+      <p>
+        Longer loan terms often result in higher total interest paid, even if monthly payments are lower. This can increase the effective cost reflected in APR.
+      </p>
+    </div>
+  </div>
+
+  <div class="faq-item">
+    <button class="faq-question">
+      Can two loans have the same interest rate but different APR?
+      <span class="arrow">▼</span>
+    </button>
+    <div class="faq-answer">
+      <p>
+        Yes. If one loan has additional fees and the other does not, their APR values will differ even if the interest rates are the same.
+      </p>
+    </div>
+  </div>
+
+  <div class="faq-item">
+    <button class="faq-question">
+      What is a good APR for a loan?
+      <span class="arrow">▼</span>
+    </button>
+    <div class="faq-answer">
+      <p>
+        A good APR depends on the type of loan and market conditions, but generally, lower APR means a cheaper loan.
+      </p>
+    </div>
+  </div>
+
+  <div class="faq-item">
+    <button class="faq-question">
+      Does a lower monthly payment mean a better loan?
+      <span class="arrow">▼</span>
+    </button>
+    <div class="faq-answer">
+      <p>
+        Not always. Lower monthly payments usually mean a longer loan term, which increases total interest paid and may result in a higher overall cost.
+      </p>
+    </div>
+  </div>
+
+</div>
 <div class="related">
 <h3>Related Calculators</h3>
 <p>You may also find these tools useful:</p>
@@ -408,7 +496,23 @@ backgroundColor:['#3b82f6','#ef4444']
 });
 
 }
+document.addEventListener("DOMContentLoaded", function(){
 
+  document.querySelectorAll(".faq-question").forEach(btn => {
+    btn.addEventListener("click", () => {
+
+      const item = btn.parentElement;
+
+      document.querySelectorAll(".faq-item").forEach(i => {
+        if(i !== item) i.classList.remove("active");
+      });
+
+      item.classList.toggle("active");
+
+    });
+  });
+
+});
 </script>
 </body>
 </html>
