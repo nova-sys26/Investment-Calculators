@@ -38,7 +38,7 @@ h2{
   margin-top: 50px;
   margin-bottom: 15px;
   position: relative;
-  padding-bottom: 6px;
+  padding-bottom: 8px;
   color: #e2e8f0;
 }
 
@@ -47,13 +47,12 @@ h2::after{
   position:absolute;
   left:0;
   bottom:0;
-  width:100%px;
+  width:100%;   /* 🔥 BU KRİTİK */
   height:3px;
   background: linear-gradient(90deg,#3b82f6,#22c55e);
   border-radius:2px;
-}
-
-.apple-footer{
+  
+}.apple-footer{
   width:100%;
   background:#020617;
   padding:40px 20px;
