@@ -142,6 +142,19 @@ border-bottom:1px solid rgba(255,255,255,0.05);
 .suggestion-item:hover{
 background:#334155;
   }
+
+.sort-info{
+  font-size: 13px;
+  color: #94a3b8;
+  margin-top: 10px;
+  margin-bottom: 5px;
+}
+
+.sort-info span{
+  color: #3b82f6;
+  font-weight: 600;
+  margin-left: 6px;
+}
   
 </style>
 
@@ -155,6 +168,10 @@ background:#334155;
 <div class="search-box">
 <input id="search" oninput="handleSearch()" placeholder="Search calculators...">
 <div id="suggestions"></div></div>
+<p class="sort-info">
+  Calculators 
+  <span>↑↓ A–Z</span>
+</p>
 </div>
 <div class="grid">
 
