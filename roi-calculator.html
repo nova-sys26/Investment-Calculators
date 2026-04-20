@@ -218,15 +218,83 @@ ROI helps you compare different investments and choose the most profitable optio
 Without ROI, you are basically investing blindly.
 </p>
   
-<h3>How to use it?</h3>
-<ul>
-<li>Enter your initial investment</li>
-<li>Enter final value</li>
-<li>Click calculate</li>
-</ul>
+<h2>Frequently Asked Questions</h2>
 
-<h3>Who uses this?</h3>
-<p>Investors who want to measure how profitable their investment is.</p>
+<div class="faq">
+
+  <div class="faq-item">
+    <button class="faq-question">
+      Does ROI include fees?
+      <span class="arrow">▼</span>
+    </button>
+    <div class="faq-answer">
+      <p>
+        Basic ROI calculations often ignore fees, but in real investing, fees reduce your actual profit. This calculator subtracts fees from your final value to give a more accurate result.
+      </p>
+    </div>
+  </div>
+
+  <div class="faq-item">
+    <button class="faq-question">
+      What is a good ROI percentage?
+      <span class="arrow">▼</span>
+    </button>
+    <div class="faq-answer">
+      <p>
+        A “good” ROI depends on the investment type. For example, stock market returns average around 7–10% annually, while higher-risk investments may aim for higher returns.
+      </p>
+    </div>
+  </div>
+
+  <div class="faq-item">
+    <button class="faq-question">
+      Why does time matter in ROI?
+      <span class="arrow">▼</span>
+    </button>
+    <div class="faq-answer">
+      <p>
+        ROI alone does not consider how long an investment takes. Earning 20% in one year is very different from earning 20% over five years. That’s why annual ROI gives a clearer picture.
+      </p>
+    </div>
+  </div>
+
+  <div class="faq-item">
+    <button class="faq-question">
+      Can ROI be negative?
+      <span class="arrow">▼</span>
+    </button>
+    <div class="faq-answer">
+      <p>
+        Yes. If your final value is lower than your initial investment, your ROI will be negative, meaning you made a loss.
+      </p>
+    </div>
+  </div>
+
+  <div class="faq-item">
+    <button class="faq-question">
+      Is ROI enough to evaluate an investment?
+      <span class="arrow">▼</span>
+    </button>
+    <div class="faq-answer">
+      <p>
+        ROI is useful, but it should not be used alone. You should also consider risk, time, fees, and market conditions when evaluating an investment.
+      </p>
+    </div>
+  </div>
+
+  <div class="faq-item">
+    <button class="faq-question">
+      How can I improve my ROI?
+      <span class="arrow">▼</span>
+    </button>
+    <div class="faq-answer">
+      <p>
+        You can improve ROI by reducing fees, choosing better entry and exit points, holding investments longer, and managing risk effectively.
+      </p>
+    </div>
+  </div>
+
+</div>
   
 <div class= "related">
   
@@ -319,7 +387,23 @@ document.getElementById("result").innerHTML = resultHTML;
 drawChart(investment, netFinal);
 
 }
+document.addEventListener("DOMContentLoaded", function(){
 
+  document.querySelectorAll(".faq-question").forEach(btn => {
+    btn.addEventListener("click", () => {
+
+      const item = btn.parentElement;
+
+      document.querySelectorAll(".faq-item").forEach(i => {
+        if(i !== item) i.classList.remove("active");
+      });
+
+      item.classList.toggle("active");
+
+    });
+  });
+
+});
 </script>
 
 </body>
