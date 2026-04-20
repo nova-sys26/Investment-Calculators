@@ -357,12 +357,22 @@ data:[investment,value]
 
 }
 
-document.querySelectorAll(".faq-question").forEach(btn => {
-  btn.addEventListener("click", () => {
-    let item = btn.parentElement;
+document.addEventListener("DOMContentLoaded", function(){
 
-    item.classList.toggle("active");
+  document.querySelectorAll(".faq-question").forEach(btn => {
+    btn.addEventListener("click", () => {
+
+      const item = btn.parentElement;
+
+      document.querySelectorAll(".faq-item").forEach(i => {
+        if(i !== item) i.classList.remove("active");
+      });
+
+      item.classList.toggle("active");
+
+    });
   });
+
 });
 
 </script>
