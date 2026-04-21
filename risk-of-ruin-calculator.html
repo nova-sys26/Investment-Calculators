@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+<meta charset="UTF-8">
+<title>Risk of Ruin Calculator – Trading Survival Tool</title>
+<meta name="description" content="Calculate your risk of ruin based on win rate, risk per trade, and reward ratio. Understand your trading survival probability.">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<link rel="stylesheet" href="style.css">
+
+<style>
+body{
+font-family:Arial;
+background:#0f172a;
+color:white;
+display:flex;
+justify-content:center;
+align-items:center;
+flex-direction:column;
+min-height:100vh;
+}
+
+.container{
+background:#1e293b;
+padding:30px;
+border-radius:16px;
+width:90%;
+max-width:500px;
+box-shadow:0 10px 25px rgba(0,0,0,0.35);
+}
+
+input{
+width:100%;
+padding:14px;
+margin:12px 0;
+border-radius:10px;
+border:none;
+background:#e5e7eb;
+font-size:16px;
+}
+
+button{
+padding:14px;
+background:#3b82f6;
+border:none;
+border-radius:10px;
+color:white;
+cursor:pointer;
+margin-top:10px;
+width:100%;
+}
+
+button:hover{
+background:#2563eb;
+}
+
+canvas{
+margin-top:25px;
+}
+
+.menu a{
+color:#3b82f6;
+text-decoration:none;
+}
+
+.toptext{
+font-size:14px;
+color:#6b7a99;
+margin-bottom:5px;
+}
+
+.disclaimer{
+margin-top:40px;
+padding-top:20px;
+border-top:1px solid rgba(255,255,255,0.1);
+font-size:13px;
+color:#9ca3af;
+max-width:500px;
+text-align:center;
+}
+</style>
+
+</head>
+
+<body>
+
+<p class="toptext">Explore more calculators</p>
+
+<div class="menu">
+<a href="index.html">Home</a>
+</div>
+
+<div class="container">
+
+<h1>Risk of Ruin Calculator</h1>
+
+<input id="winRate" placeholder="Win Rate (%)">
+<input id="risk" placeholder="Risk per Trade (%)">
+<input id="reward" placeholder="Reward / Risk Ratio (e.g. 2)">
+<input id="trades" placeholder="Number of Trades">
+
+<button onclick="calculateRuin()">Calculate</button>
+
+<h3 id="result"></h3>
+
+<canvas id="ruinChart"></canvas>
+<canvas id="equityChart"></canvas>
+
+</div>
+
+<h3>What is Risk of Ruin?</h3>
+<p>
+Risk of ruin measures the probability of losing your trading capital over a series of trades. 
+It is one of the most important metrics for traders because it focuses on survival, not just profit.
+</p>
+
+<h3>Why It Matters</h3>
+<p>
+Even profitable strategies can fail if risk is too high. Managing your risk per trade and understanding your win rate helps you avoid blowing up your account.
+</p>
+
+<div class="disclaimer">
+<p>
+<strong>Disclaimer:</strong> This tool provides estimates only. Trading involves risk and past performance does not guarantee future results.
+</p>
+</div>
+
+<script>
+
+let ruinChart;
+let equityChart;
+
+function calculateRuin(){
+
+let winRate = parseFloat(document.getElementById("winRate").value) / 100;
+let risk = parseFloat(document.getElementById("risk").value) / 100;
+let reward = parseFloat(document.getElementById("reward").value);
+let trades = parseInt(document.getElementById("trades").value);
+
+if(isNaN(winRate) || isNaN(risk) || isNaN(reward) || isNaN(trades)){
+  alert("Fill all fields");
+  return;
+}
+
+// EDGE
+let edge = (winRate * reward) - (1 - winRate);
+
+// Risk of Ruin
+let ruin = Math.exp((-2 * edge) / risk);
+ruin = Math.pow(ruin, trades);
+
+if(ruin > 1) ruin = 1;
+if(ruin < 0) ruin = 0;
+
+let percent = (ruin * 100).toFixed(2);
+
+// Insight
+let insight = "";
+if(percent > 50){
+  insight = "<br><span style='color:red'>⚠️ High risk strategy</span>";
+}else if(percent > 20){
+  insight = "<br><span style='color:orange'>Moderate risk</span>";
+}else{
+  insight = "<br><span style='color:#22c55e'>Low risk strategy</span>";
+}
+
+document.getElementById("result").innerHTML =
+"Risk of Ruin: " + percent + "%" + insight;
+
+drawRuinChart(percent);
+drawEquity(winRate, risk, reward, trades);
+
+}
+
+// DONUT CHART
+function drawRuinChart(percent){
+
+let ctx = document.getElementById("ruinChart");
+
+if(ruinChart) ruinChart.destroy();
+
+ruinChart = new Chart(ctx,{
+type:'doughnut',
+data:{
+labels:["Survival","Ruin"],
+datasets:[{
+data:[100-percent, percent],
+backgroundColor:["#22c55e","#ef4444"]
+}]
+}
+});
+}
+
+// EQUITY SIMULATION
+function drawEquity(winRate, risk, reward, trades){
+
+let ctx = document.getElementById("equityChart");
+
+if(equityChart) equityChart.destroy();
+
+let balance = 100;
+let data = [balance];
+
+for(let i=0;i<trades;i++){
+
+let rand = Math.random();
+
+if(rand < winRate){
+  balance += balance * (risk * reward);
+}else{
+  balance -= balance * risk;
+}
+
+data.push(balance);
+}
+
+equityChart = new Chart(ctx,{
+type:'line',
+data:{
+labels:data.map((_,i)=>i),
+datasets:[{
+label:"Equity Curve",
+data:data,
+borderColor:"#3b82f6",
+fill:false
+}]
+}
+});
+}
+
+</script>
+
+</body>
+</html>
