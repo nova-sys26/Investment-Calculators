@@ -173,15 +173,6 @@ for(let s=0; s<simulations; s++){
 
 let percent = ((ruinCount / simulations) * 100).toFixed(2);
 
-// insight
-let extra = "";
-if(percent > 70){
-  extra = "<br>🚨 Very high chance of losing your account";
-}else if(percent > 40){
-  extra = "<br>⚠️ Risky strategy";
-}else{
-  extra = "<br>✅ Sustainable strategy";
-}
 
 document.getElementById("result").innerHTML =
 "Risk of Ruin: " + percent + "%" + extra;
