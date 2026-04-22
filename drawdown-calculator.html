@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+<meta charset="UTF-8">
+<title>Drawdown Calculator – Recover Your Losses</title>
+<meta name="description" content="Calculate how much gain you need to recover from losses. Understand drawdown and recovery in trading and investing.">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<link rel="stylesheet" href="style.css">
+
+<style>
+body{
+font-family:Arial;
+background:#0f172a;
+color:white;
+display:flex;
+justify-content:center;
+align-items:center;
+flex-direction:column;
+min-height:100vh;
+}
+
+.container{
+background:#1e293b;
+padding:30px;
+border-radius:16px;
+width:90%;
+max-width:500px;
+box-shadow:0 10px 25px rgba(0,0,0,0.35);
+}
+
+input{
+width:100%;
+padding:14px;
+margin:12px 0;
+border-radius:10px;
+border:none;
+background:#e5e7eb;
+font-size:16px;
+}
+
+button{
+padding:14px;
+background:#3b82f6;
+border:none;
+border-radius:10px;
+color:white;
+cursor:pointer;
+margin-top:10px;
+width:100%;
+}
+
+button:hover{
+background:#2563eb;
+}
+
+canvas{
+margin-top:30px;
+}
+
+.menu a{
+color:#3b82f6;
+text-decoration:none;
+}
+
+.toptext{
+font-size:14px;
+color:#6b7a99;
+margin-bottom:5px;
+}
+
+.disclaimer{
+margin-top:40px;
+padding-top:20px;
+border-top:1px solid rgba(255,255,255,0.1);
+font-size:13px;
+color:#9ca3af;
+max-width:500px;
+text-align:center;
+}
+</style>
+
+</head>
+
+<body>
+
+<p class="toptext">Explore more calculators</p>
+
+<div class="menu">
+<a href="index.html">Home</a>
+</div>
+
+<div class="container">
+
+<h1>Drawdown Calculator</h1>
+
+<input id="drawdown" placeholder="Drawdown (%) e.g. 20">
+
+<button onclick="calculateDrawdown()">Calculate</button>
+
+<h3 id="result"></h3>
+
+<canvas id="myChart"></canvas>
+
+</div>
+
+<h3>What is Drawdown?</h3>
+<p>
+Drawdown represents the percentage loss from your account peak. The deeper the loss, the harder it becomes to recover.
+</p>
+
+<h3>Why It Matters</h3>
+<p>
+Losses are not linear. A 50% loss requires a 100% gain to recover. This is why managing risk is critical in trading and investing.
+</p>
+
+<div class="disclaimer">
+<p>
+<strong>Disclaimer:</strong> The calculators on this website are provided for informational and educational purposes only. 
+All results are estimates based on the values entered and do not constitute financial, investment, or trading advice. 
+Always conduct your own research before making financial decisions.
+</p>
+</div>
+
+<script>
+
+let chart;
+
+function calculateDrawdown(){
+
+let dd = parseFloat(document.getElementById("drawdown").value);
+
+if(isNaN(dd) || dd <= 0 || dd >= 100){
+  alert("Enter a value between 1 and 99");
+  return;
+}
+
+// 🔥 CORE FORMULA
+let recovery = (1 / (1 - dd/100) - 1) * 100;
+
+// RESULT
+document.getElementById("result").innerHTML =
+"Drawdown: " + dd.toFixed(2) + "%<br>" +
+"Required Gain to Recover: " + recovery.toFixed(2) + "%";
+
+// GRAPH
+drawChart(dd);
+
+}
+
+function drawChart(currentDD){
+
+let ctx = document.getElementById('myChart');
+
+if(chart){
+chart.destroy();
+}
+
+let labels = [];
+let recoveryData = [];
+
+for(let i=5; i<=80; i+=5){
+labels.push(i + "%");
+let rec = (1 / (1 - i/100) - 1) * 100;
+recoveryData.push(rec);
+}
+
+chart = new Chart(ctx,{
+type:'line',
+data:{
+labels: labels,
+datasets:[{
+label:"Recovery Required (%)",
+data: recoveryData,
+borderColor:"#ef4444",
+tension:0.3,
+fill:false
+}]
+},
+options:{
+plugins:{
+legend:{labels:{color:"white"}}
+},
+scales:{
+x:{ticks:{color:"white"}},
+y:{ticks:{color:"white"}}
+}
+}
+});
+
+}
+
+</script>
+
+</body>
+</html>
