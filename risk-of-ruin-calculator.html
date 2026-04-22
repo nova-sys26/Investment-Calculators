@@ -9,8 +9,6 @@
 
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
-<link rel="stylesheet" href="style.css">
-
 <style>
 body{
 font-family:Arial;
@@ -53,45 +51,14 @@ margin-top:10px;
 width:100%;
 }
 
-button:hover{
-background:#2563eb;
-}
-
 canvas{
 margin-top:25px;
-}
-
-.menu a{
-color:#3b82f6;
-text-decoration:none;
-}
-
-.toptext{
-font-size:14px;
-color:#6b7a99;
-margin-bottom:5px;
-}
-
-.disclaimer{
-margin-top:40px;
-padding-top:20px;
-border-top:1px solid rgba(255,255,255,0.1);
-font-size:13px;
-color:#9ca3af;
-max-width:500px;
-text-align:center;
 }
 </style>
 
 </head>
 
 <body>
-
-<p class="toptext">Explore more calculators</p>
-
-<div class="menu">
-<a href="index.html">Home</a>
-</div>
 
 <div class="container">
 
@@ -111,25 +78,6 @@ text-align:center;
 
 </div>
 
-<h3>What is Risk of Ruin?</h3>
-<p>
-Risk of ruin measures the probability of losing your trading capital over a series of trades. 
-It is one of the most important metrics for traders because it focuses on survival, not just profit.
-</p>
-
-<h3>Why It Matters</h3>
-<p>
-Even profitable strategies can fail if risk is too high. Managing your risk per trade and understanding your win rate helps you avoid blowing up your account.
-</p>
-
-<div class="disclaimer">
-<p>
-<strong>Disclaimer:</strong> The calculators on this website are provided for informational and educational purposes only. 
-All results are estimates based on the values entered and do not constitute financial, investment, or trading advice. 
-Always conduct your own research before making financial decisions.
-</p>
-</div>
-<script src="footer.js"></script>
 <script>
 
 let ruinChart;
@@ -147,6 +95,7 @@ if(isNaN(winRate) || isNaN(risk) || isNaN(reward) || isNaN(trades)){
   return;
 }
 
+// 🔥 MONTE CARLO
 let simulations = 500;
 let ruinCount = 0;
 
@@ -164,42 +113,35 @@ for(let s=0; s<simulations; s++){
       balance -= tradeRisk;
     }
 
-    if(balance <= 10){ // RUIN threshold (%90 loss)
+    if(balance <= 10){
       ruinCount++;
       break;
     }
   }
 }
 
-let percent = ((ruinCount / simulations) * 100).toFixed(2);
+let percent = (ruinCount / simulations) * 100;
 
-
-document.getElementById("result").innerHTML =
-"Risk of Ruin: " + percent + "%" + extra;
-
-drawRuinChart(percent);
-drawEquity(winRate, risk, reward, trades);
-}
-
+// 🎯 YORUM
 let extra = "";
 
 if(percent > 70){
-  extra = "<br>🚨 Very high chance of losing your account";
+  extra = " 🚨 Very high risk";
 }else if(percent > 40){
-  extra = "<br>⚠️ Risky strategy";
+  extra = " ⚠️ Risky";
 }else{
-  extra = "<br>✅ Sustainable strategy";
+  extra = " ✅ Sustainable";
 }
 
 document.getElementById("result").innerHTML =
-"Risk of Ruin: " + percent + "%"  + extra;
+"Risk of Ruin: " + percent.toFixed(2) + "%" + extra;
 
+// chartlar
 drawRuinChart(percent);
 drawEquity(winRate, risk, reward, trades);
-
 }
 
-// DONUT CHART
+// DONUT
 function drawRuinChart(percent){
 
 let ctx = document.getElementById("ruinChart");
@@ -218,7 +160,7 @@ backgroundColor:["#22c55e","#ef4444"]
 });
 }
 
-// EQUITY SIMULATION
+// EQUITY
 function drawEquity(winRate, risk, reward, trades){
 
 let ctx = document.getElementById("equityChart");
@@ -230,10 +172,9 @@ let data = [balance];
 
 for(let i=0;i<trades;i++){
 
-let rand = Math.random();
 let tradeRisk = balance * risk;
 
-if(rand < winRate){
+if(Math.random() < winRate){
   balance += tradeRisk * reward;
 }else{
   balance -= tradeRisk;
@@ -250,27 +191,11 @@ datasets:[{
 label:"Equity Curve",
 data:data,
 borderColor:"#3b82f6",
-tension:0.3,
-fill:false
+tension:0.3
 }]
-},
-options:{
-scales:{
-y:{
-ticks:{color:"white"}
-},
-x:{
-ticks:{color:"white"}
-}
-},
-plugins:{
-legend:{
-labels:{color:"white"}
-}
-}
 }
 });
-  }
+}
 
 </script>
 
