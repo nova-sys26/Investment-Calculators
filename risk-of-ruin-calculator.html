@@ -78,6 +78,7 @@ margin-top:25px;
 
 </div>
 
+
 <script>
 
 let ruinChart;
@@ -95,9 +96,18 @@ if(isNaN(winRate) || isNaN(risk) || isNaN(reward) || isNaN(trades)){
   return;
 }
 
-// 🔥 MONTE CARLO
-let simulations = 500;
+// 🔥 SABİT SEED (aynı sonucu verir)
+let seed = 42;
+function random(){
+  let x = Math.sin(seed++) * 10000;
+  return x - Math.floor(x);
+}
+
+let simulations = 1000;
 let ruinCount = 0;
+
+// 🎯 %30 drawdown = ruin
+let ruinLevel = 70;
 
 for(let s=0; s<simulations; s++){
 
@@ -107,13 +117,13 @@ for(let s=0; s<simulations; s++){
 
     let tradeRisk = balance * risk;
 
-    if(Math.random() < winRate){
+    if(random() < winRate){
       balance += tradeRisk * reward;
     }else{
       balance -= tradeRisk;
     }
 
-    if(balance <= 10){
+    if(balance <= ruinLevel){
       ruinCount++;
       break;
     }
@@ -122,21 +132,20 @@ for(let s=0; s<simulations; s++){
 
 let percent = (ruinCount / simulations) * 100;
 
-// 🎯 YORUM
-let extra = "";
+// mesaj
+let msg = "";
 
-if(percent > 70){
-  extra = " 🚨 Very high risk";
-}else if(percent > 40){
-  extra = " ⚠️ Risky";
+if(percent > 60){
+  msg = " 🚨 Dangerous strategy";
+}else if(percent > 30){
+  msg = " ⚠️ Risky";
 }else{
-  extra = " ✅ Sustainable";
+  msg = " ✅ Acceptable";
 }
 
 document.getElementById("result").innerHTML =
-"Risk of Ruin: " + percent.toFixed(2) + "%" + extra;
+"Risk of Ruin: " + percent.toFixed(2) + "%" + msg;
 
-// chartlar
 drawRuinChart(percent);
 drawEquity(winRate, risk, reward, trades);
 }
@@ -151,7 +160,7 @@ if(ruinChart) ruinChart.destroy();
 ruinChart = new Chart(ctx,{
 type:'doughnut',
 data:{
-labels:["Survival","Ruin"],
+labels:["Safe","Ruin"],
 datasets:[{
 data:[100-percent, percent],
 backgroundColor:["#22c55e","#ef4444"]
