@@ -149,8 +149,19 @@ if(isNaN(winRate) || isNaN(risk) || isNaN(reward) || isNaN(trades)){
 let edge = (winRate * reward) - (1 - winRate);
 
 // Risk of Ruin
-let ruin = Math.exp((-2 * edge) / risk);
-ruin = Math.pow(ruin, trades);
+let p = winRate;
+let q = 1 - winRate;
+let b = reward;
+
+let ruin;
+
+let expectancy = (p * b) - q;
+
+if(expectancy <= 0){
+  ruin = 1;
+}else{
+  ruin = Math.pow(q / (p * b), trades);
+}
 
 if(ruin > 1) ruin = 1;
 if(ruin < 0) ruin = 0;
@@ -197,21 +208,18 @@ backgroundColor:["#22c55e","#ef4444"]
 // EQUITY SIMULATION
 function drawEquity(winRate, risk, reward, trades){
 
-let ctx = document.getElementById("equityChart");
-
-if(equityChart) equityChart.destroy();
-
 let balance = 100;
 let data = [balance];
 
 for(let i=0;i<trades;i++){
 
 let rand = Math.random();
+let tradeRisk = balance * risk;
 
 if(rand < winRate){
-  balance += balance * (risk * reward);
+  balance += tradeRisk * reward;
 }else{
-  balance -= balance * risk;
+  balance -= tradeRisk;
 }
 
 data.push(balance);
