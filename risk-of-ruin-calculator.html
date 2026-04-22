@@ -89,7 +89,7 @@ line-height:1.6;
 <div class="menu">
 <a href="index.html">Home</a>
 </div>
-<h1>Compound Interest Calculator</h1>
+
 
 <div class="container">
 
@@ -380,7 +380,23 @@ tension:0.3
 }
 });
 }
+document.addEventListener("DOMContentLoaded", function(){
 
+  document.querySelectorAll(".faq-question").forEach(btn => {
+    btn.addEventListener("click", () => {
+
+      const item = btn.parentElement;
+
+      document.querySelectorAll(".faq-item").forEach(i => {
+        if(i !== item) i.classList.remove("active");
+      });
+
+      item.classList.toggle("active");
+
+    });
+  });
+
+});
 </script>
 
 </body>
