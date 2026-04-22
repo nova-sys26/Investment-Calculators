@@ -230,6 +230,10 @@ backgroundColor:["#22c55e","#ef4444"]
 // EQUITY SIMULATION
 function drawEquity(winRate, risk, reward, trades){
 
+let ctx = document.getElementById("equityChart");
+
+if(equityChart) equityChart.destroy();
+
 let balance = 100;
 let data = [balance];
 
@@ -250,16 +254,32 @@ data.push(balance);
 equityChart = new Chart(ctx,{
 type:'line',
 data:{
-labels:data.map((_,i)=>i),
+labels: data.map((_,i)=>i),
 datasets:[{
 label:"Equity Curve",
 data:data,
 borderColor:"#3b82f6",
+tension:0.3,
 fill:false
 }]
+},
+options:{
+scales:{
+y:{
+ticks:{color:"white"}
+},
+x:{
+ticks:{color:"white"}
+}
+},
+plugins:{
+legend:{
+labels:{color:"white"}
+}
+}
 }
 });
-}
+  }
 
 </script>
 
