@@ -132,6 +132,8 @@ background:rgba(255,255,255,0.05);
 /* TOOLTIP */
 .tooltip{
 position:absolute;
+bottom:-70px; /* aşağı aç */
+right:0;      /* sağa yasla → sola doğru büyür */
 background:rgba(0,0,0,0.85); /* şeffaf siyah */
 color:#e5e7eb;
 
@@ -263,36 +265,16 @@ function toggleTip(e, id){
 
   let tip = document.getElementById(id);
 
-  // diğerlerini kapat
   document.querySelectorAll(".tooltip").forEach(t=>{
     if(t !== tip) t.style.display="none";
   });
 
   tip.style.display = tip.style.display === "block" ? "none" : "block";
-
-  // pozisyon
-  let rect = e.target.getBoundingClientRect();
-
-  tip.style.top = (rect.bottom + window.scrollY + 8) + "px";
-
-  let tipWidth = 260;
-  let screenWidth = window.innerWidth;
-
-  if(rect.left + tipWidth > screenWidth){
-    // sola aç
-    tip.style.left = (rect.left + window.scrollX - tipWidth + 20) + "px";
-  }else{
-    // sağa aç
-    tip.style.left = (rect.left + window.scrollX) + "px";
-  }
 }
 
-
-// dışarı tıklayınca kapat
 document.addEventListener("click", ()=>{
   document.querySelectorAll(".tooltip").forEach(t=>t.style.display="none");
 });
-
 let chart;
 
 function calculateDrawdown(){
