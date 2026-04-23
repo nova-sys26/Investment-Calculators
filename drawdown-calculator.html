@@ -133,8 +133,16 @@ background:rgba(255,255,255,0.05);
 .tooltip{
   position:absolute;
   top:120%;       /* ikonun altına aç */
-  right:0;        /* sağa yasla → sola doğru açılır */
+  left:0;        /* sağa yasla → sola doğru açılır */
+  right:auto;
+  }
 
+/* SAĞDAKİ BUTTON (From Balance) → sağa yasla */
+.mode-switch > div:last-child .tooltip{
+  left:auto;
+  right:0;
+}
+  
   background:rgba(0,0,0,0.85);
   color:#e5e7eb;
 
