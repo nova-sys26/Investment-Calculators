@@ -107,7 +107,27 @@ background:#3b82f6;
 .info-wrapper{
   position:relative;
   display:inline-block;
+  width:18px;
+height:18px;
+margin-left:6px;
+font-size:12px;
+font-weight:bold;
+
+color:rgba(255,255,255,0.6);           /* soluk gri */
+border:1px solid rgba(255,255,255,0.3); /* çember */
+border-radius:50%;
+
+cursor:pointer;
+transition:0.2s;
 }
+
+/* hover efekti */
+.info-wrapper:hover{
+color:white;
+border-color:rgba(255,255,255,0.6);
+background:rgba(255,255,255,0.05);
+}
+
 
 .tooltip{
   position:absolute;
