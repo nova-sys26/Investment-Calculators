@@ -160,17 +160,22 @@ background:rgba(255,255,255,0.05);
 }
 
 /* aşağı bakan üçgen */
+/* default (sol) */
 .tooltip::after{
-content:"";
-position:absolute;
-bottom:-8px;
-left:50%;
-transform:translateX(-50%);
+  content:"";
+  position:absolute;
+  top:-6px;
+  left:20px;
 
-border-width:8px;
-border-style:solid;
-border-color:rgba(0,0,0,0.85) transparent transparent transparent;
+  border-width:6px;
+  border-style:solid;
+  border-color:transparent transparent rgba(0,0,0,0.85) transparent;
 }
+
+/* sağdaki için */
+.mode-switch > div:last-child .tooltip::after{
+  left:auto;
+  right:20px;
 }
 </style>
 
