@@ -131,23 +131,24 @@ background:rgba(255,255,255,0.05);
 
 /* TOOLTIP */
 .tooltip{
-position:absolute;
-background:rgba(0,0,0,0.85); /* şeffaf siyah */
-color:#e5e7eb;
+  position:absolute;
+  top:120%;       /* ikonun altına aç */
+  right:0;        /* sağa yasla → sola doğru açılır */
 
-padding:14px;
-border-radius:10px;
+  background:rgba(0,0,0,0.85);
+  color:#e5e7eb;
 
-font-size:14px;
-line-height:1.5;
+  padding:12px;
+  border-radius:10px;
 
-width:260px;
-text-align:center;
+  width:240px;
+  font-size:13px;
+  line-height:1.4;
 
-display:none;
+  display:none;
+  z-index:999;
 
-box-shadow:0 10px 25px rgba(0,0,0,0.4);
-z-index:999;
+  box-shadow:0 10px 25px rgba(0,0,0,0.4);
 }
 
 /* aşağı bakan üçgen */
