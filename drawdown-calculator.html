@@ -80,6 +80,62 @@ color:#9ca3af;
 max-width:500px;
 text-align:center;
 }
+
+.mode-switch{
+display:flex;
+gap:10px;
+margin-bottom:15px;
+}
+
+.mode-btn{
+flex:1;
+padding:10px;
+border:none;
+border-radius:8px;
+background:#334155;
+color:white;
+cursor:pointer;
+position:relative;
+font-size:14px;
+}
+
+.mode-btn.active{
+background:#3b82f6;
+}
+
+.info{
+margin-left:6px;
+background:#1e293b;
+border-radius:4px;
+padding:2px 6px;
+font-size:12px;
+cursor:pointer;
+}
+
+/* TOOLTIP */
+.tooltip{
+position:absolute;
+background:#1e293b;
+color:#e5e7eb;
+padding:10px;
+border-radius:6px;
+font-size:13px;
+width:220px;
+display:none;
+box-shadow:0 5px 15px rgba(0,0,0,0.3);
+z-index:10;
+}
+
+/* kare + konuşma çıkıntısı */
+.tooltip::after{
+content:"";
+position:absolute;
+top:-6px;
+left:20px;
+border-width:6px;
+border-style:solid;
+border-color:transparent transparent #1e293b transparent;
+}
 </style>
 
 </head>
@@ -95,7 +151,39 @@ text-align:center;
 <div class="container">
 
 <h1>Drawdown Calculator</h1>
+<div class="mode-switch">
 
+  <button id="modeDD" class="mode-btn active" onclick="switchMode('dd')">
+    Drawdown %
+    <span class="info" onclick="toggleTip(event,'tip-dd')">?</span>
+  </button>
+
+  <button id="modeBalance" class="mode-btn" onclick="switchMode('balance')">
+    From Balance
+    <span class="info" onclick="toggleTip(event,'tip-balance')">?</span>
+  </button>
+
+</div>
+
+<!-- TOOLTIPS -->
+<div id="tip-dd" class="tooltip">
+Enter your loss as a percentage. Example: 20 means you lost 20% of your account.
+</div>
+
+<div id="tip-balance" class="tooltip">
+Enter your initial balance and current balance. The calculator will compute your drawdown automatically.
+</div>
+
+
+<!-- INPUTS -->
+<div id="dd-mode">
+  <input id="drawdown" placeholder="Drawdown (%)">
+</div>
+
+<div id="balance-mode" style="display:none;">
+  <input id="initial" placeholder="Initial Balance">
+  <input id="current" placeholder="Current Balance">
+</div>
 <input id="drawdown" placeholder="Drawdown (%) e.g. 20">
 
 <button onclick="calculateDrawdown()">Calculate</button>
@@ -123,14 +211,68 @@ All results are estimates based on the values entered and do not constitute fina
 Always conduct your own research before making financial decisions.
 </p>
 </div>
-
+<script src="footer.js"></script>
 <script>
+
+let currentMode = "dd";
+
+function switchMode(mode){
+
+  currentMode = mode;
+
+  document.getElementById("dd-mode").style.display =
+    mode === "dd" ? "block" : "none";
+
+  document.getElementById("balance-mode").style.display =
+    mode === "balance" ? "block" : "none";
+
+  document.getElementById("modeDD").classList.toggle("active", mode==="dd");
+  document.getElementById("modeBalance").classList.toggle("active", mode==="balance");
+}
+
+
+// TOOLTIP
+function toggleTip(e, id){
+  e.stopPropagation();
+
+  let tip = document.getElementById(id);
+
+  // diğerlerini kapat
+  document.querySelectorAll(".tooltip").forEach(t=>{
+    if(t !== tip) t.style.display="none";
+  });
+
+  tip.style.display = tip.style.display === "block" ? "none" : "block";
+
+  // pozisyon
+  let rect = e.target.getBoundingClientRect();
+  tip.style.top = (rect.bottom + window.scrollY + 8) + "px";
+  tip.style.left = (rect.left + window.scrollX) + "px";
+}
+
+// dışarı tıklayınca kapat
+document.addEventListener("click", ()=>{
+  document.querySelectorAll(".tooltip").forEach(t=>t.style.display="none");
+});
 
 let chart;
 
 function calculateDrawdown(){
 
-let dd = parseFloat(document.getElementById("drawdown").value);
+let dd;
+
+if(currentMode === "dd"){
+  dd = parseFloat(document.getElementById("drawdown").value);
+}
+
+if(currentMode === "balance"){
+  let initial = parseFloat(document.getElementById("initial").value);
+  let current = parseFloat(document.getElementById("current").value);
+
+  if(initial > 0 && current >= 0){
+    dd = ((initial - current) / initial) * 100;
+  }
+}
 
 if(isNaN(dd) || dd <= 0 || dd >= 100){
   alert("Enter a value between 1 and 99");
