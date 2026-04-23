@@ -272,18 +272,21 @@ function toggleTip(e, id){
 
   // pozisyon
   let rect = e.target.getBoundingClientRect();
-tip.style.top = (rect.bottom + window.scrollY + 8) + "px";
 
-let tipWidth = 260;
-let screenWidth = window.innerWidth;
+  tip.style.top = (rect.bottom + window.scrollY + 8) + "px";
 
-if(rect.left + tipWidth > screenWidth){
-  // sola aç
-  tip.style.left = (rect.left + window.scrollX - tipWidth + 20) + "px";
-}else{
-  // sağa aç
-  tip.style.left = (rect.left + window.scrollX) + "px";
+  let tipWidth = 260;
+  let screenWidth = window.innerWidth;
+
+  if(rect.left + tipWidth > screenWidth){
+    // sola aç
+    tip.style.left = (rect.left + window.scrollX - tipWidth + 20) + "px";
+  }else{
+    // sağa aç
+    tip.style.left = (rect.left + window.scrollX) + "px";
+  }
 }
+
 
 // dışarı tıklayınca kapat
 document.addEventListener("click", ()=>{
