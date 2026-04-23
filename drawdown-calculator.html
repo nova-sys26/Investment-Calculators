@@ -103,38 +103,65 @@ font-size:14px;
 background:#3b82f6;
 }
 
+/* INFO ICON (soru işareti) */
 .info{
+display:inline-flex;
+align-items:center;
+justify-content:center;
+width:18px;
+height:18px;
 margin-left:6px;
-background:#1e293b;
-border-radius:4px;
-padding:2px 6px;
 font-size:12px;
+font-weight:bold;
+
+color:rgba(255,255,255,0.6);           /* soluk gri */
+border:1px solid rgba(255,255,255,0.3); /* çember */
+border-radius:50%;
+
 cursor:pointer;
+transition:0.2s;
+}
+
+/* hover efekti */
+.info:hover{
+color:white;
+border-color:rgba(255,255,255,0.6);
+background:rgba(255,255,255,0.05);
 }
 
 /* TOOLTIP */
 .tooltip{
 position:absolute;
-background:#1e293b;
+background:rgba(0,0,0,0.85); /* şeffaf siyah */
 color:#e5e7eb;
-padding:10px;
-border-radius:6px;
-font-size:13px;
-width:220px;
+
+padding:14px;
+border-radius:10px;
+
+font-size:14px;
+line-height:1.5;
+
+width:260px;
+text-align:center;
+
 display:none;
-box-shadow:0 5px 15px rgba(0,0,0,0.3);
-z-index:10;
+
+box-shadow:0 10px 25px rgba(0,0,0,0.4);
+z-index:999;
 }
 
-/* kare + konuşma çıkıntısı */
+/* aşağı bakan üçgen */
 .tooltip::after{
 content:"";
 position:absolute;
-top:-6px;
-left:20px;
-border-width:6px;
+bottom:-8px;
+left:50%;
+transform:translateX(-50%);
+
+border-width:8px;
 border-style:solid;
-border-color:transparent transparent #1e293b transparent;
+border-color:rgba(0,0,0,0.85) transparent transparent transparent;
+}
 }
 </style>
 
