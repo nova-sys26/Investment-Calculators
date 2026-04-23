@@ -167,7 +167,7 @@ border-width:8px;
 border-style:solid;
 border-color:rgba(0,0,0,0.85) transparent transparent transparent;
 }
-}
+
 </style>
 
 </head>
@@ -185,26 +185,38 @@ border-color:rgba(0,0,0,0.85) transparent transparent transparent;
 <h1>Drawdown Calculator</h1>
 <div class="mode-switch">
 
+  <!-- DRAW DOWN -->
   <button id="modeDD" class="mode-btn active" onclick="switchMode('dd')">
-    Drawdown (%) 
-    <span class="info" onclick="toggleTip(event,'tip-dd')">?</span>
+    Drawdown (%)
+
+    <span class="info-wrapper">
+      <span class="info" onclick="toggleTip(event,'tip-dd')">?</span>
+
+      <div id="tip-dd" class="tooltip">
+        Enter your loss as a percentage. Example: 20 means you lost 20% of your account.
+      </div>
+    </span>
+
   </button>
 
+
+  <!-- BALANCE -->
   <button id="modeBalance" class="mode-btn" onclick="switchMode('balance')">
     From Balance
-    <span class="info" onclick="toggleTip(event,'tip-balance')">?</span>
+
+    <span class="info-wrapper">
+      <span class="info" onclick="toggleTip(event,'tip-balance')">?</span>
+
+      <div id="tip-balance" class="tooltip">
+        Enter your initial balance and current balance. The calculator will compute your drawdown automatically.
+      </div>
+    </span>
+
   </button>
 
 </div>
 
-<!-- TOOLTIPS -->
-<div id="tip-dd" class="tooltip">
-Enter your loss as a percentage. Example: 20 means you lost 20% of your account.
-</div>
 
-<div id="tip-balance" class="tooltip">
-Enter your initial balance and current balance. The calculator will compute your drawdown automatically.
-</div>
 
 
 <!-- INPUTS -->
