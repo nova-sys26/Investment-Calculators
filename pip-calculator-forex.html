@@ -1,223 +1,645 @@
 <!DOCTYPE html>
 <html>
 <head>
-
 <meta charset="UTF-8">
-<title>Pip Calculator – Professional Forex Tool</title>
+<title>Pip Calculator – Professional Forex Risk Tool</title>
+<meta name="description" content="Calculate pip value, stop loss impact, and position risk in forex trading. Professional pip calculator with lot size, account currency, spread, and slippage support.">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
 <style>
 body{
-font-family:Arial;
-background:#0f172a;
-color:white;
-display:flex;
-justify-content:center;
-align-items:center;
-flex-direction:column;
-min-height:100vh;
+  font-family:Arial, sans-serif;
+  background:#0f172a;
+  color:white;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  flex-direction:column;
+  min-height:100vh;
+  margin:0;
+  padding:24px 0;
 }
 
 .container{
-background:#1e293b;
-padding:30px;
-border-radius:16px;
-width:90%;
-max-width:500px;
-box-shadow:0 10px 25px rgba(0,0,0,0.35);
+  background:#1e293b;
+  padding:30px;
+  border-radius:16px;
+  width:90%;
+  max-width:560px;
+  box-shadow:0 10px 25px rgba(0,0,0,0.35);
+}
+
+h1{
+  margin-top:0;
+  margin-bottom:8px;
+  font-size:28px;
+}
+
+.subhead{
+  margin:0 0 18px 0;
+  color:#94a3b8;
+  font-size:14px;
+  line-height:1.5;
 }
 
 input, select{
-width:100%;
-padding:14px;
-margin:12px 0;
-border-radius:10px;
-border:none;
-background:#e5e7eb;
-font-size:16px;
+  width:100%;
+  padding:14px;
+  margin:10px 0;
+  border-radius:10px;
+  border:none;
+  background:#e5e7eb;
+  font-size:16px;
+  box-sizing:border-box;
 }
 
 button{
-padding:14px;
-background:#3b82f6;
-border:none;
-border-radius:10px;
-color:white;
-cursor:pointer;
-width:100%;
+  padding:14px 18px;
+  background:#3b82f6;
+  border:none;
+  border-radius:10px;
+  color:white;
+  cursor:pointer;
+  margin-top:10px;
+  width:100%;
+  font-size:16px;
+  font-weight:600;
 }
 
 button:hover{
-background:#2563eb;
+  background:#2563eb;
+}
+
+.toggle {
+  display: flex;
+  margin: 10px 0 14px 0;
+  gap:0;
+  overflow:hidden;
+  border-radius:8px;
+}
+
+.toggle button {
+  flex: 1;
+  padding: 12px;
+  border: none;
+  cursor: pointer;
+  background: #334155;
+  color: white;
+  transition: 0.2s;
+  width:auto;
+  margin-top:0;
+  border-radius:0;
+}
+
+.toggle button:first-child {
+  border-radius: 8px 0 0 8px;
+}
+
+.toggle button:last-child {
+  border-radius: 0 8px 8px 0;
+}
+
+.toggle button.active {
+  background: #3b82f6;
+}
+
+.section-title{
+  font-size:13px;
+  color:#94a3b8;
+  margin:14px 0 8px 0;
+  text-transform:uppercase;
+  letter-spacing:0.08em;
+}
+
+.result-card{
+  margin-top:18px;
+  padding:16px;
+  border-radius:12px;
+  background:rgba(255,255,255,0.04);
+  border:1px solid rgba(255,255,255,0.08);
+  line-height:1.7;
 }
 
 canvas{
-margin-top:30px;
-}
-
-.disclaimer{
-margin-top:40px;
-padding-top:20px;
-border-top:1px solid rgba(255,255,255,0.1);
-font-size:13px;
-color:#9ca3af;
-max-width:500px;
-text-align:center;
-line-height:1.6;
+  margin-top:22px;
 }
 
 .toptext{
-font-size:14px;
-color:#6b7a99;
-margin-bottom:5px;
+  font-size:14px;
+  color:#6b7a99;
+  margin-bottom:5px;
 }
 
 .menu{
-margin-bottom:25px;
+  margin-bottom:18px;
 }
 
 .menu a{
-color:#3b82f6;
-margin:10px;
-text-decoration:none;
-  }
+  color:#3b82f6;
+  margin:10px;
+  text-decoration:none;
+}
 
+.disclaimer{
+  margin-top:40px;
+  padding-top:20px;
+  border-top:1px solid rgba(255,255,255,0.1);
+  font-size:13px;
+  color:#9ca3af;
+  max-width:560px;
+  text-align:center;
+  line-height:1.6;
+}
+
+.info-note{
+  color:#fbbf24;
+  font-size:13px;
+  line-height:1.6;
+  margin:10px 0 0 0;
+}
+
+.helper{
+  color:#94a3b8;
+  font-size:12px;
+  line-height:1.5;
+  margin-top:4px;
+}
+
+.faq{
+  margin-top:26px;
+}
+
+.faq-item{
+  border-bottom:1px solid rgba(255,255,255,0.08);
+}
+
+.faq-question{
+  width:100%;
+  background:none;
+  border:none;
+  color:white;
+  text-align:left;
+  padding:14px 8px;
+  font-size:15px;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  cursor:pointer;
+}
+
+.faq-question:hover{
+  color:#93c5fd;
+}
+
+.arrow{
+  transition:0.25s;
+}
+
+.faq-item.active .arrow{
+  transform:rotate(180deg);
+}
+
+.faq-answer{
+  max-height:0;
+  overflow:hidden;
+  transition:max-height 0.3s ease;
+  color:#cbd5e1;
+  font-size:14px;
+  padding:0 8px;
+}
+
+.faq-item.active .faq-answer{
+  max-height:260px;
+  padding-bottom:12px;
+}
 </style>
-
 </head>
 
 <body>
 
 <p class="toptext">Explore more calculators</p>
+
 <div class="menu">
-<a href="index.html">Home</a>
+  <a href="index.html">Home</a>
 </div>
-  
+
 <div class="container">
 
-<h1>Pip Calculator (Elite)</h1>
+  <h1>Pip Calculator</h1>
+  <p class="subhead">
+    Professional pip value, stop-loss impact, and position risk calculator for forex traders.
+  </p>
 
-<select id="pair">
-<option value="">Select Pair</option>
-<option>EURUSD</option>
-<option>GBPUSD</option>
-<option>AUDUSD</option>
-<option>USDJPY</option>
-<option>USDCHF</option>
-<option>EURJPY</option>
-<option>GBPJPY</option>
-</select>
+  <div class="toggle">
+    <button id="basicBtn" class="active" onclick="switchMode('basic')">Basic</button>
+    <button id="advBtn" onclick="switchMode('advanced')">Advanced</button>
+  </div>
 
-<input id="lot" placeholder="Lot Size (e.g. 0.1)">
-<input id="price" placeholder="Current Price (e.g. 1.1000)">
+  <div class="section-title">Trade setup</div>
 
-<button onclick="calculatePip()">Calculate Pip Value</button>
+  <select id="pair">
+    <option value="">Select Pair</option>
+    <option>EURUSD</option>
+    <option>GBPUSD</option>
+    <option>AUDUSD</option>
+    <option>NZDUSD</option>
+    <option>USDJPY</option>
+    <option>USDCHF</option>
+    <option>USDCAD</option>
+    <option>EURJPY</option>
+    <option>GBPJPY</option>
+    <option>EURGBP</option>
+    <option>EURCHF</option>
+    <option>AUDJPY</option>
+    <option>CADJPY</option>
+  </select>
 
-<h3 id="result"></h3>
+  <select id="accountCurrency">
+    <option value="">Account Currency</option>
+    <option>USD</option>
+    <option>EUR</option>
+    <option>GBP</option>
+    <option>JPY</option>
+    <option>CHF</option>
+    <option>CAD</option>
+    <option>AUD</option>
+    <option>NZD</option>
+  </select>
 
-<canvas id="chart"></canvas>
+  <input id="balance" placeholder="Account Balance">
+  <input id="risk" placeholder="Risk % per trade">
+  <input id="lot" placeholder="Lot Size (e.g. 0.10)">
+  <input id="entry" placeholder="Entry Price">
+  <input id="stop" placeholder="Stop Loss Price">
+
+  <div id="advancedInputs" style="display:none;">
+    <div class="section-title">Advanced costs</div>
+    <input id="spread" placeholder="Spread (pips)">
+    <input id="slippage" placeholder="Slippage (pips)">
+    <input id="commission" placeholder="Commission per lot (round turn)">
+    <input id="conversionRate" placeholder="Quote → Account rate (if needed)">
+    <p class="helper">
+      Needed only when your account currency is neither the base nor quote currency of the pair.
+    </p>
+  </div>
+
+  <button onclick="calculatePip()">Calculate</button>
+
+  <div class="result-card">
+    <h3 id="result" style="margin:0;"></h3>
+  </div>
+
+  <canvas id="myChart"></canvas>
 
 </div>
-  
-<div class="related">
-<h3>Related Calculators</h3>
-<p>You may also find these tools useful:</p>
-<ul>
-<li><a href="lot-size-calculator-forex.html">Lot Size Calculator (Forex) </a></li>
-<li><a href="position-size-calculator.html">Position Size Calculator</a></li>
-<li><a href="risk-reward-calculator.html">Risk Reward Calculator</a></li>
-<li><a href="stop-loss-calculator.html">Stop Loss Calculator</a></li>
-<li><a href="leverage-calculator.html">Leverage Calculator</a></li>
-</ul>
+
+<div class="container" style="margin-top:22px;">
+
+  <h2 style="margin-top:0;">What is a Pip Calculator?</h2>
+  <p>
+    A Pip Calculator helps forex traders measure the value of a single pip movement in a trade. That matters because pip value determines how much you gain or lose when price moves, and that directly affects risk control, stop-loss planning, and position sizing.
+  </p>
+
+  <p>
+    A serious pip calculator should do more than show a tiny number. It should help you understand how your lot size, entry price, stop loss, spread, slippage, and account currency interact in real trading conditions.
+  </p>
+
+  <h2>How This Calculator Works</h2>
+  <p>
+    This tool first identifies the pair’s base and quote currencies, then calculates the pip size automatically. For most forex pairs, one pip is 0.0001. For JPY pairs, one pip is 0.01. After that, it calculates pip value per lot and estimates the real trade risk at your stop-loss level.
+  </p>
+
+  <ul>
+    <li><strong>Pair</strong> = determines pip size and currency conversion logic</li>
+    <li><strong>Lot Size</strong> = controls the trade’s position size</li>
+    <li><strong>Entry Price</strong> = trade opening price</li>
+    <li><strong>Stop Loss Price</strong> = price where the trade is invalidated</li>
+    <li><strong>Risk %</strong> = how much of your account you are willing to lose</li>
+  </ul>
+
+  <h2>The Core Formula</h2>
+  <p>
+    The core idea is simple:
+  </p>
+
+  <p><strong>Pip Value per Lot = 100,000 × Pip Size × Conversion Factor</strong></p>
+
+  <p>
+    Then:
+  </p>
+
+  <p><strong>Total Pip Value = Pip Value per Lot × Lot Size</strong></p>
+
+  <p>
+    And:
+  </p>
+
+  <p><strong>Stop Loss Loss = Stop Loss Distance in Pips × Pip Value per Lot × Lot Size</strong></p>
+
+  <p>
+    In advanced mode, spread, slippage, and commission are added to give a more realistic estimate of trade cost.
+  </p>
+
+  <h2>Why Pip Value Matters</h2>
+  <p>
+    Many traders focus only on direction and ignore trade size. That is a mistake. A good setup can still be a bad trade if the lot size is too large for the stop-loss distance. Pip value tells you the real cost of movement in the market.
+  </p>
+
+  <ul>
+    <li>It helps you avoid oversized trades</li>
+    <li>It makes stop-loss planning more accurate</li>
+    <li>It helps you estimate real account impact</li>
+    <li>It supports proper position sizing</li>
+  </ul>
+
+  <p>
+    If you know your pip value, you can trade with discipline instead of guessing.
+  </p>
+
+  <h2>Why Advanced Mode Is Better</h2>
+  <p>
+    Real trading is not frictionless. Spread, slippage, and commission all matter. A basic pip calculator is useful for quick checks, but advanced mode gives a more realistic picture of what the trade can actually cost.
+  </p>
+
+  <p>
+    Traders who ignore costs often underestimate how much a trade needs to move before they are truly in profit.
+  </p>
+
+  <p style="font-weight:bold; color:#f87171;">
+    ⚠️ A trade that looks profitable on paper can still be unprofitable after spread, slippage, and commission.
+  </p>
+
+  <h2>How to Use This Calculator</h2>
+  <ul>
+    <li>Select your currency pair</li>
+    <li>Choose your account currency</li>
+    <li>Enter your balance, risk %, lot size, entry, and stop loss</li>
+    <li>Use advanced mode if you want to include real trading costs</li>
+    <li>Click calculate</li>
+  </ul>
+
+  <h3>Frequently Asked Questions</h3>
+
+  <div class="faq">
+
+    <div class="faq-item">
+      <button class="faq-question">
+        Why does pip value change between pairs?
+        <span class="arrow">▼</span>
+      </button>
+      <div class="faq-answer">
+        <p>
+          Because each currency pair has a different quote currency and pip size. JPY pairs use a different pip step than most other pairs, and account currency conversion can also change the result.
+        </p>
+      </div>
+    </div>
+
+    <div class="faq-item">
+      <button class="faq-question">
+        Why is pip value different from profit or loss?
+        <span class="arrow">▼</span>
+      </button>
+      <div class="faq-answer">
+        <p>
+          Pip value tells you how much one pip movement is worth. Profit or loss depends on how many pips the market moves and how large your position size is.
+        </p>
+      </div>
+    </div>
+
+    <div class="faq-item">
+      <button class="faq-question">
+        Why are JPY pairs handled differently?
+        <span class="arrow">▼</span>
+      </button>
+      <div class="faq-answer">
+        <p>
+          Most JPY pairs use a pip size of 0.01 instead of 0.0001. That difference changes the pip value and stop-loss math.
+        </p>
+      </div>
+    </div>
+
+    <div class="faq-item">
+      <button class="faq-question">
+        Why do I need a conversion rate sometimes?
+        <span class="arrow">▼</span>
+      </button>
+      <div class="faq-answer">
+        <p>
+          If your account currency is neither the base currency nor the quote currency of the pair, a conversion rate is needed to convert pip value into your account currency accurately.
+        </p>
+      </div>
+    </div>
+
+    <div class="faq-item">
+      <button class="faq-question">
+        Does spread really matter that much?
+        <span class="arrow">▼</span>
+      </button>
+      <div class="faq-answer">
+        <p>
+          Yes. Spread is a hidden cost that you pay the moment you enter a trade. On fast-moving pairs or during volatile periods, it can make a meaningful difference.
+        </p>
+      </div>
+    </div>
+
+    <div class="faq-item">
+      <button class="faq-question">
+        Can pip value help with position sizing?
+        <span class="arrow">▼</span>
+      </button>
+      <div class="faq-answer">
+        <p>
+          Absolutely. Once you know how much a pip is worth, you can calculate how much money you are risking at your stop loss and choose a lot size that matches your risk limit.
+        </p>
+      </div>
+    </div>
+
+  </div>
 </div>
-  
+
 <div class="disclaimer">
-<strong>Disclaimer:</strong> The calculators on this website are provided for informational and educational purposes only. 
-All results are estimates based on the values entered and do not constitute financial, investment, or trading advice. 
-Always conduct your own research before making financial decisions.
-</p>
+  <p>
+    <strong>Disclaimer:</strong> The calculators on this website are provided for informational and educational purposes only.
+    All results are estimates based on the values entered and do not constitute financial, investment, or trading advice.
+    Always conduct your own research before making financial decisions.
+  </p>
 </div>
+
+<script src="footer.js"></script>
+
 <script>
-
 let chart;
+let mode = "basic";
 
-function getPipSize(pair){
-  if(pair.includes("JPY")){
-    return 0.01;
+function switchMode(selectedMode){
+  mode = selectedMode;
+
+  document.getElementById("advancedInputs").style.display =
+    selectedMode === "advanced" ? "block" : "none";
+
+  document.getElementById("basicBtn").classList.toggle("active", selectedMode === "basic");
+  document.getElementById("advBtn").classList.toggle("active", selectedMode === "advanced");
+}
+
+function getPairParts(pair){
+  return {
+    base: pair.slice(0, 3),
+    quote: pair.slice(3, 6)
+  };
+}
+
+function getPipSize(quoteCurrency){
+  return quoteCurrency === "JPY" ? 0.01 : 0.0001;
+}
+
+function formatMoney(value, currency){
+  try{
+    return new Intl.NumberFormat(undefined, {
+      style: "currency",
+      currency: currency,
+      maximumFractionDigits: 4
+    }).format(value);
+  }catch(e){
+    return currency + " " + value.toFixed(4);
   }
-  return 0.0001;
+}
+
+function formatLots(value){
+  if (!isFinite(value)) return "0";
+  return Number.isInteger(value)
+    ? value.toString()
+    : value.toLocaleString(undefined, {
+        minimumFractionDigits: 2,
+        maximumFractionDigits: 4
+      });
 }
 
 function calculatePip(){
+  const pair = document.getElementById("pair").value.trim().toUpperCase();
+  const accountCurrency = document.getElementById("accountCurrency").value.trim().toUpperCase();
+  const balance = parseFloat(document.getElementById("balance").value);
+  const riskPercent = parseFloat(document.getElementById("risk").value);
+  const lot = parseFloat(document.getElementById("lot").value);
+  const entry = parseFloat(document.getElementById("entry").value);
+  const stop = parseFloat(document.getElementById("stop").value);
 
-let pair = document.getElementById("pair").value;
-let lot = parseFloat(document.getElementById("lot").value);
-let price = parseFloat(document.getElementById("price").value);
+  const spread = parseFloat(document.getElementById("spread")?.value) || 0;
+  const slippage = parseFloat(document.getElementById("slippage")?.value) || 0;
+  const commissionPerLot = parseFloat(document.getElementById("commission")?.value) || 0;
+  const conversionRateInput = parseFloat(document.getElementById("conversionRate")?.value);
 
-if(!pair || !lot || !price){
-  alert("Fill all fields");
-  return;
+  if (!pair || pair.length !== 6 || !accountCurrency || !balance || !riskPercent || !lot || !entry || !stop) {
+    alert("Fill all required fields");
+    return;
+  }
+
+  const { base, quote } = getPairParts(pair);
+  const pipSize = getPipSize(quote);
+
+  let conversionFactor = 1;
+
+  if (accountCurrency === quote) {
+    conversionFactor = 1;
+  } else if (accountCurrency === base) {
+    if (entry <= 0) {
+      alert("Entry price must be greater than zero");
+      return;
+    }
+    conversionFactor = 1 / entry;
+  } else {
+    if (!isFinite(conversionRateInput) || conversionRateInput <= 0) {
+      alert("Enter Quote → Account conversion rate for this pair.");
+      return;
+    }
+    conversionFactor = conversionRateInput;
+  }
+
+  const units = lot * 100000;
+  const pipValuePerLot = 100000 * pipSize * conversionFactor;
+  const pipValueSelected = units * pipSize * conversionFactor;
+
+  const stopDistancePrice = Math.abs(entry - stop);
+  if (stopDistancePrice <= 0) {
+    alert("Stop loss cannot equal entry");
+    return;
+  }
+
+  const stopLossPips = stopDistancePrice / pipSize;
+  const riskAmount = balance * (riskPercent / 100);
+
+  const stopLossLoss = stopLossPips * pipValueSelected;
+  const spreadCost = spread * pipValueSelected;
+  const slippageCost = slippage * pipValueSelected;
+  const commissionCost = commissionPerLot * lot;
+
+  const totalEstimatedLoss = stopLossLoss + spreadCost + slippageCost + commissionCost;
+
+  const maxLots = riskAmount / (stopLossPips * pipValuePerLot);
+
+  const difference = riskAmount - totalEstimatedLoss;
+  const fitsRisk = difference >= 0;
+
+  const currency = accountCurrency;
+
+  const resultHTML =
+    `Pip Size: ${pipSize}<br>` +
+    `Pip Value (selected lot): ${formatMoney(pipValueSelected, currency)} per pip<br>` +
+    `Stop Loss Distance: ${stopLossPips.toFixed(2)} pips<br>` +
+    `Risk Budget: ${formatMoney(riskAmount, currency)}<br>` +
+    `Estimated Loss at SL: ${formatMoney(totalEstimatedLoss, currency)}<br>` +
+    `Max Lot Size for Risk: ${formatLots(maxLots)} lots<br>` +
+    `Risk Check: ${fitsRisk ? '<span style="color:#22c55e;">Within risk limit</span>' : '<span style="color:#f87171;">Exceeds risk limit</span>'}`;
+
+  document.getElementById("result").innerHTML = resultHTML;
+
+  drawChart(riskAmount, totalEstimatedLoss, spreadCost + slippageCost + commissionCost, currency);
 }
 
-let pipSize = getPipSize(pair);
+function drawChart(riskBudget, totalLoss, extraCosts, currency){
+  const ctx = document.getElementById("myChart");
 
-let pipValue;
+  if(chart){
+    chart.destroy();
+  }
 
-// 🔥 CASE 1 → USD quote (EURUSD)
-if(pair.endsWith("USD")){
-  pipValue = lot * 100000 * pipSize;
+  chart = new Chart(ctx, {
+    type: 'bar',
+    data: {
+      labels: ["Risk Budget", "Estimated Loss", "Extra Costs"],
+      datasets: [{
+        label: `Amount (${currency})`,
+        data: [riskBudget, totalLoss, extraCosts],
+        backgroundColor: ["#22c55e", "#ef4444", "#f59e0b"]
+      }]
+    },
+    options: {
+      plugins: {
+        legend: {
+          labels: { color: "white" }
+        }
+      },
+      scales: {
+        x: {
+          ticks: { color: "white" },
+          grid: { color: "rgba(255,255,255,0.08)" }
+        },
+        y: {
+          ticks: { color: "white" },
+          grid: { color: "rgba(255,255,255,0.08)" }
+        }
+      }
+    }
+  });
 }
 
-// 🔥 CASE 2 → USD base (USDJPY)
-else if(pair.startsWith("USD")){
-  pipValue = (lot * 100000 * pipSize) / price;
-}
-
-// 🔥 CASE 3 → Cross pair (basic doğru yaklaşım)
-else{
-  pipValue = (lot * 100000 * pipSize) / price;
-}
-
-document.getElementById("result").innerHTML =
-"Pip Value: $" + pipValue.toFixed(4);
-
-drawChart(pipValue);
-
-}
-
-function drawChart(value){
-
-let ctx = document.getElementById("chart");
-
-if(chart){
-  chart.destroy();
-}
-
-chart = new Chart(ctx,{
-type:'bar',
-data:{
-labels:["Pip Value"],
-datasets:[{
-label:"Value per Pip",
-data:[value],
-backgroundColor:["#22c55e"]
-}]
-},
-options:{
-plugins:{
-legend:{labels:{color:"white"}}
-},
-scales:{
-y:{ticks:{color:"white"}},
-x:{ticks:{color:"white"}}
-}
-}
+document.querySelectorAll(".faq-question").forEach(btn => {
+  btn.addEventListener("click", () => {
+    const item = btn.parentElement;
+    item.classList.toggle("active");
+  });
 });
-
-}
-
 </script>
 
 </body>
