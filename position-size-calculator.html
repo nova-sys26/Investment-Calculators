@@ -6,9 +6,10 @@
 <title>Position Size Calculator – Manage Your Risk</title>
 <meta name="description" content="Calculate the perfect position size based on risk and account balance. Essential tool for traders.">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <link rel="stylesheet" href="style.css">
-  
+
 <style>
 
 body{
@@ -50,103 +51,99 @@ cursor:pointer;
 canvas{
 margin-top:30px;
 }
-.menu{
-margin-bottom:25px;
-}
 
 .menu a{
 color:#3b82f6;
-margin:10px;
 text-decoration:none;
-  }
+}
+
 .toptext{
 font-size:14px;
 color:#6b7a99;
 margin-bottom:5px;
 }
-.disclaimer{
-margin-top:40px;
-padding-top:20px;
-border-top:1px solid rgba(255,255,255,0.1);
-font-size:13px;
-color:#9ca3af;
-max-width:500px;
-text-align:center;
-line-height:1.6;
-  }
+
+/* 🔥 TOGGLE */
+.toggle {
+  display: flex;
+  margin: 10px 0;
+}
+
+.toggle button {
+  flex: 1;
+  padding: 12px;
+  border: none;
+  cursor: pointer;
+  background: #334155;
+  color: white;
+}
+
+.toggle button.active {
+  background: #3b82f6;
+}
+
 </style>
 </head>
 
 <body>
-  
-<p class="toptext">Explore more calculators</p>
-<div class="menu">
-<a href="index.html">Home</a>
-</div>
-<h1>Position Size Calculator</h1>
+
+<h1>Position Size Calculator <span style="color:#22c55e;">(Advanced Mode)</span></h1>
 
 <div class="container">
+
+<!-- TOGGLE -->
+<div class="toggle">
+  <button id="basicBtn" class="active" onclick="switchMode('basic')">Basic</button>
+  <button id="advBtn" onclick="switchMode('advanced')">Advanced</button>
+</div>
+
 <input id="balance" placeholder="Account Balance ($)">
 <input id="risk" placeholder="Risk % per trade">
 <input id="entry" placeholder="Entry Price">
 <input id="stop" placeholder="Stop Loss Price">
+
+<!-- ADVANCED INPUTS -->
+<div id="advancedInputs" style="display:none;">
+<input id="spread" placeholder="Spread (pips)">
+<input id="slippage" placeholder="Slippage (pips)">
+<input id="pipValue" placeholder="Pip Value (default = 1)">
+</div>
 
 <button onclick="calculate()">Calculate</button>
 
 <h3 id="result"></h3>
 
 <canvas id="myChart"></canvas>
-<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
 </div>
-<h3>What is Position Size Calculator?</h3>
-<p>The Position Size Calculator helps you determine how much to invest in a trade based on your risk tolerance. It is one of the most important tools for risk management.
-Instead of guessing how much to invest, this calculator uses your account size and risk percentage to give you an exact position size.
-For example, if you only want to risk 2% of your account on a trade, this tool calculates how much you should invest.
-This helps traders stay consistent and avoid large losses. Proper position sizing is key to long-term success in trading.</p>
 
-<h3>How to use it?</h3>
-<ul>
-<li>Enter your account balance</li>
-<li>Enter risk percentage</li>
-<li>Enter stop loss level</li>
-<li>Click calculate</li>
-</ul>
-
-<h3>Who uses this?</h3>
-<p>Traders who want to manage risk and avoid losing too much on a single trade.</p>
-
-<div class="related">
-<h3>Related Calculators</h3>
-<p>You may also find these tools useful:</p>
-<ul>
-<li><a href="risk-reward-calculator.html">Risk Reward Calculator</a></li>
-<li><a href="stop-loss-calculator.html">Stop Loss Calculator</a></li>
-<li><a href="leverage-calculator.html">Leverage Calculator</a></li>
-<li><a href="lot-size-calculator-forex.html">Lot Size Calculator (Forex) </a></li>
-<li><a href="pip-calculator-forex.html">Pip Calculator (Forex) </a></li>
-</ul>
-</div>
-  
-<div class="disclaimer">
-<p>
-<strong>Disclaimer:</strong> The calculators on this website are provided for informational and educational purposes only. 
-All results are estimates based on the values entered and do not constitute financial, investment, or trading advice. 
-Always conduct your own research before making financial decisions.
-</p>
-</div>
-<script src="footer.js"></script>
 <script>
 
 let chart;
-function formatNumber(num) {
-    return Number.isInteger(num)
-        ? num.toString()
-        : num.toLocaleString(undefined, {
-            minimumFractionDigits: 2,
-            maximumFractionDigits: 4
-        });
-  }
+let mode = "basic";
+
+/* MODE SWITCH */
+function switchMode(m){
+  mode = m;
+
+  document.getElementById("advancedInputs").style.display =
+    m === "advanced" ? "block" : "none";
+
+  document.getElementById("basicBtn").classList.toggle("active", m==="basic");
+  document.getElementById("advBtn").classList.toggle("active", m==="advanced");
+}
+
+/* FORMAT */
+function formatNumber(num){
+  return Number.isInteger(num)
+    ? num.toString()
+    : num.toLocaleString(undefined, {
+        minimumFractionDigits: 2,
+        maximumFractionDigits: 4
+      });
+}
+
+/* CALCULATE */
 function calculate(){
 
 let balance = parseFloat(document.getElementById("balance").value);
@@ -167,17 +164,32 @@ if(stopDistance === 0){
   return;
 }
 
-let positionSize = riskAmount / stopDistance;
+/* ADVANCED */
+if(mode === "advanced"){
+  let spread = parseFloat(document.getElementById("spread").value) || 0;
+  let slippage = parseFloat(document.getElementById("slippage").value) || 0;
+
+  stopDistance += (spread + slippage);
+}
+
+/* pip value */
+let pipValue = parseFloat(document.getElementById("pipValue").value) || 1;
+
+/* FINAL CALC */
+let positionSize = riskAmount / (stopDistance * pipValue);
 let positionValue = positionSize * entry;
 
+/* RESULT */
 document.getElementById("result").innerHTML =
 "Position Size: " + formatNumber(positionSize) + " units" +
 "<br>Position Value: $" + positionValue.toFixed(2) +
 "<br>Risk Amount: $" + riskAmount.toFixed(2);
 
+/* CHART */
 drawChart(riskAmount, positionValue);
 }
 
+/* CHART */
 function drawChart(riskAmount, positionValue){
 
 let ctx = document.getElementById("myChart");
@@ -191,14 +203,15 @@ chart = new Chart(ctx, {
   data: {
     labels: ["Risk Amount", "Position Value"],
     datasets: [{
-      label: "Trade Overview", 
+      label: "Trade Overview",
       data: [riskAmount, positionValue],
       backgroundColor: ["#ef4444", "#22c55e"]
     }]
   }
 });
-  }
+}
+
 </script>
 
 </body>
-  </html>
+</html>
