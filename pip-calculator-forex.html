@@ -3,15 +3,12 @@
 <head>
 
 <meta charset="UTF-8">
-<title>Pip Calculator – Calculate Forex Pip Value Easily</title>
-<meta name="description" content="Calculate pip value in forex trading. Easily determine profit or loss per pip based on lot size and pair.">
+<title>Pip Calculator – Professional Forex Tool</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-<link rel="stylesheet" href="style.css">
 
 <style>
-
 body{
 font-family:Arial;
 background:#0f172a;
@@ -32,7 +29,7 @@ max-width:500px;
 box-shadow:0 10px 25px rgba(0,0,0,0.35);
 }
 
-input{
+input, select{
 width:100%;
 padding:14px;
 margin:12px 0;
@@ -49,7 +46,6 @@ border:none;
 border-radius:10px;
 color:white;
 cursor:pointer;
-margin-top:10px;
 width:100%;
 }
 
@@ -59,22 +55,6 @@ background:#2563eb;
 
 canvas{
 margin-top:30px;
-}
-
-.menu{
-margin-bottom:25px;
-}
-
-.menu a{
-color:#3b82f6;
-margin:10px;
-text-decoration:none;
-}
-
-.toptext{
-font-size:14px;
-color:#6b7a99;
-margin-bottom:5px;
 }
 
 .disclaimer{
@@ -88,6 +68,7 @@ text-align:center;
 line-height:1.6;
 }
 
+
 </style>
 
 </head>
@@ -95,43 +76,36 @@ line-height:1.6;
 <body>
 
 <p class="toptext">Explore more calculators</p>
-
 <div class="menu">
 <a href="index.html">Home</a>
 </div>
-
+  
 <div class="container">
 
-<h1>Pip Calculator</h1>
+<h1>Pip Calculator (Elite)</h1>
+
+<select id="pair">
+<option value="">Select Pair</option>
+<option>EURUSD</option>
+<option>GBPUSD</option>
+<option>AUDUSD</option>
+<option>USDJPY</option>
+<option>USDCHF</option>
+<option>EURJPY</option>
+<option>GBPJPY</option>
+</select>
 
 <input id="lot" placeholder="Lot Size (e.g. 0.1)">
-<input id="pip" placeholder="Pip Size (e.g. 0.0001)">
-<input id="price" placeholder="Price (e.g. 1.1000)">
+<input id="price" placeholder="Current Price (e.g. 1.1000)">
 
 <button onclick="calculatePip()">Calculate Pip Value</button>
 
 <h3 id="result"></h3>
 
-<canvas id="myChart"></canvas>
+<canvas id="chart"></canvas>
 
 </div>
-
-<h3>What is Pip Calculator?</h3>
-<p>The Pip Calculator helps forex traders determine the value of a single pip movement in a trade. A pip is the smallest price change in most currency pairs, and understanding its value is essential for managing risk and position size.
-This tool allows you to calculate how much you gain or lose per pip based on your lot size and the current market price. For example, in a standard lot, one pip can be worth around $10 depending on the pair.
-Using this calculator helps traders make more informed decisions and better control their risk exposure. It is especially useful when planning trades or setting stop loss levels.</p>
-
-<h3>How to use it?</h3>
-<ul>
-<li>Enter your lot size</li>
-<li>Enter pip size (usually 0.0001)</li>
-<li>Enter current price</li>
-<li>Click calculate</li>
-</ul>
-
-<h3>Who uses this?</h3>
-<p>Forex traders who want to calculate pip value before entering a trade.</p>
-
+  
 <div class="related">
 <h3>Related Calculators</h3>
 <p>You may also find these tools useful:</p>
@@ -145,30 +119,51 @@ Using this calculator helps traders make more informed decisions and better cont
 </div>
   
 <div class="disclaimer">
-<p>
 <strong>Disclaimer:</strong> The calculators on this website are provided for informational and educational purposes only. 
 All results are estimates based on the values entered and do not constitute financial, investment, or trading advice. 
 Always conduct your own research before making financial decisions.
 </p>
 </div>
-<script src="footer.js"></script>
 <script>
 
 let chart;
 
-function calculatePip(){
-
-let lot = parseFloat(document.getElementById("lot").value);
-let pip = parseFloat(document.getElementById("pip").value);
-let price = parseFloat(document.getElementById("price").value);
-
-if(!lot || !pip || !price){
-alert("Fill all fields");
-return;
+function getPipSize(pair){
+  if(pair.includes("JPY")){
+    return 0.01;
+  }
+  return 0.0001;
 }
 
-// pip value formula
-let pipValue = (pip / price) * (lot * 100000);
+function calculatePip(){
+
+let pair = document.getElementById("pair").value;
+let lot = parseFloat(document.getElementById("lot").value);
+let price = parseFloat(document.getElementById("price").value);
+
+if(!pair || !lot || !price){
+  alert("Fill all fields");
+  return;
+}
+
+let pipSize = getPipSize(pair);
+
+let pipValue;
+
+// 🔥 CASE 1 → USD quote (EURUSD)
+if(pair.endsWith("USD")){
+  pipValue = lot * 100000 * pipSize;
+}
+
+// 🔥 CASE 2 → USD base (USDJPY)
+else if(pair.startsWith("USD")){
+  pipValue = (lot * 100000 * pipSize) / price;
+}
+
+// 🔥 CASE 3 → Cross pair (basic doğru yaklaşım)
+else{
+  pipValue = (lot * 100000 * pipSize) / price;
+}
 
 document.getElementById("result").innerHTML =
 "Pip Value: $" + pipValue.toFixed(4);
@@ -177,23 +172,32 @@ drawChart(pipValue);
 
 }
 
-function drawChart(pipValue){
+function drawChart(value){
 
-let ctx = document.getElementById('myChart');
+let ctx = document.getElementById("chart");
 
 if(chart){
-chart.destroy();
+  chart.destroy();
 }
 
 chart = new Chart(ctx,{
 type:'bar',
 data:{
-labels:['Pip Value'],
+labels:["Pip Value"],
 datasets:[{
-label:'Value per Pip',
-data:[pipValue],
-backgroundColor:['#22c55e']
+label:"Value per Pip",
+data:[value],
+backgroundColor:["#22c55e"]
 }]
+},
+options:{
+plugins:{
+legend:{labels:{color:"white"}}
+},
+scales:{
+y:{ticks:{color:"white"}},
+x:{ticks:{color:"white"}}
+}
 }
 });
 
@@ -202,4 +206,4 @@ backgroundColor:['#22c55e']
 </script>
 
 </body>
-  </html>
+</html>
