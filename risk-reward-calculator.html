@@ -1,203 +1,301 @@
+
 <!DOCTYPE html>
 <html>
-
 <head>
-
 <meta charset="UTF-8">
 <title>Risk Reward Calculator – Optimize Your Trades</title>
 <meta name="description" content="Analyze risk vs reward ratio before entering a trade. Improve your trading strategy instantly.">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-
 <link rel="stylesheet" href="style.css">
-  
+
 <style>
-
 body{
-
-font-family:Arial;
-background:#0f172a;
-color:white;
-display:flex;
-justify-content:center;
-align-items:center;
-flex-direction:column;
-min-height:100vh;
+  font-family:Arial;
+  background:#0f172a;
+  color:white;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  flex-direction:column;
+  min-height:100vh;
 }
 
 .container{
-background:#1e293b;
-padding:30px;
-border-radius:12px;
-width:90%;
-max-width:500px;
+  background:#1e293b;
+  padding:30px;
+  border-radius:12px;
+  width:90%;
+  max-width:500px;
 }
 
 input{
-width:100%;
-padding:12px;
-margin:10px 0;
-border-radius:6px;
-border:none;
+  width:100%;
+  padding:12px;
+  margin:10px 0;
+  border-radius:6px;
+  border:none;
+  box-sizing:border-box;
 }
 
 button{
-padding:12px 20px;
-background:#3b82f6;
-border:none;
-border-radius:8px;
-color:white;
-cursor:pointer;
-margin-top:10px;
+  padding:12px 20px;
+  background:#3b82f6;
+  border:none;
+  border-radius:8px;
+  color:white;
+  cursor:pointer;
+  margin-top:10px;
+}
+
+button:hover{
+  background:#2563eb;
 }
 
 canvas{
-margin-top:25px;
+  margin-top:25px;
 }
-  .menu{
-margin-bottom:25px;
+
+.menu{
+  margin-bottom:25px;
 }
 
 .menu a{
-color:#3b82f6;
-margin:10px;
-text-decoration:none;
+  color:#3b82f6;
+  margin:10px;
+  text-decoration:none;
 }
-.toptext{
-font-size:14px;
-color:#6b7a99;
-margin-bottom:5px;
-}
-.disclaimer{
-margin-top:40px;
-padding-top:20px;
-border-top:1px solid rgba(255,255,255,0.1);
-font-size:13px;
-color:#9ca3af;
-max-width:500px;
-text-align:center;
-line-height:1.6;
-  }
-</style>
 
+.toptext{
+  font-size:14px;
+  color:#6b7a99;
+  margin-bottom:5px;
+}
+
+.disclaimer{
+  margin-top:40px;
+  padding-top:20px;
+  border-top:1px solid rgba(255,255,255,0.1);
+  font-size:13px;
+  color:#9ca3af;
+  max-width:500px;
+  text-align:center;
+  line-height:1.6;
+}
+
+.toggle{
+  display:flex;
+  margin:10px 0 14px;
+  gap:0;
+  overflow:hidden;
+  border-radius:8px;
+}
+
+.toggle button{
+  flex:1;
+  padding:12px;
+  border:none;
+  cursor:pointer;
+  background:#334155;
+  color:white;
+  margin-top:0;
+  border-radius:0;
+}
+
+.toggle button:first-child{
+  border-radius:8px 0 0 8px;
+}
+
+.toggle button:last-child{
+  border-radius:0 8px 8px 0;
+}
+
+.toggle button.active{
+  background:#3b82f6;
+}
+
+.result-box{
+  margin-top:14px;
+  padding:14px;
+  border-radius:10px;
+  background:rgba(255,255,255,0.04);
+  line-height:1.7;
+}
+</style>
 </head>
 
 <body>
 <p class="toptext">Explore more calculators</p>
+
 <div class="menu">
-<a href="index.html">Home</a>
+  <a href="index.html">Home</a>
 </div>
+
 <h1>Risk Reward Calculator</h1>
 
 <div class="container">
+  <div class="toggle">
+    <button id="longBtn" class="active" onclick="setSide('long')">Long</button>
+    <button id="shortBtn" onclick="setSide('short')">Short</button>
+  </div>
 
-<input id="entry" placeholder="Entry Price">
+  <input id="entry" placeholder="Entry Price">
+  <input id="position" placeholder="Position Size (units)">
+  <input id="stop" placeholder="Stop Loss Price">
+  <input id="take" placeholder="Take Profit Price">
 
-<input id="position" placeholder="Position Size (units)">
+  <button onclick="calculate()">Calculate</button>
 
-<input id="stop" placeholder="Stop Loss Price">
+  <div class="result-box">
+    <h3 id="risk">Risk: —</h3>
+    <h3 id="reward">Reward: —</h3>
+    <h3 id="ratio">Risk / Reward Ratio: —</h3>
+    <h3 id="insight">Insight: —</h3>
+  </div>
 
-<input id="take" placeholder="Take Profit Price">
-
-<button onclick="calculate()">Calculate</button>
-
-<h3 id="risk"></h3>
-<h3 id="reward"></h3>
-<h3 id="ratio"></h3>
-
-<canvas id="myChart"></canvas>
-
+  <canvas id="myChart"></canvas>
 </div>
+
 <h3>What is Risk Reward Calculator?</h3>
-<p>The Risk Reward Calculator helps you compare the potential profit and loss of a trade. This is essential for evaluating whether a trade is worth taking.
-A good trade typically has a higher reward than risk. This tool shows that ratio clearly so you can make better decisions.
-For example, risking $100 to gain $300 gives a 1:3 risk-reward ratio. This calculator helps you identify such opportunities easily.
-It is widely used by professional traders to maintain a consistent strategy and improve profitability.</p>
+<p>
+The Risk Reward Calculator helps you compare the potential loss and potential gain of a trade before entering it. It shows whether a setup is worth taking based on how much you risk versus how much you can make.
+</p>
 
 <h3>How to use it?</h3>
 <ul>
-<li>Enter entry price</li>
-<li>Enter stop loss</li>
-<li>Enter target price</li>
-<li>Click calculate</li>
+  <li>Enter entry price</li>
+  <li>Enter stop loss</li>
+  <li>Enter take profit</li>
+  <li>Click calculate</li>
 </ul>
 
 <h3>Who uses this?</h3>
-<p>Traders who want to evaluate if a trade is worth taking.</p>
+<p>Traders who want to check whether a trade setup offers enough upside for the risk taken.</p>
 
 <div class="related">
-<h3>Related Calculators</h3>
-<p>You may also find these tools useful:</p>
-<ul>
-<li><a href="position-size-calculator.html">Position Size Calculator</a></li>
-<li><a href="stop-loss-calculator.html">Stop Loss Calculator</a></li>
-<li><a href="leverage-calculator.html">Leverage Calculator</a></li>
-<li><a href="profit-loss-calculator.html">Profit Loss Calculator</a></li>
-<li><a href="break-even-calculator.html">Break Even Calculator</a></li>
-</ul>
+  <h3>Related Calculators</h3>
+  <p>You may also find these tools useful:</p>
+  <ul>
+    <li><a href="position-size-calculator.html">Position Size Calculator</a></li>
+    <li><a href="stop-loss-calculator.html">Stop Loss Calculator</a></li>
+    <li><a href="leverage-calculator.html">Leverage Calculator</a></li>
+    <li><a href="profit-loss-calculator.html">Profit Loss Calculator</a></li>
+    <li><a href="break-even-calculator.html">Break Even Calculator</a></li>
+  </ul>
 </div>
-  
-<div class="disclaimer">
-<p>
-<strong>Disclaimer:</strong> The calculators on this website are provided for informational and educational purposes only. 
-All results are estimates based on the values entered and do not constitute financial, investment, or trading advice. 
-Always conduct your own research before making financial decisions.
-</p>
-</div>
-<script src="footer.js"></script>
-<script>
 
+<div class="disclaimer">
+  <p>
+    <strong>Disclaimer:</strong> The calculators on this website are provided for informational and educational purposes only.
+    All results are estimates based on the values entered and do not constitute financial, investment, or trading advice.
+    Always conduct your own research before making financial decisions.
+  </p>
+</div>
+
+<script src="footer.js"></script>
+
+<script>
 let chart;
+let tradeSide = "long";
+
+function setSide(side){
+  tradeSide = side;
+  document.getElementById("longBtn").classList.toggle("active", side === "long");
+  document.getElementById("shortBtn").classList.toggle("active", side === "short");
+}
 
 function calculate(){
+  const entry = parseFloat(document.getElementById("entry").value);
+  const position = parseFloat(document.getElementById("position").value);
+  const stop = parseFloat(document.getElementById("stop").value);
+  const take = parseFloat(document.getElementById("take").value);
 
-let entry = parseFloat(document.getElementById("entry").value)
-let position = parseFloat(document.getElementById("position").value)
-let stop = parseFloat(document.getElementById("stop").value)
-let take = parseFloat(document.getElementById("take").value)
+  if([entry, position, stop, take].some(v => isNaN(v) || v <= 0)){
+    alert("Please fill all fields with valid positive numbers.");
+    return;
+  }
 
-let risk = (entry - stop) * position
-let reward = (take - entry) * position
+  let riskDistance, rewardDistance;
 
-let ratio = reward / risk
+  if(tradeSide === "long"){
+    if(stop >= entry){
+      alert("For a long trade, stop loss must be below entry.");
+      return;
+    }
+    if(take <= entry){
+      alert("For a long trade, take profit must be above entry.");
+      return;
+    }
+    riskDistance = entry - stop;
+    rewardDistance = take - entry;
+  } else {
+    if(stop <= entry){
+      alert("For a short trade, stop loss must be above entry.");
+      return;
+    }
+    if(take >= entry){
+      alert("For a short trade, take profit must be below entry.");
+      return;
+    }
+    riskDistance = stop - entry;
+    rewardDistance = entry - take;
+  }
 
-document.getElementById("risk").innerHTML =
-"Risk: $" + risk.toFixed(2)
+  const risk = riskDistance * position;
+  const reward = rewardDistance * position;
+  const ratio = reward / risk;
 
-document.getElementById("reward").innerHTML =
-"Reward: $" + reward.toFixed(2)
+  document.getElementById("risk").innerHTML = "Risk: $" + risk.toFixed(2);
+  document.getElementById("reward").innerHTML = "Reward: $" + reward.toFixed(2);
+  document.getElementById("ratio").innerHTML = "Risk / Reward Ratio: 1 : " + ratio.toFixed(2);
 
-document.getElementById("ratio").innerHTML =
-"Risk / Reward Ratio: 1 : " + ratio.toFixed(2)
+  let insight = "";
+  if(ratio >= 3){
+    insight = "Excellent setup";
+  } else if(ratio >= 2){
+    insight = "Good setup";
+  } else if(ratio >= 1){
+    insight = "Okay setup";
+  } else {
+    insight = "Weak setup";
+  }
 
-drawChart(risk,reward)
+  document.getElementById("insight").innerHTML = "Insight: " + insight;
 
+  drawChart(risk, reward);
 }
 
-function drawChart(risk,reward){
+function drawChart(risk, reward){
+  const ctx = document.getElementById("myChart");
 
-let ctx = document.getElementById('myChart')
+  if(chart){
+    chart.destroy();
+  }
 
-if(chart){
-chart.destroy()
+  chart = new Chart(ctx,{
+    type:'bar',
+    data:{
+      labels:['Risk','Reward'],
+      datasets:[{
+        label:'Trade Analysis',
+        data:[risk,reward],
+        backgroundColor:['#ef4444','#22c55e']
+      }]
+    },
+    options:{
+      plugins:{
+        legend:{
+          labels:{ color:'white' }
+        }
+      },
+      scales:{
+        x:{ ticks:{ color:'white' }, grid:{ color:'rgba(255,255,255,0.08)' } },
+        y:{ ticks:{ color:'white' }, grid:{ color:'rgba(255,255,255,0.08)' } }
+      }
+    }
+  });
 }
-
-chart = new Chart(ctx,{
-type:'bar',
-data:{
-labels:['Risk','Reward'],
-datasets:[{
-label:'Trade Analysis',
-data:[risk,reward]
-}]
-}
-})
-
-}
-
 </script>
 
 </body>
-
-  </html>
+</html>
