@@ -117,24 +117,129 @@ line-height:1.6;
 
 </div>
 
-<h3>What is Inflation Calculator?</h3>
-<p>The Inflation Calculator helps you understand how the value of money changes over time due to inflation. Inflation gradually reduces purchasing power, meaning the same amount of money will buy fewer goods and services in the future. This tool allows you to estimate what your current money will be worth after a certain number of years based on an expected inflation rate.
-By entering an initial amount, an average annual inflation rate, and a time period, the calculator shows the future adjusted value of your money. This makes it easier to visualize long-term financial planning and understand real-world economic impact on savings, investments, and income.
-For example, if you have $1,000 today and the average inflation rate is 5% per year, the calculator will show how much that $1,000 will effectively be worth in the future. This is important for investors, savers, and anyone planning for retirement or long-term financial goals.
-Inflation is one of the most important factors in financial decision-making because it directly affects real returns. Even if your investment grows in nominal terms, inflation can reduce its real value. This calculator helps you account for that difference and make more informed financial decisions.
-It is commonly used by investors, financial planners, economists, and individuals who want to better understand how inflation impacts their money over time.
+<h2>What is Drawdown?</h2>
+
+<p>
+Drawdown represents the percentage loss from your account peak to its lowest point. 
+It shows how much your capital has decreased before recovering.
 </p>
 
-<h3>How to use it?</h3>
+<p>
+For example, if your account drops from $10,000 to $7,000, you are experiencing a 30% drawdown. 
+Understanding this is critical because losses and gains are not symmetrical.
+</p>
+
+<h2>How This Calculator Works</h2>
+
+<p>
+This tool calculates how much return you need to recover from a given loss. 
+It highlights the non-linear relationship between losses and recovery.
+</p>
+
 <ul>
-<li>Enter your current amount</li>
-<li>Enter expected inflation rate</li>
-<li>Enter number of years</li>
-<li>Click calculate</li>
+<li><strong>Drawdown (%)</strong> – your percentage loss</li>
+<li><strong>Initial & Current Balance</strong> – alternative way to calculate drawdown</li>
+<li><strong>Required Recovery</strong> – how much gain is needed to return to break-even</li>
 </ul>
 
-<h3>Who uses this?</h3>
-<p>Investors, economists, and anyone planning long-term finances.</p>
+<p>
+The deeper the drawdown, the harder it becomes to recover.
+</p>
+
+<h2>Why Drawdown Matters</h2>
+
+<p>
+Many traders underestimate how dangerous losses are. 
+A small loss is easy to recover, but large drawdowns require disproportionately higher returns.
+</p>
+
+<ul>
+<li>10% loss → needs ~11% gain to recover</li>
+<li>25% loss → needs ~33% gain</li>
+<li>50% loss → needs 100% gain</li>
+<li>70% loss → needs ~233% gain</li>
+</ul>
+
+<p>
+This is why risk management is more important than chasing high returns.
+</p>
+
+<h2>The Real Insight</h2>
+
+<p>
+Drawdown is not just a number — it is a measure of how close you are to failure.
+</p>
+
+<p>
+Traders who survive long-term are not the ones who make the most money, 
+but the ones who avoid large drawdowns.
+</p>
+
+<p>
+Controlling losses is the foundation of consistent profitability.
+</p>
+
+<h2>Frequently Asked Questions</h2>
+
+<h3>Why is recovering from losses so difficult?</h3>
+<p>
+Because losses and gains are not symmetrical. When your account drops, your capital base becomes smaller, 
+which means you need a much higher percentage return to recover.
+</p>
+
+<h3>What is considered a dangerous drawdown?</h3>
+<p>
+Drawdowns above 30–40% are considered high risk. Beyond this level, recovery becomes increasingly difficult 
+and psychological pressure rises significantly.
+</p>
+
+<h3>Is a high drawdown always bad?</h3>
+<p>
+Not always, but consistently large drawdowns usually indicate poor risk management. 
+Professional traders aim to keep drawdowns as low as possible while maintaining steady returns.
+</p>
+
+<h3>What is a healthy drawdown level?</h3>
+<p>
+Most disciplined strategies aim to keep drawdown below 20%. 
+Lower drawdowns allow faster recovery and more consistent long-term growth.
+</p>
+
+<h3>How can I reduce my drawdown?</h3>
+<p>
+You can reduce drawdown by lowering your risk per trade, improving your risk-reward ratio, 
+and avoiding overtrading during losing streaks.
+</p>
+
+<h3>Does win rate affect drawdown?</h3>
+<p>
+Yes, but not as much as risk per trade. Even a high win rate strategy can experience large drawdowns 
+if losses are too big.
+</p>
+
+<h3>What is the difference between drawdown and risk of ruin?</h3>
+<p>
+Drawdown measures how much your account drops, while risk of ruin measures the probability 
+of losing your account entirely. They are closely related but not the same.
+</p>
+
+<h3>Can I recover from a 50% drawdown?</h3>
+<p>
+Yes, but it requires a 100% gain. This is why avoiding large losses is far more important than 
+trying to recover from them.
+</p>
+
+<h3>Why do most traders fail after big losses?</h3>
+<p>
+Because large drawdowns create emotional pressure. Traders often increase risk to recover faster, 
+which usually leads to even bigger losses.
+</p>
+
+<h3>What is the biggest mistake traders make with drawdown?</h3>
+<p>
+Ignoring it. Many traders focus only on profits and completely underestimate how destructive 
+losses can be over time.
+</p>
 
 <div class="related">
 <h3>Related Calculators</h3>
@@ -199,7 +304,23 @@ backgroundColor:[
 });
 
 }
+document.addEventListener("DOMContentLoaded", function(){
 
+  document.querySelectorAll(".faq-question").forEach(btn => {
+    btn.addEventListener("click", () => {
+
+      const item = btn.parentElement;
+
+      document.querySelectorAll(".faq-item").forEach(i => {
+        if(i !== item) i.classList.remove("active");
+      });
+
+      item.classList.toggle("active");
+
+    });
+  });
+
+});
 </script>
 
 </body>
