@@ -1,189 +1,464 @@
 <!DOCTYPE html>
-<html>
-
+<html lang="en">
 <head>
-
 <meta charset="UTF-8">
-<title>Profit Loss Calculator – Calculate Gains & Losses</title>
-<meta name="description" content="Quickly calculate your profit or loss from any trade. Works for stocks, crypto, and forex.">
-
+<title>Profit / Loss Calculator – Calculate Gains & Losses</title>
+<meta name="description" content="Quickly calculate your profit or loss from any trade. Works for stocks, crypto, and forex with fees, return percentage, and break-even price.">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-
 <link rel="stylesheet" href="style.css">
-  
 <style>
-
 body{
-font-family: Arial;
-background:#0b1a33;
-color:white;
-display:flex;
-justify-content:center;
-align-items:center;
-min-height:100vh;
-flex-direction:column;
+  font-family: Arial, sans-serif;
+  background:#0b1a33;
+  color:white;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  min-height:100vh;
+  flex-direction:column;
+  margin:0;
+  padding:24px 0;
 }
 
 .container{
-background:#1e293b;
-padding:30px;
-border-radius:12px;
-width:90%;
-max-width:500px;
+  background:#1e293b;
+  padding:30px;
+  border-radius:12px;
+  width:90%;
+  max-width:520px;
+  box-shadow:0 10px 25px rgba(0,0,0,0.35);
+}
+
+h1{
+  margin-top:0;
+  margin-bottom:8px;
+}
+
+.subhead{
+  color:#94a3b8;
+  font-size:14px;
+  line-height:1.5;
+  margin-bottom:18px;
 }
 
 input{
-width:100%;
-padding:12px;
-margin:10px 0;
-border-radius:6px;
-border:none;
+  width:100%;
+  padding:12px;
+  margin:10px 0;
+  border-radius:8px;
+  border:none;
+  background:#e5e7eb;
+  font-size:16px;
+  box-sizing:border-box;
 }
 
 button{
-padding:12px 20px;
-background:#3b82f6;
-border:none;
-border-radius:8px;
-color:white;
-cursor:pointer;
+  padding:12px 20px;
+  background:#3b82f6;
+  border:none;
+  border-radius:8px;
+  color:white;
+  cursor:pointer;
+  width:100%;
+  margin-top:8px;
+  font-size:16px;
+  font-weight:600;
+}
+
+button:hover{
+  background:#2563eb;
+}
+
+.result-card{
+  margin-top:16px;
+  padding:16px;
+  border-radius:12px;
+  background:rgba(255,255,255,0.04);
+  border:1px solid rgba(255,255,255,0.08);
+  line-height:1.7;
 }
 
 canvas{
-margin-top:30px;
+  margin-top:24px;
 }
+
 .menu{
-margin-bottom:25px;
+  margin-bottom:18px;
 }
 
 .menu a{
-color:#3b82f6;
-margin:10px;
-text-decoration:none;
+  color:#3b82f6;
+  margin:10px;
+  text-decoration:none;
 }
-.toptext{
-font-size:14px;
-color:#6b7a99;
-margin-bottom:5px;
-  }
-.disclaimer{
-margin-top:40px;
-padding-top:20px;
-border-top:1px solid rgba(255,255,255,0.1);
-font-size:13px;
-color:#9ca3af;
-max-width:500px;
-text-align:center;
-line-height:1.6;
-  }
-</style>
 
+.toptext{
+  font-size:14px;
+  color:#6b7a99;
+  margin-bottom:5px;
+}
+
+.related{
+  margin-top:28px;
+}
+
+.related a{
+  color:#93c5fd;
+  text-decoration:none;
+}
+
+.related a:hover{
+  text-decoration:underline;
+}
+
+.disclaimer{
+  margin-top:40px;
+  padding-top:20px;
+  border-top:1px solid rgba(255,255,255,0.1);
+  font-size:13px;
+  color:#9ca3af;
+  max-width:520px;
+  text-align:center;
+  line-height:1.6;
+}
+
+.faq{
+  margin-top:26px;
+}
+
+.faq-item{
+  border-bottom:1px solid rgba(255,255,255,0.08);
+}
+
+.faq-question{
+  width:100%;
+  background:none;
+  border:none;
+  color:white;
+  text-align:left;
+  padding:14px 8px;
+  font-size:15px;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  cursor:pointer;
+}
+
+.faq-question:hover{
+  color:#93c5fd;
+}
+
+.arrow{
+  transition:0.25s;
+}
+
+.faq-item.active .arrow{
+  transform:rotate(180deg);
+}
+
+.faq-answer{
+  max-height:0;
+  overflow:hidden;
+  transition:max-height 0.3s ease;
+  color:#cbd5e1;
+  font-size:14px;
+  padding:0 8px;
+}
+
+.faq-item.active .faq-answer{
+  max-height:240px;
+  padding-bottom:12px;
+}
+
+.helper{
+  color:#94a3b8;
+  font-size:12px;
+  margin-top:-4px;
+  margin-bottom:6px;
+}
+
+.section-title{
+  font-size:13px;
+  color:#94a3b8;
+  margin:14px 0 6px;
+  text-transform:uppercase;
+  letter-spacing:0.08em;
+}
+</style>
 </head>
 
 <body>
- <p class="toptext">Explore more calculators</p> 
+
+<p class="toptext">Explore more calculators</p>
+
 <div class="menu">
-<a href="index.html">Home</a>
+  <a href="index.html">Home</a>
 </div>
-  
-<h1>Profit / Loss Calculator</h1>
 
 <div class="container">
+  <h1>Profit / Loss Calculator</h1>
+  <p class="subhead">
+    Calculate your trade’s profit, loss, return percentage, and break-even sell price with optional fees.
+  </p>
 
-<input id="buy" placeholder="Buy price ($)">
-<input id="sell" placeholder="Sell price ($)">
-<input id="amount" placeholder="Asset amount">
+  <div class="section-title">Trade inputs</div>
 
-<button onclick="calculate()">Calculate</button>
+  <input id="buy" placeholder="Buy price">
+  <input id="sell" placeholder="Sell price">
+  <input id="amount" placeholder="Quantity / Units">
 
-<h3 id="result"></h3>
+  <div class="section-title">Optional costs</div>
 
-<canvas id="myChart"></canvas>
+  <input id="fee" placeholder="Total fees / commission ($)">
+  <p class="helper">Optional. Enter your full round-trip fee if you want net results.</p>
 
+  <button onclick="calculate()">Calculate</button>
+
+  <div class="result-card">
+    <h3 id="result" style="margin:0;">Enter your numbers to calculate profit or loss.</h3>
+  </div>
+
+  <canvas id="myChart"></canvas>
 </div>
-<h3>What is Profit Loss Calculator?</h3>
-<p>This Profit and Loss Calculator helps you quickly determine how much you gain or lose from a trade. By entering your buy price, sell price, and asset amount, you can instantly see your total profit or loss.
-Understanding profit and loss is essential for any trader or investor. It allows you to evaluate your trading performance and make better decisions in the future. Instead of calculating manually, this tool simplifies the process and eliminates errors.
-For example, if you buy an asset at $100 and sell it at $120, your profit depends on how many units you hold. This calculator handles all the math for you instantly.
-This tool is especially useful for stock traders, crypto investors, and forex traders who want quick and accurate results. Use it regularly to track your performance and improve your trading strategy.</p>
 
-<h3>How to use it?</h3>
-<ul>
-<li>Enter buy price</li>
-<li>Enter sell price</li>
-<li>Enter amount</li>
-<li>Click calculate</li>
-</ul>
+<div class="container" style="margin-top:22px;">
+  <h2>What is a Profit / Loss Calculator?</h2>
+  <p>
+    A Profit / Loss Calculator helps traders and investors quickly measure how much they gained or lost on a trade.
+    By entering your buy price, sell price, and quantity, you can instantly see the outcome instead of doing the math manually.
+  </p>
 
-<h3>Who uses this?</h3>
-<p>Traders and investors who want to quickly check their gains or losses.</p>
+  <p>
+    This matters because a trade is not just about price direction. The size of your position, your fees, and your exit price all affect the final result.
+    A proper calculator helps you understand the real outcome of a trade before you scale up risk.
+  </p>
 
-<div class="related">
-<h3>Related Calculators</h3>
-<p>You may also find these tools useful:</p>
-<ul>
-<li><a href="roi-calculator.html">ROI Calculator</a></li>
-<li><a href="crypto-profit-calculator.html">Crypto Profit Calculator</a></li>
-<li><a href="position-size-calculator.html">Position Size Calculator</a></li>
-<li><a href="risk-reward-calculator.html">Risk Reward Calculator</a></li>
-<li><a href="break-even-calculator.html">Break Even Calculator</a></li>
-</ul>
+  <h2>How This Calculator Works</h2>
+  <p>
+    The calculator first multiplies the buy price by the quantity to get your initial investment.
+    Then it multiplies the sell price by the same quantity to get the final value before fees.
+    If you enter fees, those are subtracted from the trade result to show the net profit or loss.
+  </p>
+
+  <ul>
+    <li><strong>Buy Price</strong> = the price you entered the trade at</li>
+    <li><strong>Sell Price</strong> = the price you exited the trade at</li>
+    <li><strong>Quantity / Units</strong> = how many units you bought</li>
+    <li><strong>Fees</strong> = commissions or trading costs</li>
+  </ul>
+
+  <h2>Why Profit / Loss Matters</h2>
+  <p>
+    Many traders focus only on direction and ignore the size of their position. That is a mistake.
+    Even if your trade is correct, high fees or poor position sizing can reduce your real return.
+  </p>
+
+  <p>
+    This calculator helps you answer the question that matters most:
+    <strong>Did this trade actually make money after costs?</strong>
+  </p>
+
+  <p style="font-weight:bold; color:#f87171;">
+    ⚠️ A trade that looks profitable on paper can be less profitable after fees.
+  </p>
+
+  <h2>How to Use This Calculator</h2>
+  <ul>
+    <li>Enter your buy price</li>
+    <li>Enter your sell price</li>
+    <li>Enter the number of units or shares</li>
+    <li>Add fees if you want the net result</li>
+    <li>Click calculate</li>
+  </ul>
+
+  <h2>Who Uses This?</h2>
+  <p>
+    Traders and investors use this tool to check stock trades, crypto trades, forex-related positions, and general investment performance.
+    It is especially useful when you want a fast and reliable way to compare trades.
+  </p>
+
+  <h3>Frequently Asked Questions</h3>
+
+  <div class="faq">
+
+    <div class="faq-item">
+      <button class="faq-question">
+        Why should I include fees?
+        <span class="arrow">▼</span>
+      </button>
+      <div class="faq-answer">
+        <p>
+          Fees reduce your actual profit and increase your actual loss. Including them gives you a more realistic result.
+        </p>
+      </div>
+    </div>
+
+    <div class="faq-item">
+      <button class="faq-question">
+        What does return percentage mean?
+        <span class="arrow">▼</span>
+      </button>
+      <div class="faq-answer">
+        <p>
+          Return percentage shows your profit or loss compared to the original investment. It helps you compare different trades more easily.
+        </p>
+      </div>
+    </div>
+
+    <div class="faq-item">
+      <button class="faq-question">
+        What is break-even price?
+        <span class="arrow">▼</span>
+      </button>
+      <div class="faq-answer">
+        <p>
+          Break-even price is the sell price where your profit is zero after considering your buy price, quantity, and fees.
+        </p>
+      </div>
+    </div>
+
+    <div class="faq-item">
+      <button class="faq-question">
+        Can this calculator be used for crypto and forex?
+        <span class="arrow">▼</span>
+      </button>
+      <div class="faq-answer">
+        <p>
+          Yes. It works for stocks, crypto, and forex-related positions as long as you enter the correct price and quantity values.
+        </p>
+      </div>
+    </div>
+
+    <div class="faq-item">
+      <button class="faq-question">
+        Why is quantity important?
+        <span class="arrow">▼</span>
+      </button>
+      <div class="faq-answer">
+        <p>
+          Quantity determines how much of the price movement affects your portfolio. A bigger position means a bigger profit or loss.
+        </p>
+      </div>
+    </div>
+
+    <div class="faq-item">
+      <button class="faq-question">
+        Does this calculator show net or gross result?
+        <span class="arrow">▼</span>
+      </button>
+      <div class="faq-answer">
+        <p>
+          It shows gross profit or loss and also lets you include fees to see the net result.
+        </p>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="related">
+    <h3>Related Calculators</h3>
+    <p>You may also find these tools useful:</p>
+    <ul>
+      <li><a href="roi-calculator.html">ROI Calculator</a></li>
+      <li><a href="crypto-profit-calculator.html">Crypto Profit Calculator</a></li>
+      <li><a href="position-size-calculator.html">Position Size Calculator</a></li>
+      <li><a href="risk-reward-calculator.html">Risk Reward Calculator</a></li>
+      <li><a href="break-even-calculator.html">Break Even Calculator</a></li>
+    </ul>
+  </div>
 </div>
-  
+
 <div class="disclaimer">
-<p>
-<strong>Disclaimer:</strong> The calculators on this website are provided for informational and educational purposes only. 
-All results are estimates based on the values entered and do not constitute financial, investment, or trading advice. 
-Always conduct your own research before making financial decisions.
-</p>
+  <p>
+    <strong>Disclaimer:</strong> The calculators on this website are provided for informational and educational purposes only.
+    All results are estimates based on the values entered and do not constitute financial, investment, or trading advice.
+    Always conduct your own research before making financial decisions.
+  </p>
 </div>
-  <script src="footer.js"></script>
-<script>
 
+<script src="footer.js"></script>
+
+<script>
 let chart;
 
 function calculate(){
+  const buy = parseFloat(document.getElementById("buy").value);
+  const sell = parseFloat(document.getElementById("sell").value);
+  const amount = parseFloat(document.getElementById("amount").value);
+  const fee = parseFloat(document.getElementById("fee").value) || 0;
 
-let buy = parseFloat(document.getElementById("buy").value)
-let sell = parseFloat(document.getElementById("sell").value)
-let amount = parseFloat(document.getElementById("amount").value)
+  if (
+    isNaN(buy) || isNaN(sell) || isNaN(amount) ||
+    buy <= 0 || sell <= 0 || amount <= 0
+  ) {
+    alert("Please enter valid positive numbers for buy price, sell price, and quantity.");
+    return;
+  }
 
-let investment = buy * amount
-let value = sell * amount
-let profit = value - investment
+  const investment = buy * amount;
+  const grossValue = sell * amount;
+  const grossProfit = grossValue - investment;
+  const netProfit = grossProfit - fee;
+  const returnPercent = (netProfit / investment) * 100;
+  const breakevenSell = buy + (fee / amount);
 
-document.getElementById("result").innerHTML =
-"Profit / Loss: $" + profit.toFixed(2)
+  const resultEl = document.getElementById("result");
+  resultEl.innerHTML =
+    `Net Profit / Loss: $${netProfit.toFixed(2)}<br>` +
+    `Return: ${returnPercent.toFixed(2)}%<br>` +
+    `Gross Profit / Loss: $${grossProfit.toFixed(2)}<br>` +
+    `Break-even Sell Price: $${breakevenSell.toFixed(4)}`;
 
-drawChart(investment,value)
+  resultEl.style.color = netProfit >= 0 ? "#22c55e" : "#ef4444";
 
+  drawChart(investment, grossValue, grossValue - fee);
 }
 
-function drawChart(investment,value){
+function drawChart(investment, grossValue, netValue){
+  const ctx = document.getElementById("myChart");
 
-let ctx = document.getElementById('myChart')
+  if (chart) {
+    chart.destroy();
+  }
 
-if(chart){
-chart.destroy()
+  chart = new Chart(ctx, {
+    type: "bar",
+    data: {
+      labels: ["Investment", "Gross Final Value", "Net Final Value"],
+      datasets: [{
+        label: "Value",
+        data: [investment, grossValue, netValue],
+        backgroundColor: ["#3b82f6", "#22c55e", "#f59e0b"]
+      }]
+    },
+    options: {
+      plugins: {
+        legend: {
+          labels: { color: "white" }
+        }
+      },
+      scales: {
+        x: {
+          ticks: { color: "white" },
+          grid: { color: "rgba(255,255,255,0.08)" }
+        },
+        y: {
+          ticks: { color: "white" },
+          grid: { color: "rgba(255,255,255,0.08)" }
+        }
+      }
+    }
+  });
 }
 
-chart = new Chart(ctx,{
-type:'bar',
-data:{
-labels:['Investment','Final Value'],
-datasets:[{
-label:'Portfolio',
-data:[investment,value]
-}]
-}
-})
-
-}
-
+document.querySelectorAll(".faq-question").forEach(btn => {
+  btn.addEventListener("click", () => {
+    btn.parentElement.classList.toggle("active");
+  });
+});
 </script>
 
 </body>
-
 </html>
