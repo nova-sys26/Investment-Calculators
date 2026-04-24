@@ -146,12 +146,11 @@ canvas{
 
   <button onclick="calculate()">Calculate</button>
 
-  <div class="result-box"
-    style="display:none;">
-    <h3 id="risk">Risk: —</h3>
-    <h3 id="reward">Reward: —</h3>
-    <h3 id="ratio">Risk / Reward Ratio: —</h3>
-    <h3 id="insight">Insight: —</h3>
+  <div id="resultsBox" style="display:none;">
+  <p>Risk: <span id="risk">—</span></p>
+  <p>Reward: <span id="reward">—</span></p>
+  <p>Risk / Reward Ratio: <span id="ratio">—</span></p>
+  <p>Insight: <span id="insight">—</span></p>
   </div>
 
   <canvas id="myChart"></canvas>
