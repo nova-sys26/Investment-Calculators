@@ -114,12 +114,36 @@ canvas{
   background:#3b82f6;
 }
 
-.result-box{
-  margin-top:14px;
-  padding:14px;
-  border-radius:10px;
-  background:rgba(255,255,255,0.04);
-  line-height:1.7;
+.result-card{
+background:#273449;
+padding:20px;
+border-radius:14px;
+margin-top:20px;
+position:relative;
+}
+
+/* soldaki mavi çizgi */
+.result-card::before{
+content:"";
+position:absolute;
+left:12px;
+top:20px;
+bottom:20px;
+width:4px;
+background:#22c55e;
+border-radius:2px;
+}
+
+/* satırlar */
+.result-line{
+padding-left:20px;
+margin:15px 0;
+font-size:18px;
+color:#e5e7eb;
+}
+
+.result-line strong{
+color:#cbd5f5;
 }
 </style>
 </head>
@@ -146,13 +170,29 @@ canvas{
 
   <button onclick="calculate()">Calculate</button>
 
-  <div id="resultsBox" style="display:none;">
-  <p>Risk: <span id="risk">—</span></p>
-  <p>Reward: <span id="reward">—</span></p>
-  <p>Risk / Reward Ratio: <span id="ratio">—</span></p>
-  <p>Insight: <span id="insight">—</span></p>
-  </div>
+  <div id="resultsBox" class="result-card" style="display:none;">
 
+  <p class="result-line">
+    <strong>Risk:</strong>
+    <span id="risk">—</span>
+  </p>
+
+  <p class="result-line">
+    <strong>Reward:</strong>
+    <span id="reward">—</span>
+  </p>
+
+  <p class="result-line">
+    <strong>Risk / Reward Ratio:</strong>
+    <span id="ratio">—</span>
+  </p>
+
+  <p class="result-line">
+    <strong>Insight:</strong>
+    <span id="insight">—</span>
+  </p>
+
+  </div>
   <canvas id="myChart"></canvas>
 </div>
 
