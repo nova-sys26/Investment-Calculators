@@ -1,17 +1,17 @@
-
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
 <meta charset="UTF-8">
 <title>Risk Reward Calculator – Optimize Your Trades</title>
 <meta name="description" content="Analyze risk vs reward ratio before entering a trade. Improve your trading strategy instantly.">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <link rel="stylesheet" href="style.css">
 
 <style>
 body{
-  font-family:Arial;
+  font-family: Arial, sans-serif;
   background:#0f172a;
   color:white;
   display:flex;
@@ -19,6 +19,8 @@ body{
   align-items:center;
   flex-direction:column;
   min-height:100vh;
+  margin:0;
+  padding:24px 0;
 }
 
 .container{
@@ -27,15 +29,32 @@ body{
   border-radius:12px;
   width:90%;
   max-width:500px;
+  box-shadow:0 10px 25px rgba(0,0,0,0.25);
+  margin-bottom:22px;
+}
+
+h1{
+  margin-top:0;
+  margin-bottom:8px;
+}
+
+.subhead{
+  color:#94a3b8;
+  font-size:14px;
+  line-height:1.5;
+  margin-bottom:16px;
 }
 
 input{
   width:100%;
   padding:12px;
   margin:10px 0;
-  border-radius:6px;
+  border-radius:8px;
   border:none;
   box-sizing:border-box;
+  font-size:16px;
+  background:#e5e7eb;
+  color:#111827;
 }
 
 button{
@@ -46,6 +65,8 @@ button{
   color:white;
   cursor:pointer;
   margin-top:10px;
+  font-size:16px;
+  width:100%;
 }
 
 button:hover{
@@ -53,7 +74,7 @@ button:hover{
 }
 
 canvas{
-  margin-top:25px;
+  margin-top:24px;
 }
 
 .menu{
@@ -85,7 +106,7 @@ canvas{
 
 .toggle{
   display:flex;
-  margin:10px 0 14px;
+  margin:12px 0 14px;
   gap:0;
   overflow:hidden;
   border-radius:8px;
@@ -100,6 +121,7 @@ canvas{
   color:white;
   margin-top:0;
   border-radius:0;
+  width:auto;
 }
 
 .toggle button:first-child{
@@ -115,40 +137,101 @@ canvas{
 }
 
 .result-card{
-background:#273449;
-padding:20px;
-border-radius:14px;
-margin-top:20px;
-position:relative;
+  background:#273449;
+  padding:20px 20px 20px 24px;
+  border-radius:14px;
+  margin-top:20px;
+  position:relative;
+  display:none;
 }
 
-/* soldaki mavi çizgi */
 .result-card::before{
-content:"";
-position:absolute;
-left:12px;
-top:20px;
-bottom:20px;
-width:4px;
-background:#22c55e;
-border-radius:2px;
+  content:"";
+  position:absolute;
+  left:12px;
+  top:20px;
+  bottom:20px;
+  width:4px;
+  background:#22c55e;
+  border-radius:2px;
 }
 
-/* satırlar */
 .result-line{
-padding-left:20px;
-margin:15px 0;
-font-size:18px;
-color:#e5e7eb;
+  padding-left:18px;
+  margin:15px 0;
+  font-size:18px;
+  color:#e5e7eb;
+  line-height:1.4;
 }
 
 .result-line strong{
-color:#cbd5f5;
+  color:#cbd5f5;
+}
+
+.insight-good{
+  color:#22c55e;
+}
+
+.insight-okay{
+  color:#facc15;
+}
+
+.insight-weak{
+  color:#ef4444;
+}
+
+.faq{
+  margin-top:24px;
+}
+
+.faq-item{
+  border-bottom:1px solid rgba(255,255,255,0.08);
+}
+
+.faq-question{
+  width:100%;
+  background:none;
+  border:none;
+  color:white;
+  text-align:left;
+  padding:14px 8px;
+  font-size:15px;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  cursor:pointer;
+}
+
+.faq-question:hover{
+  color:#93c5fd;
+}
+
+.arrow{
+  transition:0.25s;
+}
+
+.faq-item.active .arrow{
+  transform:rotate(180deg);
+}
+
+.faq-answer{
+  max-height:0;
+  overflow:hidden;
+  transition:max-height 0.3s ease;
+  color:#cbd5e1;
+  font-size:14px;
+  padding:0 8px;
+}
+
+.faq-item.active .faq-answer{
+  max-height:240px;
+  padding-bottom:12px;
 }
 </style>
 </head>
 
 <body>
+
 <p class="toptext">Explore more calculators</p>
 
 <div class="menu">
@@ -158,6 +241,10 @@ color:#cbd5f5;
 <h1>Risk Reward Calculator</h1>
 
 <div class="container">
+  <p class="subhead">
+    Compare potential loss and gain before taking a trade. Useful for stocks, forex, crypto, and other markets.
+  </p>
+
   <div class="toggle">
     <button id="longBtn" class="active" onclick="setSide('long')">Long</button>
     <button id="shortBtn" onclick="setSide('short')">Short</button>
@@ -170,214 +257,199 @@ color:#cbd5f5;
 
   <button onclick="calculate()">Calculate</button>
 
-  <div id="resultsBox" class="result-card" style="display:none;">
-<div id="resultsBox" class="result-card" style="display:none;">
-  <p class="result-line">
-    <strong>Risk:</strong> <span id="risk">—</span>
-  </p>
+  <div id="resultsBox" class="result-card">
+    <p class="result-line"><strong>Risk:</strong> <span id="riskOut">—</span></p>
+    <p class="result-line"><strong>Reward:</strong> <span id="rewardOut">—</span></p>
+    <p class="result-line"><strong>Risk / Reward Ratio:</strong> <span id="ratioOut">—</span></p>
+    <p class="result-line"><strong>Insight:</strong> <span id="insightOut">—</span></p>
+  </div>
 
-  <p class="result-line">
-    <strong>Reward:</strong> <span id="reward">—</span>
-  </p>
-
-  <p class="result-line">
-    <strong>Risk / Reward Ratio:</strong> <span id="ratio">—</span>
-  </p>
-
-  <p class="result-line">
-    <strong>Insight:</strong> <span id="insight">—</span>
-  </p>
+  <canvas id="myChart"></canvas>
 </div>
-<h2>What is a Risk Reward Calculator?</h2>
 
-<p>
-A Risk Reward Calculator helps traders measure whether a trade is worth taking by comparing how much they could lose versus how much they could gain. It is one of the most important tools in trading because a profitable strategy is not only about finding good entries — it is also about managing risk properly.
-</p>
+<div class="container">
+  <h2>What is a Risk Reward Calculator?</h2>
 
-<p>
-Before entering a trade, it is not enough to know the entry price and target. You also need to know how much money is at risk if the trade fails. This calculator shows that relationship clearly so you can make better decisions in stocks, forex, crypto, and other markets.
-</p>
+  <p>
+    A Risk Reward Calculator helps traders measure whether a trade is worth taking by comparing how much they could lose versus how much they could gain. It is one of the most useful tools in trading because good trading is not only about finding a good entry — it is also about knowing whether the upside is worth the downside.
+  </p>
 
-<h2>How This Calculator Works</h2>
+  <p>
+    Before entering a trade, you need to understand the amount at risk if the trade fails and the amount you can make if it succeeds. This calculator turns that into a simple comparison so you can make clearer decisions.
+  </p>
 
-<p>
-The calculator uses your entry price, position size, stop loss, and take profit to estimate the dollar amount at risk and the dollar amount you could earn. It then compares those two values to produce your risk/reward ratio.
-</p>
+  <h2>How This Calculator Works</h2>
 
-<ul>
-  <li><strong>Entry Price</strong> = the price where the trade begins</li>
-  <li><strong>Position Size</strong> = how many units you are trading</li>
-  <li><strong>Stop Loss</strong> = the price where you accept the trade is wrong</li>
-  <li><strong>Take Profit</strong> = the price where you plan to exit with profit</li>
-</ul>
+  <p>
+    The calculator uses your entry price, position size, stop loss, and take profit to estimate the dollar amount at risk and the dollar amount you could earn. It then compares those values to produce your risk/reward ratio.
+  </p>
 
-<p>
-This gives you a clear picture of whether the potential reward is large enough to justify the risk.
-</p>
-
-<h2>Why Risk Reward Matters</h2>
-
-<p>
-Many traders focus only on whether a trade looks likely to go up or down. That is not enough. A trade can have a strong setup and still be a bad idea if the downside is too large compared to the upside.
-</p>
-
-<p>
-Risk reward helps you think like a disciplined trader. Instead of asking only “Will this trade win?”, you start asking “Is this trade worth the risk if I am wrong?”
-</p>
-
-<ul>
-  <li>It helps you avoid low-quality setups</li>
-  <li>It improves trade planning and consistency</li>
-  <li>It makes position sizing more meaningful</li>
-  <li>It supports long-term risk management</li>
-</ul>
-
-<h2>Understanding the Ratio</h2>
-
-<p>
-A risk/reward ratio tells you how much you stand to gain for every unit of risk. For example, a 1:2 ratio means you are risking 1 unit to try to make 2 units. In general, higher reward relative to risk is better, but that does not mean every high-ratio trade is automatically good.
-</p>
-
-<p>
-A strong trade still needs realistic entry, a valid stop loss, and a target that the market can actually reach. Good traders look for setups where the ratio is attractive and the trade logic still makes sense.
-</p>
-
-<h2>Why Position Size Changes Everything</h2>
-
-<p>
-The same price setup can produce very different results depending on your position size. That is why this calculator includes units or position size. A small position may make the trade manageable, while a large position can turn a reasonable setup into an overly risky one.
-</p>
-
-<p>
-Risk reward is not only about price distance. It is also about how much capital is actually exposed.
-</p>
-
-<h2>Common Trading Mistake</h2>
-
-<p>
-A very common mistake is entering trades with poor reward potential just because the setup feels “safe.” In reality, a trade with weak upside and meaningful downside can damage long-term performance, even if the win rate looks acceptable.
-</p>
-
-<p>
-The better approach is to evaluate every trade before entering it and only take setups that offer a clear advantage.
-</p>
-
-<h2>How to Use This Calculator</h2>
-
-<ul>
-  <li>Enter your entry price</li>
-  <li>Enter your position size</li>
-  <li>Enter your stop loss price</li>
-  <li>Enter your take profit price</li>
-  <li>Click calculate to see risk, reward, and ratio</li>
-</ul>
-
-<p>
-This tool helps you quickly compare the downside and upside of a trade so you can make more rational decisions.
-</p>
-
-<h2>The Real Insight</h2>
-
-<p>
-Trading success is not only about being right. It is about making sure the trades you take are worth it when you are right — and survivable when you are wrong.
-</p>
-
-<p>
-That is why risk reward is one of the most valuable calculations in trading. It helps you protect your capital, filter weak setups, and build a more disciplined strategy over time.
-</p>
-
-<p style="font-weight:bold; color:#f87171;">
-⚠️ A trade with weak reward and large risk can hurt your account even if the setup looks good.
-</p>
-
-<h3>Frequently Asked Questions</h3>
-
-<div class="faq">
-
-  <div class="faq-item">
-    <button class="faq-question">
-      What is a good risk/reward ratio?
-      <span class="arrow">▼</span>
-    </button>
-    <div class="faq-answer">
-      <p>
-        Many traders aim for at least 1:2, meaning they are trying to make twice as much as they are risking. However, the best ratio depends on the strategy, win rate, and market conditions.
-      </p>
-    </div>
-  </div>
-
-  <div class="faq-item">
-    <button class="faq-question">
-      Is a higher risk/reward ratio always better?
-      <span class="arrow">▼</span>
-    </button>
-    <div class="faq-answer">
-      <p>
-        Not always. A very high ratio is useless if the target is unrealistic. The best trades combine a good ratio with a setup that has a real chance of reaching the target.
-      </p>
-    </div>
-  </div>
-
-  <div class="faq-item">
-    <button class="faq-question">
-      Why does position size matter in risk/reward?
-      <span class="arrow">▼</span>
-    </button>
-    <div class="faq-answer">
-      <p>
-        Position size determines how much money each price move is worth. A trade’s risk and reward only become meaningful once you know how much capital is actually exposed.
-      </p>
-    </div>
-  </div>
-
-  <div class="faq-item">
-    <button class="faq-question">
-      Can a trade still be good with a low risk/reward ratio?
-      <span class="arrow">▼</span>
-    </button>
-    <div class="faq-answer">
-      <p>
-        Yes, in some cases. A strategy with a high win rate may still work with a lower ratio, but the overall expectancy must still be positive.
-      </p>
-    </div>
-  </div>
-
-  <div class="faq-item">
-    <button class="faq-question">
-      Why is stop loss important for risk/reward?
-      <span class="arrow">▼</span>
-    </button>
-    <div class="faq-answer">
-      <p>
-        The stop loss defines your maximum acceptable loss. Without it, you cannot calculate risk properly, and the ratio becomes meaningless.
-      </p>
-    </div>
-  </div>
-
-  <div class="faq-item">
-    <button class="faq-question">
-      Does this calculator work for forex, crypto, and stocks?
-      <span class="arrow">▼</span>
-    </button>
-    <div class="faq-answer">
-      <p>
-        Yes. It can be used for any market where you have an entry price, stop loss, take profit, and position size.
-      </p>
-    </div>
-  </div>
-
-</div>   
-
-<div class="related">
-  <h3>Related Calculators</h3>
-  <p>You may also find these tools useful:</p>
   <ul>
-    <li><a href="position-size-calculator.html">Position Size Calculator</a></li>
-    <li><a href="stop-loss-calculator.html">Stop Loss Calculator</a></li>
-    <li><a href="leverage-calculator.html">Leverage Calculator</a></li>
-    <li><a href="profit-loss-calculator.html">Profit Loss Calculator</a></li>
-    <li><a href="break-even-calculator.html">Break Even Calculator</a></li>
+    <li><strong>Entry Price</strong> = where the trade begins</li>
+    <li><strong>Position Size</strong> = how many units you are trading</li>
+    <li><strong>Stop Loss</strong> = where you accept the trade is wrong</li>
+    <li><strong>Take Profit</strong> = where you plan to exit with profit</li>
   </ul>
+
+  <h2>Why Risk Reward Matters</h2>
+
+  <p>
+    Many traders focus only on whether a trade is likely to go up or down. That is not enough. A trade can look good and still be a bad idea if the downside is too large compared to the upside.
+  </p>
+
+  <p>
+    Risk reward helps you think like a disciplined trader. Instead of asking only “Will this trade win?”, you start asking “Is this trade worth the risk if I am wrong?”
+  </p>
+
+  <ul>
+    <li>It helps you avoid low-quality setups</li>
+    <li>It improves trade planning and consistency</li>
+    <li>It makes position sizing more meaningful</li>
+    <li>It supports long-term risk management</li>
+  </ul>
+
+  <h2>Understanding the Ratio</h2>
+
+  <p>
+    A risk/reward ratio tells you how much you stand to gain for every unit of risk. For example, a 1:2 ratio means you are risking 1 unit to try to make 2 units. In general, higher reward relative to risk is better, but that does not mean every high-ratio trade is automatically good.
+  </p>
+
+  <p>
+    A strong trade still needs realistic entry, a valid stop loss, and a target that the market can actually reach. Good traders look for setups where the ratio is attractive and the trade logic still makes sense.
+  </p>
+
+  <h2>Why Position Size Changes Everything</h2>
+
+  <p>
+    The same setup can produce very different results depending on your position size. A small position may make the trade manageable, while a large position can turn a reasonable setup into an overly risky one.
+  </p>
+
+  <p>
+    Risk reward is not only about price distance. It is also about how much capital is actually exposed.
+  </p>
+
+  <h2>Common Trading Mistake</h2>
+
+  <p>
+    A very common mistake is entering trades with poor reward potential just because the setup feels “safe.” In reality, a trade with weak upside and meaningful downside can hurt long-term performance, even if the win rate looks acceptable.
+  </p>
+
+  <p>
+    The better approach is to evaluate every trade before entering it and only take setups that offer a clear advantage.
+  </p>
+
+  <h2>How to Use This Calculator</h2>
+
+  <ul>
+    <li>Choose whether the trade is long or short</li>
+    <li>Enter your entry price</li>
+    <li>Enter your position size</li>
+    <li>Enter your stop loss price</li>
+    <li>Enter your take profit price</li>
+    <li>Click calculate to see risk, reward, and ratio</li>
+  </ul>
+
+  <h2>The Real Insight</h2>
+
+  <p>
+    Trading success is not only about being right. It is about making sure the trades you take are worth it when you are right — and survivable when you are wrong.
+  </p>
+
+  <p>
+    That is why risk reward is one of the most valuable calculations in trading. It helps you protect your capital, filter weak setups, and build a more disciplined strategy over time.
+  </p>
+
+  <p style="font-weight:bold; color:#f87171;">
+    ⚠️ A trade with weak reward and large risk can hurt your account even if the setup looks good.
+  </p>
+
+  <h3>Frequently Asked Questions</h3>
+
+  <div class="faq">
+    <div class="faq-item">
+      <button class="faq-question">
+        What is a good risk/reward ratio?
+        <span class="arrow">▼</span>
+      </button>
+      <div class="faq-answer">
+        <p>
+          Many traders aim for at least 1:2, meaning they are trying to make twice as much as they are risking. However, the best ratio depends on the strategy, win rate, and market conditions.
+        </p>
+      </div>
+    </div>
+
+    <div class="faq-item">
+      <button class="faq-question">
+        Is a higher risk/reward ratio always better?
+        <span class="arrow">▼</span>
+      </button>
+      <div class="faq-answer">
+        <p>
+          Not always. A very high ratio is useless if the target is unrealistic. The best trades combine a good ratio with a setup that has a real chance of reaching the target.
+        </p>
+      </div>
+    </div>
+
+    <div class="faq-item">
+      <button class="faq-question">
+        Why does position size matter in risk/reward?
+        <span class="arrow">▼</span>
+      </button>
+      <div class="faq-answer">
+        <p>
+          Position size determines how much money each price move is worth. A trade’s risk and reward only become meaningful once you know how much capital is actually exposed.
+        </p>
+      </div>
+    </div>
+
+    <div class="faq-item">
+      <button class="faq-question">
+        Can a trade still be good with a low risk/reward ratio?
+        <span class="arrow">▼</span>
+      </button>
+      <div class="faq-answer">
+        <p>
+          Yes, in some cases. A strategy with a high win rate may still work with a lower ratio, but the overall expectancy must still be positive.
+        </p>
+      </div>
+    </div>
+
+    <div class="faq-item">
+      <button class="faq-question">
+        Why is stop loss important for risk/reward?
+        <span class="arrow">▼</span>
+      </button>
+      <div class="faq-answer">
+        <p>
+          The stop loss defines your maximum acceptable loss. Without it, you cannot calculate risk properly, and the ratio becomes meaningless.
+        </p>
+      </div>
+    </div>
+
+    <div class="faq-item">
+      <button class="faq-question">
+        Does this calculator work for forex, crypto, and stocks?
+        <span class="arrow">▼</span>
+      </button>
+      <div class="faq-answer">
+        <p>
+          Yes. It can be used for any market where you have an entry price, stop loss, take profit, and position size.
+        </p>
+      </div>
+    </div>
+  </div>
+
+  <div class="related">
+    <h3>Related Calculators</h3>
+    <p>You may also find these tools useful:</p>
+    <ul>
+      <li><a href="position-size-calculator.html">Position Size Calculator</a></li>
+      <li><a href="stop-loss-calculator.html">Stop Loss Calculator</a></li>
+      <li><a href="leverage-calculator.html">Leverage Calculator</a></li>
+      <li><a href="profit-loss-calculator.html">Profit Loss Calculator</a></li>
+      <li><a href="break-even-calculator.html">Break Even Calculator</a></li>
+    </ul>
+  </div>
 </div>
 
 <div class="disclaimer">
@@ -441,23 +513,36 @@ function calculate(){
   const reward = rewardDistance * position;
   const ratio = reward / risk;
 
-document.getElementById("risk").innerHTML = "Risk: $" + risk.toFixed(2);
-  document.getElementById("reward").innerHTML = "Reward: $" + reward.toFixed(2);
-  document.getElementById("ratio").innerHTML = "Risk / Reward Ratio: 1 : " + ratio.toFixed(2);
+  const riskOut = document.getElementById("riskOut");
+  const rewardOut = document.getElementById("rewardOut");
+  const ratioOut = document.getElementById("ratioOut");
+  const insightOut = document.getElementById("insightOut");
+
+  riskOut.innerText = "$" + risk.toFixed(2);
+  rewardOut.innerText = "$" + reward.toFixed(2);
+  ratioOut.innerText = "1 : " + ratio.toFixed(2);
 
   let insight = "";
+  let insightClass = "";
+
   if(ratio >= 3){
     insight = "Excellent setup";
+    insightClass = "insight-good";
   } else if(ratio >= 2){
     insight = "Good setup";
+    insightClass = "insight-good";
   } else if(ratio >= 1){
     insight = "Okay setup";
+    insightClass = "insight-okay";
   } else {
     insight = "Weak setup";
+    insightClass = "insight-weak";
   }
 
-  document.getElementById("insight").innerHTML = "Insight: " + insight;
-document.getElementById("resultsBox").style.display = "block
+  insightOut.innerText = insight;
+  insightOut.className = "result-value " + insightClass;
+
+  document.getElementById("resultsBox").style.display = "block";
 
   drawChart(risk, reward);
 }
@@ -486,17 +571,22 @@ function drawChart(risk, reward){
         }
       },
       scales:{
-        x:{ ticks:{ color:'white' }, grid:{ color:'rgba(255,255,255,0.08)' } },
-        y:{ ticks:{ color:'white' }, grid:{ color:'rgba(255,255,255,0.08)' } }
+        x:{
+          ticks:{ color:'white' },
+          grid:{ color:'rgba(255,255,255,0.08)' }
+        },
+        y:{
+          ticks:{ color:'white' },
+          grid:{ color:'rgba(255,255,255,0.08)' }
+        }
       }
     }
   });
 }
-  document.addEventListener("DOMContentLoaded", function(){
 
+document.addEventListener("DOMContentLoaded", function(){
   document.querySelectorAll(".faq-question").forEach(btn => {
     btn.addEventListener("click", () => {
-
       const item = btn.parentElement;
 
       document.querySelectorAll(".faq-item").forEach(i => {
@@ -504,10 +594,8 @@ function drawChart(risk, reward){
       });
 
       item.classList.toggle("active");
-
     });
   });
-
 });
 </script>
 
