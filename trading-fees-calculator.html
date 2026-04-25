@@ -1,0 +1,515 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Trading Fees Calculator – Estimate Exchange Fees, Round-Trip Costs & Fee Drag</title>
+<meta name="description" content="Calculate maker/taker trading fees, round-trip costs, and total fee drag before you trade. Fast trading fees calculator for crypto, forex, and stocks.">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<link rel="stylesheet" href="style.css">
+
+<style>
+body{
+  font-family:Arial, sans-serif;
+  background:#0f172a;
+  color:white;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  flex-direction:column;
+  min-height:100vh;
+  margin:0;
+  padding:24px 0;
+}
+
+.container{
+  background:#1e293b;
+  padding:30px;
+  border-radius:16px;
+  width:90%;
+  max-width:520px;
+  box-shadow:0 10px 25px rgba(0,0,0,0.35);
+  margin-bottom:22px;
+}
+
+h1{
+  margin-top:0;
+  margin-bottom:8px;
+}
+
+.subhead{
+  color:#94a3b8;
+  font-size:14px;
+  line-height:1.5;
+  margin-bottom:18px;
+}
+
+.section-title{
+  font-size:13px;
+  color:#94a3b8;
+  margin:14px 0 6px;
+  text-transform:uppercase;
+  letter-spacing:0.08em;
+}
+
+input{
+  width:100%;
+  padding:14px;
+  margin:10px 0;
+  border-radius:10px;
+  border:none;
+  background:#e5e7eb;
+  font-size:16px;
+  box-sizing:border-box;
+}
+
+button{
+  padding:14px 18px;
+  background:#3b82f6;
+  border:none;
+  border-radius:10px;
+  color:white;
+  cursor:pointer;
+  margin-top:10px;
+  width:100%;
+  font-size:16px;
+  font-weight:600;
+}
+
+button:hover{
+  background:#2563eb;
+}
+
+.result-card{
+  margin-top:18px;
+  padding:16px;
+  border-radius:12px;
+  background:rgba(255,255,255,0.04);
+  border:1px solid rgba(255,255,255,0.08);
+  line-height:1.8;
+  display:none;
+}
+
+.result-line{
+  margin:8px 0;
+}
+
+.result-label{
+  color:#cbd5f5;
+  font-weight:600;
+}
+
+.result-value{
+  font-weight:700;
+}
+
+canvas{
+  margin-top:22px;
+}
+
+.toptext{
+  font-size:14px;
+  color:#6b7a99;
+  margin-bottom:5px;
+}
+
+.menu{
+  margin-bottom:18px;
+}
+
+.menu a{
+  color:#3b82f6;
+  margin:10px;
+  text-decoration:none;
+}
+
+.related{
+  margin-top:28px;
+}
+
+.related a{
+  color:#93c5fd;
+  text-decoration:none;
+}
+
+.related a:hover{
+  text-decoration:underline;
+}
+
+.disclaimer{
+  margin-top:40px;
+  padding-top:20px;
+  border-top:1px solid rgba(255,255,255,0.1);
+  font-size:13px;
+  color:#9ca3af;
+  max-width:520px;
+  text-align:center;
+  line-height:1.6;
+}
+
+.faq{
+  margin-top:24px;
+}
+
+.faq-item{
+  border-bottom:1px solid rgba(255,255,255,0.08);
+}
+
+.faq-question{
+  width:100%;
+  background:none;
+  border:none;
+  color:white;
+  text-align:left;
+  padding:14px 8px;
+  font-size:15px;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  cursor:pointer;
+}
+
+.faq-question:hover{
+  color:#93c5fd;
+}
+
+.arrow{
+  transition:0.25s;
+}
+
+.faq-item.active .arrow{
+  transform:rotate(180deg);
+}
+
+.faq-answer{
+  max-height:0;
+  overflow:hidden;
+  transition:max-height 0.3s ease;
+  color:#cbd5e1;
+  font-size:14px;
+  padding:0 8px;
+}
+
+.faq-item.active .faq-answer{
+  max-height:260px;
+  padding-bottom:12px;
+}
+</style>
+</head>
+
+<body>
+
+<p class="toptext">Explore more calculators</p>
+
+<div class="menu">
+  <a href="index.html">Home</a>
+</div>
+
+<div class="container">
+  <h1>Trading Fees Calculator</h1>
+  <p class="subhead">
+    Estimate exchange fees, round-trip costs, and fee drag before you trade. Useful for crypto, forex, and stocks.
+  </p>
+
+  <div class="section-title">Trade inputs</div>
+  <input id="tradeValue" placeholder="Trade Value ($)">
+  <input id="feeRate" placeholder="Fee Rate (%) per side">
+  <input id="trades" placeholder="Number of Trades">
+
+  <div class="section-title">Optional costs</div>
+  <input id="fixedFee" placeholder="Fixed Fee per Trade ($) optional">
+  <p class="subhead" style="margin-top:-4px;">
+    Optional. Add a flat fee if your exchange charges one.
+  </p>
+
+  <button onclick="calculateFees()">Calculate Fees</button>
+
+  <div id="resultBox" class="result-card">
+    <p class="result-line">
+      <span class="result-label">Fee per side:</span>
+      <span id="sideFeeOut" class="result-value">—</span>
+    </p>
+    <p class="result-line">
+      <span class="result-label">Round-trip fee per trade:</span>
+      <span id="roundTripOut" class="result-value">—</span>
+    </p>
+    <p class="result-line">
+      <span class="result-label">Total fees:</span>
+      <span id="totalFeesOut" class="result-value">—</span>
+    </p>
+    <p class="result-line">
+      <span class="result-label">Fee drag:</span>
+      <span id="dragOut" class="result-value">—</span>
+    </p>
+    <p class="result-line">
+      <span class="result-label">Break-even profit needed:</span>
+      <span id="breakevenOut" class="result-value">—</span>
+    </p>
+  </div>
+
+  <canvas id="feeChart"></canvas>
+</div>
+
+<div class="container">
+  <h2>What is a Trading Fees Calculator?</h2>
+
+  <p>
+    A Trading Fees Calculator helps you estimate how much you pay in fees when opening and closing trades. Fees may look small on a single trade, but over many trades they can have a real impact on your returns.
+  </p>
+
+  <p>
+    This matters in crypto, forex, and stocks because every trade has a cost. If you ignore those costs, your actual performance can be worse than what your chart shows.
+  </p>
+
+  <h2>How This Calculator Works</h2>
+
+  <p>
+    The calculator uses your trade value and fee rate to estimate the fee charged on each side of the trade. It also adds any optional fixed fee and multiplies the result by the number of trades you enter.
+  </p>
+
+  <ul>
+    <li><strong>Trade Value</strong> = the dollar amount you are trading</li>
+    <li><strong>Fee Rate</strong> = the percentage charged per side</li>
+    <li><strong>Fixed Fee</strong> = a flat charge per trade, if applicable</li>
+    <li><strong>Number of Trades</strong> = how many trades you want to test</li>
+  </ul>
+
+  <p>
+    The result shows fee per side, full round-trip cost, total fees across multiple trades, and the minimum profit needed to cover those fees.
+  </p>
+
+  <h2>Why Trading Fees Matter</h2>
+
+  <p>
+    Fees can quietly reduce your profits over time. A trader with good entries can still underperform if fees are too high or if they trade too often.
+  </p>
+
+  <ul>
+    <li>Fees reduce net profit</li>
+    <li>Scalpers feel fee drag more than swing traders</li>
+    <li>High-frequency trading makes costs compound faster</li>
+    <li>Low-fee execution can improve long-term results</li>
+  </ul>
+
+  <p>
+    If you want to understand your real performance, you have to account for fees.
+  </p>
+
+  <h2>How to Use This Calculator</h2>
+
+  <ul>
+    <li>Enter your trade value</li>
+    <li>Enter the fee rate per side</li>
+    <li>Enter the number of trades</li>
+    <li>Add a fixed fee if your platform charges one</li>
+    <li>Click calculate</li>
+  </ul>
+
+  <h2>The Real Insight</h2>
+
+  <p>
+    A trade does not need to be bad to lose money after costs. Sometimes the setup is fine, but the fee structure eats too much of the edge.
+  </p>
+
+  <p>
+    This calculator helps you see that cost clearly before you scale up or increase trade frequency.
+  </p>
+
+  <p style="font-weight:bold; color:#f87171;">
+    ⚠️ Small fees become a big problem when they are paid again and again.
+  </p>
+
+  <h3>Frequently Asked Questions</h3>
+
+  <div class="faq">
+
+    <div class="faq-item">
+      <button class="faq-question">
+        Why do trading fees matter so much?
+        <span class="arrow">▼</span>
+      </button>
+      <div class="faq-answer">
+        <p>
+          Fees reduce your net profit on every trade. Over time, repeated fees can have a large impact on your overall returns, especially if you trade frequently.
+        </p>
+      </div>
+    </div>
+
+    <div class="faq-item">
+      <button class="faq-question">
+        What is the difference between fee per side and round-trip fee?
+        <span class="arrow">▼</span>
+      </button>
+      <div class="faq-answer">
+        <p>
+          Fee per side is the cost you pay when entering or exiting a trade. Round-trip fee is the total cost of both entry and exit combined.
+        </p>
+      </div>
+    </div>
+
+    <div class="faq-item">
+      <button class="faq-question">
+        Why are fees more important for scalpers?
+        <span class="arrow">▼</span>
+      </button>
+      <div class="faq-answer">
+        <p>
+          Scalpers trade very often and aim for small moves. Because their target profits are smaller, trading fees can take a much larger share of their edge.
+        </p>
+      </div>
+    </div>
+
+    <div class="faq-item">
+      <button class="faq-question">
+        Can fees turn a profitable trade into a losing one?
+        <span class="arrow">▼</span>
+      </button>
+      <div class="faq-answer">
+        <p>
+          Yes. If the profit on a trade is small and the fees are relatively high, the trade can end up losing money after costs are deducted.
+        </p>
+      </div>
+    </div>
+
+    <div class="faq-item">
+      <button class="faq-question">
+        Does this calculator work for crypto, forex, and stocks?
+        <span class="arrow">▼</span>
+      </button>
+      <div class="faq-answer">
+        <p>
+          Yes. It works for any market where you can estimate trade value and fee percentage, including crypto exchanges, forex brokers, and stock platforms.
+        </p>
+      </div>
+    </div>
+
+    <div class="faq-item">
+      <button class="faq-question">
+        How can I reduce trading fees?
+        <span class="arrow">▼</span>
+      </button>
+      <div class="faq-answer">
+        <p>
+          You can reduce fees by choosing lower-cost exchanges or brokers, using fee discounts where available, and avoiding unnecessary overtrading.
+        </p>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="related">
+    <h3>Related Calculators</h3>
+    <p>You may also find these tools useful:</p>
+    <ul>
+      <li><a href="roi-calculator.html">ROI Calculator</a></li>
+      <li><a href="profit-loss-calculator.html">Profit Loss Calculator</a></li>
+      <li><a href="position-size-calculator.html">Position Size Calculator</a></li>
+      <li><a href="risk-reward-calculator.html">Risk Reward Calculator</a></li>
+      <li><a href="break-even-calculator.html">Break Even Calculator</a></li>
+    </ul>
+  </div>
+</div>
+
+<div class="disclaimer">
+  <p>
+    <strong>Disclaimer:</strong> The calculators on this website are provided for informational and educational purposes only.
+    All results are estimates based on the values entered and do not constitute financial, investment, or trading advice.
+    Always conduct your own research before making financial decisions.
+  </p>
+</div>
+
+<script src="footer.js"></script>
+
+<script>
+let chart;
+
+function formatMoney(value){
+  return "$" + value.toFixed(2);
+}
+
+function calculateFees(){
+  const tradeValue = parseFloat(document.getElementById("tradeValue").value);
+  const feeRate = parseFloat(document.getElementById("feeRate").value);
+  const trades = parseInt(document.getElementById("trades").value, 10);
+  const fixedFee = parseFloat(document.getElementById("fixedFee").value) || 0;
+
+  if (
+    isNaN(tradeValue) || isNaN(feeRate) || isNaN(trades) ||
+    tradeValue <= 0 || feeRate < 0 || trades <= 0
+  ) {
+    alert("Please enter valid values.");
+    return;
+  }
+
+  const feePerSide = tradeValue * (feeRate / 100);
+  const roundTripFee = (feePerSide * 2) + fixedFee;
+  const totalFees = roundTripFee * trades;
+  const feeDrag = (roundTripFee / tradeValue) * 100;
+  const breakevenProfit = roundTripFee;
+
+  document.getElementById("sideFeeOut").innerText = formatMoney(feePerSide);
+  document.getElementById("roundTripOut").innerText = formatMoney(roundTripFee);
+  document.getElementById("totalFeesOut").innerText = formatMoney(totalFees);
+  document.getElementById("dragOut").innerText = feeDrag.toFixed(2) + "%";
+  document.getElementById("breakevenOut").innerText = formatMoney(breakevenProfit);
+
+  document.getElementById("resultBox").style.display = "block";
+
+  drawChart(feePerSide, roundTripFee, fixedFee, totalFees);
+}
+
+function drawChart(feePerSide, roundTripFee, fixedFee, totalFees){
+  const ctx = document.getElementById("feeChart").getContext("2d");
+
+  if(chart){
+    chart.destroy();
+  }
+
+  chart = new Chart(ctx,{
+    type:'bar',
+    data:{
+      labels:['Fee per Side','Round-Trip Fee','Fixed Fee','Total Fees'],
+      datasets:[{
+        label:'Fees',
+        data:[feePerSide, roundTripFee, fixedFee, totalFees],
+        backgroundColor:['#3b82f6','#22c55e','#f59e0b','#ef4444']
+      }]
+    },
+    options:{
+      plugins:{
+        legend:{
+          labels:{ color:'white' }
+        }
+      },
+      scales:{
+        x:{
+          ticks:{ color:'white' },
+          grid:{ color:'rgba(255,255,255,0.08)' }
+        },
+        y:{
+          ticks:{ color:'white' },
+          grid:{ color:'rgba(255,255,255,0.08)' }
+        }
+      }
+    }
+  });
+}
+
+document.addEventListener("DOMContentLoaded", function(){
+  document.querySelectorAll(".faq-question").forEach(btn => {
+    btn.addEventListener("click", () => {
+      const item = btn.parentElement;
+
+      document.querySelectorAll(".faq-item").forEach(i => {
+        if(i !== item) i.classList.remove("active");
+      });
+
+      item.classList.toggle("active");
+    });
+  });
+});
+</script>
+
+</body>
+  </html>
