@@ -172,14 +172,15 @@ canvas{
   color:#22c55e;
 }
 
-.insight-okay{
+.insight-below average{
   color:#facc15;
 }
 
 .insight-weak{
   color:#ef4444;
 }
-
+.insight-aggressive
+  color:#E82317;
 .faq{
   margin-top:24px;
 }
@@ -522,23 +523,28 @@ function calculate(){
   rewardOut.innerText = "$" + reward.toFixed(2);
   ratioOut.innerText = "1 : " + ratio.toFixed(2);
 
-
-let insight = "";
-
+  let insight = "";
+  let insightClass = "";
+  
 if(ratio < 1){
   insight = "Weak setup";
+  insightClass = "insight-weak";
 } 
 else if(ratio < 1.5){
   insight = "Below average";
+  insightClass = "insight-below-average";
 }
 else if(ratio < 2.5){
   insight = "Good setup";
+  insightClass = "insight-good";
 }
 else if(ratio < 3.5){
   insight = "Strong setup";
+  insightClass = "insight-strong";
 }
 else{
   insight = "Aggressive / unrealistic target";
+  insightClass = "insight-aggressive";
 }
 
   insightOut.innerText = insight;
