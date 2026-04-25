@@ -171,31 +171,23 @@ color:#cbd5f5;
   <button onclick="calculate()">Calculate</button>
 
   <div id="resultsBox" class="result-card" style="display:none;">
-
+<div id="resultsBox" class="result-card" style="display:none;">
   <p class="result-line">
-    <strong>Risk:</strong>
-    <span id="risk">—</span>
+    <strong>Risk:</strong> <span id="risk">—</span>
   </p>
 
   <p class="result-line">
-    <strong>Reward:</strong>
-    <span id="reward">—</span>
+    <strong>Reward:</strong> <span id="reward">—</span>
   </p>
 
   <p class="result-line">
-    <strong>Risk / Reward Ratio:</strong>
-    <span id="ratio">—</span>
+    <strong>Risk / Reward Ratio:</strong> <span id="ratio">—</span>
   </p>
 
   <p class="result-line">
-    <strong>Insight:</strong>
-    <span id="insight">—</span>
+    <strong>Insight:</strong> <span id="insight">—</span>
   </p>
-
-  </div>
-  <canvas id="myChart"></canvas>
 </div>
-
 <h2>What is a Risk Reward Calculator?</h2>
 
 <p>
@@ -449,7 +441,7 @@ function calculate(){
   const reward = rewardDistance * position;
   const ratio = reward / risk;
 
-  document.getElementById("risk").innerHTML = "Risk: $" + risk.toFixed(2);
+document.getElementById("risk").innerHTML = "Risk: $" + risk.toFixed(2);
   document.getElementById("reward").innerHTML = "Reward: $" + reward.toFixed(2);
   document.getElementById("ratio").innerHTML = "Risk / Reward Ratio: 1 : " + ratio.toFixed(2);
 
@@ -465,7 +457,7 @@ function calculate(){
   }
 
   document.getElementById("insight").innerHTML = "Insight: " + insight;
-document.getElementById("resultsBox").style.display = "block"
+document.getElementById("resultsBox").style.display = "block
 
   drawChart(risk, reward);
 }
