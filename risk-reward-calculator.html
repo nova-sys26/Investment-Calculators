@@ -7,7 +7,6 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-<link rel="stylesheet" href="style.css">
 
 <style>
 body{
@@ -171,9 +170,11 @@ canvas{
 .insight-good{
   color:#22c55e;
 }
+
 .insight-strong{
-   color:#66FF66
+  color:#66FF66;
 }
+
 .insight-below-average{
   color:#facc15;
 }
@@ -181,9 +182,11 @@ canvas{
 .insight-weak{
   color:#ef4444;
 }
-.insight-aggressive
+
+.insight-aggressive{
   color:#FF0000;
 }
+
 .faq{
   margin-top:24px;
 }
@@ -515,7 +518,13 @@ function calculate(){
 
   const risk = riskDistance * position;
   const reward = rewardDistance * position;
-  const ratio = risk / reward;
+
+  if(risk <= 0 || reward <= 0){
+    alert("Invalid setup. Check your entry, stop loss, and take profit.");
+    return;
+  }
+
+  const rr = reward / risk;
 
   const riskOut = document.getElementById("riskOut");
   const rewardOut = document.getElementById("rewardOut");
@@ -524,31 +533,34 @@ function calculate(){
 
   riskOut.innerText = "$" + risk.toFixed(2);
   rewardOut.innerText = "$" + reward.toFixed(2);
-  ratioOut.innerText = "1 : " + ratio.toFixed(2);
+
+  let ratioText = "";
+  if(rr >= 1){
+    ratioText = "1 : " + rr.toFixed(2);
+  } else {
+    ratioText = (1 / rr).toFixed(2) + " : 1";
+  }
+  ratioOut.innerText = ratioText;
 
   let insight = "";
   let insightClass = "";
-  
-if(ratio < 1){
-  insight = "Weak setup";
-  insightClass = "insight-weak";
-} 
-else if(ratio < 1.5){
-  insight = "Below average";
-  insightClass = "insight-below-average";
-}
-else if(ratio < 2.5){
-  insight = "Good setup";
-  insightClass = "insight-good";
-}
-else if(ratio < 3.5){
-  insight = "Strong setup";
-  insightClass = "insight-strong";
-}
-else{
-  insight = "Aggressive / unrealistic target";
-  insightClass = "insight-aggressive";
-}
+
+  if(rr < 1){
+    insight = "Weak setup";
+    insightClass = "insight-weak";
+  } else if(rr < 1.5){
+    insight = "Below average";
+    insightClass = "insight-below-average";
+  } else if(rr < 2.5){
+    insight = "Good setup";
+    insightClass = "insight-good";
+  } else if(rr < 3.5){
+    insight = "Strong setup";
+    insightClass = "insight-strong";
+  } else {
+    insight = "Aggressive / unrealistic target";
+    insightClass = "insight-aggressive";
+  }
 
   insightOut.innerText = insight;
   insightOut.className = "result-value " + insightClass;
@@ -611,4 +623,4 @@ document.addEventListener("DOMContentLoaded", function(){
 </script>
 
 </body>
-</html>
+        </html>
