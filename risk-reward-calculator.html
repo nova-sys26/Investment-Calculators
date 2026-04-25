@@ -515,7 +515,7 @@ function calculate(){
 
   const risk = riskDistance * position;
   const reward = rewardDistance * position;
-  const ratio = reward / risk;
+  const ratio = risk / reward;
 
   const riskOut = document.getElementById("riskOut");
   const rewardOut = document.getElementById("rewardOut");
