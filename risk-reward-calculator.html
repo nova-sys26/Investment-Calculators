@@ -522,22 +522,24 @@ function calculate(){
   rewardOut.innerText = "$" + reward.toFixed(2);
   ratioOut.innerText = "1 : " + ratio.toFixed(2);
 
-  let insight = "";
-  let insightClass = "";
 
-  if(ratio >= 3){
-    insight = "Excellent setup";
-    insightClass = "insight-good";
-  } else if(ratio >= 2){
-    insight = "Good setup";
-    insightClass = "insight-good";
-  } else if(ratio >= 1){
-    insight = "Okay setup";
-    insightClass = "insight-okay";
-  } else {
-    insight = "Weak setup";
-    insightClass = "insight-weak";
-  }
+let insight = "";
+
+if(ratio < 1){
+  insight = "Weak setup";
+} 
+else if(ratio < 1.5){
+  insight = "Below average";
+}
+else if(ratio < 2.5){
+  insight = "Good setup";
+}
+else if(ratio < 3.5){
+  insight = "Strong setup";
+}
+else{
+  insight = "Aggressive / unrealistic target";
+}
 
   insightOut.innerText = insight;
   insightOut.className = "result-value " + insightClass;
