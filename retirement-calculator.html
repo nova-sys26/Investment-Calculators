@@ -1,0 +1,529 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Retirement Calculator – Estimate Future Savings, Growth & Retirement Income</title>
+<meta name="description" content="Free retirement calculator to estimate future savings, compound growth, inflation-adjusted value, and retirement income. Plan your retirement with confidence.">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<link rel="stylesheet" href="style.css">
+
+<style>
+body{
+  font-family:Arial, sans-serif;
+  background:#0f172a;
+  color:white;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  flex-direction:column;
+  min-height:100vh;
+  margin:0;
+  padding:24px 0;
+}
+
+.container{
+  background:#1e293b;
+  padding:30px;
+  border-radius:16px;
+  width:90%;
+  max-width:520px;
+  box-shadow:0 10px 25px rgba(0,0,0,0.35);
+}
+
+h1{
+  margin-top:0;
+  margin-bottom:8px;
+}
+
+.subhead{
+  color:#94a3b8;
+  font-size:14px;
+  line-height:1.6;
+  margin-bottom:18px;
+}
+
+.section-title{
+  font-size:13px;
+  color:#94a3b8;
+  margin:14px 0 6px;
+  text-transform:uppercase;
+  letter-spacing:0.08em;
+}
+
+input{
+  width:100%;
+  padding:14px;
+  margin:10px 0;
+  border-radius:10px;
+  border:none;
+  background:#e5e7eb;
+  font-size:16px;
+  box-sizing:border-box;
+}
+
+button{
+  padding:14px 18px;
+  background:#3b82f6;
+  border:none;
+  border-radius:10px;
+  color:white;
+  cursor:pointer;
+  margin-top:10px;
+  width:100%;
+  font-size:16px;
+  font-weight:600;
+}
+
+button:hover{
+  background:#2563eb;
+}
+
+.result-card{
+  margin-top:18px;
+  padding:16px;
+  border-radius:12px;
+  background:rgba(255,255,255,0.04);
+  border:1px solid rgba(255,255,255,0.08);
+  line-height:1.8;
+  display:none;
+}
+
+.result-line{
+  margin:8px 0;
+}
+
+.result-label{
+  color:#cbd5f5;
+  font-weight:600;
+}
+
+.result-value{
+  font-weight:700;
+}
+
+canvas{
+  margin-top:22px;
+}
+
+.toptext{
+  font-size:14px;
+  color:#6b7a99;
+  margin-bottom:5px;
+}
+
+.menu{
+  margin-bottom:18px;
+}
+
+.menu a{
+  color:#3b82f6;
+  margin:10px;
+  text-decoration:none;
+}
+
+.related{
+  margin-top:28px;
+}
+
+.related a{
+  color:#93c5fd;
+  text-decoration:none;
+}
+
+.related a:hover{
+  text-decoration:underline;
+}
+
+.disclaimer{
+  margin-top:40px;
+  padding-top:20px;
+  border-top:1px solid rgba(255,255,255,0.1);
+  font-size:13px;
+  color:#9ca3af;
+  max-width:520px;
+  text-align:center;
+  line-height:1.6;
+}
+
+.faq{
+  margin-top:24px;
+}
+
+.faq-item{
+  border-bottom:1px solid rgba(255,255,255,0.08);
+}
+
+.faq-question{
+  width:100%;
+  background:none;
+  border:none;
+  color:white;
+  text-align:left;
+  padding:14px 8px;
+  font-size:15px;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  cursor:pointer;
+}
+
+.faq-question:hover{
+  color:#93c5fd;
+}
+
+.arrow{
+  transition:0.25s;
+}
+
+.faq-item.active .arrow{
+  transform:rotate(180deg);
+}
+
+.faq-answer{
+  max-height:0;
+  overflow:hidden;
+  transition:max-height 0.3s ease;
+  color:#cbd5e1;
+  font-size:14px;
+  padding:0 8px;
+}
+
+.faq-item.active .faq-answer{
+  max-height:280px;
+  padding-bottom:12px;
+}
+</style>
+</head>
+
+<body>
+
+<p class="toptext">Explore more calculators</p>
+
+<div class="menu">
+  <a href="index.html">Home</a>
+</div>
+
+<div class="container">
+  <h1>Retirement Calculator</h1>
+  <p class="subhead">
+    Estimate your future retirement savings, compound growth, inflation-adjusted value, and possible retirement income.
+  </p>
+
+  <div class="section-title">Retirement plan inputs</div>
+  <input id="currentAge" placeholder="Current Age">
+  <input id="retirementAge" placeholder="Retirement Age">
+  <input id="currentSavings" placeholder="Current Savings ($)">
+  <input id="monthlyContribution" placeholder="Monthly Contribution ($)">
+  <input id="annualReturn" placeholder="Expected Annual Return (%)">
+  <input id="inflationRate" placeholder="Inflation Rate (%) optional">
+
+  <button onclick="calculateRetirement()">Calculate Retirement Plan</button>
+
+  <div id="resultBox" class="result-card">
+    <p class="result-line"><span class="result-label">Projected Retirement Balance:</span> <span id="futureBalanceOut" class="result-value">—</span></p>
+    <p class="result-line"><span class="result-label">Inflation-Adjusted Balance:</span> <span id="realBalanceOut" class="result-value">—</span></p>
+    <p class="result-line"><span class="result-label">Total Contributions:</span> <span id="contributionsOut" class="result-value">—</span></p>
+    <p class="result-line"><span class="result-label">Growth From Returns:</span> <span id="growthOut" class="result-value">—</span></p>
+    <p class="result-line"><span class="result-label">Estimated Monthly Retirement Income (4% rule):</span> <span id="incomeOut" class="result-value">—</span></p>
+  </div>
+
+  <canvas id="retirementChart"></canvas>
+</div>
+
+<div class="container">
+  <h2>What is a Retirement Calculator?</h2>
+
+  <p>
+    A Retirement Calculator helps you estimate how much money you could have by the time you stop working.
+    It combines your current savings, monthly contributions, expected annual return, and time until retirement to project a future balance.
+  </p>
+
+  <p>
+    Retirement planning is not just about saving money. It is about understanding whether your savings rate and expected growth are enough to support the lifestyle you want later in life.
+  </p>
+
+  <h2>How This Calculator Works</h2>
+
+  <p>
+    This calculator assumes that you contribute money every month and that your savings grow at a constant annual return rate.
+    It then estimates your future retirement balance, total contributions, and the growth created by compound returns.
+  </p>
+
+  <ul>
+    <li><strong>Current Age</strong> = your age today</li>
+    <li><strong>Retirement Age</strong> = the age you want to retire</li>
+    <li><strong>Current Savings</strong> = money already invested or saved</li>
+    <li><strong>Monthly Contribution</strong> = how much you add each month</li>
+    <li><strong>Expected Annual Return</strong> = your assumed yearly growth rate</li>
+    <li><strong>Inflation Rate</strong> = optional adjustment for real purchasing power</li>
+  </ul>
+
+  <h2>Retirement Growth Formula</h2>
+
+  <p>
+    The calculator uses compound growth with monthly contributions:
+  </p>
+
+  <p><strong>Future Value = Current Savings × (1 + r)<sup>n</sup> + Monthly Contribution × [((1 + r)<sup>n</sup> − 1) / r]</strong></p>
+
+  <p>
+    Where <strong>r</strong> is the monthly return rate and <strong>n</strong> is the total number of months until retirement.
+  </p>
+
+  <p>
+    If the expected return is 0%, the calculator falls back to simple contribution growth so the result still works correctly.
+  </p>
+
+  <h2>Why Retirement Planning Matters</h2>
+
+  <p>
+    Many people save without knowing whether they are saving enough. A retirement calculator gives you a rough picture of where you may end up if you continue your current habits.
+  </p>
+
+  <ul>
+    <li>See how much compound growth can add over time</li>
+    <li>Understand how monthly contributions change your outcome</li>
+    <li>Estimate how inflation affects real purchasing power</li>
+    <li>Get a clearer picture of possible retirement income</li>
+  </ul>
+
+  <h2>The Real Insight</h2>
+
+  <p>
+    Small monthly contributions can become large future amounts when they compound over many years. That is why starting early often matters more than trying to time the market perfectly.
+  </p>
+
+  <p>
+    The difference between nominal value and inflation-adjusted value is important. A big account balance may sound great, but what matters more is how much it can actually buy in the future.
+  </p>
+
+  <p style="font-weight:bold; color:#f87171;">
+    ⚠️ Saving consistently for a long period is usually more powerful than waiting to save a lot later.
+  </p>
+
+  <h2>How to Use This Calculator</h2>
+
+  <ul>
+    <li>Enter your current age</li>
+    <li>Enter your target retirement age</li>
+    <li>Enter your current savings</li>
+    <li>Enter your monthly contribution</li>
+    <li>Enter an expected annual return</li>
+    <li>Optionally add an inflation rate</li>
+    <li>Click calculate</li>
+  </ul>
+
+  <h3>Frequently Asked Questions</h3>
+
+  <div class="faq">
+
+    <div class="faq-item">
+      <button class="faq-question">
+        How accurate is a retirement calculator?
+        <span class="arrow">▼</span>
+      </button>
+      <div class="faq-answer">
+        <p>
+          It is only an estimate. Real markets do not grow at a constant rate, and life events can change savings, contributions, or retirement age. Still, it is very useful for planning.
+        </p>
+      </div>
+    </div>
+
+    <div class="faq-item">
+      <button class="faq-question">
+        Why does inflation matter so much?
+        <span class="arrow">▼</span>
+      </button>
+      <div class="faq-answer">
+        <p>
+          Inflation reduces purchasing power over time. A retirement balance that looks large today may buy less in the future if prices rise faster than your money grows.
+        </p>
+      </div>
+    </div>
+
+    <div class="faq-item">
+      <button class="faq-question">
+        Should I use nominal or inflation-adjusted values?
+        <span class="arrow">▼</span>
+      </button>
+      <div class="faq-answer">
+        <p>
+          Both matter. Nominal values show the raw future balance, while inflation-adjusted values show what that balance may be worth in today’s money.
+        </p>
+      </div>
+    </div>
+
+    <div class="faq-item">
+      <button class="faq-question">
+        Does a higher monthly contribution really make a big difference?
+        <span class="arrow">▼</span>
+      </button>
+      <div class="faq-answer">
+        <p>
+          Yes. Even a small increase in monthly savings can compound into a much larger retirement balance over long periods of time.
+        </p>
+      </div>
+    </div>
+
+    <div class="faq-item">
+      <button class="faq-question">
+        What is the 4% rule?
+        <span class="arrow">▼</span>
+      </button>
+      <div class="faq-answer">
+        <p>
+          The 4% rule is a simple retirement income guideline that suggests withdrawing about 4% of your portfolio per year. This calculator uses it as a rough estimate for possible monthly income.
+        </p>
+      </div>
+    </div>
+
+    <div class="faq-item">
+      <button class="faq-question">
+        Can I use this calculator for early retirement planning?
+        <span class="arrow">▼</span>
+      </button>
+      <div class="faq-answer">
+        <p>
+          Yes. It works for any retirement timeline. You can test different ages, contribution amounts, and return assumptions to see what early retirement might require.
+        </p>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="related">
+    <h3>Related Calculators</h3>
+    <p>You may also find these tools useful:</p>
+    <ul>
+      <li><a href="compound-interest-calculator.html">Compound Interest Calculator</a></li>
+      <li><a href="inflation-calculator.html">Inflation Calculator</a></li>
+      <li><a href="roi-calculator.html">ROI Calculator</a></li>
+      <li><a href="loan-calculator.html">Loan Calculator</a></li>
+      <li><a href="mortgage-calculator.html">Mortgage Calculator</a></li>
+    </ul>
+  </div>
+</div>
+
+<div class="disclaimer">
+  <p>
+    <strong>Disclaimer:</strong> The calculators on this website are provided for informational and educational purposes only.
+    All results are estimates based on the values entered and do not constitute financial, investment, or retirement advice.
+    Always conduct your own research before making financial decisions.
+  </p>
+</div>
+
+<script src="footer.js"></script>
+<script>
+let chart;
+
+function formatMoney(value){
+  return "$" + value.toLocaleString(undefined, { maximumFractionDigits: 2, minimumFractionDigits: 2 });
+}
+
+function calculateRetirement(){
+  const currentAge = parseFloat(document.getElementById("currentAge").value);
+  const retirementAge = parseFloat(document.getElementById("retirementAge").value);
+  const currentSavings = parseFloat(document.getElementById("currentSavings").value);
+  const monthlyContribution = parseFloat(document.getElementById("monthlyContribution").value);
+  const annualReturn = parseFloat(document.getElementById("annualReturn").value);
+  const inflationRate = parseFloat(document.getElementById("inflationRate").value) || 0;
+
+  if (
+    isNaN(currentAge) || isNaN(retirementAge) || isNaN(currentSavings) ||
+    isNaN(monthlyContribution) || isNaN(annualReturn)
+  ) {
+    alert("Please fill all required fields.");
+    return;
+  }
+
+  if (retirementAge <= currentAge) {
+    alert("Retirement age must be greater than current age.");
+    return;
+  }
+
+  const years = retirementAge - currentAge;
+  const months = Math.round(years * 12);
+  const monthlyRate = annualReturn / 100 / 12;
+
+  let futureBalance = 0;
+
+  if (monthlyRate === 0) {
+    futureBalance = currentSavings + (monthlyContribution * months);
+  } else {
+    futureBalance =
+      currentSavings * Math.pow(1 + monthlyRate, months) +
+      monthlyContribution * ((Math.pow(1 + monthlyRate, months) - 1) / monthlyRate);
+  }
+
+  const totalContributions = currentSavings + (monthlyContribution * months);
+  const growth = futureBalance - totalContributions;
+  const inflationAdjustedBalance = futureBalance / Math.pow(1 + (inflationRate / 100), years);
+  const estimatedMonthlyIncome = (inflationAdjustedBalance * 0.04) / 12;
+
+  document.getElementById("futureBalanceOut").innerText = formatMoney(futureBalance);
+  document.getElementById("realBalanceOut").innerText = formatMoney(inflationAdjustedBalance);
+  document.getElementById("contributionsOut").innerText = formatMoney(totalContributions);
+  document.getElementById("growthOut").innerText = formatMoney(growth);
+  document.getElementById("incomeOut").innerText = formatMoney(estimatedMonthlyIncome);
+
+  document.getElementById("resultBox").style.display = "block";
+
+  drawChart(currentSavings, monthlyContribution * months, growth);
+}
+
+function drawChart(currentSavings, totalContributions, growth){
+  const ctx = document.getElementById("retirementChart").getContext("2d");
+
+  if(chart){
+    chart.destroy();
+  }
+
+  chart = new Chart(ctx,{
+    type:'bar',
+    data:{
+      labels:['Current Savings','Monthly Contributions','Growth From Returns'],
+      datasets:[{
+        label:'Retirement Breakdown',
+        data:[currentSavings, totalContributions, growth],
+        backgroundColor:['#3b82f6','#22c55e','#f59e0b']
+      }]
+    },
+    options:{
+      plugins:{
+        legend:{
+          labels:{ color:'white' }
+        }
+      },
+      scales:{
+        x:{
+          ticks:{ color:'white' },
+          grid:{ color:'rgba(255,255,255,0.08)' }
+        },
+        y:{
+          ticks:{ color:'white' },
+          grid:{ color:'rgba(255,255,255,0.08)' }
+        }
+      }
+    }
+  });
+}
+
+document.addEventListener("DOMContentLoaded", function(){
+  document.querySelectorAll(".faq-question").forEach(btn => {
+    btn.addEventListener("click", () => {
+      const item = btn.parentElement;
+
+      document.querySelectorAll(".faq-item").forEach(i => {
+        if(i !== item) i.classList.remove("active");
+      });
+
+      item.classList.toggle("active");
+    });
+  });
+});
+</script>
+
+</body>
+  </html>
