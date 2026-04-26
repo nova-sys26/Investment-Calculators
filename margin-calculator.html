@@ -1,0 +1,514 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+<meta charset="UTF-8">
+<title>Margin Calculator – Calculate Required Margin & Leverage Impact</title>
+<meta name="description" content="Free margin calculator for trading. Calculate required margin, leverage impact, usable balance, and position sizing for crypto, forex, and stocks.">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<link rel="stylesheet" href="style.css">
+  
+<style>
+
+body{
+font-family:Arial;
+background:#0f172a;
+color:white;
+display:flex;
+justify-content:center;
+align-items:center;
+flex-direction:column;
+min-height:100vh;
+margin:0;
+}
+
+.container{
+background:#1e293b;
+padding:30px;
+border-radius:16px;
+width:90%;
+max-width:500px;
+box-shadow:0 10px 25px rgba(0,0,0,0.35);
+}
+
+input{
+width:100%;
+padding:14px;
+margin:12px 0;
+border-radius:10px;
+border:none;
+background:#e5e7eb;
+font-size:16px;
+box-sizing:border-box;
+}
+
+button{
+padding:14px;
+background:#3b82f6;
+border:none;
+border-radius:10px;
+color:white;
+cursor:pointer;
+margin-top:10px;
+width:100%;
+}
+
+button:hover{
+background:#2563eb;
+}
+
+canvas{
+margin-top:30px;
+}
+
+.menu{
+margin-bottom:25px;
+}
+
+.menu a{
+color:#3b82f6;
+margin:10px;
+text-decoration:none;
+}
+
+.toptext{
+font-size:14px;
+color:#6b7a99;
+margin-bottom:5px;
+}
+
+.disclaimer{
+margin-top:40px;
+padding-top:20px;
+border-top:1px solid rgba(255,255,255,0.1);
+font-size:13px;
+color:#9ca3af;
+max-width:500px;
+text-align:center;
+line-height:1.6;
+}
+
+.result-card{
+margin-top:16px;
+padding:16px;
+border-radius:12px;
+background:rgba(255,255,255,0.04);
+border:1px solid rgba(255,255,255,0.08);
+line-height:1.8;
+display:none;
+}
+
+.result-line{
+margin:8px 0;
+}
+
+.result-label{
+color:#cbd5f5;
+font-weight:600;
+}
+
+.result-value{
+font-weight:700;
+}
+
+.faq{
+margin-top:24px;
+}
+
+.faq-item{
+border-bottom:1px solid rgba(255,255,255,0.08);
+}
+
+.faq-question{
+width:100%;
+background:none;
+border:none;
+color:white;
+text-align:left;
+padding:14px 8px;
+font-size:15px;
+display:flex;
+justify-content:space-between;
+align-items:center;
+cursor:pointer;
+}
+
+.faq-question:hover{
+color:#93c5fd;
+}
+
+.arrow{
+transition:0.25s;
+}
+
+.faq-item.active .arrow{
+transform:rotate(180deg);
+}
+
+.faq-answer{
+max-height:0;
+overflow:hidden;
+transition:max-height 0.3s ease;
+color:#cbd5e1;
+font-size:14px;
+padding:0 8px;
+}
+
+.faq-item.active .faq-answer{
+max-height:260px;
+padding-bottom:12px;
+}
+
+.related{
+margin-top:28px;
+}
+
+.related a{
+color:#93c5fd;
+text-decoration:none;
+}
+
+.related a:hover{
+text-decoration:underline;
+}
+
+</style>
+
+</head>
+
+<body>
+  
+<p class="toptext">Explore more calculators</p>
+<div class="menu">
+<a href="index.html">Home</a>
+</div>
+
+<div class="container">
+
+<h1>Margin Calculator – Calculate Required Margin & Leverage Impact</h1>
+
+<input id="positionValue" placeholder="Position Value ($)">
+<input id="leverage" placeholder="Leverage (e.g. 10)">
+<p style="margin-top:10px; font-size:13px; color:#94a3b8;">
+Optional (advanced)
+</p>
+<input id="balance" placeholder="Account Balance ($)">
+<input id="maintenance" placeholder="Maintenance Margin (%)">
+
+<button onclick="calculateMargin()">Calculate Margin</button>
+
+<div id="resultBox" class="result-card">
+  <p class="result-line"><span class="result-label">Required Margin:</span> <span id="marginOut" class="result-value">—</span></p>
+  <p class="result-line"><span class="result-label">Margin Used:</span> <span id="marginUsedOut" class="result-value">—</span></p>
+  <p class="result-line"><span class="result-label">Free Balance Remaining:</span> <span id="freeBalanceOut" class="result-value">—</span></p>
+  <p class="result-line"><span class="result-label">Maximum Position Value:</span> <span id="maxPositionOut" class="result-value">—</span></p>
+  <p class="result-line"><span class="result-label">Insight:</span> <span id="insightOut" class="result-value">—</span></p>
+</div>
+
+<canvas id="myChart"></canvas>
+
+</div>
+
+<h2>What is a Margin Calculator?</h2>
+<p>
+A Margin Calculator helps traders understand how much capital is required to open and hold a leveraged position. 
+Instead of using your full position value, margin lets you control a larger trade with a smaller amount of capital.
+</p>
+
+<p>
+This matters because leverage can amplify both gains and losses. 
+If you do not know how much margin your trade requires, you can easily overextend your account and take more risk than intended.
+</p>
+
+<h2>How This Calculator Works</h2>
+
+<p>
+The calculator uses your position value and leverage to estimate how much margin is required. 
+If you also enter account balance, it will show how much of your balance is used and how much is left as free balance.
+</p>
+
+<ul>
+<li><strong>Position Value</strong> = total size of the trade</li>
+<li><strong>Leverage</strong> = how much the broker multiplies your buying power</li>
+<li><strong>Account Balance</strong> = optional capital available in your account</li>
+<li><strong>Maintenance Margin</strong> = optional safety threshold for advanced traders</li>
+</ul>
+
+<p>
+The core formula is simple:
+</p>
+
+<p><strong>Required Margin = Position Value ÷ Leverage</strong></p>
+
+<p>
+This gives you the amount of capital you need to open the trade.
+</p>
+
+<h2>Why Margin Matters</h2>
+
+<p>
+Many traders focus on entry and profit targets but ignore margin usage. 
+That is a mistake. Margin determines how much of your account is tied up in one trade and how much room you have for other positions.
+</p>
+
+<ul>
+<li>It helps you avoid overleveraging</li>
+<li>It shows how much account capital is being used</li>
+<li>It makes position planning more realistic</li>
+<li>It helps protect you from liquidation risk</li>
+</ul>
+
+<p>
+Using margin wisely is one of the simplest ways to reduce unnecessary trading risk.
+</p>
+
+<h2>How to Use This Calculator</h2>
+
+<ul>
+<li>Enter your position value</li>
+<li>Enter your leverage</li>
+<li>Optionally enter your account balance</li>
+<li>Optionally enter maintenance margin</li>
+<li>Click calculate</li>
+</ul>
+
+<p>
+This tool helps you see the real capital needed before opening a leveraged trade.
+</p>
+
+<p style="font-weight:bold; color:#f87171;">
+⚠️ High leverage lowers required margin, but it also reduces your margin for error.
+</p>
+
+<h2>Frequently Asked Questions</h2>
+
+<div class="faq">
+
+  <div class="faq-item">
+    <button class="faq-question">
+      What is required margin?
+      <span class="arrow">▼</span>
+    </button>
+    <div class="faq-answer">
+      <p>
+        Required margin is the amount of money your broker locks up to open a leveraged trade. It is usually much smaller than the full position value.
+      </p>
+    </div>
+  </div>
+
+  <div class="faq-item">
+    <button class="faq-question">
+      Does higher leverage always mean lower margin?
+      <span class="arrow">▼</span>
+    </button>
+    <div class="faq-answer">
+      <p>
+        Yes. Higher leverage reduces required margin, but it also increases trading risk because your position becomes larger relative to your account.
+      </p>
+    </div>
+  </div>
+
+  <div class="faq-item">
+    <button class="faq-question">
+      Why does margin matter in trading?
+      <span class="arrow">▼</span>
+    </button>
+    <div class="faq-answer">
+      <p>
+        Margin shows how much of your account is committed to a trade. It helps you avoid using too much capital in one position.
+      </p>
+    </div>
+  </div>
+
+  <div class="faq-item">
+    <button class="faq-question">
+      Can I trade without enough margin?
+      <span class="arrow">▼</span>
+    </button>
+    <div class="faq-answer">
+      <p>
+        No. If you do not have enough margin, the trade cannot be opened or may be closed by your broker if losses become too large.
+      </p>
+    </div>
+  </div>
+
+  <div class="faq-item">
+    <button class="faq-question">
+      What is free margin?
+      <span class="arrow">▼</span>
+    </button>
+    <div class="faq-answer">
+      <p>
+        Free margin is the money left in your account after required margin is locked for open trades. It can be used for additional positions or to absorb losses.
+      </p>
+    </div>
+  </div>
+
+  <div class="faq-item">
+    <button class="faq-question">
+      Does this calculator work for forex, crypto, and stocks?
+      <span class="arrow">▼</span>
+    </button>
+    <div class="faq-answer">
+      <p>
+        Yes. It works for any market where you know the position value and leverage being used.
+      </p>
+    </div>
+  </div>
+
+</div>
+
+<div class="related">
+<h3>Related Calculators</h3>
+<p>You may also find these tools useful:</p>
+<ul>
+<li><a href="leverage-calculator.html">Leverage Calculator</a></li>
+<li><a href="liquidation-price-calculator.html">Liquidation Price Calculator</a></li>
+<li><a href="position-size-calculator.html">Position Size Calculator</a></li>
+<li><a href="risk-reward-calculator.html">Risk Reward Calculator</a></li>
+<li><a href="stop-loss-calculator.html">Stop Loss Calculator</a></li>
+</ul>
+</div>
+  
+<div class="disclaimer">
+<p>
+<strong>Disclaimer:</strong> The calculators on this website are provided for informational and educational purposes only. 
+All results are estimates based on the values entered and do not constitute financial, investment, or trading advice. 
+Always conduct your own research before making financial decisions.
+</p>
+</div>
+
+<script src="footer.js"></script>
+<script>
+let chart;
+
+function formatMoney(value){
+  return "$" + value.toLocaleString(undefined, {
+    minimumFractionDigits: 2,
+    maximumFractionDigits: 2
+  });
+}
+
+function calculateMargin(){
+
+  const positionValue = parseFloat(document.getElementById("positionValue").value);
+  const leverage = parseFloat(document.getElementById("leverage").value);
+  const balance = parseFloat(document.getElementById("balance").value);
+  const maintenance = parseFloat(document.getElementById("maintenance").value) || 0;
+
+  if(isNaN(positionValue) || isNaN(leverage) || positionValue <= 0 || leverage <= 0){
+    alert("Please enter valid position value and leverage.");
+    return;
+  }
+
+  const requiredMargin = positionValue / leverage;
+  const maxPosition = balance > 0 ? balance * leverage : null;
+
+  let marginUsed = null;
+  let freeBalance = null;
+  let insight = "";
+  let insightColor = "#cbd5e1";
+
+  if(balance > 0){
+    marginUsed = (requiredMargin / balance) * 100;
+    freeBalance = balance - requiredMargin;
+  }
+
+  if(requiredMargin > positionValue){
+    insight = "Invalid leverage setup";
+    insightColor = "#ef4444";
+  } else if(balance > 0 && requiredMargin > balance){
+    insight = "Insufficient balance";
+    insightColor = "#ef4444";
+  } else if(balance > 0 && marginUsed >= 75){
+    insight = "High margin usage";
+    insightColor = "#f87171";
+  } else if(balance > 0 && marginUsed >= 40){
+    insight = "Moderate margin usage";
+    insightColor = "#facc15";
+  } else {
+    insight = "Healthy margin usage";
+    insightColor = "#22c55e";
+  }
+
+  if(maintenance > 0 && marginUsed !== null){
+    if(marginUsed >= (100 - maintenance)){
+      insight = "Very close to maintenance risk";
+      insightColor = "#ef4444";
+    }
+  }
+
+  document.getElementById("marginOut").innerText = formatMoney(requiredMargin);
+  document.getElementById("marginUsedOut").innerText = marginUsed !== null ? marginUsed.toFixed(2) + "%" : "—";
+  document.getElementById("freeBalanceOut").innerText = freeBalance !== null ? formatMoney(freeBalance) : "—";
+  document.getElementById("maxPositionOut").innerText = maxPosition !== null ? formatMoney(maxPosition) : "—";
+  const insightEl = document.getElementById("insightOut");
+  insightEl.innerText = insight;
+  insightEl.style.color = insightColor;
+
+  document.getElementById("resultBox").style.display = "block";
+
+  drawChart(requiredMargin, balance > 0 ? balance : requiredMargin, balance > 0 ? Math.max(balance - requiredMargin, 0) : 0);
+}
+
+function drawChart(requiredMargin, balance, freeBalance){
+  let ctx = document.getElementById('myChart').getContext('2d');
+
+  if(chart){
+    chart.destroy();
+  }
+
+  chart = new Chart(ctx,{
+    type:'bar',
+    data:{
+      labels:['Required Margin','Account Balance','Free Balance'],
+      datasets:[{
+        label:'Margin Overview',
+        data:[requiredMargin, balance, freeBalance],
+        backgroundColor:['#3b82f6','#22c55e','#f59e0b']
+      }]
+    },
+    options:{
+      plugins:{
+        legend:{
+          labels:{ color:'white' }
+        }
+      },
+      scales:{
+        x:{
+          ticks:{ color:'white' },
+          grid:{ color:'rgba(255,255,255,0.08)' }
+        },
+        y:{
+          ticks:{ color:'white' },
+          grid:{ color:'rgba(255,255,255,0.08)' }
+        }
+      }
+    }
+  });
+}
+
+document.addEventListener("DOMContentLoaded", function(){
+
+  document.querySelectorAll(".faq-question").forEach(btn => {
+    btn.addEventListener("click", () => {
+
+      const item = btn.parentElement;
+
+      document.querySelectorAll(".faq-item").forEach(i => {
+        if(i !== item) i.classList.remove("active");
+      });
+
+      item.classList.toggle("active");
+
+    });
+  });
+
+});
+</script>
+
+</body>
+  </html>
