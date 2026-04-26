@@ -212,125 +212,94 @@ Optional (advanced)
 
 </div>
 
-<h2>What is a Margin Calculator?</h2>
+<h2>What is Margin?</h2>
 <p>
-A Margin Calculator helps traders understand how much capital is required to open and hold a leveraged position. 
-Instead of using your full position value, margin lets you control a larger trade with a smaller amount of capital.
+Margin is the amount of capital required to open and maintain a leveraged trading position. 
+Instead of paying the full value of a trade, you only need to deposit a fraction of it, 
+while the rest is effectively borrowed from the broker or exchange.
 </p>
 
 <p>
-This matters because leverage can amplify both gains and losses. 
-If you do not know how much margin your trade requires, you can easily overextend your account and take more risk than intended.
+This margin calculator helps you instantly determine required margin, position value, and free margin 
+based on your leverage and trade size. It is essential for traders who want to control risk and avoid liquidation.
 </p>
 
-<h2>How This Calculator Works</h2>
-
+<h2>How Margin Works</h2>
 <p>
-The calculator uses your position value and leverage to estimate how much margin is required. 
-If you also enter account balance, it will show how much of your balance is used and how much is left as free balance.
+Leverage allows you to control a larger position with a smaller amount of capital. 
+For example, with 10x leverage, a $1,000 balance can control a $10,000 position.
 </p>
 
-<ul>
-<li><strong>Position Value</strong> = total size of the trade</li>
-<li><strong>Leverage</strong> = how much the broker multiplies your buying power</li>
-<li><strong>Account Balance</strong> = optional capital available in your account</li>
-<li><strong>Maintenance Margin</strong> = optional safety threshold for advanced traders</li>
-</ul>
-
 <p>
-The core formula is simple:
+However, higher leverage increases both potential profits and potential losses. 
+If your margin falls below the required level, your position may be liquidated.
 </p>
 
-<p><strong>Required Margin = Position Value ÷ Leverage</strong></p>
+<h2>Margin Formula</h2>
+
+<p><strong>Required Margin = Position Size / Leverage</strong></p>
 
 <p>
-This gives you the amount of capital you need to open the trade.
+This formula shows how much capital you need to open a trade.
+</p>
+
+<p><strong>Position Size = Margin × Leverage</strong></p>
+
+<p>
+Understanding these formulas helps you plan trades more effectively and avoid overexposure.
+</p>
+
+<h2>Free Margin</h2>
+
+<p>
+Free margin is the amount of capital available to open new positions or absorb losses.
+</p>
+
+<p><strong>Free Margin = Account Balance − Used Margin</strong></p>
+
+<p>
+Low free margin increases liquidation risk, especially in volatile markets like crypto and forex.
 </p>
 
 <h2>Why Margin Matters</h2>
 
-<p>
-Many traders focus on entry and profit targets but ignore margin usage. 
-That is a mistake. Margin determines how much of your account is tied up in one trade and how much room you have for other positions.
-</p>
-
 <ul>
-<li>It helps you avoid overleveraging</li>
-<li>It shows how much account capital is being used</li>
-<li>It makes position planning more realistic</li>
-<li>It helps protect you from liquidation risk</li>
+<li>Control larger positions with less capital</li>
+<li>Improve capital efficiency</li>
+<li>Understand liquidation risk</li>
+<li>Avoid overleveraging</li>
+<li>Manage trading risk more precisely</li>
 </ul>
 
 <p>
-Using margin wisely is one of the simplest ways to reduce unnecessary trading risk.
+Without understanding margin, traders often take excessive risk without realizing it.
 </p>
-
-<h2>How to Use This Calculator</h2>
-
-<ul>
-<li>Enter your position value</li>
-<li>Enter your leverage</li>
-<li>Optionally enter your account balance</li>
-<li>Optionally enter maintenance margin</li>
-<li>Click calculate</li>
-</ul>
-
-<p>
-This tool helps you see the real capital needed before opening a leveraged trade.
-</p>
-
-<p style="font-weight:bold; color:#f87171;">
-⚠️ High leverage lowers required margin, but it also reduces your margin for error.
-</p>
-
 <h2>Frequently Asked Questions</h2>
 
 <div class="faq">
 
   <div class="faq-item">
     <button class="faq-question">
-      What is required margin?
+      What is margin in trading?
       <span class="arrow">▼</span>
     </button>
     <div class="faq-answer">
       <p>
-        Required margin is the amount of money your broker locks up to open a leveraged trade. It is usually much smaller than the full position value.
+        Margin is the amount of money required to open a leveraged position. It acts as collateral 
+        while you control a larger trade size using leverage.
       </p>
     </div>
   </div>
 
   <div class="faq-item">
     <button class="faq-question">
-      Does higher leverage always mean lower margin?
+      How does leverage affect margin?
       <span class="arrow">▼</span>
     </button>
     <div class="faq-answer">
       <p>
-        Yes. Higher leverage reduces required margin, but it also increases trading risk because your position becomes larger relative to your account.
-      </p>
-    </div>
-  </div>
-
-  <div class="faq-item">
-    <button class="faq-question">
-      Why does margin matter in trading?
-      <span class="arrow">▼</span>
-    </button>
-    <div class="faq-answer">
-      <p>
-        Margin shows how much of your account is committed to a trade. It helps you avoid using too much capital in one position.
-      </p>
-    </div>
-  </div>
-
-  <div class="faq-item">
-    <button class="faq-question">
-      Can I trade without enough margin?
-      <span class="arrow">▼</span>
-    </button>
-    <div class="faq-answer">
-      <p>
-        No. If you do not have enough margin, the trade cannot be opened or may be closed by your broker if losses become too large.
+        Higher leverage reduces the margin required to open a trade. For example, with 20x leverage, 
+        you only need 5% of the total position value as margin. However, higher leverage also increases risk.
       </p>
     </div>
   </div>
@@ -342,19 +311,47 @@ This tool helps you see the real capital needed before opening a leveraged trade
     </button>
     <div class="faq-answer">
       <p>
-        Free margin is the money left in your account after required margin is locked for open trades. It can be used for additional positions or to absorb losses.
+        Free margin is the available balance that is not being used for open positions. 
+        It acts as a buffer against losses and allows you to open new trades.
       </p>
     </div>
   </div>
 
   <div class="faq-item">
     <button class="faq-question">
-      Does this calculator work for forex, crypto, and stocks?
+      What happens if margin is too low?
       <span class="arrow">▼</span>
     </button>
     <div class="faq-answer">
       <p>
-        Yes. It works for any market where you know the position value and leverage being used.
+        If your margin drops below the required level, your position may be liquidated automatically. 
+        This is called a margin call or forced liquidation.
+      </p>
+    </div>
+  </div>
+
+  <div class="faq-item">
+    <button class="faq-question">
+      Is higher leverage better?
+      <span class="arrow">▼</span>
+    </button>
+    <div class="faq-answer">
+      <p>
+        Not necessarily. While higher leverage increases potential profits, it also increases losses 
+        and liquidation risk. Most professional traders use moderate leverage.
+      </p>
+    </div>
+  </div>
+
+  <div class="faq-item">
+    <button class="faq-question">
+      How can I reduce margin risk?
+      <span class="arrow">▼</span>
+    </button>
+    <div class="faq-answer">
+      <p>
+        You can reduce risk by using lower leverage, setting stop losses, managing position size, 
+        and keeping sufficient free margin in your account.
       </p>
     </div>
   </div>
