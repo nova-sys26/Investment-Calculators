@@ -202,138 +202,149 @@ text-decoration:underline;
 
 </div>
 
-<h2>What is Expectancy?</h2>
+
+<h2>What is an Expectancy Calculator?</h2>
+
 <p>
-Expectancy is one of the most important trading metrics because it tells you whether a strategy has a real edge over time. Instead of focusing only on win rate, expectancy combines how often you win with how much you win and how much you lose.
+An Expectancy Calculator helps traders measure whether a trading strategy has a real edge over time. Instead of looking only at win rate, it combines win rate, average win, and average loss to show the average amount you expect to make or lose per trade. This makes it one of the most important tools for evaluating trading performance because a strategy can look good on the surface and still lose money in the long run.
 </p>
 
 <p>
-A strategy can have a low win rate and still be profitable if average wins are much larger than average losses. On the other hand, a strategy with a high win rate can still lose money if the losses are too big. This calculator helps you see that clearly.
+Many traders focus too much on how often they win and not enough on how much they win when they are right versus how much they lose when they are wrong. That is where expectancy becomes valuable. It gives you a clearer picture of whether your system is statistically favorable, whether your average trade is worth taking, and whether your strategy is likely to survive over a large sample of trades.
 </p>
 
-<h2>Expectancy Formula</h2>
+<h2>How This Calculator Works</h2>
 
 <p>
-The formula for expectancy is:
-</p>
-
-<p>
-<strong>Expectancy = (Win Rate × Average Win) − ((1 − Win Rate) × Average Loss)</strong>
+This calculator uses your win rate, average win, average loss, and number of trades to estimate the expected result of your strategy. It calculates expectancy per trade and then projects that result across the number of trades you enter. That means you can see both the strength of the strategy and the possible total outcome over time.
 </p>
 
 <p>
-This gives you the average amount you expect to make or lose per trade over a long series of trades.
+The core formula is:
+</p>
+
+<p><strong>Expectancy = (Win Rate × Average Win) − ((1 − Win Rate) × Average Loss)</strong></p>
+
+<p>
+If the result is positive, your strategy has a statistical edge. If it is negative, the strategy is likely losing money over time. If it is near zero, the system is close to break-even and may not be strong enough after fees, slippage, or emotional mistakes are added.
 </p>
 
 <h2>Why Expectancy Matters</h2>
 
 <p>
-Expectancy is better than looking at a single trade because it measures your strategy over time. It helps you understand whether your trading plan is statistically favorable or whether it slowly leaks money.
+Expectancy matters because trading success is not built on a single trade. It is built on a repeatable system that performs well across many trades. A trader can have a low win rate and still be profitable if the average winners are much larger than the average losers. On the other hand, a trader can win most of the time and still lose money if losses are too large.
+</p>
+
+<p>
+This is why expectancy is often more useful than win rate alone. It helps you evaluate the real quality of a strategy and understand whether your trading approach has a true edge or just looks good in the short term.
 </p>
 
 <ul>
-<li>Shows if a strategy has a real edge</li>
-<li>Combines win rate and payoff size</li>
-<li>Helps compare different strategies</li>
-<li>Useful for both beginners and advanced traders</li>
+  <li>Shows whether a strategy is profitable over time</li>
+  <li>Combines win rate and payoff size</li>
+  <li>Helps compare different trading systems</li>
+  <li>Reveals the real edge behind your trades</li>
+  <li>Supports better risk management decisions</li>
 </ul>
-
-<p>
-If your expectancy is positive, your system has long-term potential. If it is negative, the strategy may not be worth using, even if it occasionally produces winning trades.
-</p>
 
 <h2>Break-even Win Rate</h2>
 
 <p>
-The break-even win rate is the win rate you need in order to stop losing money over time. It depends on your average win and average loss.
+The break-even win rate is the minimum win rate required for a strategy to stop losing money. It depends on how large your average win is compared to your average loss. If your actual win rate is above the break-even level, expectancy becomes positive. If it is below that level, the strategy is likely losing money over time.
 </p>
 
 <p>
-<strong>Break-even Win Rate = Average Loss / (Average Win + Average Loss)</strong>
-</p>
-
-<p>
-If your actual win rate is higher than the break-even level, your expectancy becomes positive.
+That makes break-even win rate a useful benchmark for evaluating any trading system. It tells you the line between survival and decline.
 </p>
 
 <h2>How to Use This Calculator</h2>
 
 <ul>
-<li>Enter your win rate</li>
-<li>Enter your average win amount</li>
-<li>Enter your average loss amount</li>
-<li>Enter the number of trades you want to project</li>
-<li>Click calculate to see expectancy and total expected result</li>
+  <li>Enter your win rate</li>
+  <li>Enter your average win amount</li>
+  <li>Enter your average loss amount</li>
+  <li>Enter the number of trades you want to project</li>
+  <li>Click calculate to see your expectancy, total expected result, and break-even level</li>
 </ul>
 
 <p>
-This tool helps you test whether your trading edge is strong enough to survive over many trades, not just one.
+This gives you a simple but powerful way to test whether your strategy is worth using before you risk real capital.
+</p>
+
+<h2>Why Traders Use Expectancy</h2>
+
+<p>
+Traders use expectancy because it answers a more important question than “Do I win often?” It answers “Does my system make money overall?” That is the question that matters if your goal is consistency, survival, and long-term profitability.
+</p>
+
+<p>
+A strong expectancy does not guarantee every trade will work, but it does show that your strategy has a statistical advantage. That is what separates a repeatable system from random guessing.
 </p>
 
 <p style="font-weight:bold; color:#f87171;">
-⚠️ A high win rate does not always mean a profitable strategy. Expectancy tells the real story.
+⚠️ A high win rate is not enough. A strategy only matters if the numbers work over time.
 </p>
-  
-<h2>Frequently Asked Questions</h2>
+
+<h3>Frequently Asked Questions</h3>
 
 <div class="faq">
 
   <div class="faq-item">
     <button class="faq-question">
-      What is a good expectancy?
+      What does expectancy tell me in trading?
       <span class="arrow">▼</span>
     </button>
     <div class="faq-answer">
       <p>
-        A good expectancy is any positive number. The higher it is, the more profitable your strategy tends to be over time.
+        Expectancy tells you the average amount you can expect to gain or lose per trade over a large number of trades. It is one of the clearest ways to measure whether a strategy has a real edge.
       </p>
     </div>
   </div>
 
   <div class="faq-item">
     <button class="faq-question">
-      Can a strategy with a low win rate still be profitable?
+      Is a positive expectancy always good?
       <span class="arrow">▼</span>
     </button>
     <div class="faq-answer">
       <p>
-        Yes. If the average win is much larger than the average loss, a strategy can remain profitable even with a low win rate.
+        A positive expectancy is a good sign because it means the strategy has potential to make money over time. Still, you should also consider fees, slippage, discipline, and market conditions before relying on it.
       </p>
     </div>
   </div>
 
   <div class="faq-item">
     <button class="faq-question">
-      Why does win rate alone not tell the full story?
+      Can a low win rate strategy still be profitable?
       <span class="arrow">▼</span>
     </button>
     <div class="faq-answer">
       <p>
-        Win rate only shows how often you win, not how much you win or lose. Expectancy combines all of those factors into one useful number.
+        Yes. A strategy can be profitable with a low win rate if the average winning trades are much larger than the average losing trades. That is exactly why expectancy is more useful than win rate alone.
       </p>
     </div>
   </div>
 
   <div class="faq-item">
     <button class="faq-question">
-      What is break-even win rate?
+      Why is break-even win rate important?
       <span class="arrow">▼</span>
     </button>
     <div class="faq-answer">
       <p>
-        Break-even win rate is the win rate required to avoid losing money. If your actual win rate is above it, your expectancy is positive.
+        Break-even win rate shows the minimum win rate needed to avoid losing money. It gives you a reference point so you can see whether your current strategy is strong enough to survive long term.
       </p>
     </div>
   </div>
 
   <div class="faq-item">
     <button class="faq-question">
-      Can expectancy be negative?
+      Can expectancy change after fees?
       <span class="arrow">▼</span>
     </button>
     <div class="faq-answer">
       <p>
-        Yes. If your losses are too large compared to your wins, or your win rate is too low, expectancy can become negative.
+        Yes. Fees, spreads, and slippage can reduce your real expectancy. A strategy that looks profitable on paper may become less attractive once actual trading costs are included.
       </p>
     </div>
   </div>
@@ -345,12 +356,13 @@ This tool helps you test whether your trading edge is strong enough to survive o
     </button>
     <div class="faq-answer">
       <p>
-        Yes. It works for any market where you can estimate win rate, average win, average loss, and number of trades.
+        Yes. It works for any market where you can estimate your win rate, average win, average loss, and number of trades. That includes forex, crypto, stocks, futures, and other markets.
       </p>
     </div>
   </div>
 
 </div>
+
   
 <div class="related">
   
