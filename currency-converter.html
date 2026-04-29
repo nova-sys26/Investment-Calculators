@@ -337,7 +337,6 @@ h1{
     </div>
 
     <div class="control-bar">
-      <input id="searchCurrency" type="text" placeholder="Search a currency, e.g. TRY, USD, EUR">
       <button id="resetBtn" type="button" class="secondary">Reset</button>
     </div>
 
@@ -431,7 +430,6 @@ const BASE_CODE = "USD";
 const DEFAULT_AMOUNT = 100;
 
 const gridEl = document.getElementById("currencyGrid");
-const searchEl = document.getElementById("searchCurrency");
 const resetBtn = document.getElementById("resetBtn");
 const baseStatus = document.getElementById("baseStatus");
 const dateStatus = document.getElementById("dateStatus");
@@ -595,17 +593,6 @@ function resetAll(){
   getInput(BASE_CODE).value = String(DEFAULT_AMOUNT);
   isUpdating = false;
   recalcFrom(BASE_CODE);
-}
-
-function filterCurrencies(query){
-  const q = query.trim().toLowerCase();
-
-  document.querySelectorAll(".currency-card").forEach(card => {
-    const code = card.dataset.code.toLowerCase();
-    const name = card.querySelector(".currency-name").textContent.toLowerCase();
-    const show = !q || code.includes(q) || name.includes(q);
-    card.style.display = show ? "" : "none";
-  });
 }
 
 function bindEvents(){
