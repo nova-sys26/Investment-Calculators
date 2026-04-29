@@ -399,6 +399,7 @@ h1{
 <script src="footer.js"></script>
 <script>
 const API_BASE = "https://api.frankfurter.dev/v1";
+
 const CURRENCIES = [
   { code: "USD", name: "US Dollar" },
   { code: "EUR", name: "Euro" },
@@ -430,35 +431,12 @@ const BASE_CODE = "USD";
 const DEFAULT_AMOUNT = 100;
 
 const gridEl = document.getElementById("currencyGrid");
-const resetBtn = document.getElementById("resetBtn");
 const baseStatus = document.getElementById("baseStatus");
 const dateStatus = document.getElementById("dateStatus");
 const syncStatus = document.getElementById("syncStatus");
-const resultBox = document.getElementById("resultBox");
-const baseAmountOut = document.getElementById("baseAmountOut");
-const unitRateOut = document.getElementById("unitRateOut");
-const reverseRateOut = document.getElementById("reverseRateOut");
-const loadedCountOut = document.getElementById("loadedCountOut");
 
 let activeBase = BASE_CODE;
 let isUpdating = false;
-let requestToken = 0;
-
-const cache = new Map();
-
-function formatInputNumber(value){
-  if (!isFinite(value)) return "";
-  const rounded = Number(value.toFixed(6));
-  return String(rounded);
-}
-
-function formatDisplayNumber(value){
-  if (!isFinite(value)) return "—";
-  return value.toLocaleString(undefined, {
-    minimumFractionDigits: 0,
-    maximumFractionDigits: 4
-  });
-}
 
 function buildGrid(){
   gridEl.innerHTML = CURRENCIES.map(({ code, name }) => `
@@ -467,7 +445,7 @@ function buildGrid(){
         <div class="currency-code">${code}</div>
         <div class="currency-name">${name}</div>
       </div>
-      <input class="currency-input" type="number" step="any" min="0" inputmode="decimal" data-code="${code}" aria-label="${name} amount">
+      <input class="currency-input" type="number" step="any" min="0" data-code="${code}">
     </div>
   `).join("");
 }
@@ -485,144 +463,61 @@ function setActiveCard(code){
   });
 }
 
-async function fetchRates(base, symbols){
-  const key = `${base}|${symbols.sort().join(",")}`;
-  const cached = cache.get(key);
-
-  if (cached && Date.now() - cached.timestamp < 60_000) {
-    return cached.data;
-  }
-
-  const url = `${API_BASE}/latest?base=${encodeURIComponent(base)}&symbols=${encodeURIComponent(symbols.join(","))}`;
-  const resp = await fetch(url);
-
-  if (!resp.ok) {
-    throw new Error(`Rate request failed: ${resp.status}`);
-  }
-
-  const data = await resp.json();
-  cache.set(key, { timestamp: Date.now(), data });
-  return data;
-}
-
 async function recalcFrom(baseCode){
-  const token = ++requestToken;
   const baseInput = getInput(baseCode);
-  if (!baseInput) return;
-
   const amount = parseFloat(baseInput.value);
-  if (isNaN(amount) || amount < 0) {
-    return;
-  }
+
+  if (isNaN(amount)) return;
 
   isUpdating = true;
   setActiveCard(baseCode);
   syncStatus.textContent = "Loading...";
 
   try {
-    const targets = CURRENCIES
-      .map(c => c.code)
-      .filter(code => code !== baseCode);
+    const targets = CURRENCIES.map(c => c.code).filter(c => c !== baseCode);
 
-    const data = await fetchRates(baseCode, targets);
-    if (token !== requestToken) return;
+    const resp = await fetch(`${API_BASE}/latest?base=${baseCode}`);
+    const data = await resp.json();
 
-    const rates = data.rates || {};
-    const date = data.date || "—";
-
-    dateStatus.textContent = date;
-    resultBox.style.display = "block";
-
-    baseAmountOut.textContent = `${formatDisplayNumber(amount)} ${baseCode}`;
-    loadedCountOut.textContent = `${CURRENCIES.length}`;
-
-    const firstTarget = targets[0];
-    const firstRate = rates[firstTarget];
-
-    if (firstRate) {
-      unitRateOut.textContent = `1 ${baseCode} = ${formatDisplayNumber(firstRate)} ${firstTarget}`;
-      reverseRateOut.textContent = `1 ${firstTarget} = ${formatDisplayNumber(1 / firstRate)} ${baseCode}`;
-    } else {
-      unitRateOut.textContent = "—";
-      reverseRateOut.textContent = "—";
-    }
+    const rates = data.rates;
+    dateStatus.textContent = data.date;
 
     for (const { code } of CURRENCIES) {
       const input = getInput(code);
-      if (!input) continue;
 
       if (code === baseCode) {
-        input.value = formatInputNumber(amount);
+        input.value = amount;
       } else {
-        const rate = rates[code];
-        if (typeof rate === "number") {
-          input.value = formatInputNumber(amount * rate);
-        }
+        input.value = (amount * rates[code]).toFixed(4);
       }
     }
 
     syncStatus.textContent = "Updated";
-  } catch (err) {
-    console.error(err);
-    syncStatus.textContent = "Could not load rates";
-  } finally {
-    isUpdating = false;
+
+  } catch {
+    syncStatus.textContent = "Error loading rates";
   }
-}
 
-let debounceTimer = null;
-
-function scheduleRecalc(code){
-  clearTimeout(debounceTimer);
-  debounceTimer = setTimeout(() => recalcFrom(code), 180);
-}
-
-function resetAll(){
-  isUpdating = true;
-  searchEl.value = "";
-  activeBase = BASE_CODE;
-  setActiveCard(BASE_CODE);
-  dateStatus.textContent = "—";
-  syncStatus.textContent = "Ready";
-
-  CURRENCIES.forEach(({ code }) => {
-    const input = getInput(code);
-    if (input) input.value = "";
-  });
-
-  getInput(BASE_CODE).value = String(DEFAULT_AMOUNT);
   isUpdating = false;
-  recalcFrom(BASE_CODE);
 }
 
 function bindEvents(){
   CURRENCIES.forEach(({ code }) => {
     const input = getInput(code);
-    const card = input.closest(".currency-card");
 
     input.addEventListener("focus", () => setActiveCard(code));
+
     input.addEventListener("input", () => {
       if (isUpdating) return;
-      setActiveCard(code);
-      scheduleRecalc(code);
-    });
-
-    card.addEventListener("click", (e) => {
-      if (e.target !== input) {
-        input.focus();
-      }
+      recalcFrom(code);
     });
   });
-
-  searchEl.addEventListener("input", () => filterCurrencies(searchEl.value));
-  resetBtn.addEventListener("click", resetAll);
 }
 
 buildGrid();
 bindEvents();
 
-getInput(BASE_CODE).value = String(DEFAULT_AMOUNT);
-setActiveCard(BASE_CODE);
+getInput(BASE_CODE).value = DEFAULT_AMOUNT;
 recalcFrom(BASE_CODE);
 </script>
 
