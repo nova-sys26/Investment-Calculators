@@ -40,19 +40,39 @@ body{
   margin:0 auto;
 }
 
+/* TOP BAR */
 .topbar{
   display:flex;
   align-items:center;
-  justify-content:space-between;
   gap:16px;
   padding:20px 0 0;
   flex-wrap:wrap;
+}
+
+.menu-btn{
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  width:44px;
+  height:44px;
+  border:none;
+  border-radius:12px;
+  cursor:pointer;
+  background:rgba(255,255,255,0.06);
+  color:white;
+  font-size:20px;
+  transition:0.2s;
+}
+
+.menu-btn:hover{
+  background:rgba(255,255,255,0.10);
 }
 
 .brand{
   font-size:18px;
   font-weight:700;
   letter-spacing:0.2px;
+  margin-right:auto;
 }
 
 .topnav{
@@ -71,6 +91,101 @@ body{
   color:white;
 }
 
+/* DRAWER */
+.drawer-overlay{
+  position:fixed;
+  inset:0;
+  background:rgba(2,6,23,0.62);
+  backdrop-filter:blur(2px);
+  opacity:0;
+  pointer-events:none;
+  transition:0.25s;
+  z-index:80;
+}
+
+.drawer-overlay.show{
+  opacity:1;
+  pointer-events:auto;
+}
+
+.drawer{
+  position:fixed;
+  top:0;
+  left:0;
+  height:100%;
+  width:min(360px, 88vw);
+  background:#0f172a;
+  border-right:1px solid rgba(255,255,255,0.08);
+  box-shadow:18px 0 40px rgba(0,0,0,0.35);
+  transform:translateX(-102%);
+  transition:0.25s ease;
+  z-index:90;
+  padding:18px;
+  overflow:auto;
+}
+
+.drawer.open{
+  transform:translateX(0);
+}
+
+.drawer-head{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:10px;
+  margin-bottom:18px;
+}
+
+.drawer-head strong{
+  font-size:16px;
+}
+
+.drawer-close{
+  width:40px;
+  height:40px;
+  border:none;
+  border-radius:10px;
+  cursor:pointer;
+  background:rgba(255,255,255,0.06);
+  color:white;
+  font-size:22px;
+  line-height:1;
+}
+
+.drawer-section{
+  margin:16px 0 18px;
+}
+
+.drawer-section h4{
+  margin:0 0 10px;
+  font-size:13px;
+  color:#94a3b8;
+  text-transform:uppercase;
+  letter-spacing:0.08em;
+}
+
+.drawer-links{
+  display:flex;
+  flex-direction:column;
+  gap:8px;
+}
+
+.drawer-links a{
+  display:block;
+  padding:11px 12px;
+  border-radius:12px;
+  color:white;
+  text-decoration:none;
+  background:rgba(255,255,255,0.04);
+  border:1px solid rgba(255,255,255,0.06);
+}
+
+.drawer-links a:hover{
+  background:rgba(59,130,246,0.14);
+  border-color:rgba(59,130,246,0.30);
+}
+
+/* HERO */
 .hero{
   padding:42px 0 26px;
 }
@@ -169,6 +284,7 @@ body{
   line-height:1.4;
 }
 
+/* SECTIONS */
 .section{
   margin:26px 0 0;
 }
@@ -184,6 +300,96 @@ body{
   line-height:1.65;
 }
 
+/* LIVE TOOLS */
+.live-grid{
+  display:grid;
+  grid-template-columns:1fr;
+  gap:16px;
+}
+
+.live-card{
+  background:rgba(30,41,59,0.70);
+  border:1px solid rgba(255,255,255,0.08);
+  border-radius:20px;
+  padding:22px;
+  box-shadow:0 18px 40px rgba(0,0,0,0.28);
+  display:grid;
+  grid-template-columns:1.2fr 0.8fr;
+  gap:18px;
+  align-items:center;
+}
+
+.live-card h3{
+  margin:12px 0 10px;
+  font-size:26px;
+  line-height:1.1;
+}
+
+.live-card p{
+  margin:0;
+  color:#cbd5e1;
+  line-height:1.65;
+}
+
+.live-badges{
+  display:flex;
+  flex-wrap:wrap;
+  gap:8px;
+  margin-bottom:10px;
+}
+
+.badge{
+  display:inline-flex;
+  align-items:center;
+  padding:5px 10px;
+  border-radius:999px;
+  font-size:12px;
+  font-weight:700;
+  border:1px solid rgba(255,255,255,0.08);
+  color:#e2e8f0;
+  background:rgba(255,255,255,0.04);
+}
+
+.badge-featured{
+  color:#86efac;
+  background:rgba(34,197,94,0.10);
+  border-color:rgba(34,197,94,0.22);
+}
+
+.live-mini-grid{
+  display:grid;
+  grid-template-columns:repeat(2, minmax(0, 1fr));
+  gap:10px;
+}
+
+.live-mini{
+  background:rgba(15,23,42,0.78);
+  border:1px solid rgba(255,255,255,0.06);
+  border-radius:16px;
+  padding:14px;
+}
+
+.live-mini strong{
+  display:block;
+  font-size:15px;
+  margin-bottom:4px;
+}
+
+.live-mini span{
+  font-size:13px;
+  color:#94a3b8;
+}
+
+.live-actions{
+  margin-top:16px;
+}
+
+.live-actions .hero-btn{
+  width:100%;
+  justify-content:center;
+}
+
+/* START HERE */
 .quick-links{
   display:flex;
   flex-wrap:wrap;
@@ -209,6 +415,7 @@ body{
   background:rgba(59,130,246,0.16);
 }
 
+/* CONTROLS */
 .controls{
   margin-top:16px;
   background:rgba(30,41,59,0.56);
@@ -353,6 +560,7 @@ body{
   background:rgba(255,255,255,0.10);
 }
 
+/* CALCULATOR GRID */
 .card-grid{
   display:grid;
   grid-template-columns:repeat(auto-fit, minmax(240px, 1fr));
@@ -389,24 +597,6 @@ body{
   justify-content:space-between;
   gap:8px;
   flex-wrap:wrap;
-}
-
-.badge{
-  display:inline-flex;
-  align-items:center;
-  padding:5px 10px;
-  border-radius:999px;
-  font-size:12px;
-  font-weight:700;
-  border:1px solid rgba(255,255,255,0.08);
-  color:#e2e8f0;
-  background:rgba(255,255,255,0.04);
-}
-
-.badge-featured{
-  color:#86efac;
-  background:rgba(34,197,94,0.10);
-  border-color:rgba(34,197,94,0.22);
 }
 
 .tool-card h3{
@@ -453,6 +643,7 @@ body{
   margin-top:10px;
 }
 
+/* WHY + FAQ */
 .value-grid{
   display:grid;
   grid-template-columns:repeat(auto-fit, minmax(220px, 1fr));
@@ -527,6 +718,7 @@ body{
   padding-bottom:12px;
 }
 
+/* FOOTER */
 .footer{
   margin:36px 0 24px;
   padding:20px 0 0;
@@ -558,6 +750,13 @@ body{
   color:#64748b;
 }
 
+/* RESPONSIVE */
+@media (max-width: 900px){
+  .topnav{
+    display:none;
+  }
+}
+
 @media (max-width: 760px){
   .hero{
     padding-top:30px;
@@ -575,6 +774,10 @@ body{
 
   .topbar{
     padding-top:16px;
+  }
+
+  .live-card{
+    grid-template-columns:1fr;
   }
 }
 
@@ -594,17 +797,62 @@ body{
   .chip{
     width:calc(50% - 4px);
   }
+
+  .menu-btn{
+    width:42px;
+    height:42px;
+  }
 }
 </style>
 </head>
 
 <body>
 
+<div class="drawer-overlay" id="drawerOverlay"></div>
+
+<aside class="drawer" id="drawerPanel" aria-hidden="true">
+  <div class="drawer-head">
+    <strong>Navigation</strong>
+    <button class="drawer-close" id="drawerCloseBtn" type="button" aria-label="Close menu">×</button>
+  </div>
+
+  <div class="drawer-section">
+    <h4>Explore</h4>
+    <div class="drawer-links">
+      <a href="#start-here">Start here</a>
+      <a href="#live-tools">Live tools</a>
+      <a href="#all-calculators">All calculators</a>
+      <a href="#why">Why use it</a>
+      <a href="#faq">FAQ</a>
+    </div>
+  </div>
+
+  <div class="drawer-section">
+    <h4>Popular calculators</h4>
+    <div class="drawer-links">
+      <a href="risk-reward-calculator.html">Risk Reward Calculator</a>
+      <a href="position-size-calculator.html">Position Size Calculator</a>
+      <a href="stop-loss-calculator.html">Stop Loss Calculator</a>
+      <a href="roi-calculator.html">ROI Calculator</a>
+      <a href="trading-fees-calculator.html">Trading Fees Calculator</a>
+    </div>
+  </div>
+
+  <div class="drawer-section">
+    <h4>Live tools</h4>
+    <div class="drawer-links">
+      <a href="currency-converter.html">Currency Converter</a>
+    </div>
+  </div>
+</aside>
+
 <div class="page-shell">
   <header class="topbar">
+    <button class="menu-btn" id="menuBtn" type="button" aria-label="Open navigation menu" aria-controls="drawerPanel" aria-expanded="false">☰</button>
     <div class="brand">Nova Investment Calculators</div>
     <nav class="topnav">
       <a href="#start-here">Start here</a>
+      <a href="#live-tools">Live tools</a>
       <a href="#all-calculators">All calculators</a>
       <a href="#why">Why use it</a>
       <a href="#faq">FAQ</a>
@@ -637,6 +885,53 @@ body{
         <strong>Practical</strong>
         <span>built for trading and investing decisions</span>
       </div>
+    </div>
+  </section>
+
+  <section class="section" id="live-tools">
+    <h2>Live tools</h2>
+    <p class="section-lead">
+      Real-time tools that work from live market data instead of fixed formulas.
+    </p>
+
+    <div class="live-grid">
+      <article class="live-card">
+        <div>
+          <div class="live-badges">
+            <span class="badge">Live dashboard</span>
+            <span class="badge badge-featured">Real-time data</span>
+          </div>
+
+          <h3>Currency Converter</h3>
+          <p>
+            Edit one currency and instantly update the rest from the same rate snapshot.
+            Useful for travel budgets, pricing checks, and forex-style comparisons.
+          </p>
+
+          <div class="live-actions">
+            <a class="hero-btn primary" href="currency-converter.html">Open Live Converter</a>
+          </div>
+        </div>
+
+        <div class="live-mini-grid">
+          <div class="live-mini">
+            <strong>USD</strong>
+            <span>Base currency</span>
+          </div>
+          <div class="live-mini">
+            <strong>EUR</strong>
+            <span>Auto updates</span>
+          </div>
+          <div class="live-mini">
+            <strong>TRY</strong>
+            <span>Auto updates</span>
+          </div>
+          <div class="live-mini">
+            <strong>GBP</strong>
+            <span>Auto updates</span>
+          </div>
+        </div>
+      </article>
     </div>
   </section>
 
@@ -798,7 +1093,7 @@ body{
         <p>Calculate required margin, leverage impact, and free balance.</p>
         <a class="card-link" href="margin-calculator.html">Open</a>
       </div>
-      
+
       <div class="tool-card" data-title="Leverage Calculator" data-category="trading" data-featured="0" data-search="leverage calculator trading crypto forex liquidation margin risk">
         <div class="card-top">
           <span class="badge">Trading</span>
@@ -861,7 +1156,7 @@ body{
         <p>Calculate future value of money with inflation.</p>
         <a class="card-link" href="inflation-calculator.html">Open</a>
       </div>
-      
+
       <div class="tool-card" data-title="Retirement Calculator" data-category="investing" data-featured="0" data-search="retirement calculator retirement savings retirement planning pension income future value compound growth inflation adjusted balance monthly contribution retirement income financial independence fire calculator">
         <div class="card-top">
           <span class="badge">Investing</span>
@@ -870,7 +1165,7 @@ body{
         <p>Clean retirement planning with savings, returns, inflation included.</p>
         <a class="card-link" href="retirement-calculator.html">Open</a>
       </div>
-      
+
       <div class="tool-card" data-title="Average Price Calculator" data-category="investing" data-featured="0" data-search="average price calculator average buy price multiple buys investment">
         <div class="card-top">
           <span class="badge">Investing</span>
@@ -897,7 +1192,7 @@ body{
         <p>Project savings growth with interest and monthly contributions.</p>
         <a class="card-link" href="savings-calculator.html">Open</a>
       </div>
-      
+
       <div class="tool-card" data-title="Amortization Calculator" data-category="loans" data-featured="0" data-search="amortization calculator loan payments interest schedule monthly payment">
         <div class="card-top">
           <span class="badge">Loans & Savings</span>
@@ -1058,6 +1353,7 @@ body{
 
     <div class="footer-links">
       <a href="#start-here">Start here</a>
+      <a href="#live-tools">Live tools</a>
       <a href="#all-calculators">All calculators</a>
       <a href="#why">Why use it</a>
       <a href="#faq">FAQ</a>
@@ -1078,10 +1374,29 @@ const toolCountMeta = document.getElementById("toolCountMeta");
 const noResult = document.getElementById("noResult");
 const filterButtons = Array.from(document.querySelectorAll(".chip"));
 
+const menuBtn = document.getElementById("menuBtn");
+const drawerPanel = document.getElementById("drawerPanel");
+const drawerOverlay = document.getElementById("drawerOverlay");
+const drawerCloseBtn = document.getElementById("drawerCloseBtn");
+
 let currentCategory = "all";
 
 toolCountHero.textContent = cards.length;
 toolCountMeta.textContent = cards.length;
+
+function openDrawer(){
+  drawerPanel.classList.add("open");
+  drawerOverlay.classList.add("show");
+  menuBtn.setAttribute("aria-expanded", "true");
+  drawerPanel.setAttribute("aria-hidden", "false");
+}
+
+function closeDrawer(){
+  drawerPanel.classList.remove("open");
+  drawerOverlay.classList.remove("show");
+  menuBtn.setAttribute("aria-expanded", "false");
+  drawerPanel.setAttribute("aria-hidden", "true");
+}
 
 function setActiveCategory(category){
   currentCategory = category;
@@ -1215,6 +1530,24 @@ document.addEventListener("click", (e) => {
   if(!e.target.closest(".search-wrap")){
     suggestionsBox.innerHTML = "";
   }
+
+  if(!e.target.closest(".drawer") && !e.target.closest("#menuBtn")){
+    closeDrawer();
+  }
+});
+
+menuBtn.addEventListener("click", openDrawer);
+drawerCloseBtn.addEventListener("click", closeDrawer);
+drawerOverlay.addEventListener("click", closeDrawer);
+
+document.querySelectorAll(".drawer a").forEach(link => {
+  link.addEventListener("click", closeDrawer);
+});
+
+document.addEventListener("keydown", (e) => {
+  if(e.key === "Escape"){
+    closeDrawer();
+  }
 });
 
 document.querySelectorAll(".faq-question").forEach(btn => {
@@ -1233,4 +1566,4 @@ applyFilters();
 </script>
 
 </body>
-  </html>
+            </html>
