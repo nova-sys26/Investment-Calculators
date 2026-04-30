@@ -1,534 +1,610 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<!-- Google tag (gtag.js) -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-ZPCXDVE8C5"></script>
-<script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-ZPCXDVE8C5"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-ZPCXDVE8C5');
+  </script>
 
-  gtag('config', 'G-ZPCXDVE8C5');
-</script>
-<meta charset="UTF-8">
-<title>Currency Converter – Multi-Currency Live Rate Dashboard</title>
-<meta name="description" content="Multi-currency converter with the latest exchange rates. Edit one currency and instantly update all others in one clean dashboard.">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="theme-color" content="#0f172a">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Currency Converter – Multi-Currency Live Rate Dashboard</title>
+  <meta name="description" content="Multi-currency converter with the latest exchange rates. Edit one currency and instantly update all others in one clean dashboard.">
+  <meta name="theme-color" content="#0f172a">
 
-<link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="style.css">
+  <link rel="icon" href="favicon.png" type="image/png">
+  <link rel="apple-touch-icon" href="favicon.png">
 
-<style>
-*{
-  box-sizing:border-box;
-}
+  <style>
+    *{ box-sizing:border-box; }
 
-body{
-  font-family:Arial, sans-serif;
-  background:
-    radial-gradient(circle at top, rgba(59,130,246,0.20), transparent 35%),
-    radial-gradient(circle at bottom right, rgba(34,197,94,0.10), transparent 30%),
-    #020617;
-  color:white;
-  margin:0;
-  min-height:100vh;
-  display:flex;
-  flex-direction:column;
-  align-items:center;
-}
+    html{
+      scroll-behavior:smooth;
+    }
 
-.page-shell{
-  width:min(1180px, calc(100% - 24px));
-  margin:0 auto;
-}
+    body{
+      font-family:Arial, sans-serif;
+      background:
+        radial-gradient(circle at top, rgba(59,130,246,0.18), transparent 35%),
+        radial-gradient(circle at bottom right, rgba(34,197,94,0.10), transparent 30%),
+        #020617;
+      color:white;
+      margin:0;
+      min-height:100vh;
+      display:flex;
+      flex-direction:column;
+      align-items:center;
+    }
 
-.toptext{
-  font-size:14px;
-  color:#6b7a99;
-  margin:18px 0 6px;
-}
+    .page-shell{
+      width:min(1180px, calc(100% - 24px));
+      margin:0 auto;
+    }
 
-.menu{
-  margin-bottom:18px;
-}
+    .toptext{
+      font-size:14px;
+      color:#6b7a99;
+      margin:18px 0 6px;
+    }
 
-.menu a{
-  color:#3b82f6;
-  text-decoration:none;
-  font-weight:600;
-}
+    .menu{
+      margin-bottom:18px;
+    }
 
-.container{
-  background:rgba(30,41,59,0.72);
-  border:1px solid rgba(255,255,255,0.08);
-  backdrop-filter:blur(10px);
-  padding:30px;
-  border-radius:20px;
-  width:90%;
-  max-width:1100px;
-  box-shadow:0 18px 45px rgba(0,0,0,0.35);
-}
+    .menu a{
+      color:#3b82f6;
+      text-decoration:none;
+      font-weight:600;
+    }
 
-.hero{
-  display:flex;
-  justify-content:space-between;
-  gap:16px;
-  flex-wrap:wrap;
-  align-items:flex-start;
-  margin-bottom:18px;
-}
+    .container{
+      background:rgba(30,41,59,0.72);
+      border:1px solid rgba(255,255,255,0.08);
+      backdrop-filter:blur(10px);
+      padding:30px;
+      border-radius:20px;
+      width:90%;
+      max-width:1100px;
+      box-shadow:0 18px 45px rgba(0,0,0,0.35);
+    }
 
-h1{
-  margin:0 0 8px;
-  font-size:clamp(30px, 4vw, 42px);
-  line-height:1.08;
-}
+    .hero{
+      display:flex;
+      justify-content:space-between;
+      gap:16px;
+      flex-wrap:wrap;
+      align-items:flex-start;
+      margin-bottom:18px;
+    }
 
-.subhead{
-  color:#94a3b8;
-  font-size:15px;
-  line-height:1.65;
-  margin:0;
-  max-width:760px;
-}
+    h1{
+      margin:0 0 8px;
+      font-size:clamp(30px, 4vw, 42px);
+      line-height:1.08;
+    }
 
-.badge-row{
-  display:flex;
-  gap:10px;
-  flex-wrap:wrap;
-  margin-top:10px;
-}
+    .subhead{
+      color:#94a3b8;
+      font-size:15px;
+      line-height:1.65;
+      margin:0;
+      max-width:760px;
+    }
 
-.badge{
-  display:inline-flex;
-  padding:5px 10px;
-  border-radius:999px;
-  font-size:12px;
-  font-weight:700;
-  background:rgba(59,130,246,0.12);
-  color:#bfdbfe;
-  border:1px solid rgba(59,130,246,0.22);
-}
+    .badge-row{
+      display:flex;
+      gap:10px;
+      flex-wrap:wrap;
+      margin-top:10px;
+    }
 
-.badge.soft{
-  background:rgba(255,255,255,0.05);
-  border-color:rgba(255,255,255,0.08);
-  color:#dbeafe;
-}
+    .badge{
+      display:inline-flex;
+      padding:5px 10px;
+      border-radius:999px;
+      font-size:12px;
+      font-weight:700;
+      background:rgba(59,130,246,0.12);
+      color:#bfdbfe;
+      border:1px solid rgba(59,130,246,0.22);
+    }
 
-.control-bar{
-  display:flex;
-  gap:10px;
-  flex-wrap:wrap;
-  margin:18px 0 10px;
-}
+    .badge.soft{
+      background:rgba(255,255,255,0.05);
+      border-color:rgba(255,255,255,0.08);
+      color:#dbeafe;
+    }
 
-.control-bar input{
-  flex:1;
-  min-width:220px;
-  padding:14px 15px;
-  border-radius:12px;
-  border:1px solid rgba(255,255,255,0.08);
-  background:#e5e7eb;
-  font-size:16px;
-  outline:none;
-}
+    .status{
+      display:flex;
+      gap:12px;
+      flex-wrap:wrap;
+      align-items:center;
+      justify-content:space-between;
+      margin:8px 0 18px;
+      color:#cbd5e1;
+      font-size:13px;
+    }
 
-.control-bar input:focus{
-  box-shadow:0 0 0 3px rgba(59,130,246,0.20);
-  border-color:#3b82f6;
-}
+    .status strong{
+      color:white;
+    }
 
-.control-bar button{
-  padding:14px 18px;
-  background:linear-gradient(135deg,#3b82f6,#2563eb);
-  border:none;
-  border-radius:12px;
-  color:white;
-  cursor:pointer;
-  font-size:16px;
-  font-weight:700;
-  transition:0.2s;
-}
+    .result-card{
+      margin-top:10px;
+      padding:18px;
+      border-radius:16px;
+      background:rgba(255,255,255,0.04);
+      border:1px solid rgba(255,255,255,0.08);
+      line-height:1.8;
+      display:none;
+    }
 
-.control-bar button:hover{
-  transform:translateY(-1px);
-}
+    .result-grid{
+      display:grid;
+      grid-template-columns:repeat(auto-fit, minmax(220px, 1fr));
+      gap:12px;
+    }
 
-.control-bar button.secondary{
-  background:rgba(255,255,255,0.06);
-  border:1px solid rgba(255,255,255,0.08);
-}
+    .result-box{
+      background:rgba(15,23,42,0.72);
+      border:1px solid rgba(255,255,255,0.06);
+      border-radius:14px;
+      padding:14px;
+    }
 
-.control-bar button.secondary:hover{
-  background:rgba(255,255,255,0.10);
-}
+    .result-label{
+      display:block;
+      color:#cbd5f5;
+      font-size:13px;
+      font-weight:700;
+      margin-bottom:4px;
+    }
 
-.status{
-  display:flex;
-  gap:12px;
-  flex-wrap:wrap;
-  align-items:center;
-  justify-content:space-between;
-  margin:8px 0 18px;
-  color:#cbd5e1;
-  font-size:13px;
-}
+    .result-value{
+      font-size:18px;
+      font-weight:800;
+      color:#e5e7eb;
+    }
 
-.status strong{
-  color:white;
-}
+    .grid-title{
+      margin:22px 0 10px;
+      font-size:18px;
+      color:#e2e8f0;
+    }
 
-.result-card{
-  margin-top:10px;
-  padding:18px;
-  border-radius:16px;
-  background:rgba(255,255,255,0.04);
-  border:1px solid rgba(255,255,255,0.08);
-  line-height:1.8;
-  display:none;
-}
+    .currency-grid{
+      display:grid;
+      grid-template-columns:repeat(auto-fit, minmax(220px, 1fr));
+      gap:12px;
+    }
 
-.result-grid{
-  display:grid;
-  grid-template-columns:repeat(auto-fit, minmax(220px, 1fr));
-  gap:12px;
-}
+    .currency-card{
+      background:rgba(15,23,42,0.78);
+      border:1px solid rgba(255,255,255,0.06);
+      border-radius:16px;
+      padding:14px;
+      transition:0.2s;
+    }
 
-.result-box{
-  background:rgba(15,23,42,0.72);
-  border:1px solid rgba(255,255,255,0.06);
-  border-radius:14px;
-  padding:14px;
-}
+    .currency-card.active{
+      border-color:rgba(59,130,246,0.55);
+      box-shadow:0 0 0 1px rgba(59,130,246,0.15);
+    }
 
-.result-label{
-  display:block;
-  color:#cbd5f5;
-  font-size:13px;
-  font-weight:700;
-  margin-bottom:4px;
-}
+    .currency-head{
+      display:flex;
+      justify-content:space-between;
+      gap:10px;
+      margin-bottom:10px;
+    }
 
-.result-value{
-  font-size:18px;
-  font-weight:800;
-  color:#e5e7eb;
-}
+    .currency-code{
+      font-weight:800;
+      font-size:16px;
+    }
 
-.grid-title{
-  margin:22px 0 10px;
-  font-size:18px;
-  color:#e2e8f0;
-}
+    .currency-name{
+      font-size:12px;
+      color:#94a3b8;
+      text-align:right;
+      line-height:1.3;
+    }
 
-.currency-grid{
-  display:grid;
-  grid-template-columns:repeat(auto-fit, minmax(220px, 1fr));
-  gap:12px;
-}
+    .currency-input{
+      width:100%;
+      padding:13px 14px;
+      border-radius:12px;
+      border:1px solid rgba(255,255,255,0.08);
+      background:#e5e7eb;
+      font-size:15px;
+      outline:none;
+    }
 
-.currency-card{
-  background:rgba(15,23,42,0.78);
-  border:1px solid rgba(255,255,255,0.06);
-  border-radius:16px;
-  padding:14px;
-  transition:0.2s;
-}
+    .currency-input:focus{
+      box-shadow:0 0 0 3px rgba(59,130,246,0.20);
+      border-color:#3b82f6;
+    }
 
-.currency-card.active{
-  border-color:rgba(59,130,246,0.55);
-  box-shadow:0 0 0 1px rgba(59,130,246,0.15);
-}
+    .helper{
+      margin-top:10px;
+      color:#94a3b8;
+      font-size:13px;
+      line-height:1.5;
+    }
 
-.currency-head{
-  display:flex;
-  justify-content:space-between;
-  gap:10px;
-  margin-bottom:10px;
-}
+    .related{
+      margin:28px auto 0;
+      width:90%;
+      max-width:1100px;
+    }
 
-.currency-code{
-  font-weight:800;
-  font-size:16px;
-}
+    .related a{
+      color:#93c5fd;
+      text-decoration:none;
+    }
 
-.currency-name{
-  font-size:12px;
-  color:#94a3b8;
-  text-align:right;
-  line-height:1.3;
-}
+    .related a:hover{
+      text-decoration:underline;
+    }
 
-.currency-input{
-  width:100%;
-  padding:13px 14px;
-  border-radius:12px;
-  border:1px solid rgba(255,255,255,0.08);
-  background:#e5e7eb;
-  font-size:15px;
-  outline:none;
-}
+    .disclaimer{
+      margin-top:40px;
+      padding:20px 0 0;
+      border-top:1px solid rgba(255,255,255,0.1);
+      font-size:13px;
+      color:#9ca3af;
+      max-width:1100px;
+      text-align:center;
+      line-height:1.6;
+      width:90%;
+    }
 
-.currency-input:focus{
-  box-shadow:0 0 0 3px rgba(59,130,246,0.20);
-  border-color:#3b82f6;
-}
-
-.helper{
-  margin-top:10px;
-  color:#94a3b8;
-  font-size:13px;
-  line-height:1.5;
-}
-
-.related{
-  margin:28px auto 0;
-  width:90%;
-  max-width:1100px;
-}
-
-.related a{
-  color:#93c5fd;
-  text-decoration:none;
-}
-
-.related a:hover{
-  text-decoration:underline;
-}
-
-.disclaimer{
-  margin-top:40px;
-  padding:20px 0 0;
-  border-top:1px solid rgba(255,255,255,0.1);
-  font-size:13px;
-  color:#9ca3af;
-  max-width:1100px;
-  text-align:center;
-  line-height:1.6;
-  width:90%;
-}
-
-@media (max-width: 720px){
-  .container{
-    padding:22px;
-  }
-
-  .control-bar input{
-    min-width:100%;
-  }
-}
-</style>
+    @media (max-width: 720px){
+      .container{
+        padding:22px;
+      }
+    }
+  </style>
 </head>
 
 <body>
-<div class="page-shell">
-  <p class="toptext">Explore more calculators</p>
-  <div class="menu">
-    <a href="index.html">Home</a>
-  </div>
+  <div class="page-shell">
+    <p class="toptext">Explore more calculators</p>
+    <div class="menu">
+      <a href="index.html">Home</a>
+    </div>
 
-  <div class="container">
-    <div class="hero">
-      <div>
-        <h1>Currency Converter</h1>
-        <p class="subhead">
-          Edit any currency and every other currency updates instantly from the same latest-rate snapshot.
-          Built for fast comparisons, travel budgets, and price checks.
-        </p>
+    <div class="container">
+      <div class="hero">
+        <div>
+          <h1>Currency Converter</h1>
+          <p class="subhead">
+            Edit any currency and every other currency updates instantly from the same latest-rate snapshot.
+            Built for fast comparisons, travel budgets, and price checks.
+          </p>
 
-        <div class="badge-row">
-          <span class="badge">Multi-currency</span>
-          <span class="badge soft">Latest reference rates</span>
-          <span class="badge soft">One edit updates all</span>
+          <div class="badge-row">
+            <span class="badge">Multi-currency</span>
+            <span class="badge soft">Latest reference rates</span>
+            <span class="badge soft">One edit updates all</span>
+          </div>
         </div>
+      </div>
+
+      <div class="status">
+        <div><strong>Active base:</strong> <span id="baseStatus">USD</span></div>
+        <div><strong>Rate date:</strong> <span id="dateStatus">—</span></div>
+        <div><strong>Status:</strong> <span id="syncStatus">Ready</span></div>
+      </div>
+
+      <div id="resultBox" class="result-card">
+        <div class="result-grid">
+          <div class="result-box">
+            <span class="result-label">Base amount</span>
+            <span id="baseAmountOut" class="result-value">—</span>
+          </div>
+          <div class="result-box">
+            <span class="result-label">1 base in target</span>
+            <span id="unitRateOut" class="result-value">—</span>
+          </div>
+          <div class="result-box">
+            <span class="result-label">Reverse rate</span>
+            <span id="reverseRateOut" class="result-value">—</span>
+          </div>
+          <div class="result-box">
+            <span class="result-label">Loaded currencies</span>
+            <span id="loadedCountOut" class="result-value">—</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="grid-title">Currencies</div>
+      <div id="currencyGrid" class="currency-grid"></div>
+
+      <div class="helper">
+        Click any currency and type a new value. That currency becomes the base and all others update from the same rate set.
       </div>
     </div>
 
-    <div class="control-bar">
-      <button id="resetBtn" type="button" class="secondary">Reset</button>
+    <div class="related">
+      <h2>What is a Currency Converter?</h2>
+      <p>
+        A currency converter shows how much one currency is worth in another using an exchange rate snapshot. It is useful for travel, shopping, budgeting, forex planning, and comparing prices across countries.
+      </p>
+
+      <h2>How This Converter Works</h2>
+      <p>
+        The page fetches the latest available rate set for the currency you edit, then recalculates every other visible currency from that same base. That way, all values stay synchronized.
+      </p>
     </div>
 
-    <div class="status">
-      <div><strong>Active base:</strong> <span id="baseStatus">USD</span></div>
-      <div><strong>Rate date:</strong> <span id="dateStatus">—</span></div>
-      <div><strong>Status:</strong> <span id="syncStatus">Ready</span></div>
-    </div>
-
-    <div id="resultBox" class="result-card">
-      <div class="result-grid">
-        <div class="result-box">
-          <span class="result-label">Base amount</span>
-          <span id="baseAmountOut" class="result-value">—</span>
-        </div>
-        <div class="result-box">
-          <span class="result-label">1 base in target</span>
-          <span id="unitRateOut" class="result-value">—</span>
-        </div>
-        <div class="result-box">
-          <span class="result-label">Reverse rate</span>
-          <span id="reverseRateOut" class="result-value">—</span>
-        </div>
-        <div class="result-box">
-          <span class="result-label">Loaded currencies</span>
-          <span id="loadedCountOut" class="result-value">—</span>
-        </div>
-      </div>
-    </div>
-
-    <div class="grid-title">Currencies</div>
-    <div id="currencyGrid" class="currency-grid"></div>
-
-    <div class="helper">
-      The field you edit becomes the base currency. All others update automatically from the same rate set.
+    <div class="disclaimer">
+      <p>
+        <strong>Disclaimer:</strong> The calculators on this website are provided for informational and educational purposes only.
+        Currency rates are based on the selected public data source and may differ from broker, card issuer, or cash-exchange rates.
+        Always verify important rates before making financial decisions.
+      </p>
     </div>
   </div>
 
-  <div class="related">
-    <h2>What is a Currency Converter?</h2>
-    <p>
-      A currency converter shows how much one currency is worth in another using an exchange rate snapshot. It is useful for travel, shopping, budgeting, forex planning, and comparing prices across countries.
-    </p>
+  <script src="footer.js"></script>
+  <script>
+    const API_BASE = "https://api.frankfurter.dev/v2";
 
-    <h2>How This Converter Works</h2>
-    <p>
-      The page fetches the latest available rate set for the currency you edit, then recalculates every other visible currency from that same base. That way, all values stay synchronized.
-    </p>
-  </div>
+    const ALL_CURRENCIES = [
+      { code: "USD", name: "US Dollar" },
+      { code: "EUR", name: "Euro" },
+      { code: "GBP", name: "British Pound" },
+      { code: "TRY", name: "Turkish Lira" },
+      { code: "JPY", name: "Japanese Yen" },
+      { code: "CHF", name: "Swiss Franc" },
+      { code: "CAD", name: "Canadian Dollar" },
+      { code: "AUD", name: "Australian Dollar" },
+      { code: "NZD", name: "New Zealand Dollar" },
+      { code: "CNY", name: "Chinese Yuan" },
+      { code: "INR", name: "Indian Rupee" },
+      { code: "SAR", name: "Saudi Riyal" },
+      { code: "AED", name: "UAE Dirham" },
+      { code: "SEK", name: "Swedish Krona" },
+      { code: "NOK", name: "Norwegian Krone" },
+      { code: "DKK", name: "Danish Krone" },
+      { code: "PLN", name: "Polish Złoty" },
+      { code: "HUF", name: "Hungarian Forint" },
+      { code: "BRL", name: "Brazilian Real" },
+      { code: "MXN", name: "Mexican Peso" },
+      { code: "ZAR", name: "South African Rand" },
+      { code: "SGD", name: "Singapore Dollar" },
+      { code: "HKD", name: "Hong Kong Dollar" },
+      { code: "KRW", name: "South Korean Won" }
+    ];
 
-  <div class="disclaimer">
-    <p>
-      <strong>Disclaimer:</strong> The calculators on this website are provided for informational and educational purposes only.
-      Currency rates are based on the selected public data source and may differ from broker, card issuer, or cash-exchange rates.
-      Always verify important rates before making financial decisions.
-    </p>
-  </div>
-</div>
+    const BASE_CODE = "USD";
+    const DEFAULT_AMOUNT = 100;
 
-<script src="footer.js"></script>
-<script>
-const API_BASE = "https://api.frankfurter.dev/v1";
+    const gridEl = document.getElementById("currencyGrid");
+    const baseStatus = document.getElementById("baseStatus");
+    const dateStatus = document.getElementById("dateStatus");
+    const syncStatus = document.getElementById("syncStatus");
+    const resultBox = document.getElementById("resultBox");
+    const baseAmountOut = document.getElementById("baseAmountOut");
+    const unitRateOut = document.getElementById("unitRateOut");
+    const reverseRateOut = document.getElementById("reverseRateOut");
+    const loadedCountOut = document.getElementById("loadedCountOut");
 
-const CURRENCIES = [
-  { code: "USD", name: "US Dollar" },
-  { code: "EUR", name: "Euro" },
-  { code: "GBP", name: "British Pound" },
-  { code: "TRY", name: "Turkish Lira" },
-  { code: "JPY", name: "Japanese Yen" },
-  { code: "CHF", name: "Swiss Franc" },
-  { code: "CAD", name: "Canadian Dollar" },
-  { code: "AUD", name: "Australian Dollar" },
-  { code: "NZD", name: "New Zealand Dollar" },
-  { code: "CNY", name: "Chinese Yuan" },
-  { code: "INR", name: "Indian Rupee" },
-  { code: "SAR", name: "Saudi Riyal" },
-  { code: "AED", name: "UAE Dirham" },
-  { code: "SEK", name: "Swedish Krona" },
-  { code: "NOK", name: "Norwegian Krone" },
-  { code: "DKK", name: "Danish Krone" },
-  { code: "PLN", name: "Polish Złoty" },
-  { code: "HUF", name: "Hungarian Forint" },
-  { code: "BRL", name: "Brazilian Real" },
-  { code: "MXN", name: "Mexican Peso" },
-  { code: "ZAR", name: "South African Rand" },
-  { code: "SGD", name: "Singapore Dollar" },
-  { code: "HKD", name: "Hong Kong Dollar" },
-  { code: "KRW", name: "South Korean Won" }
-];
+    let activeBase = BASE_CODE;
+    let isUpdating = false;
+    let requestToken = 0;
+    let currencies = [];
+    let cache = new Map();
 
-const BASE_CODE = "USD";
-const DEFAULT_AMOUNT = 100;
+    function formatInputNumber(value){
+      if (!isFinite(value)) return "";
+      const rounded = Number(value.toFixed(6));
+      return String(rounded);
+    }
 
-const gridEl = document.getElementById("currencyGrid");
-const baseStatus = document.getElementById("baseStatus");
-const dateStatus = document.getElementById("dateStatus");
-const syncStatus = document.getElementById("syncStatus");
+    function formatDisplayNumber(value){
+      if (!isFinite(value)) return "—";
+      return value.toLocaleString(undefined, {
+        minimumFractionDigits: 0,
+        maximumFractionDigits: 4
+      });
+    }
 
-let activeBase = BASE_CODE;
-let isUpdating = false;
+    async function loadSupportedCurrencies(){
+      try {
+        const resp = await fetch(`${API_BASE}/currencies`);
+        if (!resp.ok) throw new Error("Currency list failed");
+        const data = await resp.json();
+        const supported = new Set(Object.keys(data || {}));
+        currencies = ALL_CURRENCIES.filter(item => supported.has(item.code));
+      } catch (err) {
+        console.error(err);
+        currencies = ALL_CURRENCIES;
+      }
 
-function buildGrid(){
-  gridEl.innerHTML = CURRENCIES.map(({ code, name }) => `
-    <div class="currency-card" data-code="${code}">
-      <div class="currency-head">
-        <div class="currency-code">${code}</div>
-        <div class="currency-name">${name}</div>
-      </div>
-      <input class="currency-input" type="number" step="any" min="0" data-code="${code}">
-    </div>
-  `).join("");
-}
+      buildGrid();
+      bindEvents();
+      loadedCountOut.textContent = String(currencies.length);
 
-function getInput(code){
-  return document.querySelector(`.currency-input[data-code="${code}"]`);
-}
+      const baseInput = getInput(BASE_CODE);
+      if (baseInput) baseInput.value = String(DEFAULT_AMOUNT);
+      setActiveCard(BASE_CODE);
+      recalcFrom(BASE_CODE);
+    }
 
-function setActiveCard(code){
-  activeBase = code;
-  baseStatus.textContent = code;
+    function buildGrid(){
+      gridEl.innerHTML = currencies.map(({ code, name }) => `
+        <div class="currency-card" data-code="${code}">
+          <div class="currency-head">
+            <div class="currency-code">${code}</div>
+            <div class="currency-name">${name}</div>
+          </div>
+          <input class="currency-input" type="number" step="any" min="0" inputmode="decimal" data-code="${code}" aria-label="${name} amount">
+        </div>
+      `).join("");
+    }
 
-  document.querySelectorAll(".currency-card").forEach(card => {
-    card.classList.toggle("active", card.dataset.code === code);
-  });
-}
+    function getInput(code){
+      return document.querySelector(`.currency-input[data-code="${code}"]`);
+    }
 
-async function recalcFrom(baseCode){
-  const baseInput = getInput(baseCode);
-  const amount = parseFloat(baseInput.value);
+    function setActiveCard(code){
+      activeBase = code;
+      baseStatus.textContent = code;
 
-  if (isNaN(amount)) return;
+      document.querySelectorAll(".currency-card").forEach(card => {
+        card.classList.toggle("active", card.dataset.code === code);
+      });
+    }
 
-  isUpdating = true;
-  setActiveCard(baseCode);
-  syncStatus.textContent = "Loading...";
+    async function fetchRates(base, quotes){
+      const quoteList = [...new Set(quotes.filter(Boolean))].sort();
+      const cacheKey = `rates|${base}|${quoteList.join(",")}`;
+      const cached = cache.get(cacheKey);
 
-  try {
-    const targets = CURRENCIES.map(c => c.code).filter(c => c !== baseCode);
+      if (cached && Date.now() - cached.timestamp < 60_000) {
+        return cached.data;
+      }
 
-    const resp = await fetch(`${API_BASE}/latest?base=${baseCode}`);
-    const data = await resp.json();
+      const params = new URLSearchParams({
+        base,
+        quotes: quoteList.join(",")
+      });
 
-    const rates = data.rates;
-    dateStatus.textContent = data.date;
+      const resp = await fetch(`${API_BASE}/rates?${params.toString()}`);
+      if (!resp.ok) throw new Error(`Rate request failed: ${resp.status}`);
 
-    for (const { code } of CURRENCIES) {
-      const input = getInput(code);
+      const data = await resp.json();
+      cache.set(cacheKey, { timestamp: Date.now(), data });
+      return data;
+    }
 
-      if (code === baseCode) {
-        input.value = amount;
-      } else {
-        input.value = (amount * rates[code]).toFixed(4);
+    async function fetchSingleRate(base, quote){
+      const cacheKey = `rate|${base}|${quote}`;
+      const cached = cache.get(cacheKey);
+
+      if (cached && Date.now() - cached.timestamp < 60_000) {
+        return cached.data;
+      }
+
+      const resp = await fetch(`${API_BASE}/rate/${encodeURIComponent(base)}/${encodeURIComponent(quote)}`);
+      if (!resp.ok) throw new Error(`Pair rate request failed: ${resp.status}`);
+
+      const data = await resp.json();
+      cache.set(cacheKey, { timestamp: Date.now(), data });
+      return data;
+    }
+
+    async function recalcFrom(baseCode){
+      const token = ++requestToken;
+      const baseInput = getInput(baseCode);
+      if (!baseInput) return;
+
+      const amount = parseFloat(baseInput.value);
+      if (isNaN(amount) || amount < 0) return;
+
+      isUpdating = true;
+      setActiveCard(baseCode);
+      syncStatus.textContent = "Loading...";
+
+      try {
+        const targets = currencies
+          .map(c => c.code)
+          .filter(code => code !== baseCode);
+
+        const data = await fetchRates(baseCode, targets);
+        if (token !== requestToken) return;
+
+        let rates = data.rates || {};
+        const date = data.date || "—";
+
+        const missing = targets.filter(code => typeof rates[code] !== "number");
+        if (missing.length > 0) {
+          const fallbackResults = await Promise.all(
+            missing.map(async quote => {
+              try {
+                const pairData = await fetchSingleRate(baseCode, quote);
+                return [quote, pairData.rate];
+              } catch {
+                return [quote, null];
+              }
+            })
+          );
+
+          for (const [quote, rate] of fallbackResults) {
+            if (typeof rate === "number") {
+              rates[quote] = rate;
+            }
+          }
+        }
+
+        if (token !== requestToken) return;
+
+        dateStatus.textContent = date;
+        resultBox.style.display = "block";
+        baseAmountOut.textContent = `${formatDisplayNumber(amount)} ${baseCode}`;
+
+        const firstTarget = targets.find(code => typeof rates[code] === "number");
+        if (firstTarget) {
+          unitRateOut.textContent = `1 ${baseCode} = ${formatDisplayNumber(rates[firstTarget])} ${firstTarget}`;
+          reverseRateOut.textContent = `1 ${firstTarget} = ${formatDisplayNumber(1 / rates[firstTarget])} ${baseCode}`;
+        } else {
+          unitRateOut.textContent = "—";
+          reverseRateOut.textContent = "—";
+        }
+
+        for (const { code } of currencies) {
+          const input = getInput(code);
+          if (!input) continue;
+
+          if (code === baseCode) {
+            input.value = formatInputNumber(amount);
+          } else {
+            const rate = rates[code];
+            input.value = typeof rate === "number"
+              ? formatInputNumber(amount * rate)
+              : "";
+          }
+        }
+
+        loadedCountOut.textContent = String(currencies.length);
+        syncStatus.textContent = "Updated";
+      } catch (err) {
+        console.error(err);
+        syncStatus.textContent = "Error loading rates";
+      } finally {
+        isUpdating = false;
       }
     }
 
-    syncStatus.textContent = "Updated";
+    function bindEvents(){
+      currencies.forEach(({ code }) => {
+        const input = getInput(code);
+        if (!input) return;
 
-  } catch {
-    syncStatus.textContent = "Error loading rates";
-  }
+        const card = input.closest(".currency-card");
 
-  isUpdating = false;
-}
+        input.addEventListener("focus", () => setActiveCard(code));
+        input.addEventListener("input", () => {
+          if (isUpdating) return;
+          setActiveCard(code);
+          recalcFrom(code);
+        });
 
-function bindEvents(){
-  CURRENCIES.forEach(({ code }) => {
-    const input = getInput(code);
+        card.addEventListener("click", (e) => {
+          if (e.target !== input) input.focus();
+        });
+      });
+    }
 
-    input.addEventListener("focus", () => setActiveCard(code));
-
-    input.addEventListener("input", () => {
-      if (isUpdating) return;
-      recalcFrom(code);
-    });
-  });
-}
-
-buildGrid();
-bindEvents();
-
-getInput(BASE_CODE).value = DEFAULT_AMOUNT;
-recalcFrom(BASE_CODE);
-</script>
-
+    loadSupportedCurrencies();
+  </script>
 </body>
-  </html>
+</html>
