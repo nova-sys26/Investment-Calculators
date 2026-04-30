@@ -1,0 +1,770 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-ZPCXDVE8C5"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-ZPCXDVE8C5');
+  </script>
+
+  <meta charset="UTF-8">
+  <title>401(k) Calculator – Project Retirement Balance With Employer Match</title>
+  <meta name="description" content="Free 401(k) calculator to project retirement balance, employee contributions, employer match, and long-term growth with a clear yearly chart.">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#0f172a">
+
+  <link rel="stylesheet" href="style.css">
+  <link rel="icon" href="favicon.png" type="image/png">
+  <link rel="apple-touch-icon" href="favicon.png">
+
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+  <style>
+    *{
+      box-sizing:border-box;
+    }
+
+    body{
+      font-family:Arial, sans-serif;
+      background:#0f172a;
+      color:white;
+      display:flex;
+      justify-content:center;
+      align-items:center;
+      flex-direction:column;
+      min-height:100vh;
+      margin:0;
+      padding:24px 0;
+    }
+
+    .toptext{
+      font-size:14px;
+      color:#6b7a99;
+      margin-bottom:5px;
+    }
+
+    .menu{
+      margin-bottom:25px;
+    }
+
+    .menu a{
+      color:#3b82f6;
+      margin:10px;
+      text-decoration:none;
+      font-weight:600;
+    }
+
+    .container{
+      background:#1e293b;
+      padding:30px;
+      border-radius:16px;
+      width:90%;
+      max-width:560px;
+      box-shadow:0 10px 25px rgba(0,0,0,0.35);
+    }
+
+    h1{
+      margin-top:0;
+      margin-bottom:10px;
+      font-size:32px;
+      line-height:1.15;
+    }
+
+    .subhead{
+      color:#94a3b8;
+      font-size:15px;
+      line-height:1.6;
+      margin-bottom:18px;
+    }
+
+    .badge-row{
+      display:flex;
+      gap:10px;
+      flex-wrap:wrap;
+      margin:14px 0 6px;
+    }
+
+    .badge{
+      display:inline-flex;
+      padding:5px 10px;
+      border-radius:999px;
+      font-size:12px;
+      font-weight:700;
+      background:rgba(59,130,246,0.12);
+      color:#bfdbfe;
+      border:1px solid rgba(59,130,246,0.22);
+    }
+
+    .badge.soft{
+      background:rgba(255,255,255,0.05);
+      border-color:rgba(255,255,255,0.08);
+      color:#dbeafe;
+    }
+
+    .section-title{
+      margin:18px 0 8px;
+      font-size:16px;
+      color:#e2e8f0;
+      font-weight:700;
+    }
+
+    .grid{
+      display:grid;
+      grid-template-columns:1fr 1fr;
+      gap:12px;
+    }
+
+    @media (max-width: 700px){
+      .grid{
+        grid-template-columns:1fr;
+      }
+    }
+
+    input{
+      width:100%;
+      padding:14px;
+      margin:0;
+      border-radius:10px;
+      border:none;
+      background:#e5e7eb;
+      font-size:16px;
+      outline:none;
+    }
+
+    input:focus{
+      box-shadow:0 0 0 3px rgba(59,130,246,0.18);
+    }
+
+    .field{
+      margin:12px 0;
+    }
+
+    .field label{
+      display:block;
+      font-size:13px;
+      color:#cbd5e1;
+      margin:0 0 6px;
+      font-weight:600;
+    }
+
+    button{
+      padding:14px;
+      background:#3b82f6;
+      border:none;
+      border-radius:10px;
+      color:white;
+      cursor:pointer;
+      margin-top:10px;
+      width:100%;
+      font-size:16px;
+      font-weight:700;
+      transition:0.2s;
+    }
+
+    button:hover{
+      background:#2563eb;
+      transform:translateY(-1px);
+    }
+
+    .result-card{
+      margin-top:18px;
+      padding:16px;
+      border-radius:14px;
+      background:rgba(255,255,255,0.05);
+      border:1px solid rgba(255,255,255,0.08);
+      display:none;
+    }
+
+    .result-line{
+      margin:10px 0;
+      font-size:16px;
+      line-height:1.5;
+      color:#e5e7eb;
+    }
+
+    .result-line strong{
+      color:#cbd5f5;
+    }
+
+    .insight-good{
+      color:#22c55e;
+      font-weight:700;
+    }
+
+    .insight-medium{
+      color:#facc15;
+      font-weight:700;
+    }
+
+    .insight-weak{
+      color:#ef4444;
+      font-weight:700;
+    }
+
+    canvas{
+      margin-top:26px;
+    }
+
+    .content{
+      width:90%;
+      max-width:900px;
+      margin-top:34px;
+    }
+
+    .content h2{
+      margin-top:34px;
+      margin-bottom:10px;
+      font-size:28px;
+    }
+
+    .content p,
+    .content li{
+      color:#cbd5e1;
+      line-height:1.7;
+      font-size:15px;
+    }
+
+    .content ul{
+      padding-left:20px;
+    }
+
+    .formula{
+      background:rgba(255,255,255,0.05);
+      border:1px solid rgba(255,255,255,0.08);
+      padding:14px 16px;
+      border-radius:12px;
+      margin:12px 0;
+      color:#e2e8f0;
+      overflow:auto;
+    }
+
+    .faq{
+      margin-top:14px;
+    }
+
+    .faq-item{
+      border-bottom:1px solid rgba(255,255,255,0.08);
+    }
+
+    .faq-question{
+      width:100%;
+      background:none;
+      border:none;
+      color:white;
+      text-align:left;
+      padding:14px 8px;
+      font-size:15px;
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      cursor:pointer;
+    }
+
+    .faq-question:hover{
+      color:#93c5fd;
+    }
+
+    .arrow{
+      transition:0.25s;
+    }
+
+    .faq-item.active .arrow{
+      transform:rotate(180deg);
+    }
+
+    .faq-answer{
+      max-height:0;
+      overflow:hidden;
+      transition:max-height 0.3s ease;
+      color:#cbd5e1;
+      font-size:14px;
+      padding:0 8px;
+    }
+
+    .faq-item.active .faq-answer{
+      max-height:260px;
+      padding-bottom:12px;
+    }
+
+    .disclaimer{
+      margin-top:40px;
+      padding-top:20px;
+      border-top:1px solid rgba(255,255,255,0.1);
+      font-size:13px;
+      color:#9ca3af;
+      max-width:900px;
+      text-align:center;
+      line-height:1.6;
+    }
+
+    @media (max-width: 700px){
+      .container{
+        padding:22px;
+      }
+
+      h1{
+        font-size:28px;
+      }
+
+      .content h2{
+        font-size:24px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <p class="toptext">Explore more calculators</p>
+
+  <div class="menu">
+    <a href="index.html">Home</a>
+  </div>
+
+  <div class="container">
+    <h1>401(k) Calculator</h1>
+    <p class="subhead">
+      Project your retirement balance using your current savings, salary, contribution rate, employer match, expected return, and salary growth.
+      The chart shows how your balance can grow over time.
+    </p>
+
+    <div class="badge-row">
+      <span class="badge">Retirement planning</span>
+      <span class="badge soft">Employer match</span>
+      <span class="badge soft">Yearly projection</span>
+    </div>
+
+    <div class="section-title">Your details</div>
+    <div class="grid">
+      <div class="field">
+        <label for="currentAge">Current Age</label>
+        <input id="currentAge" type="number" min="0" step="1" placeholder="e.g. 30">
+      </div>
+
+      <div class="field">
+        <label for="retirementAge">Retirement Age</label>
+        <input id="retirementAge" type="number" min="0" step="1" placeholder="e.g. 65">
+      </div>
+
+      <div class="field">
+        <label for="currentBalance">Current 401(k) Balance ($)</label>
+        <input id="currentBalance" type="number" min="0" step="any" placeholder="e.g. 15000">
+      </div>
+
+      <div class="field">
+        <label for="annualSalary">Annual Salary ($)</label>
+        <input id="annualSalary" type="number" min="0" step="any" placeholder="e.g. 70000">
+      </div>
+    </div>
+
+    <div class="section-title">Contribution assumptions</div>
+    <div class="grid">
+      <div class="field">
+        <label for="employeeContributionPct">Your Contribution (% of salary)</label>
+        <input id="employeeContributionPct" type="number" min="0" step="any" placeholder="e.g. 10">
+      </div>
+
+      <div class="field">
+        <label for="employerMatchPct">Employer Match (% of eligible contribution)</label>
+        <input id="employerMatchPct" type="number" min="0" step="any" placeholder="e.g. 50">
+      </div>
+
+      <div class="field">
+        <label for="employerMatchLimitPct">Employer Match Limit (% of salary)</label>
+        <input id="employerMatchLimitPct" type="number" min="0" step="any" placeholder="e.g. 6">
+      </div>
+
+      <div class="field">
+        <label for="annualReturnPct">Expected Annual Return (%)</label>
+        <input id="annualReturnPct" type="number" step="any" placeholder="e.g. 7">
+      </div>
+
+      <div class="field">
+        <label for="salaryGrowthPct">Annual Salary Growth (%)</label>
+        <input id="salaryGrowthPct" type="number" step="any" placeholder="e.g. 3">
+      </div>
+    </div>
+
+    <button onclick="calculate401k()">Calculate 401(k)</button>
+
+    <div id="resultCard" class="result-card">
+      <div class="result-line"><strong>Years to retirement:</strong> <span id="yearsOut">—</span></div>
+      <div class="result-line"><strong>Projected balance:</strong> <span id="balanceOut">—</span></div>
+      <div class="result-line"><strong>Total employee contributions:</strong> <span id="employeeOut">—</span></div>
+      <div class="result-line"><strong>Total employer match:</strong> <span id="employerOut">—</span></div>
+      <div class="result-line"><strong>Growth from returns:</strong> <span id="growthOut">—</span></div>
+      <div class="result-line"><strong>Insight:</strong> <span id="insightOut">—</span></div>
+    </div>
+
+    <canvas id="myChart"></canvas>
+  </div>
+
+  <div class="content">
+    <h2>What is a 401(k) Calculator?</h2>
+    <p>
+      A 401(k) calculator estimates how your retirement account could grow from today until retirement based on your starting balance,
+      contribution rate, employer match, salary growth, and expected market return. It is useful because retirement savings are not just about
+      how much you put in. Compounding and employer contributions can change the final result a lot over time.
+    </p>
+
+    <p>
+      This calculator is built to show a realistic projection instead of a toy number. It separates your own contributions, your employer’s match,
+      and investment growth so you can see where the final balance is actually coming from.
+    </p>
+
+    <h2>How This Calculator Works</h2>
+    <p>
+      The calculator converts your annual salary and contribution percentage into monthly contributions, then grows the balance month by month
+      using your expected annual return. Salary growth is applied once per year, which keeps the projection closer to how real retirement planning works.
+    </p>
+
+    <p>
+      The chart shows two lines: your projected 401(k) balance and the balance you would have from contributions alone.
+      That makes the compounding effect visible instead of hiding it.
+    </p>
+
+    <h2>Formula Logic</h2>
+    <p>
+      The projection uses recurring monthly compounding:
+    </p>
+
+    <div class="formula">
+      Monthly growth = (1 + annual return)^(1/12) - 1
+      <br>
+      Balance grows monthly from existing assets + employee contributions + employer match
+    </div>
+
+    <p>
+      The employer match is capped by the percentage you enter, so the calculator can model common setups like “50% match up to 6% of salary.”
+      Your actual plan may differ, so the assumptions are fully editable.
+    </p>
+
+    <h2>Why this matters</h2>
+    <p>
+      A 401(k) is one of the most important retirement tools for long-term investing because small changes in contribution rate, employer match,
+      or expected return can produce a very large difference in the ending balance. This calculator helps you compare those choices clearly.
+    </p>
+
+    <ul>
+      <li>See how much of your balance comes from your own money</li>
+      <li>See how much comes from employer match</li>
+      <li>See how much comes from compound growth</li>
+      <li>Adjust assumptions before you make a retirement decision</li>
+    </ul>
+
+    <h2>How to use it</h2>
+    <ul>
+      <li>Enter your current age and retirement age</li>
+      <li>Add your current 401(k) balance</li>
+      <li>Enter your annual salary</li>
+      <li>Set your contribution rate, employer match, and salary growth</li>
+      <li>Click calculate to see the projection and chart</li>
+    </ul>
+
+    <h2>Frequently Asked Questions</h2>
+
+    <div class="faq">
+      <div class="faq-item">
+        <button class="faq-question">
+          Does this calculator include employer match?
+          <span class="arrow">▼</span>
+        </button>
+        <div class="faq-answer">
+          <p>
+            Yes. You can enter both the match percentage and the match limit. That lets the calculator estimate employer contributions alongside your own contributions.
+          </p>
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <button class="faq-question">
+          Why do I need salary growth?
+          <span class="arrow">▼</span>
+        </button>
+        <div class="faq-answer">
+          <p>
+            Salary growth matters because your contributions usually grow as your income grows. Including it makes the projection more realistic over a long time horizon.
+          </p>
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <button class="faq-question">
+          Is the chart showing the right thing?
+          <span class="arrow">▼</span>
+        </button>
+        <div class="faq-answer">
+          <p>
+            Yes. The line chart is the best format for this calculator because it shows the account path over time. One line shows the full projected balance, and the other shows contributions without investment growth.
+          </p>
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <button class="faq-question">
+          Can this calculator predict the future exactly?
+          <span class="arrow">▼</span>
+        </button>
+        <div class="faq-answer">
+          <p>
+            No. It is a projection based on your assumptions. Real returns, salary changes, and plan rules can differ, so treat the result as a planning estimate.
+          </p>
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <button class="faq-question">
+          What happens if I increase my contribution rate?
+          <span class="arrow">▼</span>
+        </button>
+        <div class="faq-answer">
+          <p>
+            Your projected balance rises because more money is invested each year, and employer matching may also increase depending on your plan settings.
+          </p>
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <button class="faq-question">
+          Is this calculator useful even if my employer does not match?
+          <span class="arrow">▼</span>
+        </button>
+        <div class="faq-answer">
+          <p>
+            Yes. It still shows how your own contributions and compounding can build a retirement balance over time, even without employer match.
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="disclaimer">
+    <p>
+      <strong>Disclaimer:</strong> The calculators on this website are provided for informational and educational purposes only.
+      All results are estimates based on the values entered and do not constitute financial, investment, or trading advice.
+      Plan rules, contribution limits, and employer match policies vary, so always verify important details with your plan administrator and current official guidance.
+    </p>
+  </div>
+
+  <script src="footer.js"></script>
+  <script>
+    let chart;
+
+    function fmt(value){
+      return value.toLocaleString(undefined, {
+        minimumFractionDigits: 0,
+        maximumFractionDigits: 2
+      });
+    }
+
+    function calculate401k(){
+      const currentAge = parseFloat(document.getElementById("currentAge").value);
+      const retirementAge = parseFloat(document.getElementById("retirementAge").value);
+      const currentBalance = parseFloat(document.getElementById("currentBalance").value);
+      const annualSalary = parseFloat(document.getElementById("annualSalary").value);
+      const employeeContributionPct = parseFloat(document.getElementById("employeeContributionPct").value);
+      const employerMatchPct = parseFloat(document.getElementById("employerMatchPct").value);
+      const employerMatchLimitPct = parseFloat(document.getElementById("employerMatchLimitPct").value);
+      const annualReturnPct = parseFloat(document.getElementById("annualReturnPct").value);
+      const salaryGrowthPct = parseFloat(document.getElementById("salaryGrowthPct").value) || 0;
+
+      const required = [
+        currentAge, retirementAge, currentBalance, annualSalary,
+        employeeContributionPct, employerMatchPct, employerMatchLimitPct,
+        annualReturnPct
+      ];
+
+      if (required.some(v => isNaN(v))){
+        alert("Please fill in all required fields.");
+        return;
+      }
+
+      if (currentAge < 0 || retirementAge < 0){
+        alert("Ages must be valid positive numbers.");
+        return;
+      }
+
+      if (retirementAge <= currentAge){
+        alert("Retirement age must be greater than current age.");
+        return;
+      }
+
+      if (currentBalance < 0 || annualSalary <= 0){
+        alert("Current balance cannot be negative and salary must be greater than zero.");
+        return;
+      }
+
+      if (
+        employeeContributionPct < 0 || employeeContributionPct > 100 ||
+        employerMatchPct < 0 || employerMatchPct > 100 ||
+        employerMatchLimitPct < 0 || employerMatchLimitPct > 100
+      ){
+        alert("Contribution and match percentages must be between 0 and 100.");
+        return;
+      }
+
+      if (annualReturnPct <= -100 || salaryGrowthPct <= -100){
+        alert("Return and salary growth must be greater than -100%.");
+        return;
+      }
+
+      const years = retirementAge - currentAge;
+      const monthlyReturn = Math.pow(1 + annualReturnPct / 100, 1 / 12) - 1;
+      const monthlySalaryGrowth = Math.pow(1 + salaryGrowthPct / 100, 1 / 12) - 1;
+
+      let balance = currentBalance;
+      let balanceNoGrowth = currentBalance;
+      let salary = annualSalary;
+
+      let totalEmployee = 0;
+      let totalEmployer = 0;
+      let totalFutureContrib = 0;
+
+      const labels = [0];
+      const projectedBalances = [currentBalance];
+      const noGrowthBalances = [currentBalance];
+
+      for(let year = 1; year <= years; year++){
+        for(let month = 1; month <= 12; month++){
+          const monthlyEmployee = (salary * (employeeContributionPct / 100)) / 12;
+          const eligibleSalaryForMatch = Math.min(employeeContributionPct, employerMatchLimitPct);
+          const monthlyEmployer = (salary * (eligibleSalaryForMatch / 100) * (employerMatchPct / 100)) / 12;
+
+          balance = balance * (1 + monthlyReturn) + monthlyEmployee + monthlyEmployer;
+          balanceNoGrowth += monthlyEmployee + monthlyEmployer;
+
+          totalEmployee += monthlyEmployee;
+          totalEmployer += monthlyEmployer;
+          totalFutureContrib += monthlyEmployee + monthlyEmployer;
+        }
+
+        salary *= (1 + salaryGrowthPct / 100);
+
+        labels.push(year);
+        projectedBalances.push(balance);
+        noGrowthBalances.push(balanceNoGrowth);
+      }
+
+      const growthFromReturns = balance - currentBalance - totalFutureContrib;
+
+      document.getElementById("yearsOut").innerText = years.toFixed(0) + " years";
+      document.getElementById("balanceOut").innerText = "$" + fmt(balance);
+      document.getElementById("employeeOut").innerText = "$" + fmt(totalEmployee);
+      document.getElementById("employerOut").innerText = "$" + fmt(totalEmployer);
+      document.getElementById("growthOut").innerText = "$" + fmt(growthFromReturns);
+
+      let insight = "";
+      let insightClass = "";
+
+      if(balance >= currentBalance * 5){
+        insight = "Very strong retirement outlook";
+        insightClass = "insight-good";
+      } else if(balance >= currentBalance * 2){
+        insight = "Healthy long-term growth";
+        insightClass = "insight-medium";
+      } else {
+        insight = "Projection is modest; contribution rate may be too low";
+        insightClass = "insight-weak";
+      }
+
+      document.getElementById("insightOut").innerHTML = `<span class="${insightClass}">${insight}</span>`;
+      document.getElementById("resultCard").style.display = "block";
+
+      drawChart(labels, projectedBalances, noGrowthBalances);
+    }
+
+    function drawChart(labels, projectedBalances, noGrowthBalances){
+      const ctx = document.getElementById("myChart").getContext("2d");
+
+      if(chart){
+        chart.destroy();
+      }
+
+      chart = new Chart(ctx, {
+        type: "line",
+        data: {
+          labels: labels,
+          datasets: [
+            {
+              label: "Projected 401(k) balance",
+              data: projectedBalances,
+              borderColor: "#3b82f6",
+              backgroundColor: "rgba(59,130,246,0.15)",
+              tension: 0.25,
+              fill: true,
+              pointRadius: 3,
+              pointHoverRadius: 5
+            },
+            {
+              label: "Contributions only",
+              data: noGrowthBalances,
+              borderColor: "#22c55e",
+              backgroundColor: "rgba(34,197,94,0.08)",
+              tension: 0.25,
+              fill: false,
+              pointRadius: 3,
+              pointHoverRadius: 5
+            }
+          ]
+        },
+        options: {
+          responsive: true,
+          plugins: {
+            legend: {
+              labels: { color: "white" }
+            },
+            tooltip: {
+              callbacks: {
+                label: function(context){
+                  return `${context.dataset.label}: $${fmt(context.parsed.y)}`;
+                }
+              }
+            }
+          },
+          scales: {
+            x: {
+              ticks: { color: "white" },
+              grid: { color: "rgba(255,255,255,0.08)" },
+              title: {
+                display: true,
+                text: "Years",
+                color: "white"
+              }
+            },
+            y: {
+              ticks: {
+                color: "white",
+                callback: function(value){
+                  return "$" + Number(value).toLocaleString();
+                }
+              },
+              grid: { color: "rgba(255,255,255,0.08)" },
+              title: {
+                display: true,
+                text: "Balance ($)",
+                color: "white"
+              }
+            }
+          }
+        }
+      });
+    }
+
+    document.addEventListener("DOMContentLoaded", function(){
+      document.querySelectorAll(".faq-question").forEach(btn => {
+        btn.addEventListener("click", () => {
+          const item = btn.parentElement;
+
+          document.querySelectorAll(".faq-item").forEach(i => {
+            if(i !== item) i.classList.remove("active");
+          });
+
+          item.classList.toggle("active");
+        });
+      });
+    });
+  </script>
+</body>
+  </html>
