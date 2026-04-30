@@ -1,0 +1,521 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-ZPCXDVE8C5"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-ZPCXDVE8C5');
+  </script>
+
+  <meta charset="UTF-8">
+  <title>CAGR Calculator – Measure True Annual Growth Rate</title>
+  <meta name="description" content="Free CAGR calculator to measure compound annual growth rate, annualized return, total growth, and investment performance over time.">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#0f172a">
+
+  <link rel="stylesheet" href="style.css">
+  <link rel="icon" href="favicon.png" type="image/png">
+  <link rel="apple-touch-icon" href="favicon.png">
+
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+  <style>
+    *{
+      box-sizing:border-box;
+    }
+
+    body{
+      font-family: Arial, sans-serif;
+      background:#0f172a;
+      color:white;
+      display:flex;
+      justify-content:center;
+      align-items:center;
+      flex-direction:column;
+      min-height:100vh;
+      margin:0;
+      padding:24px 0;
+    }
+
+    .toptext{
+      font-size:14px;
+      color:#6b7a99;
+      margin-bottom:5px;
+    }
+
+    .menu{
+      margin-bottom:25px;
+    }
+
+    .menu a{
+      color:#3b82f6;
+      margin:10px;
+      text-decoration:none;
+      font-weight:600;
+    }
+
+    .container{
+      background:#1e293b;
+      padding:30px;
+      border-radius:16px;
+      width:90%;
+      max-width:520px;
+      box-shadow:0 10px 25px rgba(0,0,0,0.35);
+    }
+
+    h1{
+      margin-top:0;
+      margin-bottom:10px;
+      font-size:32px;
+      line-height:1.15;
+    }
+
+    .subhead{
+      color:#94a3b8;
+      font-size:15px;
+      line-height:1.6;
+      margin-bottom:18px;
+    }
+
+    input{
+      width:100%;
+      padding:14px;
+      margin:12px 0;
+      border-radius:10px;
+      border:none;
+      background:#e5e7eb;
+      font-size:16px;
+      outline:none;
+    }
+
+    input:focus{
+      box-shadow:0 0 0 3px rgba(59,130,246,0.18);
+    }
+
+    button{
+      padding:14px;
+      background:#3b82f6;
+      border:none;
+      border-radius:10px;
+      color:white;
+      cursor:pointer;
+      margin-top:10px;
+      width:100%;
+      font-size:16px;
+      font-weight:700;
+      transition:0.2s;
+    }
+
+    button:hover{
+      background:#2563eb;
+      transform:translateY(-1px);
+    }
+
+    .result-card{
+      margin-top:18px;
+      padding:16px;
+      border-radius:14px;
+      background:rgba(255,255,255,0.05);
+      border:1px solid rgba(255,255,255,0.08);
+      display:none;
+    }
+
+    .result-line{
+      margin:10px 0;
+      font-size:16px;
+      line-height:1.5;
+      color:#e5e7eb;
+    }
+
+    .result-line strong{
+      color:#cbd5f5;
+    }
+
+    .insight-good{
+      color:#22c55e;
+      font-weight:700;
+    }
+
+    .insight-medium{
+      color:#facc15;
+      font-weight:700;
+    }
+
+    .insight-weak{
+      color:#ef4444;
+      font-weight:700;
+    }
+
+    canvas{
+      margin-top:26px;
+    }
+
+    .content{
+      width:90%;
+      max-width:900px;
+      margin-top:34px;
+    }
+
+    .content h2{
+      margin-top:34px;
+      margin-bottom:10px;
+      font-size:28px;
+    }
+
+    .content p,
+    .content li{
+      color:#cbd5e1;
+      line-height:1.7;
+      font-size:15px;
+    }
+
+    .content ul{
+      padding-left:20px;
+    }
+
+    .formula{
+      background:rgba(255,255,255,0.05);
+      border:1px solid rgba(255,255,255,0.08);
+      padding:14px 16px;
+      border-radius:12px;
+      margin:12px 0;
+      color:#e2e8f0;
+      overflow:auto;
+    }
+
+    .faq{
+      margin-top:14px;
+    }
+
+    .faq-item{
+      border-bottom:1px solid rgba(255,255,255,0.08);
+    }
+
+    .faq-question{
+      width:100%;
+      background:none;
+      border:none;
+      color:white;
+      text-align:left;
+      padding:14px 8px;
+      font-size:15px;
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      cursor:pointer;
+    }
+
+    .faq-question:hover{
+      color:#93c5fd;
+    }
+
+    .arrow{
+      transition:0.25s;
+    }
+
+    .faq-item.active .arrow{
+      transform:rotate(180deg);
+    }
+
+    .faq-answer{
+      max-height:0;
+      overflow:hidden;
+      transition:max-height 0.3s ease;
+      color:#cbd5e1;
+      font-size:14px;
+      padding:0 8px;
+    }
+
+    .faq-item.active .faq-answer{
+      max-height:260px;
+      padding-bottom:12px;
+    }
+
+    .disclaimer{
+      margin-top:40px;
+      padding-top:20px;
+      border-top:1px solid rgba(255,255,255,0.1);
+      font-size:13px;
+      color:#9ca3af;
+      max-width:900px;
+      text-align:center;
+      line-height:1.6;
+    }
+
+    @media (max-width: 700px){
+      .container{
+        padding:22px;
+      }
+
+      h1{
+        font-size:28px;
+      }
+
+      .content h2{
+        font-size:24px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <p class="toptext">Explore more calculators</p>
+
+  <div class="menu">
+    <a href="index.html">Home</a>
+  </div>
+
+  <div class="container">
+    <h1>CAGR Calculator</h1>
+    <p class="subhead">
+      Measure the real annual growth of an investment, business metric, or asset over time.
+      CAGR shows the smoothed yearly growth rate between a starting value and an ending value.
+    </p>
+
+    <input id="initialValue" placeholder="Initial Value">
+    <input id="finalValue" placeholder="Final Value">
+    <input id="years" placeholder="Number of Years">
+
+    <button onclick="calculateCAGR()">Calculate CAGR</button>
+
+    <div id="resultCard" class="result-card">
+      <div class="result-line"><strong>CAGR:</strong> <span id="cagrOut">—</span></div>
+      <div class="result-line"><strong>Total Growth:</strong> <span id="growthOut">—</span></div>
+      <div class="result-line"><strong>Absolute Gain/Loss:</strong> <span id="gainOut">—</span></div>
+      <div class="result-line"><strong>Insight:</strong> <span id="insightOut">—</span></div>
+    </div>
+
+    <canvas id="myChart"></canvas>
+  </div>
+
+  <div class="content">
+    <h2>What is CAGR?</h2>
+    <p>
+      CAGR means Compound Annual Growth Rate. It tells you the average annual growth rate of something over a period of time,
+      assuming the growth had happened at a steady rate. That makes it useful for comparing investments, businesses,
+      revenue streams, and portfolios that grew unevenly in reality.
+    </p>
+
+    <p>
+      The reason CAGR matters is simple: total return alone does not show speed. A 100% gain over 10 years is very different from a 100% gain over 2 years.
+      CAGR turns that difference into one annualized number that is easier to compare.
+    </p>
+
+    <h2>Formula</h2>
+    <div class="formula">
+      CAGR = ((Final Value / Initial Value)^(1 / Years) - 1) × 100
+    </div>
+
+    <p>
+      The formula only works when the initial value is greater than zero and the number of years is greater than zero.
+      If the final value is lower than the initial value, CAGR becomes negative, which correctly shows a loss on an annualized basis.
+    </p>
+
+    <h2>Why CAGR is better than simple return</h2>
+    <p>
+      Simple return tells you how much something changed overall. CAGR tells you how fast it grew per year.
+      That is why CAGR is better for comparing different opportunities that ran for different lengths of time.
+    </p>
+
+    <ul>
+      <li>Use it to compare investments held for different durations</li>
+      <li>Use it to measure portfolio growth</li>
+      <li>Use it to analyze business revenue expansion</li>
+      <li>Use it to understand whether growth is actually strong or just slow over a long time</li>
+    </ul>
+
+    <h2>How to use this calculator</h2>
+    <ul>
+      <li>Enter the starting value</li>
+      <li>Enter the ending value</li>
+      <li>Enter the number of years</li>
+      <li>Click calculate to see annualized growth, total growth, and the chart</li>
+    </ul>
+
+    <h2>Frequently Asked Questions</h2>
+
+    <div class="faq">
+      <div class="faq-item">
+        <button class="faq-question">
+          Is CAGR the same as average return?
+          <span class="arrow">▼</span>
+        </button>
+        <div class="faq-answer">
+          <p>
+            No. CAGR is a compounded annual rate, while a simple average return ignores compounding. CAGR is more useful when you want a realistic annualized growth rate.
+          </p>
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <button class="faq-question">
+          Can CAGR be negative?
+          <span class="arrow">▼</span>
+        </button>
+        <div class="faq-answer">
+          <p>
+            Yes. If the final value is lower than the initial value, CAGR will be negative. That means the asset or business shrank on an annualized basis.
+          </p>
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <button class="faq-question">
+          Why does the time period matter so much?
+          <span class="arrow">▼</span>
+        </button>
+        <div class="faq-answer">
+          <p>
+            Because the same total return can mean very different things depending on how long it took. CAGR turns that time into a fair comparison.
+          </p>
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <button class="faq-question">
+          What is a good CAGR?
+          <span class="arrow">▼</span>
+        </button>
+        <div class="faq-answer">
+          <p>
+            It depends on the asset. For some businesses, high single-digit growth is strong. For higher-risk investments, expectations may be very different.
+          </p>
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <button class="faq-question">
+          Does CAGR show volatility?
+          <span class="arrow">▼</span>
+        </button>
+        <div class="faq-answer">
+          <p>
+            No. CAGR only shows the smoothed annual growth rate. It does not show the ups and downs that happened along the way, which is why it should be used with other metrics.
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="disclaimer">
+    <p>
+      <strong>Disclaimer:</strong> The calculators on this website are provided for informational and educational purposes only.
+      All results are estimates based on the values entered and do not constitute financial, investment, or trading advice.
+      Always conduct your own research before making financial decisions.
+    </p>
+  </div>
+
+  <script src="footer.js"></script>
+  <script>
+    let chart;
+
+    function calculateCAGR(){
+      const initialValue = parseFloat(document.getElementById("initialValue").value);
+      const finalValue = parseFloat(document.getElementById("finalValue").value);
+      const years = parseFloat(document.getElementById("years").value);
+
+      if([initialValue, finalValue, years].some(v => isNaN(v) || v <= 0)){
+        alert("Please enter valid positive numbers for all fields.");
+        return;
+      }
+
+      if(initialValue <= 0){
+        alert("Initial value must be greater than zero.");
+        return;
+      }
+
+      const cagr = (Math.pow(finalValue / initialValue, 1 / years) - 1) * 100;
+      const totalGrowth = ((finalValue / initialValue) - 1) * 100;
+      const gain = finalValue - initialValue;
+
+      const cagrOut = document.getElementById("cagrOut");
+      const growthOut = document.getElementById("growthOut");
+      const gainOut = document.getElementById("gainOut");
+      const insightOut = document.getElementById("insightOut");
+      const resultCard = document.getElementById("resultCard");
+
+      cagrOut.innerHTML = `${cagr.toFixed(2)}% per year`;
+      growthOut.innerHTML = `${totalGrowth.toFixed(2)}% total`;
+      gainOut.innerHTML = `$${gain.toFixed(2)}`;
+
+      let insight = "";
+      let insightClass = "";
+
+      if(cagr >= 15){
+        insight = "Very strong growth";
+        insightClass = "insight-good";
+      }else if(cagr >= 7){
+        insight = "Solid long-term growth";
+        insightClass = "insight-medium";
+      }else if(cagr >= 0){
+        insight = "Positive but modest growth";
+        insightClass = "insight-medium";
+      }else{
+        insight = "Negative growth";
+        insightClass = "insight-weak";
+      }
+
+      insightOut.innerHTML = `<span class="${insightClass}">${insight}</span>`;
+
+      resultCard.style.display = "block";
+      drawChart(initialValue, finalValue);
+
+    }
+
+    function drawChart(initialValue, finalValue){
+      const ctx = document.getElementById('myChart').getContext('2d');
+
+      if(chart){
+        chart.destroy();
+      }
+
+      chart = new Chart(ctx,{
+        type:'bar',
+        data:{
+          labels:['Initial Value','Final Value'],
+          datasets:[{
+            label:'Value',
+            data:[initialValue, finalValue],
+            backgroundColor:['#3b82f6','#22c55e']
+          }]
+        },
+        options:{
+          responsive:true,
+          plugins:{
+            legend:{
+              labels:{ color:'white' }
+            }
+          },
+          scales:{
+            x:{
+              ticks:{ color:'white' },
+              grid:{ color:'rgba(255,255,255,0.08)' }
+            },
+            y:{
+              ticks:{ color:'white' },
+              grid:{ color:'rgba(255,255,255,0.08)' }
+            }
+          }
+        }
+      });
+    }
+
+    document.addEventListener("DOMContentLoaded", function(){
+      document.querySelectorAll(".faq-question").forEach(btn => {
+        btn.addEventListener("click", () => {
+          const item = btn.parentElement;
+
+          document.querySelectorAll(".faq-item").forEach(i => {
+            if(i !== item) i.classList.remove("active");
+          });
+
+          item.classList.toggle("active");
+        });
+      });
+    });
+  </script>
+</body>
+  </html>
