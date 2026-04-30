@@ -66,7 +66,7 @@
       background: rgba(30,41,59,0.72);
       border: 1px solid rgba(255,255,255,0.08);
       backdrop-filter: blur(10px);
-      padding: 30px;
+      padding: 28px;
       border-radius: 20px;
       width: 90%;
       max-width: 1100px;
@@ -300,7 +300,7 @@
       <div class="status">
         <div><strong>Active base:</strong> <span id="baseStatus">USD</span></div>
         <div><strong>Rate date:</strong> <span id="dateStatus">—</span></div>
-        <div><strong>Status:</strong> <span id="syncStatus">Ready</span></div>
+        <div><strong>Status:</strong> <span id="syncStatus">Loading...</span></div>
       </div>
 
       <div id="resultBox" class="result-card">
@@ -348,7 +348,7 @@
       <p>
         <strong>Disclaimer:</strong> The calculators on this website are provided for informational and educational purposes only.
         Currency rates are based on the selected public data source and may differ from broker, card issuer, or cash-exchange rates.
-        Always verify important rates before making financial decisions
+        Always verify important rates before making financial decisions.
       </p>
     </div>
   </div>
@@ -402,6 +402,7 @@
     let requestToken = 0;
     let currencies = [];
     let cache = new Map();
+    let debounceTimer = null;
 
     function formatInputNumber(value) {
       if (!isFinite(value)) return "";
@@ -419,14 +420,19 @@
 
     async function loadSupportedCurrencies() {
       try {
-        const resp = await fetch(`${API_BASE}/currencies`);
+        const resp = await fetch(`${API_BASE}/currencies?scope=all`);
         if (!resp.ok) throw new Error("Currency list failed");
-        const data = await resp.json();
-        const supported = new Set(Object.keys(data || {}));
+
+        const data = await resp.json(); // array of Currency objects
+        const supported = new Set((Array.isArray(data) ? data : []).map(item => item.iso_code));
         currencies = ALL_CURRENCIES.filter(item => supported.has(item.code));
+
+        if (!currencies.length) {
+          currencies = ALL_CURRENCIES.slice();
+        }
       } catch (err) {
         console.error(err);
-        currencies = ALL_CURRENCIES;
+        currencies = ALL_CURRENCIES.slice();
       }
 
       buildGrid();
@@ -481,7 +487,7 @@
       const resp = await fetch(`${API_BASE}/rates?${params.toString()}`);
       if (!resp.ok) throw new Error(`Rate request failed: ${resp.status}`);
 
-      const data = await resp.json();
+      const data = await resp.json(); // array of Rate objects
       cache.set(cacheKey, { timestamp: Date.now(), data });
       return data;
     }
@@ -502,6 +508,11 @@
       return data;
     }
 
+    function scheduleRecalc(baseCode) {
+      clearTimeout(debounceTimer);
+      debounceTimer = setTimeout(() => recalcFrom(baseCode), 180);
+    }
+
     async function recalcFrom(baseCode) {
       const token = ++requestToken;
       const baseInput = getInput(baseCode);
@@ -516,11 +527,21 @@
 
       try {
         const targets = currencies.map(c => c.code).filter(code => code !== baseCode);
-        const data = await fetchRates(baseCode, targets);
+        const rateRows = await fetchRates(baseCode, targets);
+
         if (token !== requestToken) return;
 
-        const rates = data.rates || {};
-        const date = data.date || "—";
+        const rates = {};
+        let date = "—";
+
+        if (Array.isArray(rateRows)) {
+          for (const row of rateRows) {
+            if (!date && row && row.date) date = row.date;
+            if (row && row.quote && typeof row.rate === "number") {
+              rates[row.quote] = row.rate;
+            }
+          }
+        }
 
         const missing = targets.filter(code => typeof rates[code] !== "number");
         if (missing.length > 0) {
@@ -590,7 +611,7 @@
         input.addEventListener("input", () => {
           if (isUpdating) return;
           setActiveCard(code);
-          recalcFrom(code);
+          scheduleRecalc(code);
         });
 
         card.addEventListener("click", (e) => {
@@ -602,4 +623,4 @@
     loadSupportedCurrencies();
   </script>
 </body>
-</html>
+  </html>
