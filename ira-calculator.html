@@ -1,0 +1,746 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-ZPCXDVE8C5"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-ZPCXDVE8C5');
+  </script>
+
+  <meta charset="UTF-8">
+  <title>IRA Calculator – Project Retirement Growth With Inflation</title>
+  <meta name="description" content="Free IRA calculator to project retirement balance, annual contributions, compound growth, and inflation-adjusted value over time.">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#0f172a">
+
+  <link rel="stylesheet" href="style.css">
+  <link rel="icon" href="favicon.png" type="image/png">
+  <link rel="apple-touch-icon" href="favicon.png">
+
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+  <style>
+    *{
+      box-sizing:border-box;
+    }
+
+    body{
+      font-family:Arial, sans-serif;
+      background:#0f172a;
+      color:white;
+      display:flex;
+      justify-content:center;
+      align-items:center;
+      flex-direction:column;
+      min-height:100vh;
+      margin:0;
+      padding:24px 0;
+    }
+
+    .toptext{
+      font-size:14px;
+      color:#6b7a99;
+      margin-bottom:5px;
+    }
+
+    .menu{
+      margin-bottom:25px;
+    }
+
+    .menu a{
+      color:#3b82f6;
+      margin:10px;
+      text-decoration:none;
+      font-weight:600;
+    }
+
+    .container{
+      background:#1e293b;
+      padding:30px;
+      border-radius:16px;
+      width:90%;
+      max-width:560px;
+      box-shadow:0 10px 25px rgba(0,0,0,0.35);
+    }
+
+    h1{
+      margin-top:0;
+      margin-bottom:10px;
+      font-size:32px;
+      line-height:1.15;
+    }
+
+    .subhead{
+      color:#94a3b8;
+      font-size:15px;
+      line-height:1.6;
+      margin-bottom:18px;
+    }
+
+    .badge-row{
+      display:flex;
+      gap:10px;
+      flex-wrap:wrap;
+      margin:14px 0 6px;
+    }
+
+    .badge{
+      display:inline-flex;
+      padding:5px 10px;
+      border-radius:999px;
+      font-size:12px;
+      font-weight:700;
+      background:rgba(59,130,246,0.12);
+      color:#bfdbfe;
+      border:1px solid rgba(59,130,246,0.22);
+    }
+
+    .badge.soft{
+      background:rgba(255,255,255,0.05);
+      border-color:rgba(255,255,255,0.08);
+      color:#dbeafe;
+    }
+
+    .section-title{
+      margin:18px 0 8px;
+      font-size:16px;
+      color:#e2e8f0;
+      font-weight:700;
+    }
+
+    .grid{
+      display:grid;
+      grid-template-columns:1fr 1fr;
+      gap:12px;
+    }
+
+    @media (max-width: 700px){
+      .grid{
+        grid-template-columns:1fr;
+      }
+    }
+
+    .field{
+      margin:12px 0;
+    }
+
+    .field label{
+      display:block;
+      font-size:13px;
+      color:#cbd5e1;
+      margin:0 0 6px;
+      font-weight:600;
+    }
+
+    input{
+      width:100%;
+      padding:14px;
+      margin:0;
+      border-radius:10px;
+      border:none;
+      background:#e5e7eb;
+      font-size:16px;
+      outline:none;
+    }
+
+    input:focus{
+      box-shadow:0 0 0 3px rgba(59,130,246,0.18);
+    }
+
+    button{
+      padding:14px;
+      background:#3b82f6;
+      border:none;
+      border-radius:10px;
+      color:white;
+      cursor:pointer;
+      margin-top:10px;
+      width:100%;
+      font-size:16px;
+      font-weight:700;
+      transition:0.2s;
+    }
+
+    button:hover{
+      background:#2563eb;
+      transform:translateY(-1px);
+    }
+
+    .result-card{
+      margin-top:18px;
+      padding:16px;
+      border-radius:14px;
+      background:rgba(255,255,255,0.05);
+      border:1px solid rgba(255,255,255,0.08);
+      display:none;
+    }
+
+    .result-line{
+      margin:10px 0;
+      font-size:16px;
+      line-height:1.5;
+      color:#e5e7eb;
+    }
+
+    .result-line strong{
+      color:#cbd5f5;
+    }
+
+    .insight-good{
+      color:#22c55e;
+      font-weight:700;
+    }
+
+    .insight-medium{
+      color:#facc15;
+      font-weight:700;
+    }
+
+    .insight-weak{
+      color:#ef4444;
+      font-weight:700;
+    }
+
+    canvas{
+      margin-top:26px;
+    }
+
+    .content{
+      width:90%;
+      max-width:900px;
+      margin-top:34px;
+    }
+
+    .content h2{
+      margin-top:34px;
+      margin-bottom:10px;
+      font-size:28px;
+    }
+
+    .content p,
+    .content li{
+      color:#cbd5e1;
+      line-height:1.7;
+      font-size:15px;
+    }
+
+    .content ul{
+      padding-left:20px;
+    }
+
+    .formula{
+      background:rgba(255,255,255,0.05);
+      border:1px solid rgba(255,255,255,0.08);
+      padding:14px 16px;
+      border-radius:12px;
+      margin:12px 0;
+      color:#e2e8f0;
+      overflow:auto;
+      line-height:1.7;
+    }
+
+    .faq{
+      margin-top:14px;
+    }
+
+    .faq-item{
+      border-bottom:1px solid rgba(255,255,255,0.08);
+    }
+
+    .faq-question{
+      width:100%;
+      background:none;
+      border:none;
+      color:white;
+      text-align:left;
+      padding:14px 8px;
+      font-size:15px;
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      cursor:pointer;
+    }
+
+    .faq-question:hover{
+      color:#93c5fd;
+    }
+
+    .arrow{
+      transition:0.25s;
+    }
+
+    .faq-item.active .arrow{
+      transform:rotate(180deg);
+    }
+
+    .faq-answer{
+      max-height:0;
+      overflow:hidden;
+      transition:max-height 0.3s ease;
+      color:#cbd5e1;
+      font-size:14px;
+      padding:0 8px;
+    }
+
+    .faq-item.active .faq-answer{
+      max-height:260px;
+      padding-bottom:12px;
+    }
+
+    .disclaimer{
+      margin-top:40px;
+      padding-top:20px;
+      border-top:1px solid rgba(255,255,255,0.1);
+      font-size:13px;
+      color:#9ca3af;
+      max-width:900px;
+      text-align:center;
+      line-height:1.6;
+    }
+
+    @media (max-width: 700px){
+      .container{
+        padding:22px;
+      }
+
+      h1{
+        font-size:28px;
+      }
+
+      .content h2{
+        font-size:24px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <p class="toptext">Explore more calculators</p>
+
+  <div class="menu">
+    <a href="index.html">Home</a>
+  </div>
+
+  <div class="container">
+    <h1>IRA Calculator</h1>
+    <p class="subhead">
+      Project your IRA balance from today to retirement using your current balance, annual contributions, expected return, and inflation.
+      The chart shows the projected account value versus inflation-adjusted value.
+    </p>
+
+    <div class="badge-row">
+      <span class="badge">Retirement planning</span>
+      <span class="badge soft">Compound growth</span>
+      <span class="badge soft">Inflation-adjusted</span>
+    </div>
+
+    <div class="section-title">Your details</div>
+    <div class="grid">
+      <div class="field">
+        <label for="currentAge">Current Age</label>
+        <input id="currentAge" type="number" min="0" step="1" placeholder="e.g. 30">
+      </div>
+
+      <div class="field">
+        <label for="retirementAge">Retirement Age</label>
+        <input id="retirementAge" type="number" min="0" step="1" placeholder="e.g. 65">
+      </div>
+
+      <div class="field">
+        <label for="currentBalance">Current IRA Balance ($)</label>
+        <input id="currentBalance" type="number" min="0" step="any" placeholder="e.g. 12000">
+      </div>
+
+      <div class="field">
+        <label for="annualContribution">Annual Contribution ($)</label>
+        <input id="annualContribution" type="number" min="0" step="any" placeholder="e.g. 7000">
+      </div>
+
+      <div class="field">
+        <label for="annualReturnPct">Expected Annual Return (%)</label>
+        <input id="annualReturnPct" type="number" step="any" placeholder="e.g. 7">
+      </div>
+
+      <div class="field">
+        <label for="contributionGrowthPct">Annual Contribution Growth (%)</label>
+        <input id="contributionGrowthPct" type="number" step="any" placeholder="e.g. 3">
+      </div>
+
+      <div class="field">
+        <label for="inflationPct">Inflation Rate (%)</label>
+        <input id="inflationPct" type="number" step="any" placeholder="e.g. 3">
+      </div>
+    </div>
+
+    <button onclick="calculateIRA()">Calculate IRA</button>
+
+    <div id="resultCard" class="result-card">
+      <div class="result-line"><strong>Years to retirement:</strong> <span id="yearsOut">—</span></div>
+      <div class="result-line"><strong>Projected balance:</strong> <span id="balanceOut">—</span></div>
+      <div class="result-line"><strong>Inflation-adjusted balance:</strong> <span id="realBalanceOut">—</span></div>
+      <div class="result-line"><strong>Total contributions:</strong> <span id="contribOut">—</span></div>
+      <div class="result-line"><strong>Growth from returns:</strong> <span id="growthOut">—</span></div>
+      <div class="result-line"><strong>Insight:</strong> <span id="insightOut">—</span></div>
+    </div>
+
+    <canvas id="myChart"></canvas>
+  </div>
+
+  <div class="content">
+    <h2>What is an IRA Calculator?</h2>
+    <p>
+      An IRA calculator estimates how much your retirement account may grow over time based on your starting balance,
+      your annual contributions, your expected investment return, and the amount of time left until retirement.
+      It is useful for anyone who wants a clearer picture of how consistent saving and compounding can build long-term wealth.
+    </p>
+
+    <p>
+      Unlike a simple savings calculator, an IRA projection focuses on retirement-style compounding. That makes it a better planning tool
+      for people who want to see what their account could look like decades from now instead of just at the end of the year.
+    </p>
+
+    <h2>How This Calculator Works</h2>
+    <p>
+      The calculator grows your balance month by month using the return rate you enter. Contributions are added regularly, and the annual
+      contribution amount can also grow each year if you enter a contribution growth rate. Inflation is then used to show the buying-power
+      value of your future balance.
+    </p>
+
+    <p>
+      This gives you two views of retirement growth:
+    </p>
+
+    <ul>
+      <li><strong>Projected balance</strong> = the nominal dollar amount in the account</li>
+      <li><strong>Inflation-adjusted balance</strong> = what that future balance may be worth in today’s dollars</li>
+    </ul>
+
+    <h2>Formula Logic</h2>
+    <div class="formula">
+      Monthly return = (1 + annual return)^(1 / 12) - 1
+      <br>
+      Monthly contribution = annual contribution / 12
+      <br>
+      Balance grows from existing assets + contributions + compound returns
+      <br>
+      Inflation-adjusted balance = projected balance / (1 + inflation rate)^years
+    </div>
+
+    <p>
+      This is not just a static estimate. It models the compounding effect over time, which is exactly what makes retirement accounts powerful.
+      Small changes in contribution rate or expected return can create a very large difference over a long time horizon.
+    </p>
+
+    <h2>Why IRA Planning Matters</h2>
+    <p>
+      IRA planning matters because retirement is a long game. The earlier you start, the more time compound growth has to work for you.
+      Even moderate annual contributions can turn into a much larger retirement balance when they are invested consistently for years.
+    </p>
+
+    <ul>
+      <li>See how your account can grow over time</li>
+      <li>Understand the effect of regular annual contributions</li>
+      <li>Compare nominal value with inflation-adjusted value</li>
+      <li>Plan more realistically for retirement spending power</li>
+    </ul>
+
+    <h2>How to Use This Calculator</h2>
+    <ul>
+      <li>Enter your current age and retirement age</li>
+      <li>Enter your current IRA balance</li>
+      <li>Enter how much you plan to contribute each year</li>
+      <li>Choose an expected annual return</li>
+      <li>Optionally include contribution growth and inflation</li>
+      <li>Click calculate to see the projection and chart</li>
+    </ul>
+
+    <h2>Frequently Asked Questions</h2>
+
+    <div class="faq">
+      <div class="faq-item">
+        <button class="faq-question">
+          Does this calculator include taxes?
+          <span class="arrow">▼</span>
+        </button>
+        <div class="faq-answer">
+          <p>
+            No. This calculator focuses on growth projection, contributions, and inflation. IRA tax treatment depends on the type of IRA and your personal situation, so that part is not hardcoded here.
+          </p>
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <button class="faq-question">
+          Why does inflation matter so much?
+          <span class="arrow">▼</span>
+        </button>
+        <div class="faq-answer">
+          <p>
+            A future balance can look large on paper, but inflation reduces what that money can buy. The inflation-adjusted result helps you see the real spending power of your retirement savings.
+          </p>
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <button class="faq-question">
+          Is the chart the right format for an IRA calculator?
+          <span class="arrow">▼</span>
+        </button>
+        <div class="faq-answer">
+          <p>
+            Yes. A line chart is the best format here because IRA growth is a long-term projection. It makes the compounding path easy to understand and compare year by year.
+          </p>
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <button class="faq-question">
+          Can I use this if my IRA contributions change over time?
+          <span class="arrow">▼</span>
+        </button>
+        <div class="faq-answer">
+          <p>
+            Yes. You can model rising contributions by entering an annual contribution growth rate. That helps reflect salary increases or more aggressive saving later on.
+          </p>
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <button class="faq-question">
+          What return rate should I use?
+          <span class="arrow">▼</span>
+        </button>
+        <div class="faq-answer">
+          <p>
+            There is no perfect number. Many long-term investors use a conservative assumption so the projection is not overly optimistic. The best rate is the one that fits your own planning style.
+          </p>
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <button class="faq-question">
+          Can this calculator predict my exact retirement balance?
+          <span class="arrow">▼</span>
+        </button>
+        <div class="faq-answer">
+          <p>
+            No. It is a projection based on the values you enter. Real-world returns, contribution changes, and inflation can all vary, so the result should be used for planning rather than certainty.
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="disclaimer">
+    <p>
+      <strong>Disclaimer:</strong> The calculators on this website are provided for informational and educational purposes only.
+      All results are estimates based on the values entered and do not constitute financial, investment, or trading advice.
+      IRA rules, tax treatment, and contribution limits vary by year and personal situation, so always verify important details with official guidance and a qualified professional.
+    </p>
+  </div>
+
+  <script src="footer.js"></script>
+  <script>
+    let chart;
+
+    function fmt(value){
+      return value.toLocaleString(undefined, {
+        minimumFractionDigits: 0,
+        maximumFractionDigits: 2
+      });
+    }
+
+    function calculateIRA(){
+      const currentAge = parseFloat(document.getElementById("currentAge").value);
+      const retirementAge = parseFloat(document.getElementById("retirementAge").value);
+      const currentBalance = parseFloat(document.getElementById("currentBalance").value);
+      const annualContribution = parseFloat(document.getElementById("annualContribution").value);
+      const annualReturnPct = parseFloat(document.getElementById("annualReturnPct").value);
+      const contributionGrowthPct = parseFloat(document.getElementById("contributionGrowthPct").value) || 0;
+      const inflationPct = parseFloat(document.getElementById("inflationPct").value) || 0;
+
+      const required = [
+        currentAge, retirementAge, currentBalance,
+        annualContribution, annualReturnPct
+      ];
+
+      if (required.some(v => isNaN(v))){
+        alert("Please fill in all required fields.");
+        return;
+      }
+
+      if (currentAge < 0 || retirementAge < 0){
+        alert("Ages must be valid positive numbers.");
+        return;
+      }
+
+      if (retirementAge <= currentAge){
+        alert("Retirement age must be greater than current age.");
+        return;
+      }
+
+      if (currentBalance < 0 || annualContribution < 0){
+        alert("Balance and contribution must not be negative.");
+        return;
+      }
+
+      if (annualReturnPct <= -100 || contributionGrowthPct <= -100 || inflationPct <= -100){
+        alert("Return, contribution growth, and inflation must be greater than -100%.");
+        return;
+      }
+
+      const years = retirementAge - currentAge;
+      const monthlyReturn = Math.pow(1 + annualReturnPct / 100, 1 / 12) - 1;
+
+      let balance = currentBalance;
+      let totalContributions = 0;
+      let contribution = annualContribution;
+
+      const labels = [0];
+      const nominalBalances = [currentBalance];
+      const realBalances = [currentBalance];
+
+      for(let year = 1; year <= years; year++){
+        for(let month = 1; month <= 12; month++){
+          const monthlyContribution = contribution / 12;
+          balance = balance * (1 + monthlyReturn) + monthlyContribution;
+          totalContributions += monthlyContribution;
+        }
+
+        const inflationAdjusted = balance / Math.pow(1 + inflationPct / 100, year);
+
+        contribution *= (1 + contributionGrowthPct / 100);
+
+        labels.push(year);
+        nominalBalances.push(balance);
+        realBalances.push(inflationAdjusted);
+      }
+
+      const inflationAdjustedFinal = balance / Math.pow(1 + inflationPct / 100, years);
+      const growthFromReturns = balance - currentBalance - totalContributions;
+
+      document.getElementById("yearsOut").innerText = years.toFixed(0) + " years";
+      document.getElementById("balanceOut").innerText = "$" + fmt(balance);
+      document.getElementById("realBalanceOut").innerText = "$" + fmt(inflationAdjustedFinal);
+      document.getElementById("contribOut").innerText = "$" + fmt(totalContributions);
+      document.getElementById("growthOut").innerText = "$" + fmt(growthFromReturns);
+
+      let insight = "";
+      let insightClass = "";
+
+      if(balance >= (currentBalance + totalContributions) * 1.8){
+        insight = "Very strong retirement outlook";
+        insightClass = "insight-good";
+      } else if(balance >= currentBalance + totalContributions){
+        insight = "Healthy long-term growth";
+        insightClass = "insight-medium";
+      } else if(balance > currentBalance){
+        insight = "Growth is positive but modest";
+        insightClass = "insight-medium";
+      } else {
+        insight = "Projection is weak; assumptions may be too conservative";
+        insightClass = "insight-weak";
+      }
+
+      document.getElementById("insightOut").innerHTML = `<span class="${insightClass}">${insight}</span>`;
+      document.getElementById("resultCard").style.display = "block";
+
+      drawChart(labels, nominalBalances, realBalances);
+    }
+
+    function drawChart(labels, nominalBalances, realBalances){
+      const ctx = document.getElementById("myChart").getContext("2d");
+
+      if(chart){
+        chart.destroy();
+      }
+
+      chart = new Chart(ctx, {
+        type: "line",
+        data: {
+          labels: labels,
+          datasets: [
+            {
+              label: "Projected IRA balance",
+              data: nominalBalances,
+              borderColor: "#3b82f6",
+              backgroundColor: "rgba(59,130,246,0.15)",
+              tension: 0.25,
+              fill: true,
+              pointRadius: 3,
+              pointHoverRadius: 5
+            },
+            {
+              label: "Inflation-adjusted balance",
+              data: realBalances,
+              borderColor: "#22c55e",
+              backgroundColor: "rgba(34,197,94,0.08)",
+              tension: 0.25,
+              fill: false,
+              pointRadius: 3,
+              pointHoverRadius: 5
+            }
+          ]
+        },
+        options: {
+          responsive: true,
+          plugins: {
+            legend: {
+              labels: { color: "white" }
+            },
+            tooltip: {
+              callbacks: {
+                label: function(context){
+                  return `${context.dataset.label}: $${fmt(context.parsed.y)}`;
+                }
+              }
+            }
+          },
+          scales: {
+            x: {
+              ticks: { color: "white" },
+              grid: { color: "rgba(255,255,255,0.08)" },
+              title: {
+                display: true,
+                text: "Years",
+                color: "white"
+              }
+            },
+            y: {
+              ticks: {
+                color: "white",
+                callback: function(value){
+                  return "$" + Number(value).toLocaleString();
+                }
+              },
+              grid: { color: "rgba(255,255,255,0.08)" },
+              title: {
+                display: true,
+                text: "Balance ($)",
+                color: "white"
+              }
+            }
+          }
+        }
+      });
+    }
+
+    document.addEventListener("DOMContentLoaded", function(){
+      document.querySelectorAll(".faq-question").forEach(btn => {
+        btn.addEventListener("click", () => {
+          const item = btn.parentElement;
+
+          document.querySelectorAll(".faq-item").forEach(i => {
+            if(i !== item) i.classList.remove("active");
+          });
+
+          item.classList.toggle("active");
+        });
+      });
+    });
+  </script>
+</body>
+  </html>
