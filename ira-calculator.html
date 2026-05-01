@@ -628,20 +628,30 @@
       document.getElementById("contribOut").innerText = "$" + fmt(totalContributions);
       document.getElementById("growthOut").innerText = "$" + fmt(growthFromReturns);
 
+      const startingBase = currentBalance + totalContributions;
+      const returnRatio = startingBase > 0 ? growthFromReturns / startingBase : 0;
+      const realGain = inflationAdjustedFinal - startingBase;
+
       let insight = "";
       let insightClass = "";
 
-      if(balance >= (currentBalance + totalContributions) * 1.8){
-        insight = "Very strong retirement outlook";
-        insightClass = "insight-good";
-      } else if(balance >= currentBalance + totalContributions){
-        insight = "Healthy long-term growth";
+      if (inflationAdjustedFinal <= startingBase * 0.95){
+        insight = "Real value is weak after inflation";
+        insightClass = "insight-weak";
+      } else if (balance <= startingBase * 1.15){
+        insight = "Most of the result comes from contributions, not growth";
         insightClass = "insight-medium";
-      } else if(balance > currentBalance){
-        insight = "Growth is positive but modest";
+      } else if (returnRatio >= 1.25 && realGain > 0){
+        insight = "Very strong long-term retirement outlook";
+        insightClass = "insight-good";
+      } else if (returnRatio >= 0.5 && realGain > 0){
+        insight = "Healthy balance of contributions and compounding";
+        insightClass = "insight-medium";
+      } else if (balance > currentBalance){
+        insight = "Positive growth, but the projection is still modest";
         insightClass = "insight-medium";
       } else {
-        insight = "Projection is weak; assumptions may be too conservative";
+        insight = "Projection is weak; contribution rate or return assumption may be too low";
         insightClass = "insight-weak";
       }
 
@@ -743,4 +753,4 @@
     });
   </script>
 </body>
-  </html>
+        </html>
