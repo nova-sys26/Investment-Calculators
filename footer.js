@@ -9,7 +9,7 @@ document.write(`
 
   <div class="footer-divider"></div>
 
-  <p class="footer-copy">© 2026 Nova Investment Calculators</p>
+  <p class="footer-copy">© 2026 Nova Invest Tools</p>
 
 </footer>
 `);
