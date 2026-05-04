@@ -1,0 +1,872 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <link rel="canonical" href="https://novainvesttools.com/investment-growth-calculator.html">
+
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-ZPCXDVE8C5"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-ZPCXDVE8C5');
+  </script>
+
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Investment Growth Calculator – Project Future Value Over Time</title>
+  <meta name="description" content="Calculate investment growth with compound returns, monthly contributions, and inflation-adjusted future value. See a clear chart and long-term projection.">
+  <meta name="theme-color" content="#0f172a">
+
+  <link rel="icon" href="favicon.png" type="image/png">
+  <link rel="apple-touch-icon" href="favicon.png">
+
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://novainvesttools.com/investment-growth-calculator.html">
+  <meta property="og:title" content="Investment Growth Calculator – Project Future Value Over Time">
+  <meta property="og:description" content="Calculate future value with compound growth, monthly contributions, and inflation-adjusted projections.">
+
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "SoftwareApplication",
+    "name": "Investment Growth Calculator",
+    "applicationCategory": "FinanceApplication",
+    "operatingSystem": "All",
+    "url": "https://novainvesttools.com/investment-growth-calculator.html",
+    "description": "Calculate future investment growth with compound returns, monthly contributions, and inflation-adjusted value.",
+    "offers": {
+      "@type": "Offer",
+      "price": "0",
+      "priceCurrency": "USD"
+    }
+  }
+  </script>
+
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": [
+      {
+        "@type": "Question",
+        "name": "What does an investment growth calculator show?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "It estimates how much your investment may grow over time based on your starting balance, monthly contributions, expected return, and time horizon."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "How is the future value calculated?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "The calculator compounds your balance monthly using the expected annual return and adds monthly contributions at the end of each month."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Why does inflation matter?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Inflation reduces purchasing power, so the inflation-adjusted value shows what your future balance may be worth in today's money."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Can I use this for retirement planning?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Yes. It works well for retirement planning, savings goals, and other long-term investing scenarios."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Is the result guaranteed?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "No. It is only a projection based on the values you enter, not a guarantee of future market performance."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "What return rate should I use?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "A realistic long-term return estimate is usually best. Conservative assumptions tend to produce more useful planning results."
+        }
+      }
+    ]
+  }
+  </script>
+
+  <style>
+    *{
+      box-sizing:border-box;
+    }
+
+    body{
+      font-family:Arial, sans-serif;
+      background:#0f172a;
+      color:white;
+      display:flex;
+      justify-content:center;
+      align-items:center;
+      flex-direction:column;
+      min-height:100vh;
+      margin:0;
+      padding:24px 0;
+    }
+
+    .toptext{
+      font-size:14px;
+      color:#6b7a99;
+      margin-bottom:5px;
+    }
+
+    .menu{
+      margin-bottom:25px;
+    }
+
+    .menu a{
+      color:#3b82f6;
+      margin:10px;
+      text-decoration:none;
+      font-weight:600;
+    }
+
+    .container{
+      background:#1e293b;
+      padding:30px;
+      border-radius:16px;
+      width:90%;
+      max-width:560px;
+      box-shadow:0 10px 25px rgba(0,0,0,0.35);
+    }
+
+    h1{
+      margin-top:0;
+      margin-bottom:10px;
+      font-size:32px;
+      line-height:1.15;
+    }
+
+    .subhead{
+      color:#94a3b8;
+      font-size:15px;
+      line-height:1.6;
+      margin-bottom:18px;
+    }
+
+    .badge-row{
+      display:flex;
+      gap:10px;
+      flex-wrap:wrap;
+      margin:14px 0 6px;
+    }
+
+    .badge{
+      display:inline-flex;
+      padding:5px 10px;
+      border-radius:999px;
+      font-size:12px;
+      font-weight:700;
+      background:rgba(59,130,246,0.12);
+      color:#bfdbfe;
+      border:1px solid rgba(59,130,246,0.22);
+    }
+
+    .badge.soft{
+      background:rgba(255,255,255,0.05);
+      border-color:rgba(255,255,255,0.08);
+      color:#dbeafe;
+    }
+
+    .grid{
+      display:grid;
+      grid-template-columns:1fr 1fr;
+      gap:12px;
+    }
+
+    @media (max-width: 700px){
+      .grid{
+        grid-template-columns:1fr;
+      }
+    }
+
+    .field{
+      margin:12px 0;
+    }
+
+    .field label{
+      display:block;
+      font-size:13px;
+      color:#cbd5e1;
+      margin:0 0 6px;
+      font-weight:600;
+    }
+
+    input{
+      width:100%;
+      padding:14px;
+      margin:0;
+      border-radius:10px;
+      border:none;
+      background:#e5e7eb;
+      font-size:16px;
+      outline:none;
+    }
+
+    input:focus{
+      box-shadow:0 0 0 3px rgba(59,130,246,0.18);
+    }
+
+    button{
+      padding:14px;
+      background:#3b82f6;
+      border:none;
+      border-radius:10px;
+      color:white;
+      cursor:pointer;
+      margin-top:10px;
+      width:100%;
+      font-size:16px;
+      font-weight:700;
+      transition:0.2s;
+    }
+
+    button:hover{
+      background:#2563eb;
+      transform:translateY(-1px);
+    }
+
+    .result-card{
+      margin-top:18px;
+      padding:16px;
+      border-radius:14px;
+      background:rgba(255,255,255,0.05);
+      border:1px solid rgba(255,255,255,0.08);
+      display:none;
+    }
+
+    .result-line{
+      margin:10px 0;
+      font-size:16px;
+      line-height:1.5;
+      color:#e5e7eb;
+    }
+
+    .result-line strong{
+      color:#cbd5f5;
+    }
+
+    .insight-good{
+      color:#22c55e;
+      font-weight:700;
+    }
+
+    .insight-medium{
+      color:#facc15;
+      font-weight:700;
+    }
+
+    .insight-weak{
+      color:#ef4444;
+      font-weight:700;
+    }
+
+    canvas{
+      margin-top:26px;
+    }
+
+    .content{
+      width:90%;
+      max-width:900px;
+      margin-top:34px;
+    }
+
+    .content h2{
+      margin-top:34px;
+      margin-bottom:10px;
+      font-size:28px;
+    }
+
+    .content p,
+    .content li{
+      color:#cbd5e1;
+      line-height:1.7;
+      font-size:15px;
+    }
+
+    .content ul{
+      padding-left:20px;
+    }
+
+    .formula{
+      background:rgba(255,255,255,0.05);
+      border:1px solid rgba(255,255,255,0.08);
+      padding:14px 16px;
+      border-radius:12px;
+      margin:12px 0;
+      color:#e2e8f0;
+      overflow:auto;
+      line-height:1.7;
+    }
+
+    .faq{
+      margin-top:14px;
+    }
+
+    .faq-item{
+      border-bottom:1px solid rgba(255,255,255,0.08);
+    }
+
+    .faq-question{
+      width:100%;
+      background:none;
+      border:none;
+      color:white;
+      text-align:left;
+      padding:14px 8px;
+      font-size:15px;
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      cursor:pointer;
+    }
+
+    .faq-question:hover{
+      color:#93c5fd;
+    }
+
+    .arrow{
+      transition:0.25s;
+    }
+
+    .faq-item.active .arrow{
+      transform:rotate(180deg);
+    }
+
+    .faq-answer{
+      max-height:0;
+      overflow:hidden;
+      transition:max-height 0.3s ease;
+      color:#cbd5e1;
+      font-size:14px;
+      padding:0 8px;
+    }
+
+    .faq-item.active .faq-answer{
+      max-height:260px;
+      padding-bottom:12px;
+    }
+
+    .related{
+      width:90%;
+      max-width:560px;
+      margin-top:26px;
+      background:rgba(30,41,59,0.62);
+      border:1px solid rgba(255,255,255,0.08);
+      border-radius:16px;
+      padding:22px;
+    }
+
+    .related h3{
+      margin-top:0;
+      margin-bottom:10px;
+    }
+
+    .related p,
+    .related li{
+      color:#cbd5e1;
+      line-height:1.7;
+      font-size:15px;
+    }
+
+    .related ul{
+      padding-left:18px;
+      margin-bottom:0;
+    }
+
+    .related a{
+      color:#93c5fd;
+      text-decoration:none;
+    }
+
+    .related a:hover{
+      text-decoration:underline;
+    }
+
+    .disclaimer{
+      margin-top:24px;
+      padding-top:20px;
+      border-top:1px solid rgba(255,255,255,0.1);
+      font-size:13px;
+      color:#9ca3af;
+      max-width:900px;
+      text-align:center;
+      line-height:1.6;
+      width:90%;
+    }
+
+    @media (max-width: 700px){
+      .container{
+        padding:22px;
+      }
+
+      h1{
+        font-size:28px;
+      }
+
+      .content h2{
+        font-size:24px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <p class="toptext">Explore more calculators</p>
+
+  <div class="menu">
+    <a href="index.html">Home</a>
+  </div>
+
+  <div class="container">
+    <h1>Investment Growth Calculator</h1>
+    <p class="subhead">
+      Project how your investments may grow over time with monthly compounding, recurring contributions, and inflation-adjusted value.
+      A clean tool for long-term planning and portfolio projection.
+    </p>
+
+    <div class="badge-row">
+      <span class="badge">Compound growth</span>
+      <span class="badge soft">Long-term planning</span>
+      <span class="badge soft">Inflation-adjusted</span>
+    </div>
+
+    <div class="grid">
+      <div class="field">
+        <label for="initialInvestment">Initial Investment ($)</label>
+        <input id="initialInvestment" type="number" min="0" step="any" placeholder="e.g. 10000">
+      </div>
+
+      <div class="field">
+        <label for="monthlyContribution">Monthly Contribution ($)</label>
+        <input id="monthlyContribution" type="number" min="0" step="any" placeholder="e.g. 500">
+      </div>
+
+      <div class="field">
+        <label for="annualReturnPct">Expected Annual Return (%)</label>
+        <input id="annualReturnPct" type="number" step="any" placeholder="e.g. 8">
+      </div>
+
+      <div class="field">
+        <label for="years">Time Horizon (years)</label>
+        <input id="years" type="number" min="1" step="1" placeholder="e.g. 20">
+      </div>
+
+      <div class="field">
+        <label for="inflationPct">Inflation Rate (%)</label>
+        <input id="inflationPct" type="number" step="any" placeholder="e.g. 3">
+      </div>
+    </div>
+
+    <p style="margin-top:10px; font-size:13px; color:#94a3b8;">
+      Contributions are added at the end of each month.
+    </p>
+
+    <button onclick="calculateGrowth()">Calculate Growth</button>
+
+    <div id="resultCard" class="result-card">
+      <div class="result-line"><strong>Future value:</strong> <span id="futureValueOut">—</span></div>
+      <div class="result-line"><strong>Inflation-adjusted value:</strong> <span id="inflationValueOut">—</span></div>
+      <div class="result-line"><strong>Total invested:</strong> <span id="totalInvestedOut">—</span></div>
+      <div class="result-line"><strong>Total growth:</strong> <span id="growthOut">—</span></div>
+      <div class="result-line"><strong>Real growth:</strong> <span id="realGrowthOut">—</span></div>
+      <div class="result-line"><strong>Insight:</strong> <span id="insightOut">—</span></div>
+    </div>
+
+    <canvas id="myChart"></canvas>
+  </div>
+
+  <div class="content">
+    <h2>What is an Investment Growth Calculator?</h2>
+    <p>
+      An investment growth calculator estimates how much your money may be worth in the future based on your starting balance,
+      recurring contributions, expected return, and time horizon. It is a practical tool for long-term investing, retirement planning,
+      and savings goals.
+    </p>
+
+    <p>
+      This calculator uses monthly compounding so the projection is closer to how investments usually grow in the real world.
+      The longer the time horizon, the more powerful compounding becomes.
+    </p>
+
+    <h2>How This Calculator Works</h2>
+    <p>
+      The calculator starts with your initial investment and grows it month by month using the monthly equivalent of your expected annual return.
+      Each month, your contribution is added at the end of the period. This keeps the math realistic and easy to interpret.
+    </p>
+
+    <p>
+      Inflation is optional, but it helps show the real purchasing power of your future balance.
+      A large future value can look impressive while still buying less than expected if inflation stays elevated.
+    </p>
+
+    <div class="formula">
+      Monthly return = (1 + annual return)^(1 / 12) - 1
+      <br>
+      Each month: balance = balance × (1 + monthly return) + monthly contribution
+      <br>
+      Inflation-adjusted value = future value / (1 + inflation rate)^years
+    </div>
+
+    <h2>Why Investment Growth Matters</h2>
+    <p>
+      Investment growth tells you whether your money is actually working for you. It helps you compare different saving rates,
+      estimate retirement balances, and set more realistic targets for long-term wealth building.
+    </p>
+
+    <ul>
+      <li>Estimate future portfolio value</li>
+      <li>Compare savings rates and contribution levels</li>
+      <li>Understand the effect of compound growth</li>
+      <li>See the impact of inflation on buying power</li>
+    </ul>
+
+    <h2>How to Use This Calculator</h2>
+    <ul>
+      <li>Enter your current investment balance</li>
+      <li>Enter your monthly contribution</li>
+      <li>Set your expected annual return</li>
+      <li>Enter your time horizon in years</li>
+      <li>Optionally add inflation</li>
+      <li>Click calculate to see the projection and chart</li>
+    </ul>
+
+    <h2>Frequently Asked Questions</h2>
+
+    <div class="faq">
+      <div class="faq-item">
+        <button class="faq-question">
+          What does this calculator show?
+          <span class="arrow">▼</span>
+        </button>
+        <div class="faq-answer">
+          <p>
+            It shows how your investment may grow over time using compound returns and recurring contributions.
+            It also shows the value adjusted for inflation if you enter an inflation rate.
+          </p>
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <button class="faq-question">
+          Is the growth guaranteed?
+          <span class="arrow">▼</span>
+        </button>
+        <div class="faq-answer">
+          <p>
+            No. It is only a projection based on the numbers you enter. Real market returns can be higher or lower.
+          </p>
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <button class="faq-question">
+          Why use monthly compounding?
+          <span class="arrow">▼</span>
+        </button>
+        <div class="faq-answer">
+          <p>
+            Monthly compounding gives a more realistic projection than simple annual math because most investments grow continuously over time.
+          </p>
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <button class="faq-question">
+          How does inflation affect the result?
+          <span class="arrow">▼</span>
+        </button>
+        <div class="faq-answer">
+          <p>
+            Inflation reduces purchasing power. The inflation-adjusted value shows what your future balance might be worth in today's money.
+          </p>
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <button class="faq-question">
+          Can I use this for retirement planning?
+          <span class="arrow">▼</span>
+        </button>
+        <div class="faq-answer">
+          <p>
+            Yes. It works well for retirement planning, savings goals, and any long-term investing strategy where you want to project future value.
+          </p>
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <button class="faq-question">
+          What return rate should I use?
+          <span class="arrow">▼</span>
+        </button>
+        <div class="faq-answer">
+          <p>
+            A realistic long-term return estimate is usually best. Conservative assumptions are often more useful than overly optimistic ones.
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="related">
+    <h3>Related Calculators</h3>
+    <p>You may also find these tools useful:</p>
+    <ul>
+      <li><a href="compound-interest-calculator.html">Compound Interest Calculator</a></li>
+      <li><a href="future-value-calculator.html">Future Value Calculator</a></li>
+      <li><a href="roi-calculator.html">ROI Calculator</a></li>
+      <li><a href="retirement-calculator.html">Retirement Calculator</a></li>
+      <li><a href="401k-calculator.html">401k Calculator</a></li>
+    </ul>
+  </div>
+
+  <div class="disclaimer">
+    <p>
+      <strong>Disclaimer:</strong> The calculators on this website are provided for informational and educational purposes only.
+      All results are estimates based on the values entered and do not constitute financial, investment, or trading advice.
+      Always conduct your own research before making financial decisions.
+    </p>
+  </div>
+
+  <script src="footer.js"></script>
+  <script>
+    let chart;
+
+    function fmt(value){
+      return value.toLocaleString(undefined, {
+        minimumFractionDigits: 0,
+        maximumFractionDigits: 2
+      });
+    }
+
+    function money(value){
+      return "$" + fmt(value);
+    }
+
+    function calculateGrowth(){
+      const initialInvestment = parseFloat(document.getElementById("initialInvestment").value);
+      const monthlyContribution = parseFloat(document.getElementById("monthlyContribution").value) || 0;
+      const annualReturnPct = parseFloat(document.getElementById("annualReturnPct").value);
+      const years = parseFloat(document.getElementById("years").value);
+      const inflationPct = parseFloat(document.getElementById("inflationPct").value) || 0;
+
+      if ([initialInvestment, annualReturnPct, years].some(v => isNaN(v))){
+        alert("Please fill in all required fields.");
+        return;
+      }
+
+      if (initialInvestment < 0 || monthlyContribution < 0){
+        alert("Values cannot be negative.");
+        return;
+      }
+
+      if (years <= 0){
+        alert("Years must be greater than zero.");
+        return;
+      }
+
+      if (annualReturnPct <= -100 || inflationPct <= -100){
+        alert("Return and inflation must be greater than -100%.");
+        return;
+      }
+
+      const totalMonths = Math.round(years * 12);
+      const monthlyReturn = Math.pow(1 + annualReturnPct / 100, 1 / 12) - 1;
+      const monthlyInflation = Math.pow(1 + inflationPct / 100, 1 / 12) - 1;
+
+      let balance = initialInvestment;
+      let totalContributions = 0;
+
+      const labels = [0];
+      const projectedData = [initialInvestment];
+      const investedData = [initialInvestment];
+      const realData = [initialInvestment];
+
+      for (let month = 1; month <= totalMonths; month++){
+        balance = balance * (1 + monthlyReturn) + monthlyContribution;
+        totalContributions += monthlyContribution;
+
+        const investedCapital = initialInvestment + totalContributions;
+        const inflationAdjusted = balance / Math.pow(1 + monthlyInflation, month / 12);
+
+        labels.push(month);
+        projectedData.push(balance);
+        investedData.push(investedCapital);
+        realData.push(inflationAdjusted);
+      }
+
+      const futureValue = balance;
+      const totalInvested = initialInvestment + totalContributions;
+      const growth = futureValue - totalInvested;
+      const inflationAdjustedValue = futureValue / Math.pow(1 + inflationPct / 100, years);
+      const realGrowth = inflationAdjustedValue - totalInvested;
+
+      document.getElementById("futureValueOut").innerText = money(futureValue);
+      document.getElementById("inflationValueOut").innerText = money(inflationAdjustedValue);
+      document.getElementById("totalInvestedOut").innerText = money(totalInvested);
+      document.getElementById("growthOut").innerText = money(growth);
+      document.getElementById("realGrowthOut").innerText = money(realGrowth);
+
+      let insight = "";
+      let insightClass = "";
+
+      if (inflationPct > 0 && inflationAdjustedValue < totalInvested){
+        insight = "Inflation is eroding a large part of the growth.";
+        insightClass = "insight-weak";
+      } else if (growth >= totalInvested){
+        insight = "Compounding is doing most of the heavy lifting.";
+        insightClass = "insight-good";
+      } else if (growth > 0){
+        insight = "Healthy growth, but contributions still matter a lot.";
+        insightClass = "insight-medium";
+      } else {
+        insight = "Projection is weak. Try a longer horizon or a higher return assumption.";
+        insightClass = "insight-weak";
+      }
+
+      document.getElementById("insightOut").innerHTML = `<span class="${insightClass}">${insight}</span>`;
+      document.getElementById("resultCard").style.display = "block";
+
+      drawChart(labels, projectedData, investedData, inflationPct > 0 ? realData : null);
+    }
+
+    function drawChart(labels, projectedData, investedData, realData){
+      const ctx = document.getElementById("myChart").getContext("2d");
+
+      if (chart){
+        chart.destroy();
+      }
+
+      const datasets = [
+        {
+          label: "Projected Value",
+          data: projectedData,
+          borderColor: "#3b82f6",
+          backgroundColor: "rgba(59,130,246,0.12)",
+          tension: 0.25,
+          fill: true,
+          pointRadius: 0,
+          pointHoverRadius: 4
+        },
+        {
+          label: "Total Invested",
+          data: investedData,
+          borderColor: "#f59e0b",
+          backgroundColor: "rgba(245,158,11,0.08)",
+          tension: 0.25,
+          fill: false,
+          borderDash: [6, 4],
+          pointRadius: 0,
+          pointHoverRadius: 4
+        }
+      ];
+
+      if (realData){
+        datasets.push({
+          label: "Inflation-Adjusted Value",
+          data: realData,
+          borderColor: "#22c55e",
+          backgroundColor: "rgba(34,197,94,0.08)",
+          tension: 0.25,
+          fill: false,
+          pointRadius: 0,
+          pointHoverRadius: 4
+        });
+      }
+
+      chart = new Chart(ctx, {
+        type: "line",
+        data: {
+          labels: labels,
+          datasets
+        },
+        options: {
+          responsive: true,
+          interaction: {
+            mode: "index",
+            intersect: false
+          },
+          plugins: {
+            legend: {
+              labels: { color: "white" }
+            },
+            tooltip: {
+              callbacks: {
+                label: function(context){
+                  return `${context.dataset.label}: $${fmt(context.parsed.y)}`;
+                }
+              }
+            }
+          },
+          scales: {
+            x: {
+              ticks: {
+                color: "white",
+                callback: function(value, index){
+                  const month = labels[index];
+                  if (month === 0) return "Start";
+                  if (month % 12 === 0) return `Y${month / 12}`;
+                  return "";
+                },
+                maxRotation: 0,
+                autoSkip: false
+              },
+              grid: { color: "rgba(255,255,255,0.08)" },
+              title: {
+                display: true,
+                text: "Time",
+                color: "white"
+              }
+            },
+            y: {
+              ticks: {
+                color: "white",
+                callback: function(value){
+                  return "$" + Number(value).toLocaleString();
+                }
+              },
+              grid: { color: "rgba(255,255,255,0.08)" },
+              title: {
+                display: true,
+                text: "Value ($)",
+                color: "white"
+              }
+            }
+          }
+        }
+      });
+    }
+
+    document.addEventListener("DOMContentLoaded", function(){
+      document.querySelectorAll(".faq-question").forEach(btn => {
+        btn.addEventListener("click", () => {
+          const item = btn.parentElement;
+
+          document.querySelectorAll(".faq-item").forEach(i => {
+            if(i !== item) i.classList.remove("active");
+          });
+
+          item.classList.toggle("active");
+        });
+      });
+    });
+  </script>
+</body>
+</html>
