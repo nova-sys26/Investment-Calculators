@@ -1,0 +1,791 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <link rel="canonical" href="https://novainvesttools.com/dca-vs-lump-sum-calculator.html">
+
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-ZPCXDVE8C5"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-ZPCXDVE8C5');
+  </script>
+
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>DCA vs Lump Sum Calculator – Compare Investment Strategies</title>
+  <meta name="description" content="Compare dollar cost averaging vs lump sum investing. See which strategy performs better over time with a clear chart, examples, and explanations.">
+  <meta name="theme-color" content="#0f172a">
+
+  <link rel="icon" href="favicon.png" type="image/png">
+  <link rel="apple-touch-icon" href="favicon.png">
+
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://novainvesttools.com/dca-vs-lump-sum-calculator.html">
+  <meta property="og:title" content="DCA vs Lump Sum Calculator – Compare Investment Strategies">
+  <meta property="og:description" content="Compare dollar cost averaging vs lump sum investing with a clear chart and simple results.">
+
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+  <style>
+    *{
+      box-sizing:border-box;
+    }
+
+    body{
+      font-family:Arial, sans-serif;
+      background:#0f172a;
+      color:white;
+      display:flex;
+      justify-content:center;
+      align-items:center;
+      flex-direction:column;
+      min-height:100vh;
+      margin:0;
+      padding:24px 0;
+    }
+
+    .toptext{
+      font-size:14px;
+      color:#6b7a99;
+      margin-bottom:5px;
+    }
+
+    .menu{
+      margin-bottom:25px;
+    }
+
+    .menu a{
+      color:#3b82f6;
+      margin:10px;
+      text-decoration:none;
+      font-weight:600;
+    }
+
+    .container{
+      background:#1e293b;
+      padding:30px;
+      border-radius:16px;
+      width:90%;
+      max-width:560px;
+      box-shadow:0 10px 25px rgba(0,0,0,0.35);
+    }
+
+    h1{
+      margin-top:0;
+      margin-bottom:10px;
+      font-size:32px;
+      line-height:1.15;
+    }
+
+    .subhead{
+      color:#94a3b8;
+      font-size:15px;
+      line-height:1.6;
+      margin-bottom:18px;
+    }
+
+    .badge-row{
+      display:flex;
+      gap:10px;
+      flex-wrap:wrap;
+      margin:14px 0 6px;
+    }
+
+    .badge{
+      display:inline-flex;
+      padding:5px 10px;
+      border-radius:999px;
+      font-size:12px;
+      font-weight:700;
+      background:rgba(59,130,246,0.12);
+      color:#bfdbfe;
+      border:1px solid rgba(59,130,246,0.22);
+    }
+
+    .badge.soft{
+      background:rgba(255,255,255,0.05);
+      border-color:rgba(255,255,255,0.08);
+      color:#dbeafe;
+    }
+
+    .section-title{
+      margin:18px 0 8px;
+      font-size:16px;
+      color:#e2e8f0;
+      font-weight:700;
+    }
+
+    .grid{
+      display:grid;
+      grid-template-columns:1fr 1fr;
+      gap:12px;
+    }
+
+    @media (max-width: 700px){
+      .grid{
+        grid-template-columns:1fr;
+      }
+    }
+
+    .field{
+      margin:12px 0;
+    }
+
+    .field label{
+      display:block;
+      font-size:13px;
+      color:#cbd5e1;
+      margin:0 0 6px;
+      font-weight:600;
+    }
+
+    input{
+      width:100%;
+      padding:14px;
+      margin:0;
+      border-radius:10px;
+      border:none;
+      background:#e5e7eb;
+      font-size:16px;
+      outline:none;
+    }
+
+    input:focus{
+      box-shadow:0 0 0 3px rgba(59,130,246,0.18);
+    }
+
+    button{
+      padding:14px;
+      background:#3b82f6;
+      border:none;
+      border-radius:10px;
+      color:white;
+      cursor:pointer;
+      margin-top:10px;
+      width:100%;
+      font-size:16px;
+      font-weight:700;
+      transition:0.2s;
+    }
+
+    button:hover{
+      background:#2563eb;
+      transform:translateY(-1px);
+    }
+
+    .result-card{
+      margin-top:18px;
+      padding:16px;
+      border-radius:14px;
+      background:rgba(255,255,255,0.05);
+      border:1px solid rgba(255,255,255,0.08);
+      display:none;
+    }
+
+    .result-line{
+      margin:10px 0;
+      font-size:16px;
+      line-height:1.5;
+      color:#e5e7eb;
+    }
+
+    .result-line strong{
+      color:#cbd5f5;
+    }
+
+    .insight-good{
+      color:#22c55e;
+      font-weight:700;
+    }
+
+    .insight-medium{
+      color:#facc15;
+      font-weight:700;
+    }
+
+    .insight-weak{
+      color:#ef4444;
+      font-weight:700;
+    }
+
+    canvas{
+      margin-top:26px;
+    }
+
+    .content{
+      width:90%;
+      max-width:900px;
+      margin-top:34px;
+    }
+
+    .content h2{
+      margin-top:34px;
+      margin-bottom:10px;
+      font-size:28px;
+    }
+
+    .content p,
+    .content li{
+      color:#cbd5e1;
+      line-height:1.7;
+      font-size:15px;
+    }
+
+    .content ul{
+      padding-left:20px;
+    }
+
+    .formula{
+      background:rgba(255,255,255,0.05);
+      border:1px solid rgba(255,255,255,0.08);
+      padding:14px 16px;
+      border-radius:12px;
+      margin:12px 0;
+      color:#e2e8f0;
+      overflow:auto;
+      line-height:1.7;
+    }
+
+    .faq{
+      margin-top:14px;
+    }
+
+    .faq-item{
+      border-bottom:1px solid rgba(255,255,255,0.08);
+    }
+
+    .faq-question{
+      width:100%;
+      background:none;
+      border:none;
+      color:white;
+      text-align:left;
+      padding:14px 8px;
+      font-size:15px;
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      cursor:pointer;
+    }
+
+    .faq-question:hover{
+      color:#93c5fd;
+    }
+
+    .arrow{
+      transition:0.25s;
+    }
+
+    .faq-item.active .arrow{
+      transform:rotate(180deg);
+    }
+
+    .faq-answer{
+      max-height:0;
+      overflow:hidden;
+      transition:max-height 0.3s ease;
+      color:#cbd5e1;
+      font-size:14px;
+      padding:0 8px;
+    }
+
+    .faq-item.active .faq-answer{
+      max-height:260px;
+      padding-bottom:12px;
+    }
+
+    .related{
+      width:90%;
+      max-width:560px;
+      margin-top:26px;
+      background:rgba(30,41,59,0.62);
+      border:1px solid rgba(255,255,255,0.08);
+      border-radius:16px;
+      padding:22px;
+    }
+
+    .related h3{
+      margin-top:0;
+      margin-bottom:10px;
+    }
+
+    .related p,
+    .related li{
+      color:#cbd5e1;
+      line-height:1.7;
+      font-size:15px;
+    }
+
+    .related ul{
+      padding-left:18px;
+      margin-bottom:0;
+    }
+
+    .related a{
+      color:#93c5fd;
+      text-decoration:none;
+    }
+
+    .related a:hover{
+      text-decoration:underline;
+    }
+
+    .disclaimer{
+      margin-top:24px;
+      padding-top:20px;
+      border-top:1px solid rgba(255,255,255,0.1);
+      font-size:13px;
+      color:#9ca3af;
+      max-width:900px;
+      text-align:center;
+      line-height:1.6;
+      width:90%;
+    }
+
+    @media (max-width: 700px){
+      .container{
+        padding:22px;
+      }
+
+      h1{
+        font-size:28px;
+      }
+
+      .content h2{
+        font-size:24px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <p class="toptext">Explore more calculators</p>
+
+  <div class="menu">
+    <a href="index.html">Home</a>
+  </div>
+
+  <div class="container">
+    <h1>DCA vs Lump Sum Calculator</h1>
+    <p class="subhead">
+      Compare dollar cost averaging against lump sum investing using the same total amount.
+      See how both strategies perform over time with a clean chart and simple results.
+    </p>
+
+    <div class="badge-row">
+      <span class="badge">Strategy comparison</span>
+      <span class="badge soft">Investment planning</span>
+      <span class="badge soft">Volatility-aware</span>
+    </div>
+
+    <div class="section-title">Your details</div>
+    <div class="grid">
+      <div class="field">
+        <label for="totalInvestment">Total Amount to Invest ($)</label>
+        <input id="totalInvestment" type="number" min="0" step="any" placeholder="e.g. 12000">
+      </div>
+
+      <div class="field">
+        <label for="dcaMonths">DCA Period (months)</label>
+        <input id="dcaMonths" type="number" min="1" step="1" placeholder="e.g. 12">
+      </div>
+
+      <div class="field">
+        <label for="analysisYears">Analysis Horizon (years)</label>
+        <input id="analysisYears" type="number" min="1" step="1" placeholder="e.g. 5">
+      </div>
+
+      <div class="field">
+        <label for="annualReturnPct">Expected Annual Return (%)</label>
+        <input id="annualReturnPct" type="number" step="any" placeholder="e.g. 8">
+      </div>
+    </div>
+
+    <button onclick="calculateDCA()">Compare Strategies</button>
+
+    <div id="resultCard" class="result-card">
+      <div class="result-line"><strong>Total invested:</strong> <span id="investedOut">—</span></div>
+      <div class="result-line"><strong>DCA monthly amount:</strong> <span id="monthlyOut">—</span></div>
+      <div class="result-line"><strong>Lump sum final value:</strong> <span id="lumpOut">—</span></div>
+      <div class="result-line"><strong>DCA final value:</strong> <span id="dcaOut">—</span></div>
+      <div class="result-line"><strong>Winner:</strong> <span id="winnerOut">—</span></div>
+      <div class="result-line"><strong>Difference:</strong> <span id="differenceOut">—</span></div>
+      <div class="result-line"><strong>Insight:</strong> <span id="insightOut">—</span></div>
+    </div>
+
+    <canvas id="myChart"></canvas>
+  </div>
+
+  <div class="content">
+    <h2>What is DCA vs Lump Sum investing?</h2>
+    <p>
+      Dollar cost averaging, or DCA, means investing a fixed amount at regular intervals instead of investing everything at once.
+      Lump sum investing means putting the full amount into the market immediately.
+      This calculator compares both approaches using the same total amount so you can see how they behave over time.
+    </p>
+
+    <p>
+      In a rising market, lump sum investing often has the advantage because the money starts compounding earlier.
+      In choppy or declining markets, DCA can feel safer because it spreads entry points across time and reduces timing risk.
+      This calculator helps you compare the tradeoff instead of guessing.
+    </p>
+
+    <h2>How this calculator works</h2>
+    <p>
+      The calculator assumes that both strategies use the same total capital.
+      Lump sum invests all of it at the beginning.
+      DCA divides the capital evenly across the chosen DCA period and invests it monthly.
+      After the DCA period ends, the invested balance continues compounding until the end of the analysis horizon.
+    </p>
+
+    <div class="formula">
+      Monthly return = (1 + annual return)^(1 / 12) - 1
+      <br>
+      Lump sum = full amount invested at month 0
+      <br>
+      DCA = total amount / DCA months, invested monthly
+      <br>
+      Final value = invested balance + compound growth over time
+    </div>
+
+    <p>
+      The chart shows both strategies month by month so you can see whether lump sum pulls ahead early or DCA catches up later.
+      This is especially useful for long-term investors who want a simple answer without doing the math by hand.
+    </p>
+
+    <h2>Why this comparison matters</h2>
+    <p>
+      This comparison matters because the biggest mistake in investing is not usually the asset itself, but the entry timing.
+      Some investors want to reduce regret and emotional pressure with DCA.
+      Others want to maximize time in the market with lump sum investing.
+      Both can be valid, depending on your goals and risk tolerance.
+    </p>
+
+    <ul>
+      <li>Compare the same capital with two different strategies</li>
+      <li>See how time in the market affects growth</li>
+      <li>Understand the effect of spreading entries over time</li>
+      <li>Make a more informed long-term investing decision</li>
+    </ul>
+
+    <h2>How to use this calculator</h2>
+    <ul>
+      <li>Enter the total amount you want to invest</li>
+      <li>Choose how many months you want to use DCA</li>
+      <li>Set your analysis horizon in years</li>
+      <li>Enter an expected annual return</li>
+      <li>Click compare to see both strategies and the chart</li>
+    </ul>
+
+    <h2>Frequently Asked Questions</h2>
+
+    <div class="faq">
+      <div class="faq-item">
+        <button class="faq-question">
+          Is lump sum always better than DCA?
+          <span class="arrow">▼</span>
+        </button>
+        <div class="faq-answer">
+          <p>
+            Not always, but lump sum often wins when markets rise over time because the money starts compounding earlier.
+            DCA can be better for emotional comfort and for reducing the risk of investing at a bad time.
+          </p>
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <button class="faq-question">
+          Why does DCA feel safer?
+          <span class="arrow">▼</span>
+        </button>
+        <div class="faq-answer">
+          <p>
+            DCA spreads your purchases across time, so you are not relying on one single entry price.
+            That reduces timing risk and can make investing easier to stick with.
+          </p>
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <button class="faq-question">
+          Does this calculator assume monthly DCA?
+          <span class="arrow">▼</span>
+        </button>
+        <div class="faq-answer">
+          <p>
+            Yes. This version uses monthly DCA so the comparison stays simple and realistic.
+            The total amount is split evenly across the number of DCA months you enter.
+          </p>
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <button class="faq-question">
+          Can DCA beat lump sum?
+          <span class="arrow">▼</span>
+        </button>
+        <div class="faq-answer">
+          <p>
+            Yes, especially in flat or falling markets.
+            DCA can also outperform when the price drops during the buying period and your later contributions buy at lower levels.
+          </p>
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <button class="faq-question">
+          What return rate should I use?
+          <span class="arrow">▼</span>
+        </button>
+        <div class="faq-answer">
+          <p>
+            Use a realistic long-term return estimate.
+            Conservative assumptions usually produce more useful planning results than overly optimistic ones.
+          </p>
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <button class="faq-question">
+          Is this useful for crypto and stocks?
+          <span class="arrow">▼</span>
+        </button>
+        <div class="faq-answer">
+          <p>
+            Yes. The logic works for stocks, ETFs, crypto, and any other asset where you want to compare one-time investing against recurring buys.
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="related">
+    <h3>Related Calculators</h3>
+    <p>You may also find these tools useful:</p>
+    <ul>
+      <li><a href="dca-calculator.html">DCA Calculator</a></li>
+      <li><a href="future-value-calculator.html">Future Value Calculator</a></li>
+      <li><a href="compound-interest-calculator.html">Compound Interest Calculator</a></li>
+      <li><a href="roi-calculator.html">ROI Calculator</a></li>
+      <li><a href="average-price-calculator.html">Average Price Calculator</a></li>
+    </ul>
+  </div>
+
+  <div class="disclaimer">
+    <p>
+      <strong>Disclaimer:</strong> The calculators on this website are provided for informational and educational purposes only.
+      All results are estimates based on the values entered and do not constitute financial, investment, or trading advice.
+      Always conduct your own research before making financial decisions.
+    </p>
+  </div>
+
+  <script src="footer.js"></script>
+  <script>
+    let chart;
+
+    function fmt(value){
+      return value.toLocaleString(undefined, {
+        minimumFractionDigits: 0,
+        maximumFractionDigits: 2
+      });
+    }
+
+    function money(value){
+      return "$" + fmt(value);
+    }
+
+    function calculateDCA(){
+      const totalInvestment = parseFloat(document.getElementById("totalInvestment").value);
+      const dcaMonths = parseInt(document.getElementById("dcaMonths").value, 10);
+      const analysisYears = parseFloat(document.getElementById("analysisYears").value);
+      const annualReturnPct = parseFloat(document.getElementById("annualReturnPct").value);
+
+      if ([totalInvestment, dcaMonths, analysisYears, annualReturnPct].some(v => isNaN(v))){
+        alert("Please fill in all required fields.");
+        return;
+      }
+
+      if (totalInvestment <= 0 || dcaMonths <= 0 || analysisYears <= 0){
+        alert("Values must be greater than zero.");
+        return;
+      }
+
+      const totalMonths = Math.round(analysisYears * 12);
+
+      if (dcaMonths > totalMonths){
+        alert("DCA period must not be longer than the analysis horizon.");
+        return;
+      }
+
+      if (annualReturnPct <= -100){
+        alert("Return must be greater than -100%.");
+        return;
+      }
+
+      const monthlyReturn = Math.pow(1 + annualReturnPct / 100, 1 / 12) - 1;
+      const monthlyContribution = totalInvestment / dcaMonths;
+
+      let lumpSum = totalInvestment;
+      let dcaValue = 0;
+
+      const labels = [0];
+      const lumpData = [totalInvestment];
+      const dcaData = [0];
+
+      for (let month = 1; month <= totalMonths; month++){
+        lumpSum *= (1 + monthlyReturn);
+
+        if (month <= dcaMonths){
+          dcaValue += monthlyContribution;
+        }
+        dcaValue *= (1 + monthlyReturn);
+
+        labels.push(month);
+        lumpData.push(lumpSum);
+        dcaData.push(dcaValue);
+      }
+
+      const difference = lumpSum - dcaValue;
+      const absDifference = Math.abs(difference);
+      const better = difference > 0 ? "Lump Sum" : difference < 0 ? "DCA" : "Tie";
+
+      document.getElementById("investedOut").innerText = money(totalInvestment);
+      document.getElementById("monthlyOut").innerText = money(monthlyContribution);
+      document.getElementById("lumpOut").innerText = money(lumpSum);
+      document.getElementById("dcaOut").innerText = money(dcaValue);
+
+      let winnerHTML = "";
+      let insight = "";
+      let insightClass = "";
+
+      if (difference > 0){
+        const pct = (difference / dcaValue) * 100;
+        winnerHTML = `<span class="insight-good">Lump Sum wins</span>`;
+        document.getElementById("differenceOut").innerText = `${money(absDifference)} more than DCA (+${fmt(pct)}%)`;
+        insight = "This favors lump sum because the market trend assumption is positive and the money compounds earlier.";
+        insightClass = "insight-good";
+      } else if (difference < 0){
+        const pct = (absDifference / lumpSum) * 100;
+        winnerHTML = `<span class="insight-good">DCA wins</span>`;
+        document.getElementById("differenceOut").innerText = `${money(absDifference)} more than Lump Sum (+${fmt(pct)}%)`;
+        insight = "This favors DCA because spreading entries helped more than investing everything at once.";
+        insightClass = "insight-good";
+      } else {
+        winnerHTML = `<span class="insight-medium">Tie</span>`;
+        document.getElementById("differenceOut").innerText = "Both strategies ended at the same value.";
+        insight = "Both strategies produced the same ending value under these assumptions.";
+        insightClass = "insight-medium";
+      }
+
+      document.getElementById("winnerOut").innerHTML = winnerHTML;
+      document.getElementById("insightOut").innerHTML = `<span class="${insightClass}">${insight}</span>`;
+      document.getElementById("resultCard").style.display = "block";
+
+      drawChart(labels, lumpData, dcaData);
+    }
+
+    function drawChart(labels, lumpData, dcaData){
+      const ctx = document.getElementById("myChart").getContext("2d");
+
+      if (chart){
+        chart.destroy();
+      }
+
+      chart = new Chart(ctx, {
+        type: "line",
+        data: {
+          labels: labels,
+          datasets: [
+            {
+              label: "Lump Sum",
+              data: lumpData,
+              borderColor: "#3b82f6",
+              backgroundColor: "rgba(59,130,246,0.12)",
+              tension: 0.25,
+              fill: true,
+              pointRadius: 0,
+              pointHoverRadius: 4
+            },
+            {
+              label: "DCA",
+              data: dcaData,
+              borderColor: "#22c55e",
+              backgroundColor: "rgba(34,197,94,0.08)",
+              tension: 0.25,
+              fill: false,
+              pointRadius: 0,
+              pointHoverRadius: 4
+            }
+          ]
+        },
+        options: {
+          responsive: true,
+          plugins: {
+            legend: {
+              labels: { color: "white" }
+            },
+            tooltip: {
+              callbacks: {
+                label: function(context){
+                  return `${context.dataset.label}: $${fmt(context.parsed.y)}`;
+                }
+              }
+            }
+          },
+          scales: {
+            x: {
+              ticks: {
+                color: "white",
+                callback: function(value, index){
+                  const month = labels[index];
+                  if (month === 0) return "Start";
+                  if (month % 12 === 0) return `Y${month / 12}`;
+                  return "";
+                },
+                maxRotation: 0,
+                autoSkip: false
+              },
+              grid: { color: "rgba(255,255,255,0.08)" },
+              title: {
+                display: true,
+                text: "Time",
+                color: "white"
+              }
+            },
+            y: {
+              ticks: {
+                color: "white",
+                callback: function(value){
+                  return "$" + Number(value).toLocaleString();
+                }
+              },
+              grid: { color: "rgba(255,255,255,0.08)" },
+              title: {
+                display: true,
+                text: "Portfolio Value ($)",
+                color: "white"
+              }
+            }
+          }
+        }
+      });
+    }
+
+    document.addEventListener("DOMContentLoaded", function(){
+      document.querySelectorAll(".faq-question").forEach(btn => {
+        btn.addEventListener("click", () => {
+          const item = btn.parentElement;
+
+          document.querySelectorAll(".faq-item").forEach(i => {
+            if(i !== item) i.classList.remove("active");
+          });
+
+          item.classList.toggle("active");
+        });
+      });
+    });
+  </script>
+</body>
+</html>
