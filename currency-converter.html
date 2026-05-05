@@ -1,7 +1,8 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<link rel="canonical" href="https://novainvesttools.com/currency-converter-calculator.html">
+  <link rel="canonical" href="https://novainvesttools.com/currency-converter-calculator.html">
+
   <!-- Google tag (gtag.js) -->
   <script async src="https://www.googletagmanager.com/gtag/js?id=G-ZPCXDVE8C5"></script>
   <script>
@@ -12,14 +13,80 @@
   </script>
 
   <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Currency Converter – Multi-Currency Live Rate Dashboard</title>
   <meta name="description" content="Multi-currency converter with the latest exchange rates. Edit one currency and instantly update all others in one clean dashboard.">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="theme-color" content="#0f172a">
+  <meta name="robots" content="index,follow,max-image-preview:large">
+
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://novainvesttools.com/currency-converter-calculator.html">
+  <meta property="og:title" content="Currency Converter – Multi-Currency Live Rate Dashboard">
+  <meta property="og:description" content="Multi-currency converter with the latest exchange rates. Edit one currency and instantly update all others in one clean dashboard.">
+
+  <link rel="preconnect" href="https://api.frankfurter.dev">
+  <link rel="dns-prefetch" href="https://api.frankfurter.dev">
 
   <link rel="stylesheet" href="style.css">
   <link rel="icon" href="favicon.png" type="image/png">
   <link rel="apple-touch-icon" href="favicon.png">
+
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "WebApplication",
+    "name": "Currency Converter",
+    "url": "https://novainvesttools.com/currency-converter-calculator.html",
+    "applicationCategory": "FinanceApplication",
+    "operatingSystem": "All",
+    "browserRequirements": "Requires JavaScript",
+    "description": "Convert currencies with live exchange rate snapshots. Edit any currency and update all others instantly.",
+    "featureList": [
+      "Live exchange rate conversion",
+      "Multi-currency dashboard",
+      "One edit updates all values",
+      "Travel and budgeting support"
+    ],
+    "offers": {
+      "@type": "Offer",
+      "price": "0",
+      "priceCurrency": "USD"
+    }
+  }
+  </script>
+
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": [
+      {
+        "@type": "Question",
+        "name": "How does this currency converter work?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "It uses a live exchange rate snapshot and recalculates all visible currencies from the same base value."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Is the exchange rate live?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "The page fetches a current public rate snapshot and caches it briefly for faster performance."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Can I use this for travel budgeting?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Yes. It is useful for travel budgets, price comparisons, and quick currency checks."
+        }
+      }
+    ]
+  }
+  </script>
 
   <style>
     * { box-sizing: border-box; }
@@ -281,7 +348,7 @@
       <a href="index.html">Home</a>
     </div>
 
-    <div class="container">
+    <div class="container" data-search="currency converter live exchange rates usd eur gbp try multi currency dashboard">
       <div class="hero">
         <div>
           <h1>Currency Converter</h1>
@@ -357,6 +424,10 @@
   <script src="footer.js"></script>
   <script>
     const API_BASE = "https://api.frankfurter.dev/v2";
+    const CACHE_TTL = 10 * 60 * 1000;
+    const STORAGE_KEY = "nit_currency_converter_cache_v1";
+    const REFRESH_INTERVAL = 10 * 60 * 1000;
+    const RECENT_ACTIVITY_WINDOW = 2 * 60 * 1000;
 
     const ALL_CURRENCIES = [
       { code: "USD", name: "US Dollar" },
@@ -402,8 +473,42 @@
     let isUpdating = false;
     let requestToken = 0;
     let currencies = [];
-    let cache = new Map();
+    let cacheStore = loadCacheStore();
     let debounceTimer = null;
+    let lastInteraction = Date.now();
+
+    function loadCacheStore() {
+      try {
+        const raw = localStorage.getItem(STORAGE_KEY);
+        return raw ? JSON.parse(raw) : {};
+      } catch {
+        return {};
+      }
+    }
+
+    function saveCacheStore() {
+      try {
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(cacheStore));
+      } catch {
+        // ignore storage failures
+      }
+    }
+
+    function getCacheKey(base) {
+      const quotes = currencies.map(c => c.code).filter(code => code !== base).sort();
+      return `${base}|${quotes.join(",")}`;
+    }
+
+    function getCachedPayload(base) {
+      const key = getCacheKey(base);
+      return cacheStore[key] || null;
+    }
+
+    function setCachedPayload(base, payload) {
+      const key = getCacheKey(base);
+      cacheStore[key] = payload;
+      saveCacheStore();
+    }
 
     function formatInputNumber(value) {
       if (!isFinite(value)) return "";
@@ -419,12 +524,28 @@
       });
     }
 
+    function extractRates(rateRows) {
+      const rates = {};
+      let date = "";
+
+      if (Array.isArray(rateRows)) {
+        for (const row of rateRows) {
+          if (!date && row && row.date) date = row.date;
+          if (row && row.quote && typeof row.rate === "number") {
+            rates[row.quote] = row.rate;
+          }
+        }
+      }
+
+      return { rates, date };
+    }
+
     async function loadSupportedCurrencies() {
       try {
         const resp = await fetch(`${API_BASE}/currencies?scope=all`);
         if (!resp.ok) throw new Error("Currency list failed");
 
-        const data = await resp.json(); // array of Currency objects
+        const data = await resp.json();
         const supported = new Set((Array.isArray(data) ? data : []).map(item => item.iso_code));
         currencies = ALL_CURRENCIES.filter(item => supported.has(item.code));
 
@@ -443,7 +564,17 @@
       const baseInput = getInput(BASE_CODE);
       if (baseInput) baseInput.value = String(DEFAULT_AMOUNT);
       setActiveCard(BASE_CODE);
-      recalcFrom(BASE_CODE);
+
+      const cached = getCachedPayload(BASE_CODE);
+      if (cached && cached.data) {
+        applyRates(BASE_CODE, DEFAULT_AMOUNT, cached.data.rates || {}, cached.data.date || "Cached", true, cached.timestamp);
+        if (Date.now() - cached.timestamp < CACHE_TTL) {
+          syncStatus.textContent = "Updated from cache";
+          return;
+        }
+      }
+
+      recalcFrom(BASE_CODE, { forceFetch: true });
     }
 
     function buildGrid() {
@@ -473,13 +604,6 @@
 
     async function fetchRates(base, quotes) {
       const quoteList = [...new Set(quotes.filter(Boolean))].sort();
-      const cacheKey = `rates|${base}|${quoteList.join(",")}`;
-      const cached = cache.get(cacheKey);
-
-      if (cached && Date.now() - cached.timestamp < 60_000) {
-        return cached.data;
-      }
-
       const params = new URLSearchParams({
         base,
         quotes: quoteList.join(",")
@@ -488,33 +612,69 @@
       const resp = await fetch(`${API_BASE}/rates?${params.toString()}`);
       if (!resp.ok) throw new Error(`Rate request failed: ${resp.status}`);
 
-      const data = await resp.json(); // array of Rate objects
-      cache.set(cacheKey, { timestamp: Date.now(), data });
-      return data;
+      const data = await resp.json();
+      const { rates, date } = extractRates(data);
+
+      const payload = {
+        timestamp: Date.now(),
+        data: { rates, date }
+      };
+
+      setCachedPayload(base, payload);
+      return payload.data;
     }
 
     async function fetchSingleRate(base, quote) {
-      const cacheKey = `rate|${base}|${quote}`;
-      const cached = cache.get(cacheKey);
-
-      if (cached && Date.now() - cached.timestamp < 60_000) {
-        return cached.data;
-      }
-
       const resp = await fetch(`${API_BASE}/rate/${encodeURIComponent(base)}/${encodeURIComponent(quote)}`);
       if (!resp.ok) throw new Error(`Pair rate request failed: ${resp.status}`);
 
       const data = await resp.json();
-      cache.set(cacheKey, { timestamp: Date.now(), data });
       return data;
     }
 
-    function scheduleRecalc(baseCode) {
-      clearTimeout(debounceTimer);
-      debounceTimer = setTimeout(() => recalcFrom(baseCode), 180);
+    function applyRates(baseCode, amount, rates, date, fromCache = false, cachedAt = null) {
+      resultBox.style.display = "block";
+      dateStatus.textContent = date || "—";
+      baseAmountOut.textContent = `${formatDisplayNumber(amount)} ${baseCode}`;
+
+      const targets = currencies.map(c => c.code).filter(code => code !== baseCode);
+      const firstTarget = targets.find(code => typeof rates[code] === "number");
+
+      if (firstTarget) {
+        unitRateOut.textContent = `1 ${baseCode} = ${formatDisplayNumber(rates[firstTarget])} ${firstTarget}`;
+        reverseRateOut.textContent = `1 ${firstTarget} = ${formatDisplayNumber(1 / rates[firstTarget])} ${baseCode}`;
+      } else {
+        unitRateOut.textContent = "—";
+        reverseRateOut.textContent = "—";
+      }
+
+      for (const { code } of currencies) {
+        const input = getInput(code);
+        if (!input) continue;
+
+        if (code === baseCode) {
+          input.value = formatInputNumber(amount);
+        } else {
+          const rate = rates[code];
+          input.value = typeof rate === "number" ? formatInputNumber(amount * rate) : "";
+        }
+      }
+
+      loadedCountOut.textContent = String(currencies.length);
+
+      if (fromCache) {
+        const age = cachedAt ? Date.now() - cachedAt : 0;
+        if (age < CACHE_TTL) {
+          syncStatus.textContent = "Updated";
+        } else {
+          syncStatus.textContent = "Cached • refreshing";
+        }
+      } else {
+        syncStatus.textContent = "Updated";
+      }
     }
 
-    async function recalcFrom(baseCode) {
+    async function recalcFrom(baseCode, { forceFetch = false } = {}) {
       const token = ++requestToken;
       const baseInput = getInput(baseCode);
       if (!baseInput) return;
@@ -524,7 +684,25 @@
 
       isUpdating = true;
       setActiveCard(baseCode);
-      syncStatus.textContent = "Loading...";
+      lastInteraction = Date.now();
+
+      const cached = getCachedPayload(baseCode);
+      const cachedRates = cached?.data?.rates || null;
+      const cachedDate = cached?.data?.date || "—";
+      const cachedAt = cached?.timestamp || 0;
+      const cacheAge = Date.now() - cachedAt;
+      const cacheFresh = cached && cacheAge < CACHE_TTL;
+
+      if (cachedRates) {
+        applyRates(baseCode, amount, cachedRates, cachedDate, true, cachedAt);
+      }
+
+      if (cachedRates && cacheFresh && !forceFetch) {
+        isUpdating = false;
+        return;
+      }
+
+      syncStatus.textContent = cachedRates ? "Refreshing..." : "Loading...";
 
       try {
         const targets = currencies.map(c => c.code).filter(code => code !== baseCode);
@@ -532,17 +710,8 @@
 
         if (token !== requestToken) return;
 
-        const rates = {};
-        let date = "—";
-
-        if (Array.isArray(rateRows)) {
-          for (const row of rateRows) {
-            if (!date && row && row.date) date = row.date;
-            if (row && row.quote && typeof row.rate === "number") {
-              rates[row.quote] = row.rate;
-            }
-          }
-        }
+        const rates = rateRows.rates || {};
+        const date = rateRows.date || "—";
 
         const missing = targets.filter(code => typeof rates[code] !== "number");
         if (missing.length > 0) {
@@ -566,39 +735,22 @@
 
         if (token !== requestToken) return;
 
-        dateStatus.textContent = date;
-        resultBox.style.display = "block";
-        baseAmountOut.textContent = `${formatDisplayNumber(amount)} ${baseCode}`;
-
-        const firstTarget = targets.find(code => typeof rates[code] === "number");
-        if (firstTarget) {
-          unitRateOut.textContent = `1 ${baseCode} = ${formatDisplayNumber(rates[firstTarget])} ${firstTarget}`;
-          reverseRateOut.textContent = `1 ${firstTarget} = ${formatDisplayNumber(1 / rates[firstTarget])} ${baseCode}`;
-        } else {
-          unitRateOut.textContent = "—";
-          reverseRateOut.textContent = "—";
-        }
-
-        for (const { code } of currencies) {
-          const input = getInput(code);
-          if (!input) continue;
-
-          if (code === baseCode) {
-            input.value = formatInputNumber(amount);
-          } else {
-            const rate = rates[code];
-            input.value = typeof rate === "number" ? formatInputNumber(amount * rate) : "";
-          }
-        }
-
-        loadedCountOut.textContent = String(currencies.length);
-        syncStatus.textContent = "Updated";
+        applyRates(baseCode, amount, rates, date, false);
       } catch (err) {
         console.error(err);
-        syncStatus.textContent = "Error loading rates";
+        if (!cachedRates) {
+          syncStatus.textContent = "Error loading rates";
+        } else {
+          syncStatus.textContent = "Using cached rates";
+        }
       } finally {
         isUpdating = false;
       }
+    }
+
+    function scheduleRecalc(baseCode) {
+      clearTimeout(debounceTimer);
+      debounceTimer = setTimeout(() => recalcFrom(baseCode), 180);
     }
 
     function bindEvents() {
@@ -608,9 +760,14 @@
 
         const card = input.closest(".currency-card");
 
-        input.addEventListener("focus", () => setActiveCard(code));
+        input.addEventListener("focus", () => {
+          lastInteraction = Date.now();
+          setActiveCard(code);
+        });
+
         input.addEventListener("input", () => {
           if (isUpdating) return;
+          lastInteraction = Date.now();
           setActiveCard(code);
           scheduleRecalc(code);
         });
@@ -620,6 +777,12 @@
         });
       });
     }
+
+    setInterval(() => {
+      if (document.visibilityState !== "visible") return;
+      if (Date.now() - lastInteraction > RECENT_ACTIVITY_WINDOW) return;
+      recalcFrom(activeBase, { forceFetch: true });
+    }, REFRESH_INTERVAL);
 
     loadSupportedCurrencies();
   </script>
