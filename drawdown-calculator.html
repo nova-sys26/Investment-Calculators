@@ -559,7 +559,7 @@
       <li>Click calculate to see the recovery gain needed</li>
     </ul>
 
-    <h2>Frequently Asked Questions</h2>
+    <h3>Frequently Asked Questions</h3>
 
     <div class="faq">
       <div class="faq-item">
@@ -725,19 +725,21 @@
       document.getElementById("ddOut").innerHTML = dd.toFixed(2) + "%";
       document.getElementById("gainOut").innerHTML = recovery.toFixed(2) + "%";
 
-      let insight = "";
-      let insightClass = "";
+     let insight = "";
+let insightClass = "";
 
-      if (dd <= 10) {
-        insight = "Small losses are relatively easy to recover.";
-        insightClass = "insight-good";
-      } else if (dd <= 30) {
-        insight = "Recovery is possible, but the required gain is already meaningfully higher.";
-        insightClass = "insight-medium";
-      } else {
-        insight = "Large losses require very high gains to recover. Risk control matters here.";
-        insightClass = "insight-weak";
-      }
+if(recovery <= 30){
+  insight = "Recovery is manageable. Risk is under control.";
+  insightClass = "insight-good";
+}
+else if(recovery <= 70){
+  insight = "Recovery is getting harder. Risk is increasing.";
+  insightClass = "insight-medium";
+}
+else{
+  insight = "Recovery is very difficult. High risk of capital loss.";
+  insightClass = "insight-weak";
+}
 
       document.getElementById("insightOut").innerHTML =
         `<span class="${insightClass}">${insight}</span>`;
