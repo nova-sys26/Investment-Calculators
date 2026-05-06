@@ -1,524 +1,817 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-<link rel="canonical" href="https://novainvesttools.com/drawdown-calculator.html">
-<!-- Google tag (gtag.js) -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-ZPCXDVE8C5"></script>
-<script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
+  <link rel="canonical" href="https://novainvesttools.com/drawdown-calculator.html">
 
-  gtag('config', 'G-ZPCXDVE8C5');
-</script>
-<meta charset="UTF-8">
-<title>Drawdown Calculator – Recover Your Losses</title>
-<meta name="description" content="Calculate how much gain you need to recover from losses. Understand drawdown and recovery in trading and investing.">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-ZPCXDVE8C5"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-ZPCXDVE8C5');
+  </script>
 
-<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-<link rel="stylesheet" href="style.css">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Drawdown Calculator – Recover Your Losses</title>
+  <meta name="description" content="Calculate how much gain you need to recover from losses. Understand drawdown and recovery in trading and investing.">
+  <meta name="theme-color" content="#0f172a">
+  <meta name="robots" content="index,follow,max-image-preview:large">
 
-<style>
-body{
-font-family:Arial;
-background:#0f172a;
-color:white;
-display:flex;
-justify-content:center;
-align-items:center;
-flex-direction:column;
-min-height:100vh;
-}
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://novainvesttools.com/drawdown-calculator.html">
+  <meta property="og:title" content="Drawdown Calculator – Recover Your Losses">
+  <meta property="og:description" content="Calculate how much gain you need to recover from losses. Understand drawdown and recovery in trading and investing.">
 
-.container{
-background:#1e293b;
-padding:30px;
-border-radius:16px;
-width:90%;
-max-width:500px;
-box-shadow:0 10px 25px rgba(0,0,0,0.35);
-}
+  <link rel="preconnect" href="https://cdn.jsdelivr.net">
+  <link rel="dns-prefetch" href="https://cdn.jsdelivr.net">
 
-input{
-width:100%;
-padding:14px;
-margin:12px 0;
-border-radius:10px;
-border:none;
-background:#e5e7eb;
-font-size:16px;
-}
+  <link rel="stylesheet" href="style.css">
+  <link rel="icon" href="favicon.png" type="image/png">
+  <link rel="apple-touch-icon" href="favicon.png">
 
-button{
-padding:14px;
-background:#3b82f6;
-border:none;
-border-radius:10px;
-color:white;
-cursor:pointer;
-margin-top:10px;
-width:100%;
-}
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
-button:hover{
-background:#2563eb;
-}
-
-canvas{
-margin-top:30px;
-}
-
-.menu a{
-color:#3b82f6;
-text-decoration:none;
-}
-
-.toptext{
-font-size:14px;
-color:#6b7a99;
-margin-bottom:5px;
-}
-
-.disclaimer{
-margin-top:40px;
-padding-top:20px;
-border-top:1px solid rgba(255,255,255,0.1);
-font-size:13px;
-color:#9ca3af;
-max-width:500px;
-text-align:center;
-}
-
-.mode-switch{
-display:flex;
-gap:10px;
-margin-bottom:15px;
-}
-
-.mode-btn{
-flex:1;
-padding:10px;
-border:none;
-border-radius:8px;
-background:#334155;
-color:white;
-cursor:pointer;
-position:relative;
-font-size:14px;
-}
-
-.mode-btn.active{
-background:#3b82f6;
-}
-
-/* INFO ICON (soru işareti) */
-.info-wrapper{
-  display:inline-flex;
-align-items:center;
-justify-content:center;
-  width:18px;
-height:18px;
-margin-left:6px;
-font-size:12px;
-font-weight:bold;
-
-color:rgba(255,255,255,0.6);           /* soluk gri */
-border:1px solid rgba(255,255,255,0.3); /* çember */
-border-radius:50%;
-
-cursor:pointer;
-transition:0.2s;
-}
-
-
-/* hover efekti */
-.info-wrapper:hover{
-color:white;
-border-color:rgba(255,255,255,0.6);
-background:rgba(255,255,255,0.05);
-}
-
-
-.tooltip{
-  position:absolute;
-  top:130%;
-
-  left:50%;
-  transform:translateX(-50%);  /* 🔥 ORTALA */
-
-  width:240px;
-  background:rgba(0,0,0,0.85);
-  color:#e5e7eb;
-
-  padding:12px;
-  border-radius:10px;
-
-  font-size:13px;
-  line-height:1.4;
-
-  display:none;
-  z-index:999;
-}
-
-/* SAĞDAKİ BUTTON (From Balance) → sağa yasla */
-.mode-switch > div:last-child .tooltip{
-  left:auto;
-  right:0;
-}
-  
-  background:rgba(0,0,0,0.85);
-  color:#e5e7eb;
-
-  padding:12px;
-  border-radius:10px;
-
-  width:240px;
-  font-size:13px;
-  line-height:1.4;
-
-  display:none;
-  z-index:999;
-
-  box-shadow:0 10px 25px rgba(0,0,0,0.4);
-}
-
-/* aşağı bakan üçgen */
-.tooltip::after{
-  content:"";
-  position:absolute;
-  top:-6px;
-  left:50%;
-  transform:translateX(-50%);
-
-  border-width:6px;
-  border-style:solid;
-  border-color:transparent transparent rgba(0,0,0,0.85) transparent;
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "WebApplication",
+    "name": "Drawdown Calculator",
+    "url": "https://novainvesttools.com/drawdown-calculator.html",
+    "applicationCategory": "FinanceApplication",
+    "operatingSystem": "All",
+    "browserRequirements": "Requires JavaScript",
+    "description": "Calculate drawdown and the recovery gain needed to return to break-even.",
+    "featureList": [
+      "Drawdown percentage calculation",
+      "Recovery gain calculation",
+      "Balance-based drawdown mode",
+      "Risk management visualization"
+    ],
+    "offers": {
+      "@type": "Offer",
+      "price": "0",
+      "priceCurrency": "USD"
+    }
   }
+  </script>
 
-</style>
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": [
+      {
+        "@type": "Question",
+        "name": "What is drawdown?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Drawdown is the percentage decline from a portfolio or account's peak value to a lower value."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Why does a loss require a larger gain to recover?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Because gains are calculated on a smaller remaining balance after the loss, so the recovery percentage must be larger."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Can a 50% loss be recovered with a 50% gain?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "No. A 50% loss requires a 100% gain to get back to break-even."
+        }
+      }
+    ]
+  }
+  </script>
 
+  <style>
+    *{
+      box-sizing:border-box;
+    }
+
+    body{
+      font-family: Arial, sans-serif;
+      background:#0b1a33;
+      color:white;
+      display:flex;
+      justify-content:center;
+      align-items:center;
+      flex-direction:column;
+      min-height:100vh;
+      margin:0;
+      padding:24px 0;
+    }
+
+    .toptext{
+      font-size:14px;
+      color:#6b7a99;
+      margin-bottom:5px;
+    }
+
+    .menu{
+      margin-bottom:25px;
+    }
+
+    .menu a{
+      color:#3b82f6;
+      margin:10px;
+      text-decoration:none;
+      font-weight:600;
+    }
+
+    .container{
+      background:#1e293b;
+      padding:30px;
+      border-radius:16px;
+      width:90%;
+      max-width:520px;
+      box-shadow:0 10px 25px rgba(0,0,0,0.35);
+    }
+
+    h1{
+      margin-top:0;
+      margin-bottom:10px;
+      font-size:32px;
+      line-height:1.15;
+    }
+
+    .subhead{
+      color:#94a3b8;
+      font-size:15px;
+      line-height:1.6;
+      margin-bottom:18px;
+    }
+
+    .quick-answer{
+      background: rgba(59,130,246,0.12);
+      border: 1px solid rgba(59,130,246,0.25);
+      padding: 12px 14px;
+      border-radius: 10px;
+      font-size: 15px;
+      line-height: 1.6;
+      color: #e2e8f0;
+      margin-bottom: 18px;
+    }
+
+    input{
+      width:100%;
+      padding:14px;
+      margin:12px 0;
+      border-radius:10px;
+      border:none;
+      background:#e5e7eb;
+      font-size:16px;
+      outline:none;
+    }
+
+    input:focus{
+      box-shadow:0 0 0 3px rgba(59,130,246,0.18);
+    }
+
+    button{
+      padding:14px;
+      background:#3b82f6;
+      border:none;
+      border-radius:10px;
+      color:white;
+      cursor:pointer;
+      margin-top:10px;
+      width:100%;
+      font-size:16px;
+      font-weight:700;
+      transition:0.2s;
+    }
+
+    button:hover{
+      background:#2563eb;
+      transform:translateY(-1px);
+    }
+
+    .mode-switch{
+      display:flex;
+      gap:10px;
+      margin-bottom:15px;
+    }
+
+    .mode-btn{
+      flex:1;
+      padding:10px;
+      border:none;
+      border-radius:8px;
+      background:#334155;
+      color:white;
+      cursor:pointer;
+      position:relative;
+      font-size:14px;
+    }
+
+    .mode-btn.active{
+      background:#3b82f6;
+    }
+
+    .info-wrapper{
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      width:18px;
+      height:18px;
+      margin-left:6px;
+      font-size:12px;
+      font-weight:bold;
+      color:rgba(255,255,255,0.6);
+      border:1px solid rgba(255,255,255,0.3);
+      border-radius:50%;
+      cursor:pointer;
+      transition:0.2s;
+      vertical-align:middle;
+    }
+
+    .info-wrapper:hover{
+      color:white;
+      border-color:rgba(255,255,255,0.6);
+      background:rgba(255,255,255,0.05);
+    }
+
+    .tooltip{
+      position:absolute;
+      background:rgba(0,0,0,0.85);
+      color:#e5e7eb;
+      padding:12px;
+      border-radius:10px;
+      width:240px;
+      font-size:13px;
+      line-height:1.4;
+      display:none;
+      z-index:999;
+      box-shadow:0 10px 25px rgba(0,0,0,0.4);
+    }
+
+    .tooltip::after{
+      content:"";
+      position:absolute;
+      top:-6px;
+      left:50%;
+      transform:translateX(-50%);
+      border-width:6px;
+      border-style:solid;
+      border-color:transparent transparent rgba(0,0,0,0.85) transparent;
+    }
+
+    .result-card{
+      margin-top:18px;
+      padding:16px;
+      border-radius:14px;
+      background:rgba(255,255,255,0.05);
+      border:1px solid rgba(255,255,255,0.08);
+      display:none;
+    }
+
+    .result-line{
+      margin:10px 0;
+      font-size:16px;
+      line-height:1.5;
+      color:#e5e7eb;
+    }
+
+    .result-line strong{
+      color:#cbd5f5;
+    }
+
+    .insight-good{
+      color:#22c55e;
+      font-weight:700;
+    }
+
+    .insight-medium{
+      color:#facc15;
+      font-weight:700;
+    }
+
+    .insight-weak{
+      color:#ef4444;
+      font-weight:700;
+    }
+
+    canvas{
+      margin-top:26px;
+    }
+
+    .content{
+      width:90%;
+      max-width:900px;
+      margin-top:34px;
+    }
+
+    .content h2{
+      margin-top:34px;
+      margin-bottom:10px;
+      font-size:28px;
+    }
+
+    .content p,
+    .content li{
+      color:#cbd5e1;
+      line-height:1.7;
+      font-size:15px;
+    }
+
+    .content ul{
+      padding-left:20px;
+    }
+
+    .formula{
+      background:rgba(255,255,255,0.05);
+      border:1px solid rgba(255,255,255,0.08);
+      padding:14px 16px;
+      border-radius:12px;
+      margin:12px 0;
+      color:#e2e8f0;
+      overflow:auto;
+      line-height:1.7;
+    }
+
+    .faq{
+      margin-top:14px;
+    }
+
+    .faq-item{
+      border-bottom:1px solid rgba(255,255,255,0.08);
+    }
+
+    .faq-question{
+      width:100%;
+      background:none;
+      border:none;
+      color:white;
+      text-align:left;
+      padding:14px 8px;
+      font-size:15px;
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      cursor:pointer;
+    }
+
+    .faq-question:hover{
+      color:#93c5fd;
+    }
+
+    .arrow{
+      transition:0.25s;
+    }
+
+    .faq-item.active .arrow{
+      transform:rotate(180deg);
+    }
+
+    .faq-answer{
+      max-height:0;
+      overflow:hidden;
+      transition:max-height 0.3s ease;
+      color:#cbd5e1;
+      font-size:14px;
+      padding:0 8px;
+    }
+
+    .faq-item.active .faq-answer{
+      max-height:260px;
+      padding-bottom:12px;
+    }
+
+    .related{
+      width:90%;
+      max-width:900px;
+      margin-top:34px;
+    }
+
+    .related a{
+      color:#93c5fd;
+      text-decoration:none;
+    }
+
+    .related a:hover{
+      text-decoration:underline;
+    }
+
+    .disclaimer{
+      margin-top:40px;
+      padding-top:20px;
+      border-top:1px solid rgba(255,255,255,0.1);
+      font-size:13px;
+      color:#9ca3af;
+      max-width:900px;
+      text-align:center;
+      line-height:1.6;
+      width:90%;
+    }
+
+    @media (max-width: 700px){
+      .container{
+        padding:22px;
+      }
+
+      h1{
+        font-size:28px;
+      }
+
+      .content h2{
+        font-size:24px;
+      }
+
+      .mode-switch{
+        flex-direction:column;
+      }
+
+      .tooltip{
+        width:220px;
+      }
+    }
+  </style>
 </head>
 
 <body>
-
-<p class="toptext">Explore more calculators</p>
-
-<div class="menu">
-<a href="index.html">Home</a>
-</div>
-
-<div class="container">
-
-<h1>Drawdown Calculator</h1>
-<div class="mode-switch">
-
-  <button id="modeDD" class="mode-btn active" onclick="switchMode('dd')">
-    Drawdown (%) 
-    <span class="info-wrapper" onclick="toggleTip(event,'tip-dd')">?</span>
-  </button>
-
-  <button id="modeBalance" class="mode-btn" onclick="switchMode('balance')">
-    From Balance
-    <span class="info-wrapper" onclick="toggleTip(event,'tip-balance')">?</span>
-  </button>
-
-</div>
-
-<!-- TOOLTIPS -->
-<div id="tip-dd" class="tooltip">
-Enter your loss as a percentage. Example: 20 means you lost 20% of your account.
-</div>
-
-<div id="tip-balance" class="tooltip">
-Enter your initial balance and current balance. The calculator will compute your drawdown automatically.
-</div>
-
-
-<!-- INPUTS -->
-<div id="dd-mode">
-  <input id="drawdown" placeholder="Drawdown (%)">
-</div>
-
-<div id="balance-mode" style="display:none;">
-  <input id="initial" placeholder="Initial Balance">
-  <input id="current" placeholder="Current Balance">
-</div>
-
-<button onclick="calculateDrawdown()">Calculate</button>
-
-<h3 id="result"></h3>
-
-<canvas id="myChart"></canvas>
-
-</div>
-
-<h2>What is Drawdown Calculator?</h2>
-
-<p>The Drawdown Calculator is a risk management tool used in trading and investing to measure the decline from a portfolio’s highest value (peak) to its lowest point (trough) during a specific period. It shows how much capital has been lost before a recovery happens and is one of the most important metrics for evaluating trading performance.</p>
-
-<p>Drawdown is expressed as a percentage and helps traders understand the downside risk of a strategy. While profits show potential gains, drawdown shows how much you can lose during losing streaks. This makes it essential for long-term risk control and capital preservation.</p>
-
-<p>For example, if your account grows from $10,000 to $15,000 and then drops to $12,000, the drawdown is calculated from the peak ($15,000) to the lowest point ($12,000), which equals a 20% drawdown. This gives a realistic view of volatility and risk exposure.</p>
-
-<p>Drawdown calculators are widely used in forex, crypto, and stock trading. Professional traders use them to compare strategies, manage risk, and avoid excessive losses. A strategy with high returns but large drawdowns is often considered unsafe compared to a more stable one.</p>
-
-<p>Understanding drawdown helps traders focus not only on profitability but also on risk consistency, which is key for long-term success in financial markets.</p>
-
-
-
-<h2>Why Drawdown Matters</h2>
-
-<p>Drawdown is more important than profit alone because it shows how much risk you are taking to achieve returns.</p>
-
-<p>Two strategies can have the same profit, but the one with lower drawdown is generally safer and more sustainable.</p>
-
-<p>High drawdowns can lead to emotional trading decisions and account blow-ups if not managed properly.</p>
-
-
-
-<h2>How Drawdown is Calculated</h2>
-
-<p><strong>Drawdown (%) = (Peak Value − Lowest Value) ÷ Peak Value × 100</strong></p>
-
-<p>This formula measures the percentage loss from the highest point of your account to the lowest point before recovery.</p>
-
-
-
-<h2>Example</h2>
-
-<ul>
-<li>Peak Value: $15,000</li>
-<li>Lowest Value: $12,000</li>
-<li>Drawdown = (15,000 − 12,000) ÷ 15,000 × 100</li>
-<li>Drawdown = 20%</li>
-</ul>
-
-<p>This means the portfolio experienced a 20% decline from its highest point.</p>
-
-
-
-<h2>Types of Drawdown</h2>
-
-<ul>
-<li><strong>Absolute Drawdown:</strong> Loss from initial deposit</li>
-<li><strong>Maximum Drawdown:</strong> Largest peak-to-trough decline</li>
-<li><strong>Relative Drawdown:</strong> Percentage-based loss from peak</li>
-</ul>
-
-
-
-<h2>Why Traders Focus on Drawdown</h2>
-
-<ul>
-<li>Helps measure real risk exposure</li>
-<li>Improves strategy comparison</li>
-<li>Prevents over-leveraging</li>
-<li>Protects long-term capital</li>
-</ul>
-
-<p>Low drawdown strategies are generally preferred even if they produce slightly lower returns.</p>
-
-
-
-<h3>Frequently Asked Questions</h3>
-
-<div class="faq">
-
-<div class="faq-item">
-<button class="faq-question">What is a good drawdown percentage?<span class="arrow">▼</span></button>
-<div class="faq-answer">
-<p>Generally, 5–10% is considered low risk, 10–20% moderate, and above 20% high risk depending on trading style.</p>
-</div>
-</div>
-
-<div class="faq-item">
-<button class="faq-question">Is lower drawdown always better?<span class="arrow">▼</span></button>
-<div class="faq-answer">
-<p>Yes in most cases. Lower drawdown means more stable performance and lower risk of account loss.</p>
-</div>
-</div>
-
-<div class="faq-item">
-<button class="faq-question">Can high returns come with high drawdown?<span class="arrow">▼</span></button>
-<div class="faq-answer">
-<p>Yes, but such strategies are riskier and less stable in real market conditions.</p>
-</div>
-</div>
-
-<div class="faq-item">
-<button class="faq-question">How do traders reduce drawdown?<span class="arrow">▼</span></button>
-<div class="faq-answer">
-<p>They use stop-losses, reduce position size, diversify trades, and avoid over-leveraging.</p>
-</div>
-</div>
-
-<div class="faq-item">
-<button class="faq-question">Why is drawdown important in trading?<span class="arrow">▼</span></button>
-<div class="faq-answer">
-<p>Because it shows the real risk behind a strategy, not just the profit potential.</p>
-</div>
-</div>
-
-</div>
-<div class="related">
-<h3>Related Calculators</h3>
-<p>You may also find these tools useful:</p>
-<ul>
-<li><a href="break-even-calculator.html">Break Even Calculator</a></li>
-<li><a href="expectancy-calculator.html">Expectancy Calculator</a></li>
-<li><a href="stop-loss-calculator.html">Stop Loss Calculator</a></li>
-<li><a href="position-size-calculator.html">Position Size Calculator</a></li>
-<li><a href="risk-reward-calculator.html">Risk Reward Calculator</a></li>
-</ul>
-</div>
-<div class="disclaimer">
-<p>
-<strong>Disclaimer:</strong> The calculators on this website are provided for informational and educational purposes only. 
-All results are estimates based on the values entered and do not constitute financial, investment, or trading advice. 
-Always conduct your own research before making financial decisions.
-</p>
-</div>
-<script src="footer.js"></script>
-<script>
-
-let currentMode = "dd";
-
-function switchMode(mode){
-
-  currentMode = mode;
-
-  document.getElementById("dd-mode").style.display =
-    mode === "dd" ? "block" : "none";
-
-  document.getElementById("balance-mode").style.display =
-    mode === "balance" ? "block" : "none";
-
-  document.getElementById("modeDD").classList.toggle("active", mode==="dd");
-  document.getElementById("modeBalance").classList.toggle("active", mode==="balance");
-}
-
-
-// TOOLTIP
-function toggleTip(e, id){
-  e.stopPropagation();
-
-  let tip = document.getElementById(id);
-
-  // diğerlerini kapat
-  document.querySelectorAll(".tooltip").forEach(t=>{
-    if(t !== tip) t.style.display="none";
-  });
-
-  tip.style.display = tip.style.display === "block" ? "none" : "block";
-
-  // pozisyon
-  let rect = e.target.getBoundingClientRect();
-  tip.style.top = (rect.bottom + window.scrollY + 8) + "px";
-  tip.style.left = (rect.left + window.scrollX) + "px";
-}
-
-// dışarı tıklayınca kapat
-document.addEventListener("click", ()=>{
-  document.querySelectorAll(".tooltip").forEach(t=>t.style.display="none");
-});
-
-let chart;
-
-function calculateDrawdown(){
-
-let dd;
-
-if(currentMode === "dd"){
-  dd = parseFloat(document.getElementById("drawdown").value);
-}
-
-if(currentMode === "balance"){
-  let initial = parseFloat(document.getElementById("initial").value);
-  let current = parseFloat(document.getElementById("current").value);
-
-  if(initial > 0 && current >= 0){
-    dd = ((initial - current) / initial) * 100;
-  }
-}
-
-if(isNaN(dd) || dd <= 0 || dd >= 100){
-  alert("Enter a value between 1 and 99");
-  return;
-}
-
-// 🔥 CORE FORMULA
-let recovery = (1 / (1 - dd/100) - 1) * 100;
-
-// RESULT
-document.getElementById("result").innerHTML =
-"Drawdown: " + dd.toFixed(2) + "%<br>" +
-"Required Gain to Recover: " + recovery.toFixed(2) + "%";
-
-// GRAPH
-drawChart(dd);
-
-}
-
-function drawChart(currentDD){
-
-let ctx = document.getElementById('myChart');
-
-if(chart){
-chart.destroy();
-}
-
-let labels = [];
-let recoveryData = [];
-
-for(let i=5; i<=80; i+=5){
-labels.push(i + "%");
-let rec = (1 / (1 - i/100) - 1) * 100;
-recoveryData.push(rec);
-}
-
-chart = new Chart(ctx,{
-type:'line',
-data:{
-labels: labels,
-datasets:[{
-label:"Recovery Required (%)",
-data: recoveryData,
-borderColor:"#ef4444",
-tension:0.3,
-fill:false
-}]
-},
-options:{
-plugins:{
-legend:{labels:{color:"white"}}
-},
-scales:{
-x:{ticks:{color:"white"}},
-y:{ticks:{color:"white"}}
-}
-}
-});
-
-}
-document.addEventListener("DOMContentLoaded", function(){
-
-  document.querySelectorAll(".faq-question").forEach(btn => {
-    btn.addEventListener("click", () => {
-
-      const item = btn.parentElement;
-
-      document.querySelectorAll(".faq-item").forEach(i => {
-        if(i !== item) i.classList.remove("active");
+  <p class="toptext">Explore more calculators</p>
+
+  <div class="menu">
+    <a href="index.html">Home</a>
+  </div>
+
+  <div class="container" data-search="drawdown calculator recovery gain loss trading investing risk management">
+    <h1>Drawdown Calculator</h1>
+
+    <p class="quick-answer">
+      A 20% drawdown requires a 25% gain to recover. Use this calculator to instantly find the recovery gain or calculate drawdown from account balances.
+    </p>
+
+    <p class="subhead">
+      Measure how much your account has fallen from its peak and see the gain needed to recover.
+      Useful for trading, investing, and risk management.
+    </p>
+
+    <div class="mode-switch">
+      <button id="modeDD" class="mode-btn active" onclick="switchMode('dd')">
+        Drawdown (%)
+        <span class="info-wrapper" onclick="toggleTip(event,'tip-dd')">?</span>
+      </button>
+
+      <button id="modeBalance" class="mode-btn" onclick="switchMode('balance')">
+        From Balance
+        <span class="info-wrapper" onclick="toggleTip(event,'tip-balance')">?</span>
+      </button>
+    </div>
+
+    <div id="tip-dd" class="tooltip">
+      Enter your loss as a percentage. Example: 20 means your account dropped by 20%.
+    </div>
+
+    <div id="tip-balance" class="tooltip">
+      Enter your initial balance and current balance. The calculator will compute your drawdown automatically.
+    </div>
+
+    <div id="dd-mode">
+      <input id="drawdown" placeholder="Drawdown (%)">
+    </div>
+
+    <div id="balance-mode" style="display:none;">
+      <input id="initial" placeholder="Initial Balance">
+      <input id="current" placeholder="Current Balance">
+    </div>
+
+    <button onclick="calculateDrawdown()">Calculate</button>
+
+    <div id="resultCard" class="result-card">
+      <div class="result-line"><strong>Drawdown:</strong> <span id="ddOut">—</span></div>
+      <div class="result-line"><strong>Required gain:</strong> <span id="gainOut">—</span></div>
+      <div class="result-line"><strong>Insight:</strong> <span id="insightOut">—</span></div>
+    </div>
+
+    <canvas id="myChart"></canvas>
+  </div>
+
+  <div class="content">
+    <h2>What is Drawdown Calculator?</h2>
+    <p>
+      The Drawdown Calculator is a risk management tool used in trading and investing to measure the decline from a portfolio’s highest value to a lower value during a losing period.
+      It shows how much capital has been lost before recovery happens and helps traders understand the real impact of losses.
+    </p>
+
+    <p>
+      Drawdown is one of the most important risk metrics because it shows downside exposure, not just profit potential.
+      A strategy may look strong on paper, but if it suffers huge drawdowns, it can be very difficult to recover in practice.
+    </p>
+
+    <p>
+      For example, if your account drops by 20%, you need a 25% gain to get back to break-even.
+      If it drops by 50%, you need a 100% gain just to return to your starting point.
+      This is why protecting capital matters more than chasing large returns.
+    </p>
+
+    <h2>Why Drawdown Matters</h2>
+    <p>
+      Drawdown matters because losses and gains are not symmetrical.
+      A small loss can be recovered fairly quickly, but large losses require much larger gains to fix.
+      That makes capital preservation a core part of long-term trading success.
+    </p>
+
+    <p>
+      Traders use drawdown to compare strategies, control risk, and avoid over-leveraging.
+      Lower drawdown usually means a more stable approach, even if the profit rate is slightly lower.
+    </p>
+
+    <h2>How Drawdown is Calculated</h2>
+    <div class="formula">
+      Drawdown (%) = (Peak Value − Current Value) ÷ Peak Value × 100
+      <br>
+      Required Gain (%) = (1 ÷ (1 − Drawdown)) − 1
+    </div>
+
+    <p>
+      Example: if your account falls from $15,000 to $12,000, the drawdown is 20%.
+      To recover from that loss, you need a 25% gain.
+    </p>
+
+    <h2>Types of Drawdown</h2>
+    <ul>
+      <li><strong>Absolute Drawdown:</strong> Loss from the initial deposit.</li>
+      <li><strong>Maximum Drawdown:</strong> Largest peak-to-trough decline.</li>
+      <li><strong>Relative Drawdown:</strong> Percentage loss from a peak value.</li>
+    </ul>
+
+    <h2>How to Use This Calculator</h2>
+    <ul>
+      <li>Choose drawdown percentage mode or balance mode</li>
+      <li>Enter your values</li>
+      <li>Click calculate to see the recovery gain needed</li>
+    </ul>
+
+    <h2>Frequently Asked Questions</h2>
+
+    <div class="faq">
+      <div class="faq-item">
+        <button class="faq-question">
+          Why do I need a bigger gain than my loss?
+          <span class="arrow">▼</span>
+        </button>
+        <div class="faq-answer">
+          <p>
+            Because a loss reduces your capital base. After that loss, any gain is calculated on a smaller amount, so the recovery percentage must be larger.
+          </p>
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <button class="faq-question">
+          Can a 50% loss be recovered with a 50% gain?
+          <span class="arrow">▼</span>
+        </button>
+        <div class="faq-answer">
+          <p>
+            No. A 50% loss requires a 100% gain to get back to the original value.
+          </p>
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <button class="faq-question">
+          Is lower drawdown always better?
+          <span class="arrow">▼</span>
+        </button>
+        <div class="faq-answer">
+          <p>
+            In most cases, yes. Lower drawdown usually means lower risk and better capital preservation.
+          </p>
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <button class="faq-question">
+          Can I calculate drawdown from balances?
+          <span class="arrow">▼</span>
+        </button>
+        <div class="faq-answer">
+          <p>
+            Yes. Enter your initial balance and current balance, and the calculator will compute the percentage drawdown automatically.
+          </p>
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <button class="faq-question">
+          Why is drawdown important in trading?
+          <span class="arrow">▼</span>
+        </button>
+        <div class="faq-answer">
+          <p>
+            It shows how risky a strategy really is and helps you understand whether the returns are worth the potential losses.
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="related">
+    <h3>Related Calculators</h3>
+    <p>You may also find these tools useful:</p>
+    <ul>
+      <li><a href="break-even-calculator.html">Break Even Calculator</a></li>
+      <li><a href="expectancy-calculator.html">Expectancy Calculator</a></li>
+      <li><a href="stop-loss-calculator.html">Stop Loss Calculator</a></li>
+      <li><a href="position-size-calculator.html">Position Size Calculator</a></li>
+      <li><a href="risk-reward-calculator.html">Risk Reward Calculator</a></li>
+    </ul>
+  </div>
+
+  <div class="disclaimer">
+    <p>
+      <strong>Disclaimer:</strong> This tool provides estimates and is not financial advice.
+    </p>
+  </div>
+
+  <script src="footer.js"></script>
+  <script>
+    let currentMode = "dd";
+    let chart;
+
+    function switchMode(mode){
+      currentMode = mode;
+
+      document.getElementById("dd-mode").style.display =
+        mode === "dd" ? "block" : "none";
+
+      document.getElementById("balance-mode").style.display =
+        mode === "balance" ? "block" : "none";
+
+      document.getElementById("modeDD").classList.toggle("active", mode === "dd");
+      document.getElementById("modeBalance").classList.toggle("active", mode === "balance");
+
+      document.querySelectorAll(".tooltip").forEach(t => t.style.display = "none");
+    }
+
+    function toggleTip(e, id){
+      e.stopPropagation();
+
+      const tip = document.getElementById(id);
+
+      document.querySelectorAll(".tooltip").forEach(t => {
+        if (t !== tip) t.style.display = "none";
       });
 
-      item.classList.toggle("active");
+      tip.style.display = tip.style.display === "block" ? "none" : "block";
 
+      const rect = e.target.getBoundingClientRect();
+      tip.style.top = (rect.bottom + window.scrollY + 8) + "px";
+      tip.style.left = (rect.left + window.scrollX) + "px";
+    }
+
+    document.addEventListener("click", () => {
+      document.querySelectorAll(".tooltip").forEach(t => t.style.display = "none");
     });
-  });
 
-});
-</script>
+    function calculateDrawdown(){
+      let dd;
 
+      if (currentMode === "dd") {
+        dd = parseFloat(document.getElementById("drawdown").value);
+      } else {
+        const initial = parseFloat(document.getElementById("initial").value);
+        const current = parseFloat(document.getElementById("current").value);
+
+        if (isNaN(initial) || isNaN(current)) {
+          alert("Fill all fields");
+          return;
+        }
+
+        if (initial <= 0) {
+          alert("Initial balance must be greater than zero");
+          return;
+        }
+
+        if (current < 0) {
+          alert("Current balance cannot be negative");
+          return;
+        }
+
+        if (current > initial) {
+          alert("Current balance must be less than or equal to initial balance");
+          return;
+        }
+
+        dd = ((initial - current) / initial) * 100;
+      }
+
+      if (isNaN(dd) || dd <= 0 || dd >= 100) {
+        alert("Enter a value between 1 and 99");
+        return;
+      }
+
+      const recovery = (1 / (1 - dd / 100) - 1) * 100;
+
+      document.getElementById("resultCard").style.display = "block";
+      document.getElementById("ddOut").innerHTML = dd.toFixed(2) + "%";
+      document.getElementById("gainOut").innerHTML = recovery.toFixed(2) + "%";
+
+      let insight = "";
+      let insightClass = "";
+
+      if (dd <= 10) {
+        insight = "Small losses are relatively easy to recover.";
+        insightClass = "insight-good";
+      } else if (dd <= 30) {
+        insight = "Recovery is possible, but the required gain is already meaningfully higher.";
+        insightClass = "insight-medium";
+      } else {
+        insight = "Large losses require very high gains to recover. Risk control matters here.";
+        insightClass = "insight-weak";
+      }
+
+      document.getElementById("insightOut").innerHTML =
+        `<span class="${insightClass}">${insight}</span>`;
+
+      drawChart(dd);
+    }
+
+    function drawChart(currentDD){
+      const ctx = document.getElementById('myChart').getContext('2d');
+
+      if (chart) {
+        chart.destroy();
+      }
+
+      const labels = [];
+      const recoveryData = [];
+
+      for (let i = 5; i <= 80; i += 5) {
+        labels.push(i + "%");
+        const rec = (1 / (1 - i / 100) - 1) * 100;
+        recoveryData.push(rec);
+      }
+
+      chart = new Chart(ctx, {
+        type: 'line',
+        data: {
+          labels: labels,
+          datasets: [{
+            label: "Recovery Required (%)",
+            data: recoveryData,
+            borderColor: "#ef4444",
+            tension: 0.3,
+            fill: false,
+            pointRadius: 4,
+            pointHoverRadius: 6
+          }]
+        },
+        options: {
+          responsive: true,
+          plugins: {
+            legend: {
+              labels: { color: "white" }
+            },
+            tooltip: {
+              callbacks: {
+                label: function(context){
+                  return `Recovery: ${Number(context.parsed.y).toFixed(2)}%`;
+                }
+              }
+            }
+          },
+          scales: {
+            x: {
+              ticks: { color: "white" },
+              grid: { color: "rgba(255,255,255,0.08)" }
+            },
+            y: {
+              ticks: {
+                color: "white",
+                callback: function(value){
+                  return Number(value).toFixed(0) + "%";
+                }
+              },
+              grid: { color: "rgba(255,255,255,0.08)" }
+            }
+          }
+        }
+      });
+    }
+
+    document.addEventListener("DOMContentLoaded", function(){
+      document.querySelectorAll(".faq-question").forEach(btn => {
+        btn.addEventListener("click", () => {
+          const item = btn.parentElement;
+
+          document.querySelectorAll(".faq-item").forEach(i => {
+            if (i !== item) i.classList.remove("active");
+          });
+
+          item.classList.toggle("active");
+        });
+      });
+    });
+  </script>
 </body>
-</html>
+  </html>
