@@ -1,443 +1,841 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-<link rel="canonical" href="https://novainvesttools.com/amortization-calculator.html">
-<!-- Google tag (gtag.js) -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-ZPCXDVE8C5"></script>
-<script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
+  <link rel="canonical" href="https://novainvesttools.com/amortization-calculator.html">
 
-  gtag('config', 'G-ZPCXDVE8C5');
-</script>
-<meta charset="UTF-8">
-<title>Amortization Calculator – Full Loan Schedule</title>
-<meta name="description" content="Calculate your loan amortization schedule, monthly payments, and total interest with this free amortization calculator.">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-<link rel="stylesheet" href="style.css">
-<style>
-body{
-font-family:Arial;
-background:#0f172a;
-color:white;
-display:flex;
-flex-direction:column;
-align-items:center;
-}
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-ZPCXDVE8C5"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-ZPCXDVE8C5');
+  </script>
 
-.container{
-background:#1e293b;
-padding:30px;
-border-radius:16px;
-width:90%;
-max-width:600px;
-margin-top:20px;
-}
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Amortization Calculator – Full Loan Schedule</title>
+  <meta name="description" content="Calculate your loan amortization schedule, monthly payments, and total interest with this free amortization calculator.">
+  <meta name="theme-color" content="#0f172a">
+  <meta name="robots" content="index,follow,max-image-preview:large">
 
-input,button{
-width:100%;
-padding:12px;
-margin:10px 0;
-border-radius:8px;
-border:none;
-}
-  
-.menu{
-margin-bottom:25px;
-}
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://novainvesttools.com/amortization-calculator.html">
+  <meta property="og:title" content="Amortization Calculator – Full Loan Schedule">
+  <meta property="og:description" content="Calculate your loan amortization schedule, monthly payments, and total interest with this free amortization calculator.">
 
-.menu a{
-color:#3b82f6;
-margin:10px;
-text-decoration:none;
-}
+  <link rel="preconnect" href="https://cdn.jsdelivr.net">
+  <link rel="dns-prefetch" href="https://cdn.jsdelivr.net">
 
-.toptext{
-font-size:14px;
-color:#6b7a99;
-margin-bottom:5px;
-}
-.disclaimer{
-margin-top:40px;
-padding-top:20px;
-border-top:1px solid rgba(255,255,255,0.1);
-font-size:13px;
-color:#9ca3af;
-max-width:500px;
-text-align:center;
-line-height:1.6;
-}
-button{
-background:#3b82f6;
-color:white;
-cursor:pointer;
-}
+  <link rel="stylesheet" href="style.css">
+  <link rel="icon" href="favicon.png" type="image/png">
+  <link rel="apple-touch-icon" href="favicon.png">
 
-table{
-width:100%;
-margin-top:20px;
-border-collapse:collapse;
-font-size:12px;
-}
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
-td,th{
-border:1px solid rgba(255,255,255,0.1);
-padding:6px;
-text-align:center;
-}
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "WebApplication",
+    "name": "Amortization Calculator",
+    "url": "https://novainvesttools.com/amortization-calculator.html",
+    "applicationCategory": "FinanceApplication",
+    "operatingSystem": "All",
+    "browserRequirements": "Requires JavaScript",
+    "description": "Calculate monthly loan payments, total interest, and a full amortization schedule.",
+    "featureList": [
+      "Monthly payment calculation",
+      "Amortization schedule",
+      "Principal and interest breakdown",
+      "Loan balance chart"
+    ],
+    "offers": {
+      "@type": "Offer",
+      "price": "0",
+      "priceCurrency": "USD"
+    }
+  }
+  </script>
 
-canvas{
-margin-top:30px;
-}
-</style>
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": [
+      {
+        "@type": "Question",
+        "name": "What is an amortization schedule?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "An amortization schedule is a table that shows each loan payment over time, including how much goes toward interest and how much reduces the principal balance."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Why do I pay more interest at the beginning?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Interest is calculated on the remaining loan balance, so the early payments are mostly interest because the balance is highest at the start."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Can I reduce the total interest I pay?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Yes. You can reduce total interest by making extra payments, choosing a shorter loan term, or getting a lower interest rate."
+        }
+      }
+    ]
+  }
+  </script>
 
+  <style>
+    *{
+      box-sizing:border-box;
+    }
+
+    html{
+      scroll-behavior:smooth;
+    }
+
+    body{
+      font-family: Arial, sans-serif;
+      background:#0b1a33;
+      color:white;
+      display:flex;
+      justify-content:center;
+      align-items:center;
+      flex-direction:column;
+      min-height:100vh;
+      margin:0;
+      padding:24px 0;
+    }
+
+    .toptext{
+      font-size:14px;
+      color:#6b7a99;
+      margin-bottom:5px;
+    }
+
+    .menu{
+      margin-bottom:25px;
+    }
+
+    .menu a{
+      color:#3b82f6;
+      margin:10px;
+      text-decoration:none;
+      font-weight:600;
+    }
+
+    .container{
+      background:#1e293b;
+      padding:30px;
+      border-radius:16px;
+      width:90%;
+      max-width:700px;
+      box-shadow:0 10px 25px rgba(0,0,0,0.35);
+      border:1px solid rgba(255,255,255,0.05);
+      backdrop-filter: blur(6px);
+    }
+
+    h1{
+      margin-top:0;
+      margin-bottom:10px;
+      font-size:32px;
+      line-height:1.15;
+    }
+
+    .quick-answer{
+      background: rgba(59,130,246,0.12);
+      border: 1px solid rgba(59,130,246,0.25);
+      padding: 12px 14px;
+      border-radius: 10px;
+      font-size: 15px;
+      line-height: 1.6;
+      color: #e2e8f0;
+      margin: 0 0 18px;
+    }
+
+    .subhead{
+      color:#94a3b8;
+      font-size:15px;
+      line-height:1.6;
+      margin-bottom:18px;
+    }
+
+    .field-label{
+      display:block;
+      font-size:13px;
+      color:#cbd5e1;
+      font-weight:600;
+      margin:12px 0 6px;
+    }
+
+    input{
+      width:100%;
+      padding:14px;
+      border-radius:10px;
+      border:none;
+      background:#e5e7eb;
+      font-size:16px;
+      outline:none;
+    }
+
+    input:focus{
+      box-shadow:0 0 0 3px rgba(59,130,246,0.18);
+    }
+
+    button{
+      padding:14px;
+      background:#3b82f6;
+      border:none;
+      border-radius:10px;
+      color:white;
+      cursor:pointer;
+      margin-top:14px;
+      width:100%;
+      font-size:16px;
+      font-weight:700;
+      transition:0.2s;
+    }
+
+    button:hover{
+      background:#2563eb;
+      transform:translateY(-1px);
+    }
+
+    .result-card{
+      margin-top:18px;
+      padding:16px;
+      border-radius:14px;
+      background:rgba(255,255,255,0.05);
+      border:1px solid rgba(255,255,255,0.08);
+      display:none;
+    }
+
+    .result-grid{
+      display:grid;
+      grid-template-columns:repeat(auto-fit, minmax(220px, 1fr));
+      gap:12px;
+    }
+
+    .result-box{
+      background:rgba(15,23,42,0.72);
+      border:1px solid rgba(255,255,255,0.06);
+      border-radius:14px;
+      padding:14px;
+    }
+
+    .result-label{
+      display:block;
+      color:#cbd5f5;
+      font-size:13px;
+      font-weight:700;
+      margin-bottom:4px;
+    }
+
+    .result-value{
+      font-size:18px;
+      font-weight:800;
+      color:#e5e7eb;
+    }
+
+    .insight-good{
+      color:#22c55e;
+      font-weight:700;
+    }
+
+    .insight-medium{
+      color:#facc15;
+      font-weight:700;
+    }
+
+    .insight-weak{
+      color:#ef4444;
+      font-weight:700;
+    }
+
+    .table-wrap{
+      overflow-x:auto;
+      margin-top:18px;
+    }
+
+    table{
+      width:100%;
+      border-collapse:collapse;
+      font-size:13px;
+      margin-top:10px;
+    }
+
+    th, td{
+      border:1px solid rgba(255,255,255,0.1);
+      padding:8px;
+      text-align:center;
+    }
+
+    th{
+      background:rgba(255,255,255,0.06);
+      color:#e2e8f0;
+    }
+
+    td{
+      color:#cbd5e1;
+    }
+
+    canvas{
+      margin-top:26px;
+    }
+
+    .content{
+      width:90%;
+      max-width:900px;
+      margin-top:34px;
+    }
+
+    .content h2{
+      margin-top:34px;
+      margin-bottom:10px;
+      font-size:28px;
+    }
+
+    .content p,
+    .content li{
+      color:#cbd5e1;
+      line-height:1.7;
+      font-size:15px;
+    }
+
+    .content ul{
+      padding-left:20px;
+    }
+
+    .formula{
+      background:rgba(255,255,255,0.05);
+      border:1px solid rgba(255,255,255,0.08);
+      padding:14px 16px;
+      border-radius:12px;
+      margin:12px 0;
+      color:#e2e8f0;
+      overflow:auto;
+      line-height:1.7;
+    }
+
+    .faq{
+      margin-top:14px;
+    }
+
+    .faq-item{
+      border-bottom:1px solid rgba(255,255,255,0.08);
+    }
+
+    .faq-question{
+      width:100%;
+      background:none;
+      border:none;
+      color:white;
+      text-align:left;
+      padding:14px 8px;
+      font-size:15px;
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      cursor:pointer;
+    }
+
+    .faq-question:hover{
+      color:#93c5fd;
+    }
+
+    .arrow{
+      transition:0.25s;
+    }
+
+    .faq-item.active .arrow{
+      transform:rotate(180deg);
+    }
+
+    .faq-answer{
+      max-height:0;
+      overflow:hidden;
+      transition:max-height 0.3s ease;
+      color:#cbd5e1;
+      font-size:14px;
+      padding:0 8px;
+    }
+
+    .faq-item.active .faq-answer{
+      max-height:260px;
+      padding-bottom:12px;
+    }
+
+    .related{
+      width:90%;
+      max-width:900px;
+      margin-top:34px;
+    }
+
+    .related a{
+      color:#93c5fd;
+      text-decoration:none;
+    }
+
+    .related a:hover{
+      text-decoration:underline;
+    }
+
+    .disclaimer{
+      margin-top:40px;
+      padding-top:20px;
+      border-top:1px solid rgba(255,255,255,0.1);
+      font-size:13px;
+      color:#9ca3af;
+      max-width:900px;
+      text-align:center;
+      line-height:1.6;
+      width:90%;
+    }
+
+    @media (max-width: 700px){
+      .container{
+        padding:22px;
+      }
+
+      h1{
+        font-size:28px;
+      }
+
+      .content h2{
+        font-size:24px;
+      }
+    }
+  </style>
 </head>
+
 <body>
-<p class="toptext">Explore more calculators</p>
+  <p class="toptext">Explore more calculators</p>
 
-<div class="menu">
-<a href="index.html">Home</a>
-</div>
-  
-<div class="container">
+  <div class="menu">
+    <a href="index.html">Home</a>
+  </div>
 
-<h1>Amortization Calculator</h1>
+  <div class="container" data-search="amortization calculator loan schedule monthly payment interest principal balance">
+    <h1>Amortization Calculator</h1>
 
-<input id="loan" placeholder="Loan Amount">
-<input id="rate" placeholder="Interest Rate (%)">
-<input id="years" placeholder="Years">
+    <p class="quick-answer">
+      An amortization schedule shows how each monthly payment is split between interest and principal until the loan is fully paid off.
+    </p>
 
-<button onclick="calculate()">Calculate</button>
+    <p class="subhead">
+      Calculate your monthly payment, total interest, and full loan schedule.
+      Useful for mortgages, car loans, personal loans, and other fixed-rate borrowing.
+    </p>
 
-<h3 id="result"></h3>
+    <label class="field-label" for="loan">Loan Amount</label>
+    <input id="loan" type="number" min="0" step="any" placeholder="e.g. 10000">
 
-<canvas id="balanceChart"></canvas>
-<canvas id="interestChart"></canvas>
+    <label class="field-label" for="rate">Interest Rate (%)</label>
+    <input id="rate" type="number" min="0" step="any" placeholder="e.g. 6">
 
-<div id="tableContainer"></div>
+    <label class="field-label" for="years">Loan Term (Years)</label>
+    <input id="years" type="number" min="0" step="any" placeholder="e.g. 5">
 
-</div>
-<h2>What is Loan Amortization?</h2>
+    <button onclick="calculate()">Calculate</button>
 
-<p>
-Loan amortization is the process of paying off a loan over time through fixed monthly payments. Each payment is split into two parts: interest and principal.
-</p>
+    <div id="resultCard" class="result-card">
+      <div class="result-grid">
+        <div class="result-box">
+          <span class="result-label">Monthly payment</span>
+          <span id="paymentOut" class="result-value">—</span>
+        </div>
+        <div class="result-box">
+          <span class="result-label">Total paid</span>
+          <span id="totalPaidOut" class="result-value">—</span>
+        </div>
+        <div class="result-box">
+          <span class="result-label">Total interest</span>
+          <span id="interestOut" class="result-value">—</span>
+        </div>
+        <div class="result-box">
+          <span class="result-label">Insight</span>
+          <span id="insightOut" class="result-value">—</span>
+        </div>
+      </div>
+    </div>
 
-<p>
-At the beginning of the loan, a larger portion of your payment goes toward interest. As time passes, more of your payment is applied to the principal balance.
-</p>
+    <canvas id="balanceChart"></canvas>
+    <canvas id="interestChart"></canvas>
 
-<p>
-This gradual shift is what makes amortization important—it shows how your debt actually decreases over time.
-</p>
+    <div id="tableContainer" class="table-wrap"></div>
+  </div>
 
+  <div class="content">
+    <h2>What is Loan Amortization?</h2>
+    <p>
+      Loan amortization is the process of paying off a loan over time through fixed monthly payments.
+      Each payment is split into two parts: interest and principal.
+    </p>
 
+    <p>
+      At the beginning of the loan, a larger portion of each payment goes toward interest.
+      As the balance falls, more of each payment goes toward principal.
+    </p>
 
-<h2>How Amortization Works</h2>
+    <h2>How Amortization Works</h2>
+    <p>
+      The monthly payment is based on your loan amount, interest rate, and loan term.
+      The payment stays fixed, but the composition changes over time.
+    </p>
 
-<p>
-Every month, your payment follows a structured formula based on your loan amount, interest rate (APR), and loan term.
-</p>
+    <div class="formula">
+      Payment = Loan × (r × (1 + r)^n) / ((1 + r)^n − 1)
+      <br>
+      r = monthly interest rate
+      <br>
+      n = total number of months
+    </div>
 
-<ul>
-<li><strong>Interest Portion:</strong> Cost of borrowing money</li>
-<li><strong>Principal Portion:</strong> Amount that reduces your debt</li>
-</ul>
+    <h2>Why Amortization Matters</h2>
+    <ul>
+      <li>Understand how much interest you actually pay</li>
+      <li>See how fast your balance decreases</li>
+      <li>Compare loan terms more clearly</li>
+      <li>Plan extra payments to save money</li>
+    </ul>
 
-<p>
-Early payments mostly cover interest, while later payments reduce the loan balance much faster.
-</p>
+    <h2>How to Use This Calculator</h2>
+    <ul>
+      <li>Enter your loan amount</li>
+      <li>Enter the annual interest rate</li>
+      <li>Enter the loan term in years</li>
+      <li>Click calculate to see the monthly payment and schedule</li>
+    </ul>
 
+    <h2>Frequently Asked Questions</h2>
 
+    <div class="faq">
+      <div class="faq-item">
+        <button class="faq-question">
+          What is an amortization schedule?
+          <span class="arrow">▼</span>
+        </button>
+        <div class="faq-answer">
+          <p>
+            An amortization schedule is a table that shows each payment over time, including how much goes toward interest and how much reduces the principal balance.
+          </p>
+        </div>
+      </div>
 
-<h2>Amortization Formula</h2>
+      <div class="faq-item">
+        <button class="faq-question">
+          Why do I pay more interest at the beginning?
+          <span class="arrow">▼</span>
+        </button>
+        <div class="faq-answer">
+          <p>
+            Interest is calculated on the remaining loan balance. Since the balance is highest at the start, more of the early payments go toward interest.
+          </p>
+        </div>
+      </div>
 
-<p>
-Monthly payment is calculated using:
-</p>
+      <div class="faq-item">
+        <button class="faq-question">
+          Can I reduce the total interest I pay?
+          <span class="arrow">▼</span>
+        </button>
+        <div class="faq-answer">
+          <p>
+            Yes. You can reduce total interest by making extra payments, choosing a shorter loan term, or securing a lower interest rate.
+          </p>
+        </div>
+      </div>
 
-<p>
-<strong>
-Payment = Loan × (r × (1 + r)<sup>n</sup>) / ((1 + r)<sup>n</sup> − 1)
-</strong>
-</p>
+      <div class="faq-item">
+        <button class="faq-question">
+          What happens if I pay off my loan early?
+          <span class="arrow">▼</span>
+        </button>
+        <div class="faq-answer">
+          <p>
+            Paying off your loan early reduces the total interest you pay because interest is charged only on the remaining balance.
+          </p>
+        </div>
+      </div>
 
-<ul>
-<li><strong>Loan</strong> = total loan amount</li>
-<li><strong>r</strong> = monthly interest rate (APR ÷ 12)</li>
-<li><strong>n</strong> = number of months</li>
-</ul>
+      <div class="faq-item">
+        <button class="faq-question">
+          Is a longer loan term better?
+          <span class="arrow">▼</span>
+        </button>
+        <div class="faq-answer">
+          <p>
+            A longer loan term lowers your monthly payment but increases total interest paid. A shorter term means higher payments but less total cost.
+          </p>
+        </div>
+      </div>
 
-
-
-<h2>Example</h2>
-
-<p>
-Let’s say you borrow $10,000 with a 6% annual interest rate for 24 months.
-</p>
-
-<ul>
-<li>Monthly Payment ≈ $443</li>
-<li>Total Paid ≈ $10,632</li>
-<li>Total Interest ≈ $632</li>
-</ul>
-
-<p>
-In the first months, most of your payment goes toward interest. Toward the end, almost all of it goes toward reducing the principal.
-</p>
-
-
-
-<h2>Why Amortization Matters</h2>
-
-<ul>
-<li>Understand how much interest you actually pay</li>
-<li>See how fast your debt decreases</li>
-<li>Plan early repayments to save money</li>
-<li>Compare different loan options</li>
-</ul>
-
-<p>
-Without amortization, you only see the payment—but not the real cost.
-</p>
-
-
-
-<h2>How to Use This Calculator</h2>
-
-<ul>
-<li>Enter your loan amount</li>
-<li>Enter APR (interest rate)</li>
-<li>Enter loan term in months</li>
-<li>Click calculate</li>
-</ul>
-
-<p>
-The calculator will show your monthly payment, total interest, and a breakdown of your loan over time.
-</p>
-<h3>Frequently Asked Questions</h3>
-
-<div class="faq">
-
-  <div class="faq-item">
-    <button class="faq-question">
-      What is an amortization schedule?
-      <span class="arrow">▼</span>
-    </button>
-    <div class="faq-answer">
-      <p>
-        An amortization schedule is a table that shows each payment over time, including how much goes toward interest and how much reduces the principal balance.
-      </p>
+      <div class="faq-item">
+        <button class="faq-question">
+          What is the difference between APR and interest rate?
+          <span class="arrow">▼</span>
+        </button>
+        <div class="faq-answer">
+          <p>
+            The interest rate is the cost of borrowing, while APR includes additional fees and gives a more accurate representation of total loan cost.
+          </p>
+        </div>
+      </div>
     </div>
   </div>
 
-  <div class="faq-item">
-    <button class="faq-question">
-      Why do I pay more interest at the beginning?
-      <span class="arrow">▼</span>
-    </button>
-    <div class="faq-answer">
-      <p>
-        Interest is calculated based on your remaining loan balance. At the beginning, your balance is highest, so a larger portion of your payment goes toward interest.
-      </p>
-    </div>
+  <div class="related">
+    <h3>Related Calculators</h3>
+    <p>You may also find these tools useful:</p>
+    <ul>
+      <li><a href="savings-calculator.html">Savings Calculator</a></li>
+      <li><a href="loan-calculator.html">Loan Calculator</a></li>
+      <li><a href="mortgage-calculator.html">Mortgage Calculator</a></li>
+      <li><a href="apr-interest-rate-calculator.html">APR Interest Rate Calculator</a></li>
+      <li><a href="future-value-calculator.html">Future Value Calculator</a></li>
+    </ul>
   </div>
 
-  <div class="faq-item">
-    <button class="faq-question">
-      Can I reduce the total interest I pay?
-      <span class="arrow">▼</span>
-    </button>
-    <div class="faq-answer">
-      <p>
-        Yes. You can reduce interest by making extra payments, choosing a shorter loan term, or securing a lower interest rate.
-      </p>
-    </div>
+  <div class="disclaimer">
+    <p>
+      <strong>Disclaimer:</strong> The calculators on this website are provided for informational and educational purposes only.
+      All results are estimates based on the values entered and do not constitute financial, investment, or trading advice.
+      Always conduct your own research before making financial decisions.
+    </p>
   </div>
 
-  <div class="faq-item">
-    <button class="faq-question">
-      What happens if I pay off my loan early?
-      <span class="arrow">▼</span>
-    </button>
-    <div class="faq-answer">
-      <p>
-        Paying off your loan early reduces the total interest you pay, since interest is only charged on the remaining balance over time.
-      </p>
-    </div>
-  </div>
+  <script src="footer.js"></script>
+  <script>
+    let balanceChart, interestChart;
 
-  <div class="faq-item">
-    <button class="faq-question">
-      Is a longer loan term better?
-      <span class="arrow">▼</span>
-    </button>
-    <div class="faq-answer">
-      <p>
-        A longer loan term lowers your monthly payment but increases total interest paid. A shorter term means higher payments but less total cost.
-      </p>
-    </div>
-  </div>
+    function money(value) {
+      return "$" + Number(value).toLocaleString(undefined, {
+        minimumFractionDigits: 2,
+        maximumFractionDigits: 2
+      });
+    }
 
-  <div class="faq-item">
-    <button class="faq-question">
-      What is the difference between APR and interest rate?
-      <span class="arrow">▼</span>
-    </button>
-    <div class="faq-answer">
-      <p>
-        The interest rate is the cost of borrowing, while APR includes additional fees and gives a more accurate representation of the total loan cost.
-      </p>
-    </div>
-  </div>
+    function calculate(){
+      const loan = parseFloat(document.getElementById("loan").value);
+      const annualRate = parseFloat(document.getElementById("rate").value);
+      const years = parseFloat(document.getElementById("years").value);
 
-</div>
-<div class="related">
-<h3>Related Calculators</h3>
-<p>You may also find these tools useful:</p>
-<ul>
-<li><a href="savings-calculator.html">Savings Calculator</a></li>
-<li><a href="loan-calculator.html">Loan Calculator</a></li>
-<li><a href="mortgage-calculator.html">Mortgage Calculator</a></li>
-<li><a href="apr-interest-rate-calculator.html">APR Interest Rate Calculator</a></li>
-<li><a href="future-value-calculator.html">Future Value Calculator</a></li>
-</ul>
-</div>
-  
-<div class="disclaimer">
-<p>
-<strong>Disclaimer:</strong> The calculators on this website are provided for informational and educational purposes only. 
-All results are estimates based on the values entered and do not constitute financial, investment, or trading advice. 
-Always conduct your own research before making financial decisions.
-</p>
-<script src="footer.js"></script>
-<script>
+      const resultCard = document.getElementById("resultCard");
+      const paymentOut = document.getElementById("paymentOut");
+      const totalPaidOut = document.getElementById("totalPaidOut");
+      const interestOut = document.getElementById("interestOut");
+      const insightOut = document.getElementById("insightOut");
 
-let balanceChart, interestChart;
+      if ([loan, annualRate, years].some(v => isNaN(v))) {
+        alert("Please fill all fields.");
+        return;
+      }
 
-function calculate(){
+      if (loan <= 0 || annualRate < 0 || years <= 0) {
+        alert("Loan amount and term must be greater than zero. Interest rate cannot be negative.");
+        return;
+      }
 
-let loan = parseFloat(document.getElementById("loan").value);
-let rate = parseFloat(document.getElementById("rate").value)/100/12;
-let months = parseFloat(document.getElementById("years").value)*12;
+      const rate = annualRate / 100 / 12;
+      const months = Math.round(years * 12);
 
-let payment;
+      let payment;
+      if(rate === 0){
+        payment = loan / months;
+      } else {
+        payment = loan * (rate * Math.pow(1 + rate, months)) / (Math.pow(1 + rate, months) - 1);
+      }
 
-if(rate === 0){
-  payment = loan / months;
-}else{
-  payment = loan*(rate*Math.pow(1+rate,months))/(Math.pow(1+rate,months)-1);
-}
-let balance = loan;
+      let balance = loan;
+      const yearlyData = [];
+      const balanceData = [];
+      const interestData = [];
+      const principalData = [];
+      let totalInterest = 0;
 
-let yearlyData = [];
-let balanceData = [];
-let interestData = [];
-let principalData = [];
+      let table = `
+        <table>
+          <tr>
+            <th>Year</th>
+            <th>Interest</th>
+            <th>Principal</th>
+            <th>Balance</th>
+          </tr>
+      `;
 
-let table = "<table><tr><th>Year</th><th>Interest</th><th>Principal</th><th>Balance</th></tr>";
+      for (let m = 1; m <= months; m++) {
+        const interest = balance * rate;
+        let principal = payment - interest;
 
-for(let y=1; y<=months; y++){
+        if (rate === 0) {
+          principal = payment;
+        }
 
-let interest = balance*rate;
-let principal = payment - interest;
+        balance -= principal;
+        if (balance < 0) balance = 0;
 
-balance -= principal;
+        totalInterest += interest;
 
-let yearIndex = Math.ceil(y/12)-1;
+        const yearIndex = Math.ceil(m / 12) - 1;
+        if (!yearlyData[yearIndex]) {
+          yearlyData[yearIndex] = { interest: 0, principal: 0 };
+        }
 
-if(!yearlyData[yearIndex]){
-yearlyData[yearIndex]={interest:0,principal:0};
-}
+        yearlyData[yearIndex].interest += interest;
+        yearlyData[yearIndex].principal += principal;
 
-yearlyData[yearIndex].interest += interest;
-yearlyData[yearIndex].principal += principal;
+        if (m % 12 === 0 || m === months) {
+          balanceData.push(balance.toFixed(2));
+          interestData.push(yearlyData[yearIndex].interest.toFixed(2));
+          principalData.push(yearlyData[yearIndex].principal.toFixed(2));
 
-if(y%12===0){
-balanceData.push(balance.toFixed(2));
-interestData.push(yearlyData[yearIndex].interest.toFixed(2));
-principalData.push(yearlyData[yearIndex].principal.toFixed(2));
+          table += `
+            <tr>
+              <td>${yearIndex + 1}</td>
+              <td>${yearlyData[yearIndex].interest.toFixed(2)}</td>
+              <td>${yearlyData[yearIndex].principal.toFixed(2)}</td>
+              <td>${balance.toFixed(2)}</td>
+            </tr>
+          `;
+        }
+      }
 
-table += `<tr>
-<td>${yearIndex+1}</td>
-<td>${yearlyData[yearIndex].interest.toFixed(2)}</td>
-<td>${yearlyData[yearIndex].principal.toFixed(2)}</td>
-<td>${balance.toFixed(2)}</td>
-</tr>`;
-}
+      table += `</table>`;
+      document.getElementById("tableContainer").innerHTML = table;
 
-}
+      const totalPaid = payment * months;
 
-table += "</table>";
-document.getElementById("tableContainer").innerHTML = table;
+      paymentOut.innerText = money(payment);
+      totalPaidOut.innerText = money(totalPaid);
+      interestOut.innerText = money(totalInterest);
 
-document.getElementById("result").innerHTML =
-"Monthly Payment: "+payment.toFixed(2);
+      let insight = "";
+      let insightClass = "";
 
-drawCharts(balanceData, interestData, principalData);
+      if (totalInterest < loan * 0.15) {
+        insight = "This loan keeps interest costs relatively low.";
+        insightClass = "insight-good";
+      } else if (totalInterest < loan * 0.4) {
+        insight = "Interest costs are noticeable, so term length matters.";
+        insightClass = "insight-medium";
+      } else {
+        insight = "Total interest is high. A shorter term or lower rate would save a lot.";
+        insightClass = "insight-weak";
+      }
 
-}
+      insightOut.innerHTML = `<span class="${insightClass}">${insight}</span>`;
+      resultCard.style.display = "block";
 
-function drawCharts(balanceData, interestData, principalData){
+      drawCharts(balanceData, interestData, principalData);
+    }
 
-let years = balanceData.length;
-let labels = Array.from({length:years},(_,i)=>"Year "+(i+1));
+    function drawCharts(balanceData, interestData, principalData){
+      const yearsCount = balanceData.length;
+      const labels = Array.from({length: yearsCount}, (_, i) => "Year " + (i + 1));
 
-if(balanceChart) balanceChart.destroy();
-if(interestChart) interestChart.destroy();
+      if(balanceChart) balanceChart.destroy();
+      if(interestChart) interestChart.destroy();
 
-balanceChart = new Chart(document.getElementById("balanceChart"),{
-type:'line',
-data:{
-labels:labels,
-datasets:[{
-label:'Remaining Balance',
-data:balanceData,
-borderColor:'#3b82f6'
-}]
-}
-});
-
-interestChart = new Chart(document.getElementById("interestChart"),{
-type:'bar',
-data:{
-labels:labels,
-datasets:[
-{
-label:'Interest',
-data:interestData,
-backgroundColor:'#ef4444'
-},
-{
-label:'Principal',
-data:principalData,
-backgroundColor:'#22c55e'
-}
-]
-}
-});
-
-}
-document.addEventListener("DOMContentLoaded", function(){
-
-  document.querySelectorAll(".faq-question").forEach(btn => {
-    btn.addEventListener("click", () => {
-
-      const item = btn.parentElement;
-
-      document.querySelectorAll(".faq-item").forEach(i => {
-        if(i !== item) i.classList.remove("active");
+      balanceChart = new Chart(document.getElementById("balanceChart"),{
+        type:'line',
+        data:{
+          labels:labels,
+          datasets:[{
+            label:'Remaining Balance',
+            data:balanceData,
+            borderColor:'#3b82f6',
+            backgroundColor:'rgba(59,130,246,0.10)',
+            tension:0.25,
+            fill:false,
+            pointRadius:3
+          }]
+        },
+        options:{
+          responsive:true,
+          plugins:{
+            legend:{
+              labels:{ color:'white' }
+            }
+          },
+          scales:{
+            x:{
+              ticks:{ color:'white' },
+              grid:{ color:'rgba(255,255,255,0.08)' }
+            },
+            y:{
+              ticks:{
+                color:'white',
+                callback: function(value){
+                  return "$" + Number(value).toLocaleString();
+                }
+              },
+              grid:{ color:'rgba(255,255,255,0.08)' }
+            }
+          }
+        }
       });
 
-      item.classList.toggle("active");
+      interestChart = new Chart(document.getElementById("interestChart"),{
+        type:'bar',
+        data:{
+          labels:labels,
+          datasets:[
+            {
+              label:'Interest',
+              data:interestData,
+              backgroundColor:'#ef4444'
+            },
+            {
+              label:'Principal',
+              data:principalData,
+              backgroundColor:'#22c55e'
+            }
+          ]
+        },
+        options:{
+          responsive:true,
+          plugins:{
+            legend:{
+              labels:{ color:'white' }
+            }
+          },
+          scales:{
+            x:{
+              ticks:{ color:'white' },
+              grid:{ color:'rgba(255,255,255,0.08)' }
+            },
+            y:{
+              ticks:{
+                color:'white',
+                callback: function(value){
+                  return "$" + Number(value).toLocaleString();
+                }
+              },
+              grid:{ color:'rgba(255,255,255,0.08)' }
+            }
+          }
+        }
+      });
+    }
 
+    document.addEventListener("DOMContentLoaded", function(){
+      document.querySelectorAll(".faq-question").forEach(btn => {
+        btn.addEventListener("click", () => {
+          const item = btn.parentElement;
+
+          document.querySelectorAll(".faq-item").forEach(i => {
+            if(i !== item) i.classList.remove("active");
+          });
+
+          item.classList.toggle("active");
+        });
+      });
     });
-  });
-
-});
-</script>
-
+  </script>
 </body>
-</html>
+  </html>
