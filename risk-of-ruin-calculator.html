@@ -1,395 +1,635 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<link rel="canonical" href="https://novainvesttools.com/risk-of-ruin-calculator.html">
-<!-- Google tag (gtag.js) -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-ZPCXDVE8C5"></script>
-<script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
+  <link rel="canonical" href="https://novainvesttools.com/risk-of-ruin-calculator.html">
 
-  gtag('config', 'G-ZPCXDVE8C5');
-</script>
-<meta charset="UTF-8">
-<title>Risk of Ruin Calculator – Trading Survival Tool</title>
-<meta name="description" content="Calculate your risk of ruin based on win rate, risk per trade, and reward ratio. Understand your trading survival probability.">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-ZPCXDVE8C5"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-ZPCXDVE8C5');
+  </script>
 
-<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-<link rel="stylesheet" href="style.css">
-<style>
-body{
-  font-family:Arial, sans-serif;
-  background:#0f172a;
-  color:white;
-  display:flex;
-  justify-content:center;
-  align-items:center;
-  flex-direction:column;
-  min-height:100vh;
-  margin:0;
-  padding:24px 0;
-}
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Risk of Ruin Calculator – Trading Survival Tool</title>
+  <meta name="description" content="Estimate risk of ruin with a Monte Carlo simulation based on win rate, risk per trade, reward ratio, and trade count.">
+  <meta name="theme-color" content="#0f172a">
+  <meta name="robots" content="index,follow,max-image-preview:large">
 
-.container{
-  background:#1e293b;
-  padding:30px;
-  border-radius:16px;
-  width:90%;
-  max-width:520px;
-  box-shadow:0 10px 25px rgba(0,0,0,0.35);
-  margin-bottom:22px;
-}
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://novainvesttools.com/risk-of-ruin-calculator.html">
+  <meta property="og:title" content="Risk of Ruin Calculator – Trading Survival Tool">
+  <meta property="og:description" content="Estimate risk of ruin with a Monte Carlo simulation based on win rate, risk per trade, reward ratio, and trade count.">
 
-h1{
-  margin-top:0;
-  margin-bottom:8px;
-}
+  <link rel="preconnect" href="https://cdn.jsdelivr.net">
+  <link rel="dns-prefetch" href="https://cdn.jsdelivr.net">
 
-h2{
-  margin-top:0;
-}
+  <link rel="stylesheet" href="style.css">
+  <link rel="icon" href="favicon.png" type="image/png">
+  <link rel="apple-touch-icon" href="favicon.png">
 
-.subhead{
-  color:#94a3b8;
-  font-size:14px;
-  line-height:1.5;
-  margin-bottom:16px;
-}
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
-input{
-  width:100%;
-  padding:14px;
-  margin:12px 0;
-  border-radius:10px;
-  border:none;
-  background:#e5e7eb;
-  font-size:16px;
-  box-sizing:border-box;
-}
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "WebApplication",
+    "name": "Risk of Ruin Calculator",
+    "url": "https://novainvesttools.com/risk-of-ruin-calculator.html",
+    "applicationCategory": "FinanceApplication",
+    "operatingSystem": "All",
+    "browserRequirements": "Requires JavaScript",
+    "description": "Estimate risk of ruin with a Monte Carlo simulation based on win rate, risk per trade, reward ratio, and trade count.",
+    "featureList": [
+      "Monte Carlo risk simulation",
+      "Risk of ruin estimation",
+      "Average and median ending balance",
+      "Sample equity curve"
+    ],
+    "offers": {
+      "@type": "Offer",
+      "price": "0",
+      "priceCurrency": "USD"
+    }
+  }
+  </script>
 
-button{
-  padding:14px;
-  background:#3b82f6;
-  border:none;
-  border-radius:10px;
-  color:white;
-  cursor:pointer;
-  margin-top:10px;
-  width:100%;
-  font-size:16px;
-  font-weight:600;
-}
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": [
+      {
+        "@type": "Question",
+        "name": "What is risk of ruin?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Risk of ruin is the chance that a trading strategy will suffer a severe drawdown and become difficult to recover from."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "How does the Monte Carlo model work?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "The calculator runs many simulated trade paths using your win rate, risk per trade, reward ratio, and number of trades, then measures how often the account reaches the ruin threshold."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Why does the same input give the same result?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "This version uses a fixed random seed so the output stays stable for the same inputs, making comparisons easier."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "What is considered a safe risk of ruin?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Lower is better. Many traders aim to keep risk of ruin below 5 to 10 percent, depending on the strategy and risk tolerance."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Does win rate matter more than risk per trade?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Win rate matters, but risk per trade often has an even larger effect on survival because large losses compound quickly."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Can a strategy with a good win rate still fail?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Yes. A strategy can still fail if the risk per trade is too high or if the reward ratio is too low."
+        }
+      }
+    ]
+  }
+  </script>
 
-button:hover{
-  background:#2563eb;
-}
+  <style>
+    *{
+      box-sizing:border-box;
+    }
 
-canvas{
-  margin-top:24px;
-}
+    html{
+      scroll-behavior:smooth;
+    }
 
-.menu{
-  margin-bottom:25px;
-}
+    body{
+      font-family:Arial, sans-serif;
+      background:#0f172a;
+      color:white;
+      display:flex;
+      justify-content:center;
+      align-items:center;
+      flex-direction:column;
+      min-height:100vh;
+      margin:0;
+      padding:24px 0;
+    }
 
-.menu a{
-  color:#3b82f6;
-  margin:10px;
-  text-decoration:none;
-}
+    .toptext{
+      font-size:14px;
+      color:#6b7a99;
+      margin-bottom:5px;
+    }
 
-.toptext{
-  font-size:14px;
-  color:#6b7a99;
-  margin-bottom:5px;
-}
+    .menu{
+      margin-bottom:25px;
+    }
 
-.disclaimer{
-  margin-top:40px;
-  padding-top:20px;
-  border-top:1px solid rgba(255,255,255,0.1);
-  font-size:13px;
-  color:#9ca3af;
-  max-width:520px;
-  text-align:center;
-  line-height:1.6;
-}
+    .menu a{
+      color:#3b82f6;
+      margin:10px;
+      text-decoration:none;
+      font-weight:600;
+    }
 
-.result-card{
-  background:#273449;
-  padding:20px 20px 20px 24px;
-  border-radius:14px;
-  margin-top:18px;
-  position:relative;
-  display:none;
-}
+    .container{
+      background:#1e293b;
+      padding:30px;
+      border-radius:16px;
+      width:90%;
+      max-width:620px;
+      box-shadow:0 10px 25px rgba(0,0,0,0.35);
+      border:1px solid rgba(255,255,255,0.05);
+      backdrop-filter: blur(6px);
+    }
 
-.result-card::before{
-  content:"";
-  position:absolute;
-  left:12px;
-  top:20px;
-  bottom:20px;
-  width:4px;
-  background:#22c55e;
-  border-radius:2px;
-}
+    h1{
+      margin-top:0;
+      margin-bottom:10px;
+      font-size:32px;
+      line-height:1.15;
+    }
 
-.result-line{
-  padding-left:18px;
-  margin:14px 0;
-  font-size:18px;
-  color:#e5e7eb;
-  line-height:1.4;
-}
+    .quick-answer{
+      background: rgba(59,130,246,0.12);
+      border: 1px solid rgba(59,130,246,0.25);
+      padding: 12px 14px;
+      border-radius: 10px;
+      font-size: 15px;
+      line-height: 1.6;
+      color: #e2e8f0;
+      margin: 0 0 18px;
+    }
 
-.result-line strong{
-  color:#cbd5f5;
-}
+    .subhead{
+      color:#94a3b8;
+      font-size:15px;
+      line-height:1.6;
+      margin-bottom:18px;
+    }
 
-.result-value{
-  font-weight:700;
-}
+    .badge-row{
+      display:flex;
+      gap:10px;
+      flex-wrap:wrap;
+      margin:14px 0 10px;
+    }
 
-.insight-good{
-  color:#22c55e;
-}
+    .badge{
+      display:inline-flex;
+      padding:5px 10px;
+      border-radius:999px;
+      font-size:12px;
+      font-weight:700;
+      background:rgba(59,130,246,0.12);
+      color:#bfdbfe;
+      border:1px solid rgba(59,130,246,0.22);
+    }
 
-.insight-warning{
-  color:#facc15;
-}
+    .badge.soft{
+      background:rgba(255,255,255,0.05);
+      border-color:rgba(255,255,255,0.08);
+      color:#dbeafe;
+    }
 
-.insight-danger{
-  color:#ef4444;
-}
+    .field{
+      margin:12px 0;
+    }
 
-.faq{
-  margin-top:24px;
-}
+    .field label{
+      display:block;
+      font-size:13px;
+      color:#cbd5e1;
+      margin:0 0 6px;
+      font-weight:600;
+    }
 
-.faq-item{
-  border-bottom:1px solid rgba(255,255,255,0.08);
-}
+    input{
+      width:100%;
+      padding:14px;
+      margin:0;
+      border-radius:10px;
+      border:none;
+      background:#e5e7eb;
+      font-size:16px;
+      outline:none;
+    }
 
-.faq-question{
-  width:100%;
-  background:none;
-  border:none;
-  color:white;
-  text-align:left;
-  padding:14px 8px;
-  font-size:15px;
-  display:flex;
-  justify-content:space-between;
-  align-items:center;
-  cursor:pointer;
-}
+    input:focus{
+      box-shadow:0 0 0 3px rgba(59,130,246,0.18);
+    }
 
-.faq-question:hover{
-  color:#93c5fd;
-}
+    button{
+      padding:14px;
+      background:#3b82f6;
+      border:none;
+      border-radius:10px;
+      color:white;
+      cursor:pointer;
+      margin-top:14px;
+      width:100%;
+      font-size:16px;
+      font-weight:700;
+      transition:0.2s;
+    }
 
-.arrow{
-  transition:0.25s;
-}
+    button:hover{
+      background:#2563eb;
+      transform:translateY(-1px);
+    }
 
-.faq-item.active .arrow{
-  transform:rotate(180deg);
-}
+    .result-card{
+      background:#273449;
+      padding:20px 20px 20px 24px;
+      border-radius:14px;
+      margin-top:18px;
+      position:relative;
+      display:none;
+    }
 
-.faq-answer{
-  max-height:0;
-  overflow:hidden;
-  transition:max-height 0.3s ease;
-  color:#cbd5e1;
-  font-size:14px;
-  padding:0 8px;
-}
+    .result-card::before{
+      content:"";
+      position:absolute;
+      left:12px;
+      top:20px;
+      bottom:20px;
+      width:4px;
+      background:#22c55e;
+      border-radius:2px;
+    }
 
-.faq-item.active .faq-answer{
-  max-height:240px;
-  padding-bottom:12px;
-}
+    .result-line{
+      padding-left:18px;
+      margin:14px 0;
+      font-size:18px;
+      color:#e5e7eb;
+      line-height:1.4;
+    }
 
-.related{
-  margin-top:28px;
-}
+    .result-line strong{
+      color:#cbd5f5;
+    }
 
-.related a{
-  color:#93c5fd;
-  text-decoration:none;
-}
+    .result-value{
+      font-weight:700;
+    }
 
-.related a:hover{
-  text-decoration:underline;
-}
-</style>
+    .insight-good{
+      color:#22c55e;
+    }
+
+    .insight-warning{
+      color:#facc15;
+    }
+
+    .insight-danger{
+      color:#ef4444;
+    }
+
+    .chart-wrap{
+      margin-top:20px;
+    }
+
+    canvas{
+      margin-top:24px;
+    }
+
+    .content{
+      width:90%;
+      max-width:900px;
+      margin-top:34px;
+    }
+
+    .content h2{
+      margin-top:34px;
+      margin-bottom:10px;
+      font-size:28px;
+    }
+
+    .content p,
+    .content li{
+      color:#cbd5e1;
+      line-height:1.7;
+      font-size:15px;
+    }
+
+    .content ul{
+      padding-left:20px;
+    }
+
+    .formula{
+      background:rgba(255,255,255,0.05);
+      border:1px solid rgba(255,255,255,0.08);
+      padding:14px 16px;
+      border-radius:12px;
+      margin:12px 0;
+      color:#e2e8f0;
+      overflow:auto;
+      line-height:1.7;
+    }
+
+    .faq{
+      margin-top:14px;
+    }
+
+    .faq-item{
+      border-bottom:1px solid rgba(255,255,255,0.08);
+    }
+
+    .faq-question{
+      width:100%;
+      background:none;
+      border:none;
+      color:white;
+      text-align:left;
+      padding:14px 8px;
+      font-size:15px;
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      cursor:pointer;
+    }
+
+    .faq-question:hover{
+      color:#93c5fd;
+    }
+
+    .arrow{
+      transition:0.25s;
+    }
+
+    .faq-item.active .arrow{
+      transform:rotate(180deg);
+    }
+
+    .faq-answer{
+      max-height:0;
+      overflow:hidden;
+      transition:max-height 0.3s ease;
+      color:#cbd5e1;
+      font-size:14px;
+      padding:0 8px;
+    }
+
+    .faq-item.active .faq-answer{
+      max-height:260px;
+      padding-bottom:12px;
+    }
+
+    .related{
+      width:90%;
+      max-width:900px;
+      margin-top:34px;
+    }
+
+    .related a{
+      color:#93c5fd;
+      text-decoration:none;
+    }
+
+    .related a:hover{
+      text-decoration:underline;
+    }
+
+    .disclaimer{
+      margin-top:40px;
+      padding-top:20px;
+      border-top:1px solid rgba(255,255,255,0.1);
+      font-size:13px;
+      color:#9ca3af;
+      max-width:900px;
+      text-align:center;
+      line-height:1.6;
+      width:90%;
+    }
+
+    @media (max-width: 700px){
+      .container{
+        padding:22px;
+      }
+
+      h1{
+        font-size:28px;
+      }
+
+      .content h2{
+        font-size:24px;
+      }
+    }
+  </style>
 </head>
 
 <body>
-<p class="toptext">Explore more calculators</p>
+  <p class="toptext">Explore more calculators</p>
 
-<div class="menu">
-  <a href="index.html">Home</a>
-</div>
-
-<div class="container">
-  <h1>Risk of Ruin Calculator</h1>
-  <p class="subhead">
-    Estimate the probability of hitting a 70% drawdown threshold based on your win rate, risk per trade, reward ratio, and trade count.
-  </p>
-
-  <input id="winRate" placeholder="Win Rate (%)">
-  <input id="risk" placeholder="Risk per Trade (%)">
-  <input id="reward" placeholder="Reward / Risk Ratio (e.g. 2)">
-  <input id="trades" placeholder="Number of Trades">
-
-  <button onclick="calculateRuin()">Calculate</button>
-
-  <div id="resultsBox" class="result-card">
-    <p class="result-line"><strong>Risk of Ruin:</strong> <span id="ruinOut" class="result-value">—</span></p>
-    <p class="result-line"><strong>Average Ending Balance:</strong> <span id="avgOut" class="result-value">—</span></p>
-    <p class="result-line"><strong>Median Ending Balance:</strong> <span id="medianOut" class="result-value">—</span></p>
-    <p class="result-line"><strong>Break-even Win Rate:</strong> <span id="breakevenOut" class="result-value">—</span></p>
-    <p class="result-line"><strong>Insight:</strong> <span id="insightOut" class="result-value">—</span></p>
+  <div class="menu">
+    <a href="index.html">Home</a>
   </div>
 
-  <canvas id="ruinChart"></canvas>
-  <canvas id="equityChart"></canvas>
-</div>
+  <div class="container" data-search="risk of ruin calculator monte carlo trading survival probability win rate risk per trade reward ratio">
+    <h1>Risk of Ruin Calculator</h1>
 
+    <p class="quick-answer">
+      This calculator uses a Monte Carlo simulation to estimate how often your trading account hits a 70% drawdown threshold based on your win rate, risk per trade, reward ratio, and number of trades.
+    </p>
 
-  <h2>What is Risk of Ruin?</h2>
+    <p class="subhead">
+      Estimate trading survival probability using win rate, risk per trade, reward ratio, and trade count.
+      The simulation also shows average and median ending balances plus a sample equity curve.
+    </p>
 
-  <p>
-    Risk of ruin is the chance that a trading strategy will suffer a severe enough drawdown to become difficult to recover from.
-    In this calculator, ruin means the account falls 70% from the starting balance during the selected number of trades.
-  </p>
-
-  <p>
-    That is different from a simple losing trade. A strategy can survive a few losses and still be healthy.
-    Risk of ruin is about whether the strategy can survive a bad streak, not just whether it can win once.
-  </p>
-
-  <h2>How This Calculator Works</h2>
-
-  <p>
-    This tool uses a Monte Carlo-style simulation with a fixed seed so the same inputs always produce the same output.
-    It simulates many possible trade paths based on your win rate, risk per trade, reward ratio, and number of trades.
-  </p>
-
-  <ul>
-    <li><strong>Win Rate</strong> – how often your trades are successful</li>
-    <li><strong>Risk per Trade</strong> – how much of your account is risked each trade</li>
-    <li><strong>Reward Ratio</strong> – how much you gain compared to what you risk</li>
-    <li><strong>Number of Trades</strong> – how long the strategy is tested</li>
-  </ul>
-
-  <p>
-    The result shows how often the account crosses the ruin threshold, along with how the balance path can look over time.
-  </p>
-
-  <h2>Why Risk of Ruin Matters</h2>
-
-  <p>
-    Even a strategy with a decent win rate can fail if risk per trade is too high.
-    Losing streaks happen. The real question is whether your system can survive them.
-  </p>
-
-  <ul>
-    <li>A high win rate does not guarantee survival</li>
-    <li>Risk per trade has a huge effect on long-term outcomes</li>
-    <li>Small mistakes compound over time</li>
-  </ul>
-
-  <p>
-    Professional traders focus on survival first, because you cannot profit from a strategy that no longer exists.
-  </p>
-
-  <h2>Trading Psychology and Risk</h2>
-
-  <p>
-    One of the biggest mistakes traders make is increasing risk after a few wins.
-    Confidence rises, discipline drops, and the account gets exposed to a much larger drawdown than intended.
-  </p>
-
-  <p>
-    This calculator helps keep the focus on survival, not excitement.
-    It is not about predicting the future — it is about understanding the risk behind your strategy.
-  </p>
-
-  <h2>How to Use This Calculator</h2>
-
-  <ul>
-    <li>Enter your win rate</li>
-    <li>Enter your risk per trade</li>
-    <li>Enter your reward-to-risk ratio</li>
-    <li>Enter the number of trades you want to test</li>
-    <li>Click calculate</li>
-  </ul>
-
-  <h3>Frequently Asked Questions</h3>
-
-  <div class="faq">
-    <div class="faq-item">
-      <button class="faq-question">
-        Why does my result stay the same for the same inputs?
-        <span class="arrow">▼</span>
-      </button>
-      <div class="faq-answer">
-        <p>
-          This version uses a fixed seed so the same inputs always produce the same output. That makes the result stable and easier to compare.
-        </p>
-      </div>
+    <div class="badge-row">
+      <span class="badge">Monte Carlo</span>
+      <span class="badge soft">Survival probability</span>
+      <span class="badge soft">Equity curve</span>
     </div>
 
-    <div class="faq-item">
-      <button class="faq-question">
-        Why is my risk of ruin showing 0%?
-        <span class="arrow">▼</span>
-      </button>
-      <div class="faq-answer">
-        <p>
-          A 0% result usually means your strategy is conservative enough that none of the simulated paths reached the ruin threshold.
-        </p>
-      </div>
+    <div class="field">
+      <label for="winRate">Win Rate (%)</label>
+      <input id="winRate" type="number" min="0" max="100" step="any" placeholder="e.g. 55">
     </div>
 
-    <div class="faq-item">
-      <button class="faq-question">
-        What is considered a safe risk of ruin?
-        <span class="arrow">▼</span>
-      </button>
-      <div class="faq-answer">
-        <p>
-          Lower is better. Many traders try to keep it below 5–10%, but the right level depends on the strategy and the trader’s tolerance.
-        </p>
-      </div>
+    <div class="field">
+      <label for="risk">Risk per Trade (%)</label>
+      <input id="risk" type="number" min="0" max="100" step="any" placeholder="e.g. 1">
     </div>
 
-    <div class="faq-item">
-      <button class="faq-question">
-        Is win rate the most important factor?
-        <span class="arrow">▼</span>
-      </button>
-      <div class="faq-answer">
-        <p>
-          No. Risk per trade often matters more. A high win rate strategy can still fail if losses are too large.
-        </p>
-      </div>
+    <div class="field">
+      <label for="reward">Reward / Risk Ratio</label>
+      <input id="reward" type="number" min="0" step="any" placeholder="e.g. 2">
     </div>
 
-    <div class="faq-item">
-      <button class="faq-question">
-        How can I reduce my risk of ruin?
-        <span class="arrow">▼</span>
-      </button>
-      <div class="faq-answer">
-        <p>
-          You can reduce risk by lowering position size, improving reward ratio, and avoiding overtrading.
-        </p>
+    <div class="field">
+      <label for="trades">Number of Trades</label>
+      <input id="trades" type="number" min="1" step="1" placeholder="e.g. 100">
+    </div>
+
+    <button onclick="calculateRuin()" type="button">Calculate</button>
+
+    <div id="resultsBox" class="result-card">
+      <div class="result-line"><strong>Risk of ruin:</strong> <span id="ruinOut" class="result-value">—</span></div>
+      <div class="result-line"><strong>Average ending balance:</strong> <span id="avgOut" class="result-value">—</span></div>
+      <div class="result-line"><strong>Median ending balance:</strong> <span id="medianOut" class="result-value">—</span></div>
+      <div class="result-line"><strong>Break-even win rate:</strong> <span id="breakevenOut" class="result-value">—</span></div>
+      <div class="result-line"><strong>Insight:</strong> <span id="insightOut" class="result-value">—</span></div>
+    </div>
+
+    <div class="chart-wrap">
+      <canvas id="ruinChart"></canvas>
+      <canvas id="equityChart"></canvas>
+    </div>
+  </div>
+
+  <div class="content">
+    <h2>What is Risk of Ruin?</h2>
+    <p>
+      Risk of ruin is the chance that a trading strategy will suffer a drawdown so severe that recovery becomes very difficult.
+      In this calculator, ruin means the account falls 70% from the starting balance at any point in the simulation.
+    </p>
+
+    <p>
+      That is different from a normal losing trade. A strategy can survive a few losses and still be healthy.
+      Risk of ruin is about whether the strategy can survive a bad streak, not just whether it can win a single trade.
+    </p>
+
+    <h2>How the Monte Carlo Model Works</h2>
+    <p>
+      Monte Carlo simulation means the calculator runs many possible trade paths instead of using just one outcome.
+      Each simulated path uses your win rate, risk per trade, reward ratio, and trade count.
+      Because trading outcomes are uncertain, the simulation helps show a range of possible futures rather than pretending there is one exact answer.
+    </p>
+
+    <p>
+      For every simulated trade, the model randomly decides whether the trade is a win or a loss based on your win rate.
+      If it is a win, the account grows by the risk amount multiplied by your reward-to-risk ratio.
+      If it is a loss, the account loses the risk amount.
+      The calculator then counts how often the account hits the ruin threshold across thousands of simulations.
+    </p>
+
+    <div class="formula">
+      Win trade: balance += balance × risk × reward ratio
+      <br>
+      Loss trade: balance -= balance × risk
+      <br>
+      Risk of ruin = ruined simulations ÷ total simulations × 100
+    </div>
+
+    <h2>Why Risk of Ruin Matters</h2>
+    <p>
+      Even a strategy with a decent win rate can fail if risk per trade is too high.
+      Losing streaks happen. The real question is whether your system can survive them.
+    </p>
+
+    <ul>
+      <li>A high win rate does not guarantee survival</li>
+      <li>Risk per trade has a huge effect on long-term outcomes</li>
+      <li>Small mistakes compound over time</li>
+      <li>Survival matters more than short-term excitement</li>
+    </ul>
+
+    <h2>How to Use This Calculator</h2>
+    <ul>
+      <li>Enter your win rate</li>
+      <li>Enter your risk per trade</li>
+      <li>Enter your reward-to-risk ratio</li>
+      <li>Enter the number of trades you want to test</li>
+      <li>Click calculate</li>
+    </ul>
+
+    <h2>Frequently Asked Questions</h2>
+
+    <div class="faq">
+      <div class="faq-item">
+        <button class="faq-question" type="button">
+          Why does my result stay the same for the same inputs?
+          <span class="arrow">▼</span>
+        </button>
+        <div class="faq-answer">
+          <p>
+            This version uses a fixed random seed, so the same inputs always produce the same output. That makes comparisons stable and easier to read.
+          </p>
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <button class="faq-question" type="button">
+          Why is my risk of ruin showing 0%?
+          <span class="arrow">▼</span>
+        </button>
+        <div class="faq-answer">
+          <p>
+            A 0% result usually means your strategy is conservative enough that none of the simulated paths reached the ruin threshold.
+          </p>
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <button class="faq-question" type="button">
+          What is considered a safe risk of ruin?
+          <span class="arrow">▼</span>
+        </button>
+        <div class="faq-answer">
+          <p>
+            Lower is better. Many traders try to keep it below 5 to 10 percent, but the right level depends on the strategy and the trader’s tolerance.
+          </p>
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <button class="faq-question" type="button">
+          Is win rate the most important factor?
+          <span class="arrow">▼</span>
+        </button>
+        <div class="faq-answer">
+          <p>
+            No. Risk per trade often matters more. A high win rate strategy can still fail if losses are too large.
+          </p>
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <button class="faq-question" type="button">
+          How can I reduce my risk of ruin?
+          <span class="arrow">▼</span>
+        </button>
+        <div class="faq-answer">
+          <p>
+            You can reduce risk by lowering position size, improving reward ratio, and avoiding overtrading.
+          </p>
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <button class="faq-question" type="button">
+          Does Monte Carlo prediction mean the future is certain?
+          <span class="arrow">▼</span>
+        </button>
+        <div class="faq-answer">
+          <p>
+            No. Monte Carlo simulation does not predict the future exactly. It shows how a strategy could behave across many possible outcomes based on your assumptions.
+          </p>
+        </div>
       </div>
     </div>
   </div>
@@ -406,219 +646,242 @@ canvas{
     </ul>
   </div>
 
+  <div class="disclaimer">
+    <p>
+      <strong>Disclaimer:</strong> The calculators on this website are provided for informational and educational purposes only.
+      All results are estimates based on the values entered and do not constitute financial, investment, or trading advice.
+      Always conduct your own research before making financial decisions.
+    </p>
+  </div>
 
-<div class="disclaimer">
-  <p>
-    <strong>Disclaimer:</strong> The calculators on this website are provided for informational and educational purposes only.
-    All results are estimates based on the values entered and do not constitute financial, investment, or trading advice.
-    Always conduct your own research before making financial decisions.
-  </p>
-</div>
+  <script src="footer.js"></script>
+  <script>
+    let ruinChart = null;
+    let equityChart = null;
 
-<script src="footer.js"></script>
-<script>
-let ruinChart;
-let equityChart;
+    const START_BALANCE = 100;
+    const RUIN_THRESHOLD_PERCENT = 70;
+    const RUIN_LEVEL = START_BALANCE * (1 - RUIN_THRESHOLD_PERCENT / 100);
+    const SIMULATIONS = 3000;
 
-const START_BALANCE = 100;
-const RUIN_THRESHOLD_PERCENT = 70;
-const RUIN_LEVEL = START_BALANCE * (1 - RUIN_THRESHOLD_PERCENT / 100);
+    function createRng(seed) {
+      return function() {
+        seed |= 0;
+        seed = (seed + 0x6D2B79F5) | 0;
+        let t = Math.imul(seed ^ (seed >>> 15), 1 | seed);
+        t = (t + Math.imul(t ^ (t >>> 7), 61 | t)) ^ t;
+        return ((t ^ (t >>> 14)) >>> 0) / 4294967296;
+      };
+    }
 
-function createRng(seed) {
-  return function() {
-    seed |= 0;
-    seed = (seed + 0x6D2B79F5) | 0;
-    let t = Math.imul(seed ^ (seed >>> 15), 1 | seed);
-    t = (t + Math.imul(t ^ (t >>> 7), 61 | t)) ^ t;
-    return ((t ^ (t >>> 14)) >>> 0) / 4294967296;
-  };
-}
+    function hashInputs(winRate, risk, reward, trades) {
+      const a = Math.floor(winRate * 1000);
+      const b = Math.floor(risk * 10000);
+      const c = Math.floor(reward * 1000);
+      const d = Math.floor(trades * 97);
+      return (a * 73856093) ^ (b * 19349663) ^ (c * 83492791) ^ d;
+    }
 
-function hashInputs(winRate, risk, reward, trades) {
-  const a = Math.floor(winRate * 1000);
-  const b = Math.floor(risk * 10000);
-  const c = Math.floor(reward * 1000);
-  const d = Math.floor(trades * 97);
-  return (a * 73856093) ^ (b * 19349663) ^ (c * 83492791) ^ d;
-}
+    function money(value) {
+      const sign = value < 0 ? "-" : "";
+      return `${sign}$${Math.abs(value).toLocaleString(undefined, {
+        minimumFractionDigits: 2,
+        maximumFractionDigits: 2
+      })}`;
+    }
 
-function calculateRuin() {
-  const winRateInput = parseFloat(document.getElementById("winRate").value);
-  const riskInput = parseFloat(document.getElementById("risk").value);
-  const reward = parseFloat(document.getElementById("reward").value);
-  const trades = parseInt(document.getElementById("trades").value, 10);
+    function calculateRuin() {
+      const winRateInput = parseFloat(document.getElementById("winRate").value);
+      const riskInput = parseFloat(document.getElementById("risk").value);
+      const reward = parseFloat(document.getElementById("reward").value);
+      const trades = parseInt(document.getElementById("trades").value, 10);
 
-  if (
-    isNaN(winRateInput) || isNaN(riskInput) || isNaN(reward) || isNaN(trades) ||
-    winRateInput <= 0 || winRateInput >= 100 ||
-    riskInput <= 0 || riskInput >= 100 ||
-    reward <= 0 ||
-    trades <= 0
-  ) {
-    alert("Fill all fields with valid values.");
-    return;
-  }
+      if (
+        isNaN(winRateInput) || isNaN(riskInput) || isNaN(reward) || isNaN(trades) ||
+        winRateInput <= 0 || winRateInput >= 100 ||
+        riskInput <= 0 || riskInput >= 100 ||
+        reward <= 0 ||
+        trades <= 0
+      ) {
+        alert("Fill all fields with valid values.");
+        return;
+      }
 
-  const winRate = winRateInput / 100;
-  const risk = riskInput / 100;
+      const winRate = winRateInput / 100;
+      const risk = riskInput / 100;
 
-  const seedBase = hashInputs(winRate, risk, reward, trades);
-  const simRng = createRng(seedBase);
-  const pathRng = createRng(seedBase + 9999);
+      const seedBase = hashInputs(winRate, risk, reward, trades);
+      const simRng = createRng(seedBase);
+      const pathRng = createRng(seedBase + 9999);
 
-  const simulations = 3000;
-  let ruinCount = 0;
-  const finals = [];
+      let ruinCount = 0;
+      const finals = [];
 
-  for (let s = 0; s < simulations; s++) {
-    let balance = START_BALANCE;
+      for (let s = 0; s < SIMULATIONS; s++) {
+        let balance = START_BALANCE;
 
-    for (let i = 0; i < trades; i++) {
-      const tradeRisk = balance * risk;
+        for (let i = 0; i < trades; i++) {
+          const tradeRisk = balance * risk;
 
-      if (simRng() < winRate) {
-        balance += tradeRisk * reward;
+          if (simRng() < winRate) {
+            balance += tradeRisk * reward;
+          } else {
+            balance -= tradeRisk;
+          }
+
+          if (balance <= RUIN_LEVEL) {
+            ruinCount++;
+            break;
+          }
+        }
+
+        finals.push(balance);
+      }
+
+      finals.sort((a, b) => a - b);
+
+      const ruinPercent = (ruinCount / SIMULATIONS) * 100;
+      const avgFinal = finals.reduce((sum, v) => sum + v, 0) / finals.length;
+      const medianFinal = finals[Math.floor(finals.length / 2)];
+      const breakevenWinRate = (risk / (risk + reward)) * 100;
+
+      let insight = "";
+      let insightClass = "";
+
+      if (winRateInput < breakevenWinRate) {
+        insight = "Negative expectancy";
+        insightClass = "insight-danger";
+      } else if (ruinPercent > 60) {
+        insight = "Dangerous strategy";
+        insightClass = "insight-danger";
+      } else if (ruinPercent > 30) {
+        insight = "Risky";
+        insightClass = "insight-warning";
       } else {
-        balance -= tradeRisk;
+        insight = "Acceptable";
+        insightClass = "insight-good";
       }
 
-      if (balance <= RUIN_LEVEL) {
-        ruinCount++;
-        break;
-      }
+      document.getElementById("ruinOut").innerText = ruinPercent.toFixed(2) + "%";
+      document.getElementById("avgOut").innerText = START_BALANCE.toFixed(2) + " → " + avgFinal.toFixed(2);
+      document.getElementById("medianOut").innerText = START_BALANCE.toFixed(2) + " → " + medianFinal.toFixed(2);
+      document.getElementById("breakevenOut").innerText = breakevenWinRate.toFixed(2) + "%";
+      document.getElementById("insightOut").innerText = insight;
+      document.getElementById("insightOut").className = "result-value " + insightClass;
+
+      document.getElementById("resultsBox").style.display = "block";
+
+      drawRuinChart(ruinPercent);
+      drawEquity(pathRng, winRate, risk, reward, trades);
     }
 
-    finals.push(balance);
-  }
+    function drawRuinChart(ruinPercent) {
+      const ctx = document.getElementById("ruinChart").getContext("2d");
 
-  finals.sort((a, b) => a - b);
+      if (ruinChart) ruinChart.destroy();
 
-  const ruinPercent = (ruinCount / simulations) * 100;
-  const avgFinal = finals.reduce((sum, v) => sum + v, 0) / finals.length;
-  const medianFinal = finals[Math.floor(finals.length / 2)];
-  const breakevenWinRate = (risk / (risk + reward)) * 100;
-
-  let insight = "";
-  let insightClass = "";
-
-  if (winRateInput < breakevenWinRate) {
-    insight = "Negative expectancy";
-    insightClass = "insight-danger";
-  } else if (ruinPercent > 60) {
-    insight = "Dangerous strategy";
-    insightClass = "insight-danger";
-  } else if (ruinPercent > 30) {
-    insight = "Risky";
-    insightClass = "insight-warning";
-  } else {
-    insight = "Acceptable";
-    insightClass = "insight-good";
-  }
-
-  document.getElementById("ruinOut").innerText = ruinPercent.toFixed(2) + "%";
-  document.getElementById("avgOut").innerText = START_BALANCE.toFixed(2) + " → " + avgFinal.toFixed(2);
-  document.getElementById("medianOut").innerText = START_BALANCE.toFixed(2) + " → " + medianFinal.toFixed(2);
-  document.getElementById("breakevenOut").innerText = breakevenWinRate.toFixed(2) + "%";
-  document.getElementById("insightOut").innerText = insight;
-  document.getElementById("insightOut").className = "result-value " + insightClass;
-
-  document.getElementById("resultsBox").style.display = "block";
-
-  drawRuinChart(ruinPercent);
-  drawEquity(pathRng, winRate, risk, reward, trades);
-}
-
-function drawRuinChart(ruinPercent) {
-  const ctx = document.getElementById("ruinChart");
-
-  if (ruinChart) ruinChart.destroy();
-
-  ruinChart = new Chart(ctx, {
-    type: 'doughnut',
-    data: {
-      labels: ["Survived", "Ruin"],
-      datasets: [{
-        data: [100 - ruinPercent, ruinPercent],
-        backgroundColor: ["#22c55e", "#ef4444"]
-      }]
-    },
-    options: {
-      plugins: {
-        legend: {
-          labels: { color: "white" }
-        }
-      }
-    }
-  });
-}
-
-function drawEquity(rng, winRate, risk, reward, trades) {
-  const ctx = document.getElementById("equityChart");
-
-  if (equityChart) equityChart.destroy();
-
-  let balance = START_BALANCE;
-  const data = [balance];
-
-  for (let i = 0; i < trades; i++) {
-    const tradeRisk = balance * risk;
-
-    if (rng() < winRate) {
-      balance += tradeRisk * reward;
-    } else {
-      balance -= tradeRisk;
-    }
-
-    data.push(balance);
-  }
-
-  equityChart = new Chart(ctx, {
-    type: 'line',
-    data: {
-      labels: data.map((_, i) => i),
-      datasets: [{
-        label: "Sample Equity Curve",
-        data: data,
-        borderColor: "#3b82f6",
-        backgroundColor: "rgba(59,130,246,0.15)",
-        tension: 0.3,
-        fill: false
-      }]
-    },
-    options: {
-      plugins: {
-        legend: {
-          labels: { color: "white" }
-        }
-      },
-      scales: {
-        x: {
-          ticks: { color: "white" },
-          grid: { color: "rgba(255,255,255,0.08)" }
+      ruinChart = new Chart(ctx, {
+        type: 'doughnut',
+        data: {
+          labels: ["Survived", "Ruin"],
+          datasets: [{
+            data: [100 - ruinPercent, ruinPercent],
+            backgroundColor: ["#22c55e", "#ef4444"]
+          }]
         },
-        y: {
-          ticks: { color: "white" },
-          grid: { color: "rgba(255,255,255,0.08)" }
+        options: {
+          responsive: true,
+          plugins: {
+            legend: {
+              labels: { color: "white" }
+            },
+            tooltip: {
+              callbacks: {
+                label: function(context) {
+                  return `${context.label}: ${context.raw.toFixed(2)}%`;
+                }
+              }
+            }
+          }
         }
-      }
-    }
-  });
-}
-
-document.addEventListener("DOMContentLoaded", function() {
-  document.querySelectorAll(".faq-question").forEach(btn => {
-    btn.addEventListener("click", () => {
-      const item = btn.parentElement;
-
-      document.querySelectorAll(".faq-item").forEach(i => {
-        if (i !== item) i.classList.remove("active");
       });
+    }
 
-      item.classList.toggle("active");
+    function drawEquity(rng, winRate, risk, reward, trades) {
+      const ctx = document.getElementById("equityChart").getContext("2d");
+
+      if (equityChart) equityChart.destroy();
+
+      let balance = START_BALANCE;
+      const data = [balance];
+
+      for (let i = 0; i < trades; i++) {
+        const tradeRisk = balance * risk;
+
+        if (rng() < winRate) {
+          balance += tradeRisk * reward;
+        } else {
+          balance -= tradeRisk;
+        }
+
+        data.push(balance);
+      }
+
+      equityChart = new Chart(ctx, {
+        type: 'line',
+        data: {
+          labels: data.map((_, i) => i),
+          datasets: [{
+            label: "Sample Equity Curve",
+            data: data,
+            borderColor: "#3b82f6",
+            backgroundColor: "rgba(59,130,246,0.15)",
+            tension: 0.3,
+            fill: false,
+            pointRadius: 2
+          }]
+        },
+        options: {
+          responsive: true,
+          plugins: {
+            legend: {
+              labels: { color: "white" }
+            },
+            tooltip: {
+              callbacks: {
+                label: function(context) {
+                  return `${context.dataset.label}: ${money(context.parsed.y)}`;
+                }
+              }
+            }
+          },
+          scales: {
+            x: {
+              ticks: { color: "white" },
+              grid: { color: "rgba(255,255,255,0.08)" }
+            },
+            y: {
+              ticks: { color: "white" },
+              grid: { color: "rgba(255,255,255,0.08)" }
+            }
+          }
+        }
+      });
+    }
+
+    document.addEventListener("DOMContentLoaded", function() {
+      document.querySelectorAll(".faq-question").forEach(btn => {
+        btn.addEventListener("click", () => {
+          const item = btn.parentElement;
+
+          document.querySelectorAll(".faq-item").forEach(i => {
+            if (i !== item) i.classList.remove("active");
+          });
+
+          item.classList.toggle("active");
+        });
+      });
     });
-  });
-});
-</script>
-
+  </script>
 </body>
   </html>
