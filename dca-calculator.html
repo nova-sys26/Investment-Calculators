@@ -789,7 +789,7 @@
       const profitPct = (profit / totalInvested) * 100;
 
       document.getElementById("investedOut").innerText = money(totalInvested);
-      document.getElementById("coinsOut").innerText = totalCoins.toFixed(6);
+      document.getElementById("coinsOut").innerText = parseFloat (totalCoins.toFixed(6));
       document.getElementById("avgOut").innerText = money(avgPrice);
       document.getElementById("valueOut").innerText = money(currentValue);
       document.getElementById("profitOut").innerText = `${money(profit)} (${profitPct.toFixed(2)}%)`;
