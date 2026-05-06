@@ -1,269 +1,852 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-<link rel="canonical" href="https://novainvesttools.com/crypto-profit-calculator.html">
-<!-- Google tag (gtag.js) -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-ZPCXDVE8C5"></script>
-<script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
+  <link rel="canonical" href="https://novainvesttools.com/crypto-profit-calculator.html">
 
-  gtag('config', 'G-ZPCXDVE8C5');
-</script>
-<meta charset="UTF-8">
-<title>Crypto Profit Calculator – Calculate Trading Profit & Loss</title>
-<meta name="description" content="Calculate crypto profit, ROI, and fees instantly with our fast and accurate calculator. Track your real gains and make smarter trading decisions.">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-ZPCXDVE8C5"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-ZPCXDVE8C5');
+  </script>
 
-<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-<link rel="stylesheet" href="style.css">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Crypto Profit Calculator – Calculate Trading Profit & Loss</title>
+  <meta name="description" content="Calculate crypto profit, ROI, and fees instantly with our fast and accurate calculator. Track your real gains and make smarter trading decisions.">
+  <meta name="theme-color" content="#0f172a">
+  <meta name="robots" content="index,follow,max-image-preview:large">
 
-<style>
-body{
-font-family:Arial;
-background:#0f172a;
-color:white;
-display:flex;
-justify-content:center;
-align-items:center;
-flex-direction:column;
-min-height:100vh;
-}
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://novainvesttools.com/crypto-profit-calculator.html">
+  <meta property="og:title" content="Crypto Profit Calculator – Calculate Trading Profit & Loss">
+  <meta property="og:description" content="Calculate crypto profit, ROI, and fees instantly. Track your real gains and make smarter trading decisions.">
 
-.container{
-background:#1e293b;
-padding:30px;
-border-radius:16px;
-width:90%;
-max-width:500px;
-box-shadow:0 10px 25px rgba(0,0,0,0.35);
-}
+  <link rel="preconnect" href="https://cdn.jsdelivr.net">
+  <link rel="dns-prefetch" href="https://cdn.jsdelivr.net">
 
-input{
-width:100%;
-padding:14px;
-margin:12px 0;
-border-radius:10px;
-border:none;
-background:#e5e7eb;
-font-size:16px;
-}
+  <link rel="stylesheet" href="style.css">
+  <link rel="icon" href="favicon.png" type="image/png">
+  <link rel="apple-touch-icon" href="favicon.png">
 
-button{
-padding:14px;
-background:#3b82f6;
-border:none;
-border-radius:10px;
-color:white;
-cursor:pointer;
-margin-top:10px;
-width:100%;
-}
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
-button:hover{
-background:#2563eb;
-}
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "WebApplication",
+    "name": "Crypto Profit Calculator",
+    "url": "https://novainvesttools.com/crypto-profit-calculator.html",
+    "applicationCategory": "FinanceApplication",
+    "operatingSystem": "All",
+    "browserRequirements": "Requires JavaScript",
+    "description": "Calculate crypto profit, loss, ROI, and fees for long and short trades.",
+    "featureList": [
+      "Long trade profit calculation",
+      "Short trade profit calculation",
+      "Trading fee adjustment",
+      "Return percentage estimation"
+    ],
+    "offers": {
+      "@type": "Offer",
+      "price": "0",
+      "priceCurrency": "USD"
+    }
+  }
+  </script>
 
-canvas{
-margin-top:30px;
-}
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": [
+      {
+        "@type": "Question",
+        "name": "What does a crypto profit calculator do?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "It calculates your estimated profit or loss from a crypto trade based on buy price, sell price, amount, and fees."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Does this calculator work for short trades?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Yes. You can switch between long and short trades and the calculator will adjust the formula."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Are trading fees included?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Yes. The calculator includes optional fees so you can see a more realistic net result."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Why is profit percentage important?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Profit percentage helps you compare trade results relative to the amount you risked or spent."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Can I use this for different cryptocurrencies?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Yes. The calculator works for any crypto asset as long as you enter the correct prices and amount."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Does the chart show profit or loss clearly?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Yes. The chart compares your entry value with your final trade result so the outcome is easy to understand."
+        }
+      }
+    ]
+  }
+  </script>
 
-.menu{
-margin-bottom:25px;
-}
+  <style>
+    *{
+      box-sizing:border-box;
+    }
 
-.menu a{
-color:#3b82f6;
-margin:10px;
-text-decoration:none;
-}
+    html{
+      scroll-behavior:smooth;
+    }
 
-.disclaimer{
-margin-top:40px;
-padding-top:20px;
-border-top:1px solid rgba(255,255,255,0.1);
-font-size:13px;
-color:#9ca3af;
-max-width:500px;
-text-align:center;
-}
+    body{
+      font-family:Arial, sans-serif;
+      background:#0f172a;
+      color:white;
+      display:flex;
+      justify-content:center;
+      align-items:center;
+      flex-direction:column;
+      min-height:100vh;
+      margin:0;
+      padding:24px 0;
+    }
 
-.toptext{
-font-size:14px;
-color:#6b7a99;
-margin-bottom:5px;
-}
-  
-.toggle {
-  display: flex;
-  margin: 10px 0;
-}
+    .toptext{
+      font-size:14px;
+      color:#6b7a99;
+      margin-bottom:5px;
+    }
 
-.toggle button {
-  flex: 1;
-  padding: 12px;
-  border: none;
-  cursor: pointer;
-  background: #334155;
-  color: white;
-  transition: 0.2s;
-}
+    .menu{
+      margin-bottom:25px;
+    }
 
-.toggle button:first-child {
-  border-radius: 6px 0 0 6px;
-}
+    .menu a{
+      color:#3b82f6;
+      margin:10px;
+      text-decoration:none;
+      font-weight:600;
+    }
 
-.toggle button:last-child {
-  border-radius: 0 6px 6px 0;
-}
+    .container{
+      background:#1e293b;
+      padding:30px;
+      border-radius:16px;
+      width:90%;
+      max-width:560px;
+      box-shadow:0 10px 25px rgba(0,0,0,0.35);
+      border:1px solid rgba(255,255,255,0.05);
+      backdrop-filter: blur(6px);
+    }
 
-.toggle button.active {
-  background: #3b82f6;
-}  
-</style>
+    h1{
+      margin-top:0;
+      margin-bottom:10px;
+      font-size:32px;
+      line-height:1.15;
+    }
 
+    .quick-answer{
+      background: rgba(59,130,246,0.12);
+      border: 1px solid rgba(59,130,246,0.25);
+      padding: 12px 14px;
+      border-radius: 10px;
+      font-size: 15px;
+      line-height: 1.6;
+      color: #e2e8f0;
+      margin: 0 0 18px;
+    }
+
+    .subhead{
+      color:#94a3b8;
+      font-size:15px;
+      line-height:1.6;
+      margin-bottom:18px;
+    }
+
+    .badge-row{
+      display:flex;
+      gap:10px;
+      flex-wrap:wrap;
+      margin:14px 0 10px;
+    }
+
+    .badge{
+      display:inline-flex;
+      padding:5px 10px;
+      border-radius:999px;
+      font-size:12px;
+      font-weight:700;
+      background:rgba(59,130,246,0.12);
+      color:#bfdbfe;
+      border:1px solid rgba(59,130,246,0.22);
+    }
+
+    .badge.soft{
+      background:rgba(255,255,255,0.05);
+      border-color:rgba(255,255,255,0.08);
+      color:#dbeafe;
+    }
+
+    .toggle {
+      display:flex;
+      margin:12px 0 14px;
+      gap:0;
+    }
+
+    .toggle button {
+      flex:1;
+      padding:12px;
+      border:none;
+      cursor:pointer;
+      background:#334155;
+      color:white;
+      transition:0.2s;
+      margin-top:0;
+      width:auto;
+      font-size:15px;
+      font-weight:700;
+    }
+
+    .toggle button:first-child {
+      border-radius:10px 0 0 10px;
+    }
+
+    .toggle button:last-child {
+      border-radius:0 10px 10px 0;
+    }
+
+    .toggle button.active {
+      background:#3b82f6;
+    }
+
+    .field{
+      margin:12px 0;
+    }
+
+    .field label{
+      display:block;
+      font-size:13px;
+      color:#cbd5e1;
+      margin:0 0 6px;
+      font-weight:600;
+    }
+
+    input{
+      width:100%;
+      padding:14px;
+      margin:0;
+      border-radius:10px;
+      border:none;
+      background:#e5e7eb;
+      font-size:16px;
+      outline:none;
+    }
+
+    input:focus{
+      box-shadow:0 0 0 3px rgba(59,130,246,0.18);
+    }
+
+    button{
+      padding:14px;
+      background:#3b82f6;
+      border:none;
+      border-radius:10px;
+      color:white;
+      cursor:pointer;
+      margin-top:14px;
+      width:100%;
+      font-size:16px;
+      font-weight:700;
+      transition:0.2s;
+    }
+
+    button:hover{
+      background:#2563eb;
+      transform:translateY(-1px);
+    }
+
+    .result-card{
+      margin-top:18px;
+      padding:16px;
+      border-radius:14px;
+      background:rgba(255,255,255,0.05);
+      border:1px solid rgba(255,255,255,0.08);
+      display:none;
+    }
+
+    .result-grid{
+      display:grid;
+      grid-template-columns:repeat(auto-fit, minmax(220px, 1fr));
+      gap:12px;
+    }
+
+    .result-box{
+      background:rgba(15,23,42,0.72);
+      border:1px solid rgba(255,255,255,0.06);
+      border-radius:14px;
+      padding:14px;
+    }
+
+    .result-label{
+      display:block;
+      color:#cbd5f5;
+      font-size:13px;
+      font-weight:700;
+      margin-bottom:4px;
+    }
+
+    .result-value{
+      font-size:18px;
+      font-weight:800;
+      color:#e5e7eb;
+    }
+
+    .insight-good{
+      color:#22c55e;
+      font-weight:700;
+    }
+
+    .insight-medium{
+      color:#facc15;
+      font-weight:700;
+    }
+
+    .insight-weak{
+      color:#ef4444;
+      font-weight:700;
+    }
+
+    canvas{
+      margin-top:26px;
+    }
+
+    .content{
+      width:90%;
+      max-width:900px;
+      margin-top:34px;
+    }
+
+    .content h2{
+      margin-top:34px;
+      margin-bottom:10px;
+      font-size:28px;
+    }
+
+    .content p,
+    .content li{
+      color:#cbd5e1;
+      line-height:1.7;
+      font-size:15px;
+    }
+
+    .content ul{
+      padding-left:20px;
+    }
+
+    .formula{
+      background:rgba(255,255,255,0.05);
+      border:1px solid rgba(255,255,255,0.08);
+      padding:14px 16px;
+      border-radius:12px;
+      margin:12px 0;
+      color:#e2e8f0;
+      overflow:auto;
+      line-height:1.7;
+    }
+
+    .faq{
+      margin-top:14px;
+    }
+
+    .faq-item{
+      border-bottom:1px solid rgba(255,255,255,0.08);
+    }
+
+    .faq-question{
+      width:100%;
+      background:none;
+      border:none;
+      color:white;
+      text-align:left;
+      padding:14px 8px;
+      font-size:15px;
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      cursor:pointer;
+    }
+
+    .faq-question:hover{
+      color:#93c5fd;
+    }
+
+    .arrow{
+      transition:0.25s;
+    }
+
+    .faq-item.active .arrow{
+      transform:rotate(180deg);
+    }
+
+    .faq-answer{
+      max-height:0;
+      overflow:hidden;
+      transition:max-height 0.3s ease;
+      color:#cbd5e1;
+      font-size:14px;
+      padding:0 8px;
+    }
+
+    .faq-item.active .faq-answer{
+      max-height:260px;
+      padding-bottom:12px;
+    }
+
+    .related{
+      width:90%;
+      max-width:900px;
+      margin-top:34px;
+    }
+
+    .related a{
+      color:#93c5fd;
+      text-decoration:none;
+    }
+
+    .related a:hover{
+      text-decoration:underline;
+    }
+
+    .disclaimer{
+      margin-top:40px;
+      padding-top:20px;
+      border-top:1px solid rgba(255,255,255,0.1);
+      font-size:13px;
+      color:#9ca3af;
+      max-width:900px;
+      text-align:center;
+      line-height:1.6;
+      width:90%;
+    }
+
+    @media (max-width: 700px){
+      .container{
+        padding:22px;
+      }
+
+      h1{
+        font-size:28px;
+      }
+
+      .content h2{
+        font-size:24px;
+      }
+    }
+  </style>
 </head>
 
 <body>
-  
-<p class="toptext">Explore more calculators</p>
-<div class="menu">
-<a href="index.html">Home</a>
-</div>
+  <p class="toptext">Explore more calculators</p>
 
-<div class="container">
+  <div class="menu">
+    <a href="index.html">Home</a>
+  </div>
 
-<h1>Crypto Profit Calculator</h1>
+  <div class="container" data-search="crypto profit calculator long short trading fees roi loss gain">
+    <h1>Crypto Profit Calculator</h1>
 
- <div class="toggle">
-  <button id="longBtn" class="active" onclick="setType('long')">Long</button>
-  <button id="shortBtn" onclick="setType('short')">Short</button>
- </div> 
-<input id="buyPrice" placeholder="Buy Price ($)">
-<input id="sellPrice" placeholder="Sell Price ($)">
-<input id="amount" placeholder="Amount of Crypto">
-<input id="fee" placeholder="Trading Fee (%) (optional)">
+    <p class="quick-answer">
+      A crypto profit calculator shows your net gain or loss after fees, so you can see the real result of a long or short trade.
+    </p>
 
-<button onclick="calculateProfit()">Calculate</button>
+    <p class="subhead">
+      Calculate crypto profit, loss, return percentage, and fees instantly.
+      Switch between long and short trades to compare outcomes before you trade.
+    </p>
 
-<h3 id="result"></h3>
+    <div class="badge-row">
+      <span class="badge">Long & short</span>
+      <span class="badge soft">Fee adjusted</span>
+      <span class="badge soft">Return estimate</span>
+    </div>
 
-<canvas id="myChart"></canvas>
+    <div class="toggle">
+      <button id="longBtn" class="active" onclick="setType('long')" type="button">Long</button>
+      <button id="shortBtn" onclick="setType('short')" type="button">Short</button>
+    </div>
 
-</div>
+    <div class="field">
+      <label for="buyPrice">Buy Price ($)</label>
+      <input id="buyPrice" type="number" min="0" step="any" placeholder="e.g. 100">
+    </div>
 
-<h3>What is a Crypto Profit Calculator?</h3>
-<p>A Crypto Profit Calculator helps traders quickly determine the outcome of their trades by calculating profit, loss, and return percentage. Instead of manually estimating results, this tool provides instant and accurate insights based on your buy price, sell price, trade amount, and optional trading fees.
-In cryptocurrency trading, even small price movements can significantly impact your profit or loss, especially when trading large amounts or using leverage. This makes it essential to evaluate every trade before entering or exiting a position. By using this calculator, you can clearly see how much you stand to gain or lose under different market conditions.
-The tool works for both long and short positions. In a long trade, you profit when the price increases after you buy. In a short trade, you profit when the price decreases after you sell. The calculator automatically adjusts the calculation based on the selected trade type, ensuring accurate results for both strategies.
-Another important factor included in this calculator is trading fees. Exchanges charge fees on both entry and exit, which can reduce your overall profit. By including fees in the calculation, you get a more realistic view of your net returns.
-This calculator is useful for crypto traders of all levels, from beginners to experienced investors. It helps you make informed decisions, compare trade scenarios, and avoid unnecessary risks by understanding the true cost and potential outcome of each trade.</p>
+    <div class="field">
+      <label for="sellPrice">Sell Price ($)</label>
+      <input id="sellPrice" type="number" min="0" step="any" placeholder="e.g. 120">
+    </div>
 
-<h3>How to use it?</h3>
-<ul>
-<li>Enter buy price</li>
-<li>Enter sell price</li>
-<li>Enter amount</li>
-<li>Optional: enter fee</li>
-<li>Click calculate</li>
-</ul>
+    <div class="field">
+      <label for="amount">Amount of Crypto</label>
+      <input id="amount" type="number" min="0" step="any" placeholder="e.g. 2">
+    </div>
 
-<h3>Who uses this?</h3>
-<p>Crypto traders who want to evaluate if a trade is worth taking.</p>
+    <div class="field">
+      <label for="fee">Trading Fee (%) optional</label>
+      <input id="fee" type="number" min="0" step="any" placeholder="e.g. 0.2">
+    </div>
 
-<div class="related">
-<h3>Related Calculators</h3>
-<p>You may also find these tools useful:</p>
-<ul>
-<li><a href="break-even-calculator.html">Break-Even Calculator</a></li>
-<li><a href="trading-fees-calculator.html">Trading Fees Calculator</a></li>
-<li><a href="average-price-calculator.html">Average Price Calculator</a></li>
-<li><a href="profit-loss-calculator.html">Profit Loss Calculator</a></li>
-<li><a href="roi-calculator.html">ROI Calculator</a></li>
-</ul>
-</div>
-<div class="disclaimer">
-<p><strong>Disclaimer:</strong> The calculators on this website are provided for informational and educational purposes only. All results are estimates based on the values entered and do not constitute financial, investment, or trading advice. Always conduct your own research before making financial decisions.</p>
-</div>
-<script src="footer.js"></script>
-<script>
-  
-let type = "long";
+    <button onclick="calculateProfit()" type="button">Calculate</button>
 
-function setType(selected){
-  type = selected;
+    <div id="resultCard" class="result-card">
+      <div class="result-grid">
+        <div class="result-box">
+          <span class="result-label">Trade type</span>
+          <span id="typeOut" class="result-value">—</span>
+        </div>
+        <div class="result-box">
+          <span class="result-label">Net profit</span>
+          <span id="profitOut" class="result-value">—</span>
+        </div>
+        <div class="result-box">
+          <span class="result-label">Return</span>
+          <span id="returnOut" class="result-value">—</span>
+        </div>
+        <div class="result-box">
+          <span class="result-label">Fees paid</span>
+          <span id="feeOut" class="result-value">—</span>
+        </div>
+        <div class="result-box">
+          <span class="result-label">Entry value</span>
+          <span id="entryOut" class="result-value">—</span>
+        </div>
+        <div class="result-box">
+          <span class="result-label">Insight</span>
+          <span id="insightOut" class="result-value">—</span>
+        </div>
+      </div>
+    </div>
 
-  document.getElementById("longBtn").classList.remove("active");
-  document.getElementById("shortBtn").classList.remove("active");
+    <canvas id="myChart"></canvas>
+  </div>
 
-  if(selected === "long"){
-    document.getElementById("longBtn").classList.add("active");
-  } else {
-    document.getElementById("shortBtn").classList.add("active");
-  }
-}
-let chart;
+  <div class="content">
+    <h2>What is a Crypto Profit Calculator?</h2>
+    <p>
+      A crypto profit calculator helps traders estimate the real outcome of a trade by comparing entry price, exit price, trade size, and fees.
+      It is useful because small price moves can create a big difference in profit or loss, especially when trade sizes are large.
+    </p>
 
-function calculateProfit(){
+    <p>
+      This calculator works for both long and short positions.
+      That means you can use it to test bullish and bearish scenarios before deciding whether a trade is worth taking.
+    </p>
 
-let buy = parseFloat(document.getElementById("buyPrice").value);
-let sell = parseFloat(document.getElementById("sellPrice").value);
-let amount = parseFloat(document.getElementById("amount").value);
-let fee = parseFloat(document.getElementById("fee").value) || 0;
+    <h2>How the Calculator Works</h2>
+    <p>
+      For a long trade, profit comes from buying low and selling higher.
+      For a short trade, profit comes from selling high and buying back lower.
+      Fees are applied to both entry and exit so the result is closer to the real net outcome.
+    </p>
 
-if(!buy || !sell || !amount){
-alert("Fill required fields");
-return;
-}
+    <div class="formula">
+      Long profit = (sell price − buy price) × amount − fees
+      <br>
+      Short profit = (buy price − sell price) × amount − fees
+      <br>
+      Return % = net profit ÷ entry value × 100
+    </div>
 
-let cost = buy * amount;
-let revenue = sell * amount;
+    <h2>Why This Matters</h2>
+    <p>
+      Many traders focus only on price movement and ignore fees.
+      That can make a trade look better than it really is.
+      A calculator like this helps you see the true outcome before you commit capital.
+    </p>
 
-let feeCost = (fee / 100) * (cost + revenue);
+    <ul>
+      <li>Check if a trade is worth taking</li>
+      <li>Compare different entry and exit setups</li>
+      <li>Include trading fees in your decision</li>
+      <li>Estimate long and short outcomes quickly</li>
+    </ul>
 
-let profit;
+    <h2>How to Use This Calculator</h2>
+    <ul>
+      <li>Choose long or short</li>
+      <li>Enter buy price</li>
+      <li>Enter sell price</li>
+      <li>Enter amount of crypto</li>
+      <li>Add fees if needed and click calculate</li>
+    </ul>
 
-if(type === "long"){
-  profit = revenue - cost - feeCost;
-} else {
-  profit = cost - revenue - feeCost;
-}
+    <h2>Frequently Asked Questions</h2>
 
-let profitPercent = (profit / cost) * 100;
+    <div class="faq">
+      <div class="faq-item">
+        <button class="faq-question" type="button">
+          Does this calculator work for short trades?
+          <span class="arrow">▼</span>
+        </button>
+        <div class="faq-answer">
+          <p>
+            Yes. You can switch between long and short trades and the calculator will adjust the formula automatically.
+          </p>
+        </div>
+      </div>
 
-document.getElementById("result").innerHTML =
-"Profit: $" + profit.toFixed(2) + "<br>" +
-"Return: " + profitPercent.toFixed(2) + "%";
+      <div class="faq-item">
+        <button class="faq-question" type="button">
+          Are trading fees included?
+          <span class="arrow">▼</span>
+        </button>
+        <div class="faq-answer">
+          <p>
+            Yes. The optional fee input lets you account for trading costs on both entry and exit for a more realistic result.
+          </p>
+        </div>
+      </div>
 
-drawChart(cost, profit);
+      <div class="faq-item">
+        <button class="faq-question" type="button">
+          Why is profit percentage important?
+          <span class="arrow">▼</span>
+        </button>
+        <div class="faq-answer">
+          <p>
+            Profit percentage shows how large the gain or loss is relative to the amount you spent, so it is easier to compare trades.
+          </p>
+        </div>
+      </div>
 
-}
+      <div class="faq-item">
+        <button class="faq-question" type="button">
+          Can I use this for different cryptocurrencies?
+          <span class="arrow">▼</span>
+        </button>
+        <div class="faq-answer">
+          <p>
+            Yes. The calculator works for any cryptocurrency as long as you enter the correct prices and amount.
+          </p>
+        </div>
+      </div>
 
-function drawChart(cost, profit){
+      <div class="faq-item">
+        <button class="faq-question" type="button">
+          Does the chart show profit or loss clearly?
+          <span class="arrow">▼</span>
+        </button>
+        <div class="faq-answer">
+          <p>
+            Yes. The chart compares your entry value with your final trade result so you can see the outcome at a glance.
+          </p>
+        </div>
+      </div>
 
-let ctx = document.getElementById('myChart');
+      <div class="faq-item">
+        <button class="faq-question" type="button">
+          What happens if fees are too high?
+          <span class="arrow">▼</span>
+        </button>
+        <div class="faq-answer">
+          <p>
+            High fees reduce your net profit and can turn a winning trade into a small gain or even a loss.
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
 
-if(chart){
-chart.destroy();
-}
+  <div class="related">
+    <h3>Related Calculators</h3>
+    <p>You may also find these tools useful:</p>
+    <ul>
+      <li><a href="break-even-calculator.html">Break-Even Calculator</a></li>
+      <li><a href="trading-fees-calculator.html">Trading Fees Calculator</a></li>
+      <li><a href="average-price-calculator.html">Average Price Calculator</a></li>
+      <li><a href="profit-loss-calculator.html">Profit Loss Calculator</a></li>
+      <li><a href="roi-calculator.html">ROI Calculator</a></li>
+    </ul>
+  </div>
 
-let color = profit >= 0 ? '#22c55e' : '#ef4444';
+  <div class="disclaimer">
+    <p>
+      <strong>Disclaimer:</strong> The calculators on this website are provided for informational and educational purposes only.
+      All results are estimates based on the values entered and do not constitute financial, investment, or trading advice.
+      Always conduct your own research before making financial decisions.
+    </p>
+  </div>
 
-chart = new Chart(ctx,{
-type:'bar',
-data:{
-labels:['Cost','Result'],
-datasets:[{
-data:[cost, cost + profit],
-backgroundColor:['#3b82f6', color]
-}]
-}
-});
+  <script src="footer.js"></script>
+  <script>
+    let type = "long";
+    let chart = null;
 
-}
+    function setType(selected){
+      type = selected;
 
-</script>
+      document.getElementById("longBtn").classList.remove("active");
+      document.getElementById("shortBtn").classList.remove("active");
 
+      if(selected === "long"){
+        document.getElementById("longBtn").classList.add("active");
+      } else {
+        document.getElementById("shortBtn").classList.add("active");
+      }
+    }
+
+    function money(value) {
+      const sign = value < 0 ? "-" : "";
+      return `${sign}$${Math.abs(value).toLocaleString(undefined, {
+        minimumFractionDigits: 2,
+        maximumFractionDigits: 2
+      })}`;
+    }
+
+    function calculateProfit(){
+      const buy = parseFloat(document.getElementById("buyPrice").value);
+      const sell = parseFloat(document.getElementById("sellPrice").value);
+      const amount = parseFloat(document.getElementById("amount").value);
+      const feePct = parseFloat(document.getElementById("fee").value) || 0;
+
+      const resultCard = document.getElementById("resultCard");
+      const typeOut = document.getElementById("typeOut");
+      const profitOut = document.getElementById("profitOut");
+      const returnOut = document.getElementById("returnOut");
+      const feeOut = document.getElementById("feeOut");
+      const entryOut = document.getElementById("entryOut");
+      const insightOut = document.getElementById("insightOut");
+
+      if ([buy, sell, amount].some(v => isNaN(v))) {
+        alert("Fill required fields");
+        return;
+      }
+
+      if (buy <= 0 || sell <= 0 || amount <= 0) {
+        alert("Buy price, sell price, and amount must be greater than zero.");
+        return;
+      }
+
+      if (feePct < 0) {
+        alert("Fee cannot be negative.");
+        return;
+      }
+
+      const entryValue = buy * amount;
+      const exitValue = sell * amount;
+      const feeCost = (feePct / 100) * (entryValue + exitValue);
+
+      let profit;
+      if(type === "long"){
+        profit = exitValue - entryValue - feeCost;
+      } else {
+        profit = entryValue - exitValue - feeCost;
+      }
+
+      const returnPct = (profit / entryValue) * 100;
+
+      typeOut.innerText = type === "long" ? "Long" : "Short";
+      profitOut.innerText = money(profit);
+      returnOut.innerText = `${returnPct.toFixed(2)}%`;
+      feeOut.innerText = money(feeCost);
+      entryOut.innerText = money(entryValue);
+
+      let insight = "";
+      let insightClass = "";
+
+      if (profit > 0) {
+        insight = "Winning trade";
+        insightClass = "insight-good";
+      } else if (profit === 0) {
+        insight = "Break-even trade";
+        insightClass = "insight-medium";
+      } else {
+        insight = "Losing trade";
+        insightClass = "insight-weak";
+      }
+
+      insightOut.innerHTML = `<span class="${insightClass}">${insight}</span>`;
+      resultCard.style.display = "block";
+
+      drawChart(entryValue, type === "long" ? exitValue - feeCost : entryValue + profit);
+    }
+
+    function drawChart(entryValue, finalValue){
+      const ctx = document.getElementById("myChart").getContext("2d");
+
+      if(chart){
+        chart.destroy();
+      }
+
+      const barColor = finalValue >= entryValue ? "#22c55e" : "#ef4444";
+
+      chart = new Chart(ctx,{
+        type:'bar',
+        data:{
+          labels:['Entry Value','Final Result'],
+          datasets:[{
+            label:'Trade Overview',
+            data:[entryValue, finalValue],
+            backgroundColor:['#3b82f6', barColor]
+          }]
+        },
+        options:{
+          responsive:true,
+          plugins:{
+            legend:{
+              labels:{ color:'white' }
+            },
+            tooltip:{
+              callbacks:{
+                label: function(context){
+                  return `${context.dataset.label}: ${money(context.parsed.y)}`;
+                }
+              }
+            }
+          },
+          scales:{
+            x:{
+              ticks:{ color:'white' },
+              grid:{ color:'rgba(255,255,255,0.08)' }
+            },
+            y:{
+              ticks:{
+                color:'white',
+                callback: function(value){
+                  return "$" + Number(value).toLocaleString();
+                }
+              },
+              grid:{ color:'rgba(255,255,255,0.08)' }
+            }
+          }
+        }
+      });
+    }
+  </script>
 </body>
-</html>
+        </html>
