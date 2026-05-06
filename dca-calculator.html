@@ -506,6 +506,12 @@
       <span class="badge soft">Position value</span>
     </div>
 
+    <div class="section-title">Investment per period</div>
+    <div class="field">
+      <label for="investmentPerPeriod">Investment per buy ($)</label>
+      <input id="investmentPerPeriod" type="number" min="0" step="any" placeholder="e.g. 100">
+    </div>
+
     <div class="section-title">Your buys</div>
     <div id="buys"></div>
 
@@ -745,16 +751,16 @@
     }
 
     function calculate(){
-      const perPeriod = parseFloat(document.getElementById("currentPrice").value);
+      const investmentPerPeriod = parseFloat(document.getElementById("investmentPerPeriod").value);
       const currentPrice = parseFloat(document.getElementById("currentPrice").value);
       const buyInputs = Array.from(document.querySelectorAll(".buy-price"));
 
-      if (isNaN(perPeriod) || isNaN(currentPrice)) {
-        alert("Fill the current price and add at least one buy price.");
+      if (isNaN(investmentPerPeriod) || isNaN(currentPrice)) {
+        alert("Fill the investment per period and current price.");
         return;
       }
 
-      if (perPeriod <= 0 || currentPrice <= 0) {
+      if (investmentPerPeriod <= 0 || currentPrice <= 0) {
         alert("Values must be greater than zero.");
         return;
       }
@@ -766,8 +772,8 @@
       buyInputs.forEach(input => {
         const price = parseFloat(input.value);
         if (!isNaN(price) && price > 0) {
-          totalCoins += perPeriod / price;
-          totalInvested += perPeriod;
+          totalCoins += investmentPerPeriod / price;
+          totalInvested += investmentPerPeriod;
           validBuys += 1;
         }
       });
@@ -876,4 +882,4 @@
     });
   </script>
 </body>
-    </html>
+  </html>
