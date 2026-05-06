@@ -1,379 +1,879 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-<link rel="canonical" href="https://novainvesttools.com/dca-calculator.html">
-<!-- Google tag (gtag.js) -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-ZPCXDVE8C5"></script>
-<script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
+  <link rel="canonical" href="https://novainvesttools.com/dca-calculator.html">
 
-  gtag('config', 'G-ZPCXDVE8C5');
-</script>
-<meta charset="UTF-8">
-<title>DCA Calculator – Dollar Cost Averaging Tool</title>
-<meta name="description" content="Simulate your dollar-cost averaging strategy and track long-term investment growth with this free calculator.">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<link rel="stylesheet" href="style.css">
-<script type="application/ld+json">
-{
-  "@context": "https://schema.org",
-  "@type": "WebApplication",
-  "name": "DCA Calculator",
-  "url": "https://novainvesttools.com/dca-calculator.html",
-  "applicationCategory": "FinanceApplication",
-  "operatingSystem": "All",
-  "browserRequirements": "Requires JavaScript", 
-"description": "Calculate dollar cost averaging investment performance.",
-"featureList": [
-  "DCA strategy",
-  "Recurring investment",
-  "Average cost",
-  "Portfolio growth"
-],
-  "offers": {
-    "@type": "Offer",
-    "price": "0",
-    "priceCurrency": "USD"
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-ZPCXDVE8C5"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-ZPCXDVE8C5');
+  </script>
+
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>DCA Calculator – Dollar Cost Averaging Tool</title>
+  <meta name="description" content="Simulate your dollar-cost averaging strategy and track long-term investment growth with this free calculator.">
+  <meta name="theme-color" content="#0f172a">
+  <meta name="robots" content="index,follow,max-image-preview:large">
+
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://novainvesttools.com/dca-calculator.html">
+  <meta property="og:title" content="DCA Calculator – Dollar Cost Averaging Tool">
+  <meta property="og:description" content="Simulate your dollar-cost averaging strategy and track long-term investment growth with this free calculator.">
+
+  <link rel="preconnect" href="https://cdn.jsdelivr.net">
+  <link rel="dns-prefetch" href="https://cdn.jsdelivr.net">
+
+  <link rel="stylesheet" href="style.css">
+  <link rel="icon" href="favicon.png" type="image/png">
+  <link rel="apple-touch-icon" href="favicon.png">
+
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "WebApplication",
+    "name": "DCA Calculator",
+    "url": "https://novainvesttools.com/dca-calculator.html",
+    "applicationCategory": "FinanceApplication",
+    "operatingSystem": "All",
+    "browserRequirements": "Requires JavaScript",
+    "description": "Calculate dollar cost averaging investment performance.",
+    "featureList": [
+      "DCA strategy calculation",
+      "Recurring investment tracking",
+      "Average cost basis",
+      "Portfolio growth estimation"
+    ],
+    "offers": {
+      "@type": "Offer",
+      "price": "0",
+      "priceCurrency": "USD"
+    }
   }
-}
-</script>
-<style>
+  </script>
 
-body{
-font-family:Arial;
-background:#0f172a;
-color:white;
-display:flex;
-justify-content:center;
-align-items:center;
-flex-direction:column;
-min-height:100vh;
-}
-
-.container{
-background:#1e293b;
-padding:30px;
-border-radius:10px;
-width:320px;
-margin:auto;
-}
-
-input{
-width:90%;
-padding:10px;
-margin:8px;
-border-radius:5px;
-border:none;
-}
-
-button{
-padding:10px 20px;
-background:#3b82f6;
-border:none;
-border-radius:6px;
-color:white;
-cursor:pointer;
-}
-
-button:hover{
-background:#2563eb;
-}
-
-.menu{
-margin-bottom:25px;
-}
-
-.menu a{
-color:#3b82f6;
-margin:10px;
-text-decoration:none;
-}
-.toptext{
-font-size:14px;
-color:#6b7a99;
-margin-bottom:5px;
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": [
+      {
+        "@type": "Question",
+        "name": "What is dollar cost averaging?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Dollar cost averaging is a strategy where you invest a fixed amount at regular intervals instead of investing everything at once."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Does DCA reduce risk?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "DCA can reduce timing risk by spreading purchases over time, but it does not eliminate investment risk."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Is DCA better than lump sum investing?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Not always. DCA reduces timing risk, while lump sum investing can outperform in steadily rising markets."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Can DCA lose money?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Yes. If the asset declines over time, a DCA position can still be worth less than the total amount invested."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Why is DCA popular in crypto and stocks?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "DCA is popular because it helps investors buy gradually in volatile markets and avoid relying on one entry price."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "What does this calculator show?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "It shows your total invested amount, total coins bought, average price, current value, and profit or loss."
+        }
+      }
+    ]
   }
-.disclaimer{
-margin-top:40px;
-padding-top:20px;
-border-top:1px solid rgba(255,255,255,0.1);
-font-size:13px;
-color:#9ca3af;
-max-width:500px;
-text-align:center;
-line-height:1.6;
-  }
+  </script>
 
-</style>
+  <style>
+    *{
+      box-sizing:border-box;
+    }
 
+    html{
+      scroll-behavior:smooth;
+    }
+
+    body{
+      font-family:Arial, sans-serif;
+      background:#0f172a;
+      color:white;
+      display:flex;
+      justify-content:center;
+      align-items:center;
+      flex-direction:column;
+      min-height:100vh;
+      margin:0;
+      padding:24px 0;
+    }
+
+    .toptext{
+      font-size:14px;
+      color:#6b7a99;
+      margin-bottom:5px;
+    }
+
+    .menu{
+      margin-bottom:25px;
+    }
+
+    .menu a{
+      color:#3b82f6;
+      margin:10px;
+      text-decoration:none;
+      font-weight:600;
+    }
+
+    .container{
+      background:#1e293b;
+      padding:30px;
+      border-radius:16px;
+      width:90%;
+      max-width:620px;
+      box-shadow:0 10px 25px rgba(0,0,0,0.35);
+      border:1px solid rgba(255,255,255,0.05);
+      backdrop-filter: blur(6px);
+    }
+
+    h1{
+      margin-top:0;
+      margin-bottom:10px;
+      font-size:32px;
+      line-height:1.15;
+    }
+
+    .quick-answer{
+      background: rgba(59,130,246,0.12);
+      border: 1px solid rgba(59,130,246,0.25);
+      padding: 12px 14px;
+      border-radius: 10px;
+      font-size: 15px;
+      line-height: 1.6;
+      color: #e2e8f0;
+      margin: 0 0 18px;
+    }
+
+    .subhead{
+      color:#94a3b8;
+      font-size:15px;
+      line-height:1.6;
+      margin-bottom:18px;
+    }
+
+    .badge-row{
+      display:flex;
+      gap:10px;
+      flex-wrap:wrap;
+      margin:14px 0 10px;
+    }
+
+    .badge{
+      display:inline-flex;
+      padding:5px 10px;
+      border-radius:999px;
+      font-size:12px;
+      font-weight:700;
+      background:rgba(59,130,246,0.12);
+      color:#bfdbfe;
+      border:1px solid rgba(59,130,246,0.22);
+    }
+
+    .badge.soft{
+      background:rgba(255,255,255,0.05);
+      border-color:rgba(255,255,255,0.08);
+      color:#dbeafe;
+    }
+
+    .section-title{
+      margin:18px 0 8px;
+      font-size:16px;
+      color:#e2e8f0;
+      font-weight:700;
+    }
+
+    .field{
+      margin:12px 0;
+    }
+
+    .field label{
+      display:block;
+      font-size:13px;
+      color:#cbd5e1;
+      margin:0 0 6px;
+      font-weight:600;
+    }
+
+    input{
+      width:100%;
+      padding:14px;
+      margin:0;
+      border-radius:10px;
+      border:none;
+      background:#e5e7eb;
+      font-size:16px;
+      outline:none;
+    }
+
+    input:focus{
+      box-shadow:0 0 0 3px rgba(59,130,246,0.18);
+    }
+
+    .buy-row{
+      display:grid;
+      grid-template-columns: 1fr auto;
+      gap:10px;
+      align-items:center;
+      margin:10px 0;
+    }
+
+    .remove-btn{
+      width:auto;
+      margin-top:0;
+      padding:14px 16px;
+      background:#334155;
+    }
+
+    .remove-btn:hover{
+      background:#475569;
+    }
+
+    .add-btn{
+      background:#334155;
+    }
+
+    .add-btn:hover{
+      background:#475569;
+    }
+
+    button{
+      padding:14px;
+      background:#3b82f6;
+      border:none;
+      border-radius:10px;
+      color:white;
+      cursor:pointer;
+      margin-top:14px;
+      width:100%;
+      font-size:16px;
+      font-weight:700;
+      transition:0.2s;
+    }
+
+    button:hover{
+      background:#2563eb;
+      transform:translateY(-1px);
+    }
+
+    .result-card{
+      margin-top:18px;
+      padding:16px;
+      border-radius:14px;
+      background:rgba(255,255,255,0.05);
+      border:1px solid rgba(255,255,255,0.08);
+      display:none;
+    }
+
+    .result-grid{
+      display:grid;
+      grid-template-columns:repeat(auto-fit, minmax(220px, 1fr));
+      gap:12px;
+    }
+
+    .result-box{
+      background:rgba(15,23,42,0.72);
+      border:1px solid rgba(255,255,255,0.06);
+      border-radius:14px;
+      padding:14px;
+    }
+
+    .result-label{
+      display:block;
+      color:#cbd5f5;
+      font-size:13px;
+      font-weight:700;
+      margin-bottom:4px;
+    }
+
+    .result-value{
+      font-size:18px;
+      font-weight:800;
+      color:#e5e7eb;
+    }
+
+    .insight-good{
+      color:#22c55e;
+      font-weight:700;
+    }
+
+    .insight-medium{
+      color:#facc15;
+      font-weight:700;
+    }
+
+    .insight-weak{
+      color:#ef4444;
+      font-weight:700;
+    }
+
+    canvas{
+      margin-top:26px;
+    }
+
+    .content{
+      width:90%;
+      max-width:900px;
+      margin-top:34px;
+    }
+
+    .content h2{
+      margin-top:34px;
+      margin-bottom:10px;
+      font-size:28px;
+    }
+
+    .content p,
+    .content li{
+      color:#cbd5e1;
+      line-height:1.7;
+      font-size:15px;
+    }
+
+    .content ul{
+      padding-left:20px;
+    }
+
+    .formula{
+      background:rgba(255,255,255,0.05);
+      border:1px solid rgba(255,255,255,0.08);
+      padding:14px 16px;
+      border-radius:12px;
+      margin:12px 0;
+      color:#e2e8f0;
+      overflow:auto;
+      line-height:1.7;
+    }
+
+    .faq{
+      margin-top:14px;
+    }
+
+    .faq-item{
+      border-bottom:1px solid rgba(255,255,255,0.08);
+    }
+
+    .faq-question{
+      width:100%;
+      background:none;
+      border:none;
+      color:white;
+      text-align:left;
+      padding:14px 8px;
+      font-size:15px;
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      cursor:pointer;
+    }
+
+    .faq-question:hover{
+      color:#93c5fd;
+    }
+
+    .arrow{
+      transition:0.25s;
+    }
+
+    .faq-item.active .arrow{
+      transform:rotate(180deg);
+    }
+
+    .faq-answer{
+      max-height:0;
+      overflow:hidden;
+      transition:max-height 0.3s ease;
+      color:#cbd5e1;
+      font-size:14px;
+      padding:0 8px;
+    }
+
+    .faq-item.active .faq-answer{
+      max-height:260px;
+      padding-bottom:12px;
+    }
+
+    .related{
+      width:90%;
+      max-width:900px;
+      margin-top:34px;
+    }
+
+    .related a{
+      color:#93c5fd;
+      text-decoration:none;
+    }
+
+    .related a:hover{
+      text-decoration:underline;
+    }
+
+    .disclaimer{
+      margin-top:40px;
+      padding-top:20px;
+      border-top:1px solid rgba(255,255,255,0.1);
+      font-size:13px;
+      color:#9ca3af;
+      max-width:900px;
+      text-align:center;
+      line-height:1.6;
+      width:90%;
+    }
+
+    @media (max-width: 700px){
+      .container{
+        padding:22px;
+      }
+
+      h1{
+        font-size:28px;
+      }
+
+      .content h2{
+        font-size:24px;
+      }
+
+      .buy-row{
+        grid-template-columns:1fr;
+      }
+
+      .remove-btn{
+        width:100%;
+      }
+    }
+  </style>
 </head>
 
 <body>
-<p class="toptext">Explore more calculators</p>
-<div class="menu">
-<a href="index.html">Home</a>
-</div>
+  <p class="toptext">Explore more calculators</p>
 
-<h1>DCA Calculator</h1>
+  <div class="menu">
+    <a href="index.html">Home</a>
+  </div>
 
-<div class="container">
+  <div class="container" data-search="dca calculator dollar cost averaging average price recurring investment crypto stock portfolio growth">
+    <h1>DCA Calculator</h1>
 
-<input id="investment" placeholder="Investment per period ($)">
+    <p class="quick-answer">
+      Dollar cost averaging is a strategy where you invest the same amount at regular intervals, and this calculator shows your real average price and position value.
+    </p>
 
-<input id="price" placeholder="Average buy price">
+    <p class="subhead">
+      Calculate your dollar cost averaging results with recurring buys, average cost basis, total investment, current value, and profit or loss.
+    </p>
 
-<input id="finalprice" placeholder="Current price">
+    <div class="badge-row">
+      <span class="badge">Recurring buys</span>
+      <span class="badge soft">Average cost</span>
+      <span class="badge soft">Position value</span>
+    </div>
 
-<button onclick="calculate()">Calculate</button>
+    <div class="section-title">Your buys</div>
+    <div id="buys"></div>
 
-<h3 id="result"></h3>
-<canvas id="myChart"></canvas>
-</div>
+    <button class="add-btn" onclick="addBuy()" type="button">Add Buy</button>
 
-<h2>What is a DCA Calculator?</h2>
+    <div class="section-title">Current market price</div>
+    <div class="field">
+      <label for="currentPrice">Current Price ($)</label>
+      <input id="currentPrice" type="number" min="0" step="any" placeholder="e.g. 75">
+    </div>
 
-<p>
-A DCA calculator helps you understand how dollar cost averaging affects your investment over time. Dollar cost averaging, or DCA, is the strategy of investing a fixed amount at regular intervals instead of putting all your money in at once. This approach is popular because it can reduce the impact of market volatility and make long-term investing easier to manage.
-</p>
+    <button onclick="calculate()" type="button">Calculate</button>
 
-<p>
-Instead of trying to guess the perfect entry point, DCA lets you spread your buys across time. A DCA calculator shows your average purchase price, total amount invested, total units or shares accumulated, and the value of your position based on the current price. That makes it a practical tool for investors who want a clearer view of their long-term performance.
-</p>
+    <div id="resultCard" class="result-card">
+      <div class="result-grid">
+        <div class="result-box">
+          <span class="result-label">Total invested</span>
+          <span id="investedOut" class="result-value">—</span>
+        </div>
+        <div class="result-box">
+          <span class="result-label">Total coins</span>
+          <span id="coinsOut" class="result-value">—</span>
+        </div>
+        <div class="result-box">
+          <span class="result-label">Average price</span>
+          <span id="avgOut" class="result-value">—</span>
+        </div>
+        <div class="result-box">
+          <span class="result-label">Current value</span>
+          <span id="valueOut" class="result-value">—</span>
+        </div>
+        <div class="result-box">
+          <span class="result-label">Profit / Loss</span>
+          <span id="profitOut" class="result-value">—</span>
+        </div>
+        <div class="result-box">
+          <span class="result-label">Insight</span>
+          <span id="insightOut" class="result-value">—</span>
+        </div>
+      </div>
+    </div>
 
-<p>
-This calculator is especially useful for crypto investors, stock investors, and anyone building a position gradually. It helps answer a simple but important question: if you kept buying regularly, what is your real average entry price and how is your strategy performing now?
-</p>
+    <canvas id="myChart"></canvas>
+  </div>
 
-<h2>How This DCA Calculator Works</h2>
+  <div class="content">
+    <h2>What is Dollar Cost Averaging?</h2>
+    <p>
+      Dollar cost averaging, or DCA, is an investing strategy where you buy a fixed amount of an asset at regular intervals instead of investing everything at once.
+      It helps spread entry points over time and reduces the pressure of trying to time the market perfectly.
+    </p>
 
-<p>
-The calculator takes each of your purchases and combines them into one average cost basis. That means it adds up the total money you invested, adds up the total quantity you bought, and then divides the total cost by the total amount of asset you own.
-</p>
+    <p>
+      The main point of DCA is consistency. You keep buying through ups and downs, and the average price of your position becomes the weighted result of all those buys.
+    </p>
 
-<p>
-The basic idea is:
-</p>
+    <h2>How This DCA Calculator Works</h2>
+    <p>
+      You enter each buy as a separate price, and the calculator assumes the same investment amount for every buy.
+      It then calculates how many coins were purchased on each date, adds them together, and finds the true average cost basis.
+    </p>
 
-<p><strong>Average Price = Total Invested ÷ Total Units Bought</strong></p>
+    <div class="formula">
+      Coins per buy = Investment per period ÷ Buy price
+      <br>
+      Total coins = sum of all coins bought
+      <br>
+      Total invested = Investment per period × number of buys
+      <br>
+      Average price = Total invested ÷ Total coins
+    </div>
 
-<p>
-From there, the calculator compares your average price to the current market price so you can see whether your position is in profit or loss. This gives you a better picture than looking at one buy order alone, because DCA is about the full position, not just one entry.
-</p>
+    <h2>Why DCA Matters</h2>
+    <p>
+      DCA matters because markets are volatile. Buying in smaller chunks over time lowers the risk of entering at a bad moment.
+      It does not guarantee profit, but it can make investing more disciplined and easier to manage.
+    </p>
 
-<h2>Why Dollar Cost Averaging Matters</h2>
+    <ul>
+      <li>See your true average entry price</li>
+      <li>Track how much you have invested in total</li>
+      <li>Compare your DCA position with current market price</li>
+      <li>Understand how recurring buys affect performance</li>
+      <li>Make more disciplined investing decisions</li>
+    </ul>
 
-<p>
-Dollar cost averaging matters because markets do not move in a straight line. Prices rise and fall, and many investors do not want their entire position exposed to a single entry point. By buying in smaller chunks over time, you reduce the risk of entering at the worst possible moment.
-</p>
+    <h2>How to Use This Calculator</h2>
+    <ul>
+      <li>Add each buy price one by one</li>
+      <li>Keep the same investment amount per buy</li>
+      <li>Enter the current price</li>
+      <li>Click calculate to see the result</li>
+    </ul>
 
-<p>
-DCA does not magically guarantee profit, and it does not remove risk. What it does is create a more disciplined way to invest. It can help you stay consistent, avoid emotional decisions, and build a position without trying to time every move perfectly.
-</p>
+    <p style="font-weight:bold; color:#f87171;">
+      ⚠️ DCA improves structure, not certainty. It is a strategy, not a guarantee.
+    </p>
 
-<ul>
-  <li>See your true average entry price</li>
-  <li>Track how much you have invested in total</li>
-  <li>Compare your DCA position with current market price</li>
-  <li>Understand how recurring buys affect long-term performance</li>
-  <li>Make more disciplined investing decisions</li>
-</ul>
+    <h2>Frequently Asked Questions</h2>
 
-<h2>When DCA Makes Sense</h2>
+    <div class="faq">
+      <div class="faq-item">
+        <button class="faq-question" type="button">
+          What is dollar cost averaging?
+          <span class="arrow">▼</span>
+        </button>
+        <div class="faq-answer">
+          <p>
+            Dollar cost averaging is an investing strategy where you buy a fixed amount of an asset at regular intervals instead of investing everything at once.
+          </p>
+        </div>
+      </div>
 
-<p>
-DCA is often used when investors want to build a position over time instead of investing all at once. It can be useful in volatile markets, long-term investing plans, and recurring investment strategies.
-</p>
+      <div class="faq-item">
+        <button class="faq-question" type="button">
+          Is DCA better than buying all at once?
+          <span class="arrow">▼</span>
+        </button>
+        <div class="faq-answer">
+          <p>
+            Not always. DCA can reduce timing risk and make investing more consistent, but lump sum investing can outperform if the market rises steadily.
+          </p>
+        </div>
+      </div>
 
-<p>
-Many investors use DCA for assets they plan to hold for years rather than weeks. It is common in crypto, index funds, retirement accounts, and other long-term growth strategies where consistency matters more than short-term price swings.
-</p>
+      <div class="faq-item">
+        <button class="faq-question" type="button">
+          Why is DCA popular in crypto and stocks?
+          <span class="arrow">▼</span>
+        </button>
+        <div class="faq-answer">
+          <p>
+            DCA is popular because crypto and stocks can be volatile. Buying gradually helps investors avoid relying on a single entry price.
+          </p>
+        </div>
+      </div>
 
-<h2>How to Use This Calculator</h2>
+      <div class="faq-item">
+        <button class="faq-question" type="button">
+          What does this calculator tell me?
+          <span class="arrow">▼</span>
+        </button>
+        <div class="faq-answer">
+          <p>
+            It shows your total invested amount, total coins bought, average price, current value, and profit or loss.
+          </p>
+        </div>
+      </div>
 
-<ul>
-  <li>Enter each purchase amount and price</li>
-  <li>Repeat for all your buys</li>
-  <li>Enter the current market price if needed</li>
-  <li>Click calculate to see your average cost, total investment, and position value</li>
-</ul>
+      <div class="faq-item">
+        <button class="faq-question" type="button">
+          Can DCA reduce losses?
+          <span class="arrow">▼</span>
+        </button>
+        <div class="faq-answer">
+          <p>
+            DCA can reduce the impact of buying at a bad time, but it does not eliminate losses.
+          </p>
+        </div>
+      </div>
 
-<p>
-If your buying pattern changes over time, you can still use this tool to estimate your overall entry and evaluate whether your strategy is working the way you expected.
-</p>
-
-<p style="font-weight:bold; color:#f87171;">
-⚠️ DCA improves structure, not certainty. It is a strategy, not a guarantee.
-</p>
-
-<h2>Frequently Asked Questions</h2>
-
-<div class="faq">
-
-  <div class="faq-item">
-    <button class="faq-question">
-      What is dollar cost averaging?
-      <span class="arrow">▼</span>
-    </button>
-    <div class="faq-answer">
-      <p>
-        Dollar cost averaging is an investing strategy where you buy a fixed amount of an asset at regular intervals instead of investing everything at once. It helps spread out entry points over time.
-      </p>
+      <div class="faq-item">
+        <button class="faq-question" type="button">
+          Is DCA useful for long-term investors?
+          <span class="arrow">▼</span>
+        </button>
+        <div class="faq-answer">
+          <p>
+            Yes. DCA is one of the simplest long-term investing strategies because it encourages consistency and reduces emotional decision-making.
+          </p>
+        </div>
+      </div>
     </div>
   </div>
 
-  <div class="faq-item">
-    <button class="faq-question">
-      Is DCA better than buying all at once?
-      <span class="arrow">▼</span>
-    </button>
-    <div class="faq-answer">
-      <p>
-        Not always. DCA can reduce timing risk and make investing more consistent, but lump sum investing can outperform if the market rises steadily. The better method depends on your goals, risk tolerance, and market conditions.
-      </p>
-    </div>
+  <div class="related">
+    <h3>Related Calculators</h3>
+    <p>You may also find these tools useful:</p>
+    <ul>
+      <li><a href="compound-interest-calculator.html">Compound Interest Calculator</a></li>
+      <li><a href="roi-calculator.html">ROI Calculator</a></li>
+      <li><a href="future-value-calculator.html">Future Value Calculator</a></li>
+      <li><a href="average-price-calculator.html">Average Price Calculator</a></li>
+      <li><a href="crypto-profit-calculator.html">Crypto Profit Calculator</a></li>
+    </ul>
   </div>
 
-  <div class="faq-item">
-    <button class="faq-question">
-      Why is DCA popular in crypto and stocks?
-      <span class="arrow">▼</span>
-    </button>
-    <div class="faq-answer">
-      <p>
-        DCA is popular because crypto and stocks can be volatile. Buying gradually helps investors avoid relying on a single entry price and makes long-term accumulation easier to manage.
-      </p>
-    </div>
+  <div class="disclaimer">
+    <p>
+      <strong>Disclaimer:</strong> The calculators on this website are provided for informational and educational purposes only.
+      All results are estimates based on the values entered and do not constitute financial, investment, or trading advice.
+      Always conduct your own research before making financial decisions.
+    </p>
   </div>
 
-  <div class="faq-item">
-    <button class="faq-question">
-      What does this calculator tell me?
-      <span class="arrow">▼</span>
-    </button>
-    <div class="faq-answer">
-      <p>
-        This calculator shows your average buy price, total amount invested, total units accumulated, and the current value of your position. It helps you understand your full DCA result, not just one buy order.
-      </p>
-    </div>
-  </div>
+  <script src="footer.js"></script>
+  <script>
+    let chart = null;
+    let buyCount = 0;
 
-  <div class="faq-item">
-    <button class="faq-question">
-      Can DCA reduce losses?
-      <span class="arrow">▼</span>
-    </button>
-    <div class="faq-answer">
-      <p>
-        DCA can reduce the impact of buying at a bad time, but it does not eliminate losses. If the asset keeps falling for a long time, your position can still lose value.
-      </p>
-    </div>
-  </div>
+    function money(value) {
+      const sign = value < 0 ? "-" : "";
+      return `${sign}$${Math.abs(value).toLocaleString(undefined, {
+        minimumFractionDigits: 2,
+        maximumFractionDigits: 2
+      })}`;
+    }
 
-  <div class="faq-item">
-    <button class="faq-question">
-      Is DCA useful for long-term investors?
-      <span class="arrow">▼</span>
-    </button>
-    <div class="faq-answer">
-      <p>
-        Yes. DCA is one of the simplest long-term investing strategies because it encourages consistency, reduces emotional decision-making, and makes it easier to build a position over time.
-      </p>
-    </div>
-  </div>
+    function addBuy(){
+      buyCount += 1;
 
-</div>
-  
- <div class="related">
-<h3>Related Calculators</h3>
-<p>You may also find these tools useful:</p>
-<ul>
-<li><a href="compound-interest-calculator.html">Compound Interest Calculator</a></li>
-<li><a href="roi-calculator.html">ROI Calculator</a></li>
-<li><a href="future-value-calculator.html">Future Value Calculator</a></li>
-<li><a href="average-price-calculator.html">Average Price Calculator</a></li>
-<li><a href="crypto-profit-calculator.html">Crypto Profit Calculator</a></li>
-</ul>
- </div> 
-  
-<div class="disclaimer">
-<p>
-<strong>Disclaimer:</strong> The calculators on this website are provided for informational and educational purposes only. 
-All results are estimates based on the values entered and do not constitute financial, investment, or trading advice. 
-Always conduct your own research before making financial decisions.
-</p>
-</div>
+      const row = document.createElement("div");
+      row.className = "buy-row";
+      row.innerHTML = `
+        <div class="field" style="margin:0;">
+          <label>Buy price #${buyCount} ($)</label>
+          <input class="buy-price" type="number" min="0" step="any" placeholder="e.g. 100">
+        </div>
+        <button class="remove-btn" type="button">Remove</button>
+      `;
 
-<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-<script src="footer.js"></script>
-<script>
-
-let chart;
-
-function calculate(){
-
-let investment = parseFloat(document.getElementById("investment").value)
-let price = parseFloat(document.getElementById("price").value)
-let finalprice = parseFloat(document.getElementById("finalprice").value)
-
-let coins = investment / price
-let value = coins * finalprice
-let profit = value - investment
-
-document.getElementById("result").innerHTML =
-"Coins bought: " + coins.toFixed(4) +
-"<br>Current value: $" + value.toFixed(2) +
-"<br>Profit/Loss: $" + profit.toFixed(2)
-
-drawChart(investment,value)
-
-}
-
-function drawChart(investment,value){
-
-let ctx = document.getElementById("myChart")
-
-if(chart){
-chart.destroy()
-}
-
-let color = value >= investment ? "green" : "red"
-
-chart = new Chart(ctx,{
-type:"bar",
-data:{
-labels:["Investment","Current Value"],
-datasets:[{
-label:"Investment vs Value",
-data:[investment,value],
-backgroundColor:["gray", color]
-}]
-},
-options:{
-responsive:true
-}
-})
-
-}
-document.addEventListener("DOMContentLoaded", function(){
-
-  document.querySelectorAll(".faq-question").forEach(btn => {
-    btn.addEventListener("click", () => {
-
-      const item = btn.parentElement;
-
-      document.querySelectorAll(".faq-item").forEach(i => {
-        if(i !== item) i.classList.remove("active");
+      row.querySelector(".remove-btn").addEventListener("click", () => {
+        row.remove();
+        renumberBuyLabels();
       });
 
-      item.classList.toggle("active");
+      document.getElementById("buys").appendChild(row);
+    }
 
+    function renumberBuyLabels() {
+      const rows = document.querySelectorAll(".buy-row");
+      rows.forEach((row, index) => {
+        const label = row.querySelector("label");
+        if (label) label.textContent = `Buy price #${index + 1} ($)`;
+      });
+      buyCount = rows.length;
+    }
+
+    function calculate(){
+      const perPeriod = parseFloat(document.getElementById("investment").value);
+      const currentPrice = parseFloat(document.getElementById("currentPrice").value);
+
+      const buyInputs = Array.from(document.querySelectorAll(".buy-price"));
+
+      if (isNaN(perPeriod) || isNaN(currentPrice) || buyInputs.length === 0) {
+        alert("Fill all fields and add at least one buy price.");
+        return;
+      }
+
+      if (perPeriod <= 0 || currentPrice <= 0) {
+        alert("Investment per period and current price must be greater than zero.");
+        return;
+      }
+
+      let totalCoins = 0;
+      let totalInvested = 0;
+      let validBuys = 0;
+
+      buyInputs.forEach(input => {
+        const price = parseFloat(input.value);
+        if (!isNaN(price) && price > 0) {
+          totalCoins += perPeriod / price;
+          totalInvested += perPeriod;
+          validBuys += 1;
+        }
+      });
+
+      if (validBuys === 0) {
+        alert("Enter at least one valid buy price.");
+        return;
+      }
+
+      const avgPrice = totalInvested / totalCoins;
+      const currentValue = totalCoins * currentPrice;
+      const profit = currentValue - totalInvested;
+      const profitPct = (profit / totalInvested) * 100;
+
+      document.getElementById("investedOut").innerText = money(totalInvested);
+      document.getElementById("coinsOut").innerText = totalCoins.toFixed(6);
+      document.getElementById("avgOut").innerText = money(avgPrice);
+      document.getElementById("valueOut").innerText = money(currentValue);
+      document.getElementById("profitOut").innerText = `${money(profit)} (${profitPct.toFixed(2)}%)`;
+
+      let insight = "";
+      let insightClass = "";
+
+      if (profit > 0) {
+        insight = "Position is in profit";
+        insightClass = "insight-good";
+      } else if (profit === 0) {
+        insight = "Position is at break-even";
+        insightClass = "insight-medium";
+      } else {
+        insight = "Position is in loss";
+        insightClass = "insight-weak";
+      }
+
+      document.getElementById("insightOut").innerHTML = `<span class="${insightClass}">${insight}</span>`;
+      document.getElementById("resultCard").style.display = "block";
+
+      drawChart(totalInvested, currentValue);
+    }
+
+    function drawChart(invested, value){
+      const ctx = document.getElementById("myChart").getContext("2d");
+
+      if(chart){
+        chart.destroy();
+      }
+
+      chart = new Chart(ctx,{
+        type:"bar",
+        data:{
+          labels:["Total Invested","Current Value"],
+          datasets:[{
+            label:"DCA Position",
+            data:[invested, value],
+            backgroundColor:["#3b82f6", value >= invested ? "#22c55e" : "#ef4444"]
+          }]
+        },
+        options:{
+          responsive:true,
+          plugins:{
+            legend:{
+              labels:{ color:"white" }
+            },
+            tooltip:{
+              callbacks:{
+                label: function(context){
+                  return `${context.dataset.label}: ${money(context.parsed.y)}`;
+                }
+              }
+            }
+          },
+          scales:{
+            x:{
+              ticks:{ color:"white" },
+              grid:{ color:"rgba(255,255,255,0.08)" }
+            },
+            y:{
+              ticks:{
+                color:"white",
+                callback: function(value){
+                  return "$" + Number(value).toLocaleString();
+                }
+              },
+              grid:{ color:"rgba(255,255,255,0.08)" }
+            }
+          }
+        }
+      });
+    }
+
+    document.addEventListener("DOMContentLoaded", function(){
+      addBuy();
+      addBuy();
+
+      document.querySelectorAll(".faq-question").forEach(btn => {
+        btn.addEventListener("click", () => {
+          const item = btn.parentElement;
+
+          document.querySelectorAll(".faq-item").forEach(i => {
+            if(i !== item) i.classList.remove("active");
+          });
+
+          item.classList.toggle("active");
+        });
+      });
     });
-  });
-
-});
-</script>
-
+  </script>
 </body>
-</html>
+  </html>
