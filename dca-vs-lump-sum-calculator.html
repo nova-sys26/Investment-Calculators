@@ -14,15 +14,15 @@
 
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>DCA vs Lump Sum Calculator – Compare Investment Strategies</title>
-  <meta name="description" content="Compare dollar cost averaging vs lump sum investing. See which strategy performs better over time with a clear chart, examples, and explanations.">
+  <title>DCA vs Lump Sum Monte Carlo Calculator – Compare Investment Strategies</title>
+  <meta name="description" content="Compare dollar cost averaging vs lump sum investing with Monte Carlo simulation. Run thousands of market paths to estimate which strategy may perform better over time.">
   <meta name="theme-color" content="#0f172a">
   <meta name="robots" content="index,follow,max-image-preview:large">
 
   <meta property="og:type" content="website">
   <meta property="og:url" content="https://novainvesttools.com/dca-vs-lump-sum-calculator.html">
-  <meta property="og:title" content="DCA vs Lump Sum Calculator – Compare Investment Strategies">
-  <meta property="og:description" content="Compare dollar cost averaging vs lump sum investing with a clear chart and simple results.">
+  <meta property="og:title" content="DCA vs Lump Sum Monte Carlo Calculator – Compare Investment Strategies">
+  <meta property="og:description" content="Compare DCA vs lump sum investing with Monte Carlo simulation. Run thousands of simulated market paths and see which strategy comes out ahead.">
 
   <link rel="preconnect" href="https://cdn.jsdelivr.net">
   <link rel="dns-prefetch" href="https://cdn.jsdelivr.net">
@@ -37,17 +37,17 @@
   {
     "@context": "https://schema.org",
     "@type": "WebApplication",
-    "name": "DCA vs Lump Sum Calculator",
+    "name": "DCA vs Lump Sum Monte Carlo Calculator",
     "url": "https://novainvesttools.com/dca-vs-lump-sum-calculator.html",
     "applicationCategory": "FinanceApplication",
     "operatingSystem": "All",
     "browserRequirements": "Requires JavaScript",
-    "description": "Compare dollar cost averaging and lump sum investing returns.",
+    "description": "Compare dollar cost averaging and lump sum investing using Monte Carlo simulation.",
     "featureList": [
+      "Monte Carlo simulation",
       "Strategy comparison",
       "Return comparison",
-      "Risk comparison",
-      "Investment decision tool"
+      "Probability of outperformance"
     ],
     "offers": {
       "@type": "Offer",
@@ -64,23 +64,31 @@
     "mainEntity": [
       {
         "@type": "Question",
-        "name": "Is lump sum always better than DCA?",
+        "name": "What is Monte Carlo simulation?",
         "acceptedAnswer": {
           "@type": "Answer",
-          "text": "Not always. Lump sum often wins in rising markets because money is invested earlier, but DCA can be better for reducing timing risk."
+          "text": "Monte Carlo simulation runs many possible market paths using random return scenarios so you can compare strategy outcomes more realistically."
         }
       },
       {
         "@type": "Question",
-        "name": "Why does DCA feel safer?",
+        "name": "Why use Monte Carlo instead of a single return rate?",
         "acceptedAnswer": {
           "@type": "Answer",
-          "text": "DCA spreads purchases across time, so you do not rely on one single entry price."
+          "text": "A single return rate assumes one fixed outcome. Monte Carlo testing shows a range of possible results, which is more useful for uncertain markets."
         }
       },
       {
         "@type": "Question",
-        "name": "Does this calculator assume monthly DCA?",
+        "name": "Does this calculator guarantee a winner?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "No. It estimates probabilities and expected outcomes. Markets are uncertain, so the results are informative, not guaranteed."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Does this use monthly DCA?",
         "acceptedAnswer": {
           "@type": "Answer",
           "text": "Yes. This version uses monthly DCA and splits the total amount evenly across the DCA period you enter."
@@ -88,26 +96,18 @@
       },
       {
         "@type": "Question",
-        "name": "Can DCA beat lump sum?",
+        "name": "Can this be used for stocks and crypto?",
         "acceptedAnswer": {
           "@type": "Answer",
-          "text": "Yes. DCA can outperform in flat or falling markets, or when prices drop during the buying period."
+          "text": "Yes. The logic works for stocks, ETFs, crypto, and other assets where you want to compare one-time investing against recurring buys."
         }
       },
       {
         "@type": "Question",
-        "name": "What return rate should I use?",
+        "name": "Is this more realistic than a fixed-return calculator?",
         "acceptedAnswer": {
           "@type": "Answer",
-          "text": "Use a realistic long-term return estimate. Conservative assumptions usually produce more useful planning results."
-        }
-      },
-      {
-        "@type": "Question",
-        "name": "Is this useful for crypto and stocks?",
-        "acceptedAnswer": {
-          "@type": "Answer",
-          "text": "Yes. The logic works for stocks, ETFs, crypto, and any other asset where you want to compare one-time investing against recurring buys."
+          "text": "Yes. Monte Carlo simulation is more realistic because it tests many possible return paths instead of assuming one exact growth line."
         }
       }
     ]
@@ -161,7 +161,7 @@
       max-width:560px;
       box-shadow:0 10px 25px rgba(0,0,0,0.35);
       border:1px solid rgba(255,255,255,0.05);
-      backdrop-filter: blur(6px);
+      backdrop-filter:blur(6px);
     }
 
     h1{
@@ -172,14 +172,14 @@
     }
 
     .quick-answer{
-      background: rgba(59,130,246,0.12);
-      border: 1px solid rgba(59,130,246,0.25);
-      padding: 12px 14px;
-      border-radius: 10px;
-      font-size: 15px;
-      line-height: 1.6;
-      color: #e2e8f0;
-      margin: 0 0 18px;
+      background:rgba(59,130,246,0.12);
+      border:1px solid rgba(59,130,246,0.25);
+      padding:12px 14px;
+      border-radius:10px;
+      font-size:15px;
+      line-height:1.6;
+      color:#e2e8f0;
+      margin:0 0 18px;
     }
 
     .subhead{
@@ -226,7 +226,7 @@
       gap:12px;
     }
 
-    @media (max-width: 700px){
+    @media (max-width:700px){
       .grid{
         grid-template-columns:1fr;
       }
@@ -395,7 +395,7 @@
     }
 
     .faq-item.active .faq-answer{
-      max-height:260px;
+      max-height:280px;
       padding-bottom:12px;
     }
 
@@ -447,7 +447,7 @@
       width:90%;
     }
 
-    @media (max-width: 700px){
+    @media (max-width:700px){
       .container{
         padding:22px;
       }
@@ -472,17 +472,20 @@
 
   <div class="container">
     <h1>DCA vs Lump Sum Calculator</h1>
+
     <p class="quick-answer">
-      Compare dollar cost averaging against lump sum investing using the same total amount.
-      See how both strategies perform over time with a clean chart and simple results.
+      A Monte Carlo simulation shows thousands of possible outcomes instead of one fixed answer.
+      Compare dollar cost averaging and lump sum investing using the same capital, time horizon, expected return, and volatility.
     </p>
 
     <p class="subhead">
-      Compare one-time investing versus recurring buys using the same capital, expected return, and time horizon.
+      This calculator simulates many possible market paths so you can estimate which strategy may perform better over time.
+      It is more realistic than a single-return calculator because markets do not move in a straight line.
     </p>
 
     <div class="badge-row">
-      <span class="badge">Strategy comparison</span>
+      <span class="badge">Monte Carlo simulation</span>
+      <span class="badge soft">Strategy comparison</span>
       <span class="badge soft">Investment planning</span>
       <span class="badge soft">Volatility-aware</span>
     </div>
@@ -508,17 +511,29 @@
         <label for="annualReturnPct">Expected Annual Return (%)</label>
         <input id="annualReturnPct" type="number" step="any" placeholder="e.g. 8">
       </div>
+
+      <div class="field">
+        <label for="annualVolatilityPct">Annual Volatility (%)</label>
+        <input id="annualVolatilityPct" type="number" step="any" placeholder="e.g. 20">
+      </div>
+
+      <div class="field">
+        <label for="simulations">Monte Carlo Runs</label>
+        <input id="simulations" type="number" min="100" step="100" placeholder="e.g. 1000">
+      </div>
     </div>
 
-    <button onclick="calculateDCA()" type="button">Compare Strategies</button>
+    <button onclick="calculateDCA()" type="button">Run Simulation</button>
 
     <div id="resultCard" class="result-card">
       <div class="result-line"><strong>Total invested:</strong> <span id="investedOut">—</span></div>
       <div class="result-line"><strong>DCA monthly amount:</strong> <span id="monthlyOut">—</span></div>
-      <div class="result-line"><strong>Lump sum final value:</strong> <span id="lumpOut">—</span></div>
-      <div class="result-line"><strong>DCA final value:</strong> <span id="dcaOut">—</span></div>
+      <div class="result-line"><strong>Average lump sum final value:</strong> <span id="avgLumpOut">—</span></div>
+      <div class="result-line"><strong>Average DCA final value:</strong> <span id="avgDcaOut">—</span></div>
+      <div class="result-line"><strong>Median lump sum final value:</strong> <span id="medLumpOut">—</span></div>
+      <div class="result-line"><strong>Median DCA final value:</strong> <span id="medDcaOut">—</span></div>
+      <div class="result-line"><strong>DCA win rate:</strong> <span id="winRateOut">—</span></div>
       <div class="result-line"><strong>Winner:</strong> <span id="winnerOut">—</span></div>
-      <div class="result-line"><strong>Difference:</strong> <span id="differenceOut">—</span></div>
       <div class="result-line"><strong>Insight:</strong> <span id="insightOut">—</span></div>
     </div>
 
@@ -530,51 +545,53 @@
     <p>
       Dollar cost averaging, or DCA, means investing a fixed amount at regular intervals instead of investing everything at once.
       Lump sum investing means putting the full amount into the market immediately.
-      This calculator compares both approaches using the same total amount so you can see how they behave over time.
+      This calculator compares both approaches using Monte Carlo simulation, so the result is based on many possible market paths instead of one fixed assumption.
     </p>
 
     <p>
       In a rising market, lump sum investing often has the advantage because the money starts compounding earlier.
       In choppy or declining markets, DCA can feel safer because it spreads entry points across time and reduces timing risk.
-      This calculator helps you compare the tradeoff instead of guessing.
+      Monte Carlo simulation helps you see that tradeoff more clearly.
     </p>
 
     <h2>How this calculator works</h2>
     <p>
-      The calculator assumes that both strategies use the same total capital.
+      The calculator assumes both strategies use the same total capital.
       Lump sum invests all of it at the beginning.
       DCA divides the capital evenly across the chosen DCA period and invests it monthly.
-      After the DCA period ends, the invested balance continues compounding until the end of the analysis horizon.
+      Each simulation creates a different price path based on the return and volatility values you enter.
     </p>
 
     <div class="formula">
-      Monthly return = (1 + annual return)^(1 / 12) - 1
+      Monthly log return is sampled from a distribution based on:
+      <br>
+      expected annual return + annual volatility
       <br>
       Lump sum = full amount invested at month 0
       <br>
       DCA = total amount / DCA months, invested monthly
       <br>
-      Final value = invested balance + compound growth over time
+      Final result = thousands of simulated ending values
     </div>
 
     <p>
-      The chart shows both strategies month by month so you can see whether lump sum pulls ahead early or DCA catches up later.
-      This is especially useful for long-term investors who want a simple answer without doing the math by hand.
+      The chart shows the average ending path across all simulations so you can compare how each strategy behaves over time.
+      The result card also shows average, median, and win-rate statistics, which is much more useful than a calculator that gives only one fixed answer.
     </p>
 
     <h2>Why this comparison matters</h2>
     <p>
-      This comparison matters because the biggest mistake in investing is not usually the asset itself, but the entry timing.
-      Some investors want to reduce regret and emotional pressure with DCA.
-      Others want to maximize time in the market with lump sum investing.
-      Both can be valid, depending on your goals and risk tolerance.
+      The biggest mistake in investing is often entry timing.
+      Some investors prefer DCA to reduce emotional pressure.
+      Others prefer lump sum because it maximizes time in the market.
+      This calculator helps you compare both strategies using a realistic simulation instead of guesswork.
     </p>
 
     <ul>
       <li>Compare the same capital with two different strategies</li>
-      <li>See how time in the market affects growth</li>
-      <li>Understand the effect of spreading entries over time</li>
-      <li>Make a more informed long-term investing decision</li>
+      <li>See how volatility changes the outcome</li>
+      <li>Understand the effect of time in the market</li>
+      <li>Check which strategy wins more often in simulated scenarios</li>
     </ul>
 
     <h2>How to use this calculator</h2>
@@ -582,8 +599,9 @@
       <li>Enter the total amount you want to invest</li>
       <li>Choose how many months you want to use DCA</li>
       <li>Set your analysis horizon in years</li>
-      <li>Enter an expected annual return</li>
-      <li>Click compare to see both strategies and the chart</li>
+      <li>Enter an expected annual return and volatility</li>
+      <li>Choose how many Monte Carlo runs you want</li>
+      <li>Click simulate to see the results and chart</li>
     </ul>
 
     <h2>Frequently Asked Questions</h2>
@@ -591,77 +609,75 @@
     <div class="faq">
       <div class="faq-item">
         <button class="faq-question" type="button">
-          Is lump sum always better than DCA?
+          What is Monte Carlo simulation?
           <span class="arrow">▼</span>
         </button>
         <div class="faq-answer">
           <p>
-            Not always, but lump sum often wins when markets rise over time because the money starts compounding earlier.
-            DCA can be better for emotional comfort and for reducing the risk of investing at a bad time.
+            Monte Carlo simulation runs many possible market paths using random return scenarios.
+            This gives a range of possible outcomes instead of one fixed result.
           </p>
         </div>
       </div>
 
       <div class="faq-item">
         <button class="faq-question" type="button">
-          Why does DCA feel safer?
+          Why use Monte Carlo instead of a single return rate?
           <span class="arrow">▼</span>
         </button>
         <div class="faq-answer">
           <p>
-            DCA spreads your purchases across time, so you are not relying on one single entry price.
-            That reduces timing risk and can make investing easier to stick with.
+            A single return rate assumes one exact outcome.
+            Monte Carlo testing shows a spread of possible outcomes, which is more useful when markets are uncertain.
           </p>
         </div>
       </div>
 
       <div class="faq-item">
         <button class="faq-question" type="button">
-          Does this calculator assume monthly DCA?
+          Does this calculator guarantee a winner?
           <span class="arrow">▼</span>
         </button>
         <div class="faq-answer">
           <p>
-            Yes. This version uses monthly DCA so the comparison stays simple and realistic.
-            The total amount is split evenly across the number of DCA months you enter.
+            No. It estimates probabilities and expected outcomes.
+            Markets are uncertain, so the results are informative rather than guaranteed.
           </p>
         </div>
       </div>
 
       <div class="faq-item">
         <button class="faq-question" type="button">
-          Can DCA beat lump sum?
+          Does this assume monthly DCA?
           <span class="arrow">▼</span>
         </button>
         <div class="faq-answer">
           <p>
-            Yes, especially in flat or falling markets.
-            DCA can also outperform when the price drops during the buying period and your later contributions buy at lower levels.
+            Yes. This version uses monthly DCA and splits the total amount evenly across the DCA period you enter.
           </p>
         </div>
       </div>
 
       <div class="faq-item">
         <button class="faq-question" type="button">
-          What return rate should I use?
+          Can this be used for stocks and crypto?
           <span class="arrow">▼</span>
         </button>
         <div class="faq-answer">
           <p>
-            Use a realistic long-term return estimate.
-            Conservative assumptions usually produce more useful planning results than overly optimistic ones.
+            Yes. The logic works for stocks, ETFs, crypto, and other assets where you want to compare one-time investing against recurring buys.
           </p>
         </div>
       </div>
 
       <div class="faq-item">
         <button class="faq-question" type="button">
-          Is this useful for crypto and stocks?
+          Is this more realistic than a fixed-return calculator?
           <span class="arrow">▼</span>
         </button>
         <div class="faq-answer">
           <p>
-            Yes. The logic works for stocks, ETFs, crypto, and any other asset where you want to compare one-time investing against recurring buys.
+            Yes. Monte Carlo simulation is more realistic because it tests many possible return paths instead of assuming one straight line.
           </p>
         </div>
       </div>
@@ -703,13 +719,32 @@
       return "$" + fmt(value);
     }
 
+    function randnBM(){
+      let u = 0, v = 0;
+      while(u === 0) u = Math.random();
+      while(v === 0) v = Math.random();
+      return Math.sqrt(-2.0 * Math.log(u)) * Math.cos(2.0 * Math.PI * v);
+    }
+
+    function percentile(values, p){
+      if(!values.length) return 0;
+      const sorted = [...values].sort((a,b) => a - b);
+      const idx = (sorted.length - 1) * p;
+      const lo = Math.floor(idx);
+      const hi = Math.ceil(idx);
+      if (lo === hi) return sorted[lo];
+      return sorted[lo] * (hi - idx) + sorted[hi] * (idx - lo);
+    }
+
     function calculateDCA(){
       const totalInvestment = parseFloat(document.getElementById("totalInvestment").value);
       const dcaMonths = parseInt(document.getElementById("dcaMonths").value, 10);
       const analysisYears = parseFloat(document.getElementById("analysisYears").value);
       const annualReturnPct = parseFloat(document.getElementById("annualReturnPct").value);
+      const annualVolatilityPct = parseFloat(document.getElementById("annualVolatilityPct").value);
+      const simulations = parseInt(document.getElementById("simulations").value, 10) || 1000;
 
-      if ([totalInvestment, dcaMonths, analysisYears, annualReturnPct].some(v => isNaN(v))){
+      if ([totalInvestment, dcaMonths, analysisYears, annualReturnPct, annualVolatilityPct].some(v => isNaN(v))){
         alert("Please fill in all required fields.");
         return;
       }
@@ -726,152 +761,216 @@
         return;
       }
 
+      if (annualVolatilityPct < 0){
+        alert("Volatility cannot be negative.");
+        return;
+      }
+
       if (annualReturnPct <= -100){
         alert("Return must be greater than -100%.");
         return;
       }
 
-      const monthlyReturn = Math.pow(1 + annualReturnPct / 100, 1 / 12) - 1;
-      const monthlyContribution = totalInvestment / dcaMonths;
-
-      let lumpSum = totalInvestment;
-      let dcaValue = 0;
-
-      const labels = [0];
-      const lumpData = [totalInvestment];
-      const dcaData = [0];
-
-      for (let month = 1; month <= totalMonths; month++){
-        lumpSum *= (1 + monthlyReturn);
-
-        if (month <= dcaMonths){
-          dcaValue += monthlyContribution;
-        }
-        dcaValue *= (1 + monthlyReturn);
-
-        labels.push(month);
-        lumpData.push(lumpSum);
-        dcaData.push(dcaValue);
+      if (simulations < 100){
+        alert("Use at least 100 Monte Carlo runs.");
+        return;
       }
 
-      const difference = lumpSum - dcaValue;
-      const absDifference = Math.abs(difference);
+      const monthlyContribution = totalInvestment / dcaMonths;
+      const monthlyVol = (annualVolatilityPct / 100) / Math.sqrt(12);
+
+      // Log-return drift, adjusted so the path still roughly matches the expected annual return.
+      const monthlyDrift = Math.log(1 + annualReturnPct / 100) / 12 - 0.5 * monthlyVol * monthlyVol;
+
+      const labels = [0];
+      const avgLumpPath = new Array(totalMonths + 1).fill(0);
+      const avgDcaPath = new Array(totalMonths + 1).fill(0);
+
+      const lumpFinals = [];
+      const dcaFinals = [];
+
+      let dcaWins = 0;
+      let lumpWins = 0;
+      let ties = 0;
+
+      for(let s = 0; s < simulations; s++){
+        let price = 1;
+        let lumpUnits = totalInvestment;
+        let dcaUnits = 0;
+
+        let lumpValue = totalInvestment;
+        let dcaValue = 0;
+
+        avgLumpPath[0] += lumpValue;
+        avgDcaPath[0] += dcaValue;
+
+        for(let month = 1; month <= totalMonths; month++){
+          if(month <= dcaMonths){
+            dcaUnits += monthlyContribution / price;
+          }
+
+          const z = randnBM();
+          const monthlyFactor = Math.exp(monthlyDrift + monthlyVol * z);
+          price *= monthlyFactor;
+
+          lumpValue = lumpUnits * price;
+          dcaValue = dcaUnits * price;
+
+          avgLumpPath[month] += lumpValue;
+          avgDcaPath[month] += dcaValue;
+
+          if(s === 0){
+            labels.push(month);
+          }
+        }
+
+        lumpFinals.push(lumpValue);
+        dcaFinals.push(dcaValue);
+
+        if(Math.abs(lumpValue - dcaValue) < 0.000001){
+          ties++;
+        } else if(dcaValue > lumpValue){
+          dcaWins++;
+        } else {
+          lumpWins++;
+        }
+      }
+
+      for(let i = 0; i < avgLumpPath.length; i++){
+        avgLumpPath[i] /= simulations;
+        avgDcaPath[i] /= simulations;
+      }
+
+      const avgLumpFinal = avgLumpPath[avgLumpPath.length - 1];
+      const avgDcaFinal = avgDcaPath[avgDcaPath.length - 1];
+      const medLumpFinal = percentile(lumpFinals, 0.5);
+      const medDcaFinal = percentile(dcaFinals, 0.5);
+      const winRateDca = (dcaWins / simulations) * 100;
+      const avgDifference = avgLumpFinal - avgDcaFinal;
 
       document.getElementById("investedOut").innerText = money(totalInvestment);
       document.getElementById("monthlyOut").innerText = money(monthlyContribution);
-      document.getElementById("lumpOut").innerText = money(lumpSum);
-      document.getElementById("dcaOut").innerText = money(dcaValue);
+      document.getElementById("avgLumpOut").innerText = money(avgLumpFinal);
+      document.getElementById("avgDcaOut").innerText = money(avgDcaFinal);
+      document.getElementById("medLumpOut").innerText = money(medLumpFinal);
+      document.getElementById("medDcaOut").innerText = money(medDcaFinal);
+      document.getElementById("winRateOut").innerText = `${fmt(winRateDca)}%`;
+      document.getElementById("resultCard").style.display = "block";
 
       let winnerHTML = "";
       let insight = "";
       let insightClass = "";
 
-      if (difference > 0){
-        const pct = (difference / dcaValue) * 100;
-        winnerHTML = `<span class="insight-good">Lump Sum wins</span>`;
-        document.getElementById("differenceOut").innerText = `${money(absDifference)} more than DCA (+${fmt(pct)}%)`;
-        insight = "This favors lump sum because the market trend assumption is positive and the money compounds earlier.";
+      if(winRateDca > 55){
+        winnerHTML = `<span class="insight-good">DCA wins more often</span>`;
+        insight = "In these simulations, spreading entries across time usually helped more than investing all at once.";
         insightClass = "insight-good";
-      } else if (difference < 0){
-        const pct = (absDifference / lumpSum) * 100;
-        winnerHTML = `<span class="insight-good">DCA wins</span>`;
-        document.getElementById("differenceOut").innerText = `${money(absDifference)} more than Lump Sum (+${fmt(pct)}%)`;
-        insight = "This favors DCA because spreading entries helped more than investing everything at once.";
+      } else if(winRateDca < 45){
+        winnerHTML = `<span class="insight-good">Lump Sum wins more often</span>`;
+        insight = "In these simulations, investing earlier usually had the edge because money had more time to compound.";
         insightClass = "insight-good";
       } else {
-        winnerHTML = `<span class="insight-medium">Tie</span>`;
-        document.getElementById("differenceOut").innerText = "Both strategies ended at the same value.";
-        insight = "Both strategies produced the same ending value under these assumptions.";
+        winnerHTML = `<span class="insight-medium">No clear winner</span>`;
+        insight = "Both strategies are close in these simulations. Market path and volatility matter a lot here.";
         insightClass = "insight-medium";
+      }
+
+      if(avgDifference > 0){
+        if(winRateDca < 45){
+          insight += " The average path still leaned toward lump sum.";
+        }
+      } else if(avgDifference < 0){
+        if(winRateDca > 55){
+          insight += " The average path still leaned toward DCA.";
+        }
       }
 
       document.getElementById("winnerOut").innerHTML = winnerHTML;
       document.getElementById("insightOut").innerHTML = `<span class="${insightClass}">${insight}</span>`;
-      document.getElementById("resultCard").style.display = "block";
 
-      drawChart(labels, lumpData, dcaData);
+      drawChart(labels, avgLumpPath, avgDcaPath);
     }
 
     function drawChart(labels, lumpData, dcaData){
       const ctx = document.getElementById("myChart").getContext("2d");
 
-      if (chart){
+      if(chart){
         chart.destroy();
       }
 
       chart = new Chart(ctx, {
-        type: "line",
-        data: {
-          labels: labels,
-          datasets: [
+        type:"line",
+        data:{
+          labels:labels,
+          datasets:[
             {
-              label: "Lump Sum",
-              data: lumpData,
-              borderColor: "#3b82f6",
-              backgroundColor: "rgba(59,130,246,0.12)",
-              tension: 0.25,
-              fill: true,
-              pointRadius: 0,
-              pointHoverRadius: 4
+              label:"Lump Sum (average)",
+              data:lumpData,
+              borderColor:"#3b82f6",
+              backgroundColor:"rgba(59,130,246,0.12)",
+              tension:0.25,
+              fill:true,
+              pointRadius:0,
+              pointHoverRadius:4
             },
             {
-              label: "DCA",
-              data: dcaData,
-              borderColor: "#22c55e",
-              backgroundColor: "rgba(34,197,94,0.08)",
-              tension: 0.25,
-              fill: false,
-              pointRadius: 0,
-              pointHoverRadius: 4
+              label:"DCA (average)",
+              data:dcaData,
+              borderColor:"#22c55e",
+              backgroundColor:"rgba(34,197,94,0.08)",
+              tension:0.25,
+              fill:false,
+              pointRadius:0,
+              pointHoverRadius:4
             }
           ]
         },
-        options: {
-          responsive: true,
-          plugins: {
-            legend: {
-              labels: { color: "white" }
+        options:{
+          responsive:true,
+          plugins:{
+            legend:{
+              labels:{ color:"white" }
             },
-            tooltip: {
-              callbacks: {
-                label: function(context){
+            tooltip:{
+              callbacks:{
+                label:function(context){
                   return `${context.dataset.label}: $${fmt(context.parsed.y)}`;
                 }
               }
             }
           },
-          scales: {
-            x: {
-              ticks: {
-                color: "white",
-                callback: function(value, index){
+          scales:{
+            x:{
+              ticks:{
+                color:"white",
+                callback:function(value, index){
                   const month = labels[index];
-                  if (month === 0) return "Start";
-                  if (month % 12 === 0) return `Y${month / 12}`;
+                  if(month === 0) return "Start";
+                  if(month % 12 === 0) return `Y${month / 12}`;
                   return "";
                 },
-                maxRotation: 0,
-                autoSkip: false
+                maxRotation:0,
+                autoSkip:false
               },
-              grid: { color: "rgba(255,255,255,0.08)" },
-              title: {
-                display: true,
-                text: "Time",
-                color: "white"
+              grid:{ color:"rgba(255,255,255,0.08)" },
+              title:{
+                display:true,
+                text:"Time",
+                color:"white"
               }
             },
-            y: {
-              ticks: {
-                color: "white",
-                callback: function(value){
+            y:{
+              ticks:{
+                color:"white",
+                callback:function(value){
                   return "$" + Number(value).toLocaleString();
                 }
               },
-              grid: { color: "rgba(255,255,255,0.08)" },
-              title: {
-                display: true,
-                text: "Portfolio Value ($)",
-                color: "white"
+              grid:{ color:"rgba(255,255,255,0.08)" },
+              title:{
+                display:true,
+                text:"Portfolio Value ($)",
+                color:"white"
               }
             }
           }
