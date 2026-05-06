@@ -600,7 +600,7 @@
 
       avgOut.innerText = `$${avg.toFixed(2)}`;
       costOut.innerText = `$${totalCost.toFixed(2)}`;
-      qtyOut.innerText = totalAmount.toFixed(6);
+      qtyOut.innerText = parseFloat(totalAmount.toFixed(6));
 
       let insight = "";
       let insightClass = "";
