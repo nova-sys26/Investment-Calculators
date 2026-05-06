@@ -1,7 +1,8 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<link rel="canonical" href="https://novainvesttools.com/401k-calculator.html">
+  <link rel="canonical" href="https://novainvesttools.com/401k-calculator.html">
+
   <!-- Google tag (gtag.js) -->
   <script async src="https://www.googletagmanager.com/gtag/js?id=G-ZPCXDVE8C5"></script>
   <script>
@@ -12,10 +13,19 @@
   </script>
 
   <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>401(k) Calculator – Project Retirement Balance With Employer Match</title>
   <meta name="description" content="Plan your 401(k) growth with contributions and employer match. See your future retirement balance clearly.">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="theme-color" content="#0f172a">
+  <meta name="robots" content="index,follow,max-image-preview:large">
+
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://novainvesttools.com/401k-calculator.html">
+  <meta property="og:title" content="401(k) Calculator – Project Retirement Balance With Employer Match">
+  <meta property="og:description" content="Project your 401(k) balance with contributions, employer match, salary growth, and compound returns.">
+
+  <link rel="preconnect" href="https://cdn.jsdelivr.net">
+  <link rel="dns-prefetch" href="https://cdn.jsdelivr.net">
 
   <link rel="stylesheet" href="style.css">
   <link rel="icon" href="favicon.png" type="image/png">
@@ -23,9 +33,94 @@
 
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "WebApplication",
+    "name": "401(k) Calculator",
+    "url": "https://novainvesttools.com/401k-calculator.html",
+    "applicationCategory": "FinanceApplication",
+    "operatingSystem": "All",
+    "browserRequirements": "Requires JavaScript",
+    "description": "Project your 401(k) balance with contributions, employer match, salary growth, and compound returns.",
+    "featureList": [
+      "401(k) balance projection",
+      "Employer match estimation",
+      "Salary growth modeling",
+      "Retirement growth chart"
+    ],
+    "offers": {
+      "@type": "Offer",
+      "price": "0",
+      "priceCurrency": "USD"
+    }
+  }
+  </script>
+
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": [
+      {
+        "@type": "Question",
+        "name": "Does this calculator include employer match?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Yes. You can enter both the match percentage and the match limit so the calculator can estimate employer contributions."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Why does salary growth matter?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Salary growth matters because your contribution amount usually rises as your income grows over time."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Can this calculator predict the future exactly?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "No. It is a projection based on your assumptions, not a guarantee of future market performance."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "What happens if I increase my contribution rate?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Your projected balance rises because more money is invested each year and employer matching may also increase."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Is this useful if my employer does not match?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Yes. It still shows how your own contributions and compound growth can build a retirement balance over time."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Why is the chart useful?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "The chart makes it easier to see how your balance grows over time and how much comes from compounding versus contributions."
+        }
+      }
+    ]
+  }
+  </script>
+
   <style>
     *{
       box-sizing:border-box;
+    }
+
+    html{
+      scroll-behavior:smooth;
     }
 
     body{
@@ -63,8 +158,10 @@
       padding:30px;
       border-radius:16px;
       width:90%;
-      max-width:560px;
+      max-width:640px;
       box-shadow:0 10px 25px rgba(0,0,0,0.35);
+      border:1px solid rgba(255,255,255,0.05);
+      backdrop-filter: blur(6px);
     }
 
     h1{
@@ -72,6 +169,17 @@
       margin-bottom:10px;
       font-size:32px;
       line-height:1.15;
+    }
+
+    .quick-answer{
+      background: rgba(59,130,246,0.12);
+      border: 1px solid rgba(59,130,246,0.25);
+      padding: 12px 14px;
+      border-radius: 10px;
+      font-size: 15px;
+      line-height: 1.6;
+      color: #e2e8f0;
+      margin: 0 0 18px;
     }
 
     .subhead{
@@ -124,6 +232,18 @@
       }
     }
 
+    .field{
+      margin:12px 0;
+    }
+
+    .field label{
+      display:block;
+      font-size:13px;
+      color:#cbd5e1;
+      margin:0 0 6px;
+      font-weight:600;
+    }
+
     input{
       width:100%;
       padding:14px;
@@ -137,18 +257,6 @@
 
     input:focus{
       box-shadow:0 0 0 3px rgba(59,130,246,0.18);
-    }
-
-    .field{
-      margin:12px 0;
-    }
-
-    .field label{
-      display:block;
-      font-size:13px;
-      color:#cbd5e1;
-      margin:0 0 6px;
-      font-weight:600;
     }
 
     button{
@@ -179,15 +287,31 @@
       display:none;
     }
 
-    .result-line{
-      margin:10px 0;
-      font-size:16px;
-      line-height:1.5;
-      color:#e5e7eb;
+    .result-grid{
+      display:grid;
+      grid-template-columns:repeat(auto-fit, minmax(220px, 1fr));
+      gap:12px;
     }
 
-    .result-line strong{
+    .result-box{
+      background:rgba(15,23,42,0.72);
+      border:1px solid rgba(255,255,255,0.06);
+      border-radius:14px;
+      padding:14px;
+    }
+
+    .result-label{
+      display:block;
       color:#cbd5f5;
+      font-size:13px;
+      font-weight:700;
+      margin-bottom:4px;
+    }
+
+    .result-value{
+      font-size:18px;
+      font-weight:800;
+      color:#e5e7eb;
     }
 
     .insight-good{
@@ -240,6 +364,7 @@
       margin:12px 0;
       color:#e2e8f0;
       overflow:auto;
+      line-height:1.7;
     }
 
     .faq{
@@ -290,6 +415,21 @@
       padding-bottom:12px;
     }
 
+    .related{
+      width:90%;
+      max-width:900px;
+      margin-top:34px;
+    }
+
+    .related a{
+      color:#93c5fd;
+      text-decoration:none;
+    }
+
+    .related a:hover{
+      text-decoration:underline;
+    }
+
     .disclaimer{
       margin-top:40px;
       padding-top:20px;
@@ -299,6 +439,7 @@
       max-width:900px;
       text-align:center;
       line-height:1.6;
+      width:90%;
     }
 
     @media (max-width: 700px){
@@ -324,8 +465,13 @@
     <a href="index.html">Home</a>
   </div>
 
-  <div class="container">
+  <div class="container" data-search="401k calculator retirement balance employer match contribution salary growth retirement planning">
     <h1>401(k) Calculator</h1>
+
+    <p class="quick-answer">
+      A 401(k) calculator shows how your retirement balance may grow from contributions, employer match, salary growth, and compound returns.
+    </p>
+
     <p class="subhead">
       Project your retirement balance using your current savings, salary, contribution rate, employer match, expected return, and salary growth.
       The chart shows how your balance can grow over time.
@@ -391,12 +537,32 @@
     <button onclick="calculate401k()">Calculate 401(k)</button>
 
     <div id="resultCard" class="result-card">
-      <div class="result-line"><strong>Years to retirement:</strong> <span id="yearsOut">—</span></div>
-      <div class="result-line"><strong>Projected balance:</strong> <span id="balanceOut">—</span></div>
-      <div class="result-line"><strong>Total employee contributions:</strong> <span id="employeeOut">—</span></div>
-      <div class="result-line"><strong>Total employer match:</strong> <span id="employerOut">—</span></div>
-      <div class="result-line"><strong>Growth from returns:</strong> <span id="growthOut">—</span></div>
-      <div class="result-line"><strong>Insight:</strong> <span id="insightOut">—</span></div>
+      <div class="result-grid">
+        <div class="result-box">
+          <span class="result-label">Years to retirement</span>
+          <span id="yearsOut" class="result-value">—</span>
+        </div>
+        <div class="result-box">
+          <span class="result-label">Projected balance</span>
+          <span id="balanceOut" class="result-value">—</span>
+        </div>
+        <div class="result-box">
+          <span class="result-label">Total employee contributions</span>
+          <span id="employeeOut" class="result-value">—</span>
+        </div>
+        <div class="result-box">
+          <span class="result-label">Total employer match</span>
+          <span id="employerOut" class="result-value">—</span>
+        </div>
+        <div class="result-box">
+          <span class="result-label">Growth from returns</span>
+          <span id="growthOut" class="result-value">—</span>
+        </div>
+        <div class="result-box">
+          <span class="result-label">Insight</span>
+          <span id="insightOut" class="result-value">—</span>
+        </div>
+      </div>
     </div>
 
     <canvas id="myChart"></canvas>
@@ -468,7 +634,7 @@
 
     <div class="faq">
       <div class="faq-item">
-        <button class="faq-question">
+        <button class="faq-question" type="button">
           Does this calculator include employer match?
           <span class="arrow">▼</span>
         </button>
@@ -480,7 +646,7 @@
       </div>
 
       <div class="faq-item">
-        <button class="faq-question">
+        <button class="faq-question" type="button">
           Why do I need salary growth?
           <span class="arrow">▼</span>
         </button>
@@ -492,19 +658,19 @@
       </div>
 
       <div class="faq-item">
-        <button class="faq-question">
-          Is the chart showing the right thing?
+        <button class="faq-question" type="button">
+          Is this calculator useful even if my employer does not match?
           <span class="arrow">▼</span>
         </button>
         <div class="faq-answer">
           <p>
-            Yes. The line chart is the best format for this calculator because it shows the account path over time. One line shows the full projected balance, and the other shows contributions without investment growth.
+            Yes. It still shows how your own contributions and compounding can build a retirement balance over time, even without employer match.
           </p>
         </div>
       </div>
 
       <div class="faq-item">
-        <button class="faq-question">
+        <button class="faq-question" type="button">
           Can this calculator predict the future exactly?
           <span class="arrow">▼</span>
         </button>
@@ -516,7 +682,7 @@
       </div>
 
       <div class="faq-item">
-        <button class="faq-question">
+        <button class="faq-question" type="button">
           What happens if I increase my contribution rate?
           <span class="arrow">▼</span>
         </button>
@@ -528,13 +694,13 @@
       </div>
 
       <div class="faq-item">
-        <button class="faq-question">
-          Is this calculator useful even if my employer does not match?
+        <button class="faq-question" type="button">
+          Why is the chart useful?
           <span class="arrow">▼</span>
         </button>
         <div class="faq-answer">
           <p>
-            Yes. It still shows how your own contributions and compounding can build a retirement balance over time, even without employer match.
+            The chart makes it easier to see how your balance grows over time and how much comes from compounding versus contributions.
           </p>
         </div>
       </div>
@@ -542,16 +708,16 @@
   </div>
 
   <div class="related">
-<h3>Related Calculators</h3>
-<p>You may also find these tools useful:</p>
-<ul>
-<li><a href="ira-calculator.html">IRA Calculator</a></li>
-<li><a href="future-value-calculator.html">Future Value Calculator</a></li>
-<li><a href="retirement-calculator.html">Retirement Calculator</a></li>
-<li><a href="compound-interest-calculator.html">Compound Interest Calculator</a></li>
-<li><a href="inflation-calculator.html">Inflation Calculator</a></li>
-</ul>
-</div>
+    <h3>Related Calculators</h3>
+    <p>You may also find these tools useful:</p>
+    <ul>
+      <li><a href="ira-calculator.html">IRA Calculator</a></li>
+      <li><a href="future-value-calculator.html">Future Value Calculator</a></li>
+      <li><a href="retirement-calculator.html">Retirement Calculator</a></li>
+      <li><a href="compound-interest-calculator.html">Compound Interest Calculator</a></li>
+      <li><a href="inflation-calculator.html">Inflation Calculator</a></li>
+    </ul>
+  </div>
 
   <div class="disclaimer">
     <p>
@@ -589,22 +755,22 @@
         annualReturnPct
       ];
 
-      if (required.some(v => isNaN(v))){
+      if (required.some(v => isNaN(v))) {
         alert("Please fill in all required fields.");
         return;
       }
 
-      if (currentAge < 0 || retirementAge < 0){
+      if (currentAge < 0 || retirementAge < 0) {
         alert("Ages must be valid positive numbers.");
         return;
       }
 
-      if (retirementAge <= currentAge){
+      if (retirementAge <= currentAge) {
         alert("Retirement age must be greater than current age.");
         return;
       }
 
-      if (currentBalance < 0 || annualSalary <= 0){
+      if (currentBalance < 0 || annualSalary <= 0) {
         alert("Current balance cannot be negative and salary must be greater than zero.");
         return;
       }
@@ -613,19 +779,18 @@
         employeeContributionPct < 0 || employeeContributionPct > 100 ||
         employerMatchPct < 0 || employerMatchPct > 100 ||
         employerMatchLimitPct < 0 || employerMatchLimitPct > 100
-      ){
+      ) {
         alert("Contribution and match percentages must be between 0 and 100.");
         return;
       }
 
-      if (annualReturnPct <= -100 || salaryGrowthPct <= -100){
+      if (annualReturnPct <= -100 || salaryGrowthPct <= -100) {
         alert("Return and salary growth must be greater than -100%.");
         return;
       }
 
       const years = retirementAge - currentAge;
       const monthlyReturn = Math.pow(1 + annualReturnPct / 100, 1 / 12) - 1;
-      const monthlySalaryGrowth = Math.pow(1 + salaryGrowthPct / 100, 1 / 12) - 1;
 
       let balance = currentBalance;
       let balanceNoGrowth = currentBalance;
@@ -639,8 +804,8 @@
       const projectedBalances = [currentBalance];
       const noGrowthBalances = [currentBalance];
 
-      for(let year = 1; year <= years; year++){
-        for(let month = 1; month <= 12; month++){
+      for (let year = 1; year <= years; year++) {
+        for (let month = 1; month <= 12; month++) {
           const monthlyEmployee = (salary * (employeeContributionPct / 100)) / 12;
           const eligibleSalaryForMatch = Math.min(employeeContributionPct, employerMatchLimitPct);
           const monthlyEmployer = (salary * (eligibleSalaryForMatch / 100) * (employerMatchPct / 100)) / 12;
@@ -671,10 +836,10 @@
       let insight = "";
       let insightClass = "";
 
-      if(balance >= currentBalance * 5){
+      if (balance >= currentBalance * 5) {
         insight = "Very strong retirement outlook";
         insightClass = "insight-good";
-      } else if(balance >= currentBalance * 2){
+      } else if (balance >= currentBalance * 2) {
         insight = "Healthy long-term growth";
         insightClass = "insight-medium";
       } else {
@@ -691,7 +856,7 @@
     function drawChart(labels, projectedBalances, noGrowthBalances){
       const ctx = document.getElementById("myChart").getContext("2d");
 
-      if(chart){
+      if (chart) {
         chart.destroy();
       }
 
