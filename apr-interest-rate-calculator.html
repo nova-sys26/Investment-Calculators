@@ -1,528 +1,817 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-<link rel="canonical" href="https://novainvesttools.com/apr-interest-rate-calculator.html">
-<!-- Google tag (gtag.js) -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-ZPCXDVE8C5"></script>
-<script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
+  <link rel="canonical" href="https://novainvesttools.com/apr-interest-rate-calculator.html">
 
-  gtag('config', 'G-ZPCXDVE8C5');
-</script>
-<meta charset="UTF-8">
-<title>APR Calculator – Calculate Annual Percentage Rate</title>
-<meta name="description" content="Calculate APR (Annual Percentage Rate) and total loan cost easily. Understand real borrowing cost in seconds.">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-ZPCXDVE8C5"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-ZPCXDVE8C5');
+  </script>
 
-<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>APR Calculator – Calculate Annual Percentage Rate</title>
+  <meta name="description" content="Calculate APR (Annual Percentage Rate) and total loan cost easily. Understand the real borrowing cost in seconds.">
+  <meta name="theme-color" content="#0f172a">
+  <meta name="robots" content="index,follow,max-image-preview:large">
 
-<link rel="stylesheet" href="style.css">
-  
-<style>
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://novainvesttools.com/apr-interest-rate-calculator.html">
+  <meta property="og:title" content="APR Calculator – Calculate Annual Percentage Rate">
+  <meta property="og:description" content="Calculate APR and monthly payment quickly. Understand the real cost of borrowing in seconds.">
 
-body{
-font-family:Arial;
-background:#0f172a;
-color:white;
-display:flex;
-justify-content:center;
-align-items:center;
-flex-direction:column;
-min-height:100vh;
-}
+  <link rel="preconnect" href="https://cdn.jsdelivr.net">
+  <link rel="dns-prefetch" href="https://cdn.jsdelivr.net">
 
-.container{
-background:#1e293b;
-padding:30px;
-border-radius:16px;
-width:90%;
-max-width:500px;
-box-shadow:0 10px 25px rgba(0,0,0,0.35);
-height:auto
-}
+  <link rel="stylesheet" href="style.css">
+  <link rel="icon" href="favicon.png" type="image/png">
+  <link rel="apple-touch-icon" href="favicon.png">
 
-input{
-width:100%;
-padding:14px;
-margin:12px 0;
-border-radius:10px;
-border:none;
-background:#e5e7eb;
-font-size:16px;
-}
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
-button{
-padding:14px;
-background:#3b82f6;
-border:none;
-border-radius:10px;
-color:white;
-cursor:pointer;
-margin-top:10px;
-width:100%;
-}
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "WebApplication",
+    "name": "APR Calculator",
+    "url": "https://novainvesttools.com/apr-interest-rate-calculator.html",
+    "applicationCategory": "FinanceApplication",
+    "operatingSystem": "All",
+    "browserRequirements": "Requires JavaScript",
+    "description": "Calculate APR, monthly payment, total interest, and total loan cost.",
+    "featureList": [
+      "APR calculation",
+      "Monthly payment calculation",
+      "Total interest estimation",
+      "Loan cost comparison"
+    ],
+    "offers": {
+      "@type": "Offer",
+      "price": "0",
+      "priceCurrency": "USD"
+    }
+  }
+  </script>
 
-button:hover{
-background:#2563eb;
-}
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": [
+      {
+        "@type": "Question",
+        "name": "What is APR?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "APR stands for Annual Percentage Rate and represents the true yearly cost of borrowing money, including interest and most mandatory fees."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Why is APR higher than the interest rate?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "APR is usually higher because it includes fees and other borrowing costs in addition to the base interest rate."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Can two loans have the same interest rate but different APR?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Yes. If one loan has extra fees and the other does not, the APR values can be different even when the interest rates match."
+        }
+      }
+    ]
+  }
+  </script>
 
-canvas{
-margin-top:30px;
-}
+  <style>
+    *{
+      box-sizing:border-box;
+    }
 
-.menu{
-margin-bottom:25px;
-}
+    html{
+      scroll-behavior:smooth;
+    }
 
-.menu a{
-color:#3b82f6;
-margin:10px;
-text-decoration:none;
-}
+    body{
+      font-family: Arial, sans-serif;
+      background:#0f172a;
+      color:white;
+      display:flex;
+      justify-content:center;
+      align-items:center;
+      flex-direction:column;
+      min-height:100vh;
+      margin:0;
+      padding:24px 0;
+    }
 
-.toptext{
-font-size:14px;
-color:#6b7a99;
-margin-bottom:5px;
-}
+    .toptext{
+      font-size:14px;
+      color:#6b7a99;
+      margin-bottom:5px;
+    }
 
-.toggle {
-  display: flex;
-  margin: 10px 0;
-}
+    .menu{
+      margin-bottom:25px;
+    }
 
-.toggle button {
-  flex: 1;
-  padding: 12px;
-  border: none;
-  cursor: pointer;
-  background: #334155;
-  color: white;
-  transition: 0.2s;
-}
+    .menu a{
+      color:#3b82f6;
+      margin:10px;
+      text-decoration:none;
+      font-weight:600;
+    }
 
-.toggle button:first-child {
-  border-radius: 6px 0 0 6px;
-}
+    .container{
+      background:#1e293b;
+      padding:30px;
+      border-radius:16px;
+      width:90%;
+      max-width:620px;
+      box-shadow:0 10px 25px rgba(0,0,0,0.35);
+      border:1px solid rgba(255,255,255,0.05);
+      backdrop-filter: blur(6px);
+    }
 
-.toggle button:last-child {
-  border-radius: 0 6px 6px 0;
-}
+    h1{
+      margin-top:0;
+      margin-bottom:10px;
+      font-size:32px;
+      line-height:1.15;
+    }
 
-.toggle button.active {
-  background: #3b82f6;
-}  
-.disclaimer{
-margin-top:40px;
-padding-top:20px;
-border-top:1px solid rgba(255,255,255,0.1);
-font-size:13px;
-color:#9ca3af;
-max-width:500px;
-text-align:center;
-line-height:1.6;
-}
-</style>
+    .quick-answer{
+      background: rgba(59,130,246,0.12);
+      border: 1px solid rgba(59,130,246,0.25);
+      padding: 12px 14px;
+      border-radius: 10px;
+      font-size: 15px;
+      line-height: 1.6;
+      color: #e2e8f0;
+      margin: 0 0 18px;
+    }
 
+    .subhead{
+      color:#94a3b8;
+      font-size:15px;
+      line-height:1.6;
+      margin-bottom:18px;
+    }
+
+    .toggle {
+      display: flex;
+      margin: 12px 0 14px;
+      gap:0;
+    }
+
+    .toggle button {
+      flex: 1;
+      padding: 12px;
+      border: none;
+      cursor: pointer;
+      background: #334155;
+      color: white;
+      transition: 0.2s;
+      margin-top:0;
+      width:auto;
+      font-size:15px;
+      font-weight:700;
+    }
+
+    .toggle button:first-child {
+      border-radius: 10px 0 0 10px;
+    }
+
+    .toggle button:last-child {
+      border-radius: 0 10px 10px 0;
+    }
+
+    .toggle button.active {
+      background: #3b82f6;
+    }
+
+    .field-label{
+      display:block;
+      font-size:13px;
+      color:#cbd5e1;
+      font-weight:600;
+      margin:12px 0 6px;
+    }
+
+    input{
+      width:100%;
+      padding:14px;
+      border-radius:10px;
+      border:none;
+      background:#e5e7eb;
+      font-size:16px;
+      outline:none;
+    }
+
+    input:focus{
+      box-shadow:0 0 0 3px rgba(59,130,246,0.18);
+    }
+
+    button{
+      padding:14px;
+      background:#3b82f6;
+      border:none;
+      border-radius:10px;
+      color:white;
+      cursor:pointer;
+      margin-top:14px;
+      width:100%;
+      font-size:16px;
+      font-weight:700;
+      transition:0.2s;
+    }
+
+    button:hover{
+      background:#2563eb;
+      transform:translateY(-1px);
+    }
+
+    .result-card{
+      margin-top:18px;
+      padding:16px;
+      border-radius:14px;
+      background:rgba(255,255,255,0.05);
+      border:1px solid rgba(255,255,255,0.08);
+      display:none;
+    }
+
+    .result-grid{
+      display:grid;
+      grid-template-columns:repeat(auto-fit, minmax(220px, 1fr));
+      gap:12px;
+    }
+
+    .result-box{
+      background:rgba(15,23,42,0.72);
+      border:1px solid rgba(255,255,255,0.06);
+      border-radius:14px;
+      padding:14px;
+    }
+
+    .result-label{
+      display:block;
+      color:#cbd5f5;
+      font-size:13px;
+      font-weight:700;
+      margin-bottom:4px;
+    }
+
+    .result-value{
+      font-size:18px;
+      font-weight:800;
+      color:#e5e7eb;
+    }
+
+    .insight-good{
+      color:#22c55e;
+      font-weight:700;
+    }
+
+    .insight-medium{
+      color:#facc15;
+      font-weight:700;
+    }
+
+    .insight-weak{
+      color:#ef4444;
+      font-weight:700;
+    }
+
+    canvas{
+      margin-top:26px;
+    }
+
+    .content{
+      width:90%;
+      max-width:900px;
+      margin-top:34px;
+    }
+
+    .content h2{
+      margin-top:34px;
+      margin-bottom:10px;
+      font-size:28px;
+    }
+
+    .content p,
+    .content li{
+      color:#cbd5e1;
+      line-height:1.7;
+      font-size:15px;
+    }
+
+    .content ul{
+      padding-left:20px;
+    }
+
+    .formula{
+      background:rgba(255,255,255,0.05);
+      border:1px solid rgba(255,255,255,0.08);
+      padding:14px 16px;
+      border-radius:12px;
+      margin:12px 0;
+      color:#e2e8f0;
+      overflow:auto;
+      line-height:1.7;
+    }
+
+    .faq{
+      margin-top:14px;
+    }
+
+    .faq-item{
+      border-bottom:1px solid rgba(255,255,255,0.08);
+    }
+
+    .faq-question{
+      width:100%;
+      background:none;
+      border:none;
+      color:white;
+      text-align:left;
+      padding:14px 8px;
+      font-size:15px;
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      cursor:pointer;
+    }
+
+    .faq-question:hover{
+      color:#93c5fd;
+    }
+
+    .arrow{
+      transition:0.25s;
+    }
+
+    .faq-item.active .arrow{
+      transform:rotate(180deg);
+    }
+
+    .faq-answer{
+      max-height:0;
+      overflow:hidden;
+      transition:max-height 0.3s ease;
+      color:#cbd5e1;
+      font-size:14px;
+      padding:0 8px;
+    }
+
+    .faq-item.active .faq-answer{
+      max-height:260px;
+      padding-bottom:12px;
+    }
+
+    .related{
+      width:90%;
+      max-width:900px;
+      margin-top:34px;
+    }
+
+    .related a{
+      color:#93c5fd;
+      text-decoration:none;
+    }
+
+    .related a:hover{
+      text-decoration:underline;
+    }
+
+    .disclaimer{
+      margin-top:40px;
+      padding-top:20px;
+      border-top:1px solid rgba(255,255,255,0.1);
+      font-size:13px;
+      color:#9ca3af;
+      max-width:900px;
+      text-align:center;
+      line-height:1.6;
+      width:90%;
+    }
+
+    @media (max-width: 700px){
+      .container{
+        padding:22px;
+      }
+
+      h1{
+        font-size:28px;
+      }
+
+      .content h2{
+        font-size:24px;
+      }
+    }
+  </style>
 </head>
 
-<p class="toptext">Explore more calculators</p>
-
 <body>
+  <p class="toptext">Explore more calculators</p>
 
-<div class="menu">
-<a href="index.html">Home</a>
-</div>
+  <div class="menu">
+    <a href="index.html">Home</a>
+  </div>
 
-<div class="container">
+  <div class="container" data-search="apr calculator annual percentage rate loan payment total interest borrowing cost">
+    <h1>APR Calculator</h1>
 
-<h1>APR Calculator</h1>
+    <p class="quick-answer">
+      APR shows the real yearly cost of borrowing money, including interest and most mandatory fees.
+    </p>
 
-<div class="toggle">
-  <button id="aprBtn" class="active" onclick="setMode('apr')">Find APR</button>
-  <button id="payBtn" onclick="setMode('payment')">Find Payment</button>
-</div>
+    <p class="subhead">
+      Calculate APR or monthly payment depending on what you already know.
+      Use it to compare loan offers and understand the true cost of borrowing.
+    </p>
 
-<input id="loan" placeholder="Loan Amount ($)">
-<input id="months" placeholder="Loan Term (months)">
+    <div class="toggle">
+      <button id="aprBtn" class="active" onclick="setMode('apr')" type="button">Find APR</button>
+      <button id="payBtn" onclick="setMode('payment')" type="button">Find Payment</button>
+    </div>
 
-<!-- MODE'A GÖRE DEĞİŞECEK -->
-<input id="dynamicInput" placeholder="Monthly Payment ($)">
+    <label class="field-label" for="loan">Loan Amount ($)</label>
+    <input id="loan" type="number" min="0" step="any" placeholder="e.g. 10000">
 
-<button onclick="calculate()">Calculate</button>
+    <label class="field-label" for="months">Loan Term (months)</label>
+    <input id="months" type="number" min="1" step="1" placeholder="e.g. 24">
 
-<h3 id="result"></h3>
+    <label class="field-label" id="dynamicLabel" for="dynamicInput">Monthly Payment ($)</label>
+    <input id="dynamicInput" type="number" min="0" step="any" placeholder="e.g. 450">
 
-<canvas id="myChart" style="display:none;"></canvas>
-  
+    <button onclick="calculate()" type="button">Calculate</button>
 
+    <div id="resultCard" class="result-card">
+      <div class="result-grid">
+        <div class="result-box">
+          <span class="result-label" id="resultPrimaryLabel">APR</span>
+          <span id="resultPrimaryOut" class="result-value">—</span>
+        </div>
+        <div class="result-box">
+          <span class="result-label">Total paid</span>
+          <span id="totalPaidOut" class="result-value">—</span>
+        </div>
+        <div class="result-box">
+          <span class="result-label">Total interest</span>
+          <span id="totalInterestOut" class="result-value">—</span>
+        </div>
+        <div class="result-box">
+          <span class="result-label">Insight</span>
+          <span id="insightOut" class="result-value">—</span>
+        </div>
+      </div>
+    </div>
 
-<h3 id="result"></h3>
+    <canvas id="myChart" style="display:none;"></canvas>
+  </div>
 
-<canvas id="myChart"></canvas>
+  <div class="content">
+    <h2>What is APR (Annual Percentage Rate)?</h2>
+    <p>
+      APR represents the true yearly cost of borrowing money.
+      It includes not only the interest rate, but also most mandatory fees associated with the loan.
+    </p>
 
-</div>
+    <p>
+      This makes APR a better comparison tool than the base interest rate alone.
+      Two loans can have the same interest rate but different APRs if their fees differ.
+    </p>
 
-<h2>What is APR (Annual Percentage Rate)?</h2>
+    <h2>APR vs Interest Rate</h2>
+    <p>
+      The interest rate is the basic cost of borrowing.
+      APR adds fees and gives a more complete view of the real loan cost.
+    </p>
 
-<p>
-APR (Annual Percentage Rate) represents the true cost of borrowing money. It includes not only the interest rate, but also additional fees associated with the loan.
-</p>
+    <div class="formula">
+      APR = annualized borrowing cost
+      <br>
+      Monthly payment = loan amortization equation
+      <br>
+      Total paid = monthly payment × months
+      <br>
+      Total interest = total paid − loan amount
+    </div>
 
-<p>
-While the interest rate shows the cost of borrowing, APR gives you a more complete picture of what you actually pay over time.
-</p>
+    <h2>Why APR Matters</h2>
+    <ul>
+      <li>Compare loan offers accurately</li>
+      <li>Understand the real cost of borrowing</li>
+      <li>Avoid hidden fees</li>
+      <li>Make smarter financial decisions</li>
+    </ul>
 
+    <h2>How to Use This Calculator</h2>
+    <ul>
+      <li>Enter your loan amount</li>
+      <li>Enter the loan term in months</li>
+      <li>Choose whether to find APR or monthly payment</li>
+      <li>Click calculate</li>
+    </ul>
 
+    <h2>Frequently Asked Questions</h2>
 
-<h2>APR vs Interest Rate</h2>
+    <div class="faq">
+      <div class="faq-item">
+        <button class="faq-question" type="button">
+          Why is APR higher than the interest rate?
+          <span class="arrow">▼</span>
+        </button>
+        <div class="faq-answer">
+          <p>
+            APR includes not only the interest rate but also fees and other borrowing costs, so it is usually higher than the base interest rate.
+          </p>
+        </div>
+      </div>
 
-<p>
-Many people confuse APR with the interest rate, but they are not the same.
-</p>
+      <div class="faq-item">
+        <button class="faq-question" type="button">
+          Is APR the real cost of a loan?
+          <span class="arrow">▼</span>
+        </button>
+        <div class="faq-answer">
+          <p>
+            Yes. APR is one of the best ways to estimate the true yearly cost of a loan because it includes interest and most mandatory fees.
+          </p>
+        </div>
+      </div>
 
-<ul>
-<li><strong>Interest Rate:</strong> The base cost of borrowing money</li>
-<li><strong>APR:</strong> Interest rate + fees + total loan cost</li>
-</ul>
+      <div class="faq-item">
+        <button class="faq-question" type="button">
+          Does APR include all fees?
+          <span class="arrow">▼</span>
+        </button>
+        <div class="faq-answer">
+          <p>
+            APR usually includes most required fees, but not always optional charges such as late fees or penalties.
+          </p>
+        </div>
+      </div>
 
-<p>
-This means APR is always equal to or higher than the interest rate.
-</p>
-
-
-
-<h2>How APR is Calculated</h2>
-
-<p>
-APR is calculated based on your loan amount, monthly payment, loan term, and total cost of borrowing.
-</p>
-
-<p>
-Instead of a simple formula, APR is usually found by solving the loan equation iteratively, because it reflects the real yearly cost of the loan.
-</p>
-
-<p>
-This calculator helps you estimate APR by using your loan details and monthly payment.
-</p>
-
-
-
-<h2>Example</h2>
-
-<p>
-Let’s say you borrow $10,000 and agree to pay $450 per month for 24 months.
-</p>
-
-<ul>
-<li>Total paid = $10,800</li>
-<li>Total cost = $800</li>
-</ul>
-
-<p>
-Even if the interest rate looks low, the APR may be higher once fees and total cost are included.
-</p>
-
-
-
-<h2>Why APR Matters</h2>
-
-<ul>
-<li>Compare different loan offers accurately</li>
-<li>Understand the real cost of borrowing</li>
-<li>Avoid hidden fees</li>
-<li>Make smarter financial decisions</li>
-</ul>
-
-<p>
-Without APR, you may think a loan is cheap when it actually isn’t.
-</p>
-<h2>Why Monthly Payment Matters</h2>
-
-<p>
-Your monthly payment directly affects your APR. A higher monthly payment usually means a lower APR, while smaller payments over a longer period increase the total cost of the loan.
-</p>
-
-
-<h2>How to Use This Calculator</h2>
-
-<ul>
-<li>Enter your loan amount</li>
-<li>Enter your loan term (months)</li>
-<li>Enter your monthly payment</li>
-<li>Click calculate</li>
-</ul>
-
-<p>
-The calculator will estimate your APR based on the inputs.
-</p>
-<h3>Frequently Asked Questions</h3>
-
-<div class="faq">
-
-  <div class="faq-item">
-    <button class="faq-question">
-      Why is APR higher than the interest rate?
-      <span class="arrow">▼</span>
-    </button>
-    <div class="faq-answer">
-      <p>
-        APR includes not only the interest rate but also fees and additional costs associated with the loan. This makes APR a more accurate measure of the total borrowing cost.
-      </p>
+      <div class="faq-item">
+        <button class="faq-question" type="button">
+          Can two loans have the same interest rate but different APR?
+          <span class="arrow">▼</span>
+        </button>
+        <div class="faq-answer">
+          <p>
+            Yes. If one loan has extra fees and the other does not, their APR values can differ even when the interest rates are the same.
+          </p>
+        </div>
+      </div>
     </div>
   </div>
 
-  <div class="faq-item">
-    <button class="faq-question">
-      Is APR the real cost of a loan?
-      <span class="arrow">▼</span>
-    </button>
-    <div class="faq-answer">
-      <p>
-        Yes. APR reflects the true yearly cost of a loan, including interest and most fees, making it the best metric for comparing loan offers.
-      </p>
-    </div>
+  <div class="related">
+    <h3>Related Calculators</h3>
+    <p>You may also find these tools useful:</p>
+    <ul>
+      <li><a href="amortization-calculator.html">Amortization Calculator</a></li>
+      <li><a href="mortgage-calculator.html">Mortgage Calculator</a></li>
+      <li><a href="loan-calculator.html">Loan Calculator</a></li>
+      <li><a href="savings-calculator.html">Savings Calculator</a></li>
+      <li><a href="roi-calculator.html">ROI Calculator</a></li>
+    </ul>
   </div>
 
-  <div class="faq-item">
-    <button class="faq-question">
-      Does APR include all fees?
-      <span class="arrow">▼</span>
-    </button>
-    <div class="faq-answer">
-      <p>
-        APR usually includes most mandatory fees, but it may not include optional costs such as late fees or penalties. Always review loan terms carefully.
-      </p>
-    </div>
+  <div class="disclaimer">
+    <p>
+      <strong>Disclaimer:</strong> The calculators on this website are provided for informational and educational purposes only.
+      All results are estimates based on the values entered and do not constitute financial, investment, or trading advice.
+      Always conduct your own research before making financial decisions.
+    </p>
   </div>
 
-  <div class="faq-item">
-    <button class="faq-question">
-      How does loan term affect APR?
-      <span class="arrow">▼</span>
-    </button>
-    <div class="faq-answer">
-      <p>
-        Longer loan terms often result in higher total interest paid, even if monthly payments are lower. This can increase the effective cost reflected in APR.
-      </p>
-    </div>
-  </div>
+  <script src="footer.js"></script>
+  <script>
+    let chart = null;
+    let mode = "apr";
 
-  <div class="faq-item">
-    <button class="faq-question">
-      Can two loans have the same interest rate but different APR?
-      <span class="arrow">▼</span>
-    </button>
-    <div class="faq-answer">
-      <p>
-        Yes. If one loan has additional fees and the other does not, their APR values will differ even if the interest rates are the same.
-      </p>
-    </div>
-  </div>
-
-  <div class="faq-item">
-    <button class="faq-question">
-      What is a good APR for a loan?
-      <span class="arrow">▼</span>
-    </button>
-    <div class="faq-answer">
-      <p>
-        A good APR depends on the type of loan and market conditions, but generally, lower APR means a cheaper loan.
-      </p>
-    </div>
-  </div>
-
-  <div class="faq-item">
-    <button class="faq-question">
-      Does a lower monthly payment mean a better loan?
-      <span class="arrow">▼</span>
-    </button>
-    <div class="faq-answer">
-      <p>
-        Not always. Lower monthly payments usually mean a longer loan term, which increases total interest paid and may result in a higher overall cost.
-      </p>
-    </div>
-  </div>
-
-</div>
-<div class="related">
-<h3>Related Calculators</h3>
-<p>You may also find these tools useful:</p>
-<ul>
-<li><a href="amortization-calculator.html">Amortization Calculator</a></li>
-<li><a href="mortgage-calculator.html">Mortgage Calculator</a></li>
-<li><a href="loan-calculator.html">Loan Calculator</a></li>
-<li><a href="savings-calculator.html">Savings Calculator</a></li>
-<li><a href="roi-calculator.html">ROI Calculator</a></li>
-</ul>
-</div>
-  
-<div class="disclaimer">
-<p>
-<strong>Disclaimer:</strong> The calculators on this website are provided for informational and educational purposes only. 
-All results are estimates based on the values entered and do not constitute financial, investment, or trading advice. 
-Always conduct your own research before making financial decisions.
-</p>
-<script src="footer.js"></script>
-
-<script>
-
-let chart;
-let mode = "apr"; // default
-
-function setMode(selected){
-  mode = selected;
-
-  document.getElementById("aprBtn").classList.remove("active");
-  document.getElementById("payBtn").classList.remove("active");
-
-  if(selected === "apr"){
-    document.getElementById("aprBtn").classList.add("active");
-    document.getElementById("dynamicInput").placeholder = "Monthly Payment ($)";
-  } else {
-    document.getElementById("payBtn").classList.add("active");
-    document.getElementById("dynamicInput").placeholder = "APR (%)";
-  }
-
-  document.getElementById("result").innerHTML = "";
-
-  if(chart){
-    chart.destroy();
-    chart = null;
-  }
-
-  document.getElementById("myChart").style.display = "none";
-}
-
-function calculate(){
-
-let loan = parseFloat(document.getElementById("loan").value);
-let months = parseFloat(document.getElementById("months").value);
-let input = parseFloat(document.getElementById("dynamicInput").value);
-
-if(
-  isNaN(loan) ||
-  isNaN(months) ||
-  isNaN(input)
-){
-  alert("Fill all fields");
-  return;
-}
-
-if(mode === "apr"){
-  calculateAPR(loan, input, months);
-} else {
-  calculatePayment(loan, input, months);
-}
-
-}
-
-// 🔵 MODE 1 → APR hesapla
-function calculateAPR(loan, payment, months){
-
-if(payment * months < loan){
-  alert("Payment too low for this loan");
-  return;
-}
-
-let low = 0;
-let high = 1;
-let rate;
-
-for(let i = 0; i < 100; i++){
-  rate = (low + high) / 2;
-
-  let calcPayment;
-
-  if(rate === 0){
-    calcPayment = loan / months;
-  } else {
-    calcPayment = loan * (rate * Math.pow(1+rate, months)) / (Math.pow(1+rate, months) - 1);
-  }
-
-  if(calcPayment > payment){
-    high = rate;
-  } else {
-    low = rate;
-  }
-}
-
-let apr = (Math.pow(1 + rate, 12) - 1) * 100;
-let totalPayment = payment * months;
-let totalInterest = totalPayment - loan;
-
-document.getElementById("result").innerHTML =
-"APR: " + apr.toFixed(2) + "%<br>" +
-"Total Interest: $" + totalInterest.toFixed(2);
-
-drawChart(loan, totalInterest);
-
-}
-
-// 🟢 MODE 2 → Monthly Payment hesapla
-function calculatePayment(loan, apr, months){
-
-let monthlyRate = (apr / 100) / 12;
-
-let payment;
-
-if(monthlyRate === 0){
-  payment = loan / months;
-} else {
-  payment = loan * (monthlyRate * Math.pow(1+monthlyRate, months)) / (Math.pow(1+monthlyRate, months) - 1);
-}
-
-let totalPayment = payment * months;
-let totalInterest = totalPayment - loan;
-
-document.getElementById("result").innerHTML =
-"Monthly Payment: $" + payment.toFixed(2) + "<br>" +
-"Total Interest: $" + totalInterest.toFixed(2);
-
-drawChart(loan, totalInterest);
-
-}
-
-// 📊 chart
-function drawChart(principal, interest){
-document.getElementById("myChart").style.display = "block";
-let ctx = document.getElementById('myChart');
-
-if(chart){
-chart.destroy();
-}
-
-chart = new Chart(ctx,{
-type:'pie',
-data:{
-labels:['Loan','Interest'],
-datasets:[{
-data:[principal, interest],
-backgroundColor:['#3b82f6','#ef4444']
-}]
-}
-});
-
-}
-document.addEventListener("DOMContentLoaded", function(){
-
-  document.querySelectorAll(".faq-question").forEach(btn => {
-    btn.addEventListener("click", () => {
-
-      const item = btn.parentElement;
-
-      document.querySelectorAll(".faq-item").forEach(i => {
-        if(i !== item) i.classList.remove("active");
+    function money(value) {
+      return "$" + Number(value).toLocaleString(undefined, {
+        minimumFractionDigits: 2,
+        maximumFractionDigits: 2
       });
+    }
 
-      item.classList.toggle("active");
+    function setMode(selected){
+      mode = selected;
 
+      document.getElementById("aprBtn").classList.remove("active");
+      document.getElementById("payBtn").classList.remove("active");
+
+      const dynamicLabel = document.getElementById("dynamicLabel");
+      const dynamicInput = document.getElementById("dynamicInput");
+
+      if(selected === "apr"){
+        document.getElementById("aprBtn").classList.add("active");
+        dynamicLabel.innerText = "Monthly Payment ($)";
+        dynamicInput.placeholder = "e.g. 450";
+      } else {
+        document.getElementById("payBtn").classList.add("active");
+        dynamicLabel.innerText = "APR (%)";
+        dynamicInput.placeholder = "e.g. 7.5";
+      }
+
+      document.getElementById("resultCard").style.display = "none";
+      document.getElementById("myChart").style.display = "none";
+
+      if(chart){
+        chart.destroy();
+        chart = null;
+      }
+    }
+
+    function calculate(){
+      const loan = parseFloat(document.getElementById("loan").value);
+      const months = parseInt(document.getElementById("months").value, 10);
+      const input = parseFloat(document.getElementById("dynamicInput").value);
+
+      if([loan, months, input].some(v => isNaN(v))) {
+        alert("Fill all fields");
+        return;
+      }
+
+      if (loan <= 0 || months <= 0) {
+        alert("Loan amount and loan term must be greater than zero.");
+        return;
+      }
+
+      if(mode === "apr"){
+        calculateAPR(loan, input, months);
+      } else {
+        calculatePayment(loan, input, months);
+      }
+    }
+
+    function calculateAPR(loan, payment, months){
+      const minPayment = loan / months;
+
+      if(payment < minPayment){
+        alert("Payment is too low to repay this loan.");
+        return;
+      }
+
+      if(Math.abs(payment - minPayment) < 1e-9){
+        showAPRResult(0, payment, months, loan);
+        return;
+      }
+
+      let low = 0;
+      let high = 1;
+      let rate = 0;
+
+      for(let i = 0; i < 100; i++){
+        rate = (low + high) / 2;
+
+        const calcPayment = loan * (rate * Math.pow(1 + rate, months)) / (Math.pow(1 + rate, months) - 1);
+
+        if(calcPayment > payment){
+          high = rate;
+        } else {
+          low = rate;
+        }
+      }
+
+      showAPRResult(rate, payment, months, loan);
+    }
+
+    function showAPRResult(monthlyRate, payment, months, loan){
+      const apr = (Math.pow(1 + monthlyRate, 12) - 1) * 100;
+      const totalPaid = payment * months;
+      const totalInterest = totalPaid - loan;
+
+      document.getElementById("resultCard").style.display = "block";
+      document.getElementById("myChart").style.display = "block";
+
+      document.getElementById("resultPrimaryLabel").innerText = "APR";
+      document.getElementById("resultPrimaryOut").innerText = `${apr.toFixed(2)}%`;
+      document.getElementById("totalPaidOut").innerText = money(totalPaid);
+      document.getElementById("totalInterestOut").innerText = money(totalInterest);
+
+      let insight = "";
+      let insightClass = "";
+
+      if (apr <= 5) {
+        insight = "This is a relatively low borrowing cost.";
+        insightClass = "insight-good";
+      } else if (apr <= 12) {
+        insight = "This loan has a moderate borrowing cost.";
+        insightClass = "insight-medium";
+      } else {
+        insight = "This loan is expensive. Compare offers carefully.";
+        insightClass = "insight-weak";
+      }
+
+      document.getElementById("insightOut").innerHTML = `<span class="${insightClass}">${insight}</span>`;
+
+      drawChart(loan, totalInterest);
+    }
+
+    function calculatePayment(loan, apr, months){
+      if (apr < 0) {
+        alert("APR cannot be negative.");
+        return;
+      }
+
+      const monthlyRate = (apr / 100) / 12;
+      let payment;
+
+      if(monthlyRate === 0){
+        payment = loan / months;
+      } else {
+        payment = loan * (monthlyRate * Math.pow(1 + monthlyRate, months)) / (Math.pow(1 + monthlyRate, months) - 1);
+      }
+
+      const totalPaid = payment * months;
+      const totalInterest = totalPaid - loan;
+
+      document.getElementById("resultCard").style.display = "block";
+      document.getElementById("myChart").style.display = "block";
+
+      document.getElementById("resultPrimaryLabel").innerText = "Monthly Payment";
+      document.getElementById("resultPrimaryOut").innerText = money(payment);
+      document.getElementById("totalPaidOut").innerText = money(totalPaid);
+      document.getElementById("totalInterestOut").innerText = money(totalInterest);
+
+      let insight = "";
+      let insightClass = "";
+
+      if (totalInterest < loan * 0.2) {
+        insight = "This loan keeps interest costs relatively low.";
+        insightClass = "insight-good";
+      } else if (totalInterest < loan * 0.5) {
+        insight = "Interest costs are noticeable, so term length matters.";
+        insightClass = "insight-medium";
+      } else {
+        insight = "Total interest is high. A shorter term or lower rate could save a lot.";
+        insightClass = "insight-weak";
+      }
+
+      document.getElementById("insightOut").innerHTML = `<span class="${insightClass}">${insight}</span>`;
+
+      drawChart(loan, totalInterest);
+    }
+
+    function drawChart(principal, interest){
+      const ctx = document.getElementById("myChart").getContext("2d");
+
+      if(chart){
+        chart.destroy();
+      }
+
+      chart = new Chart(ctx,{
+        type:'pie',
+        data:{
+          labels:['Loan','Interest'],
+          datasets:[{
+            data:[principal, interest],
+            backgroundColor:['#3b82f6','#ef4444']
+          }]
+        },
+        options:{
+          responsive:true,
+          plugins:{
+            legend:{
+              labels:{ color:'white' }
+            },
+            tooltip:{
+              callbacks:{
+                label: function(context){
+                  return `${context.label}: ${money(context.parsed)}`;
+                }
+              }
+            }
+          }
+        }
+      });
+    }
+
+    document.addEventListener("DOMContentLoaded", function(){
+      document.querySelectorAll(".faq-question").forEach(btn => {
+        btn.addEventListener("click", () => {
+          const item = btn.parentElement;
+
+          document.querySelectorAll(".faq-item").forEach(i => {
+            if(i !== item) i.classList.remove("active");
+          });
+
+          item.classList.toggle("active");
+        });
+      });
     });
-  });
-
-});
-</script>
+  </script>
 </body>
-</html>
+      </html>
