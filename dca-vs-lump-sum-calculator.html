@@ -17,43 +17,110 @@
   <title>DCA vs Lump Sum Calculator – Compare Investment Strategies</title>
   <meta name="description" content="Compare dollar cost averaging vs lump sum investing. See which strategy performs better over time with a clear chart, examples, and explanations.">
   <meta name="theme-color" content="#0f172a">
-
-  <link rel="icon" href="favicon.png" type="image/png">
-  <link rel="apple-touch-icon" href="favicon.png">
+  <meta name="robots" content="index,follow,max-image-preview:large">
 
   <meta property="og:type" content="website">
   <meta property="og:url" content="https://novainvesttools.com/dca-vs-lump-sum-calculator.html">
   <meta property="og:title" content="DCA vs Lump Sum Calculator – Compare Investment Strategies">
   <meta property="og:description" content="Compare dollar cost averaging vs lump sum investing with a clear chart and simple results.">
 
-  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <link rel="preconnect" href="https://cdn.jsdelivr.net">
+  <link rel="dns-prefetch" href="https://cdn.jsdelivr.net">
+
   <link rel="stylesheet" href="style.css">
+  <link rel="icon" href="favicon.png" type="image/png">
+  <link rel="apple-touch-icon" href="favicon.png">
+
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
   <script type="application/ld+json">
-{
-  "@context": "https://schema.org",
-  "@type": "WebApplication",
-  "name": "DCA vs. Lump Sum Calculator",
-  "url": "https://novainvesttools.com/dca-vs-lump-sum-calculator.html",
-  "applicationCategory": "FinanceApplication",
-  "operatingSystem": "All",
-  "browserRequirements": "Requires JavaScript",
-"description": "Compare dollar cost averaging and lump sum investing returns.",
-"featureList": [
-  "Strategy comparison",
-  "Return comparison",
-  "Risk comparison",
-  "Investment decision tool"
-], 
+  {
+    "@context": "https://schema.org",
+    "@type": "WebApplication",
+    "name": "DCA vs Lump Sum Calculator",
+    "url": "https://novainvesttools.com/dca-vs-lump-sum-calculator.html",
+    "applicationCategory": "FinanceApplication",
+    "operatingSystem": "All",
+    "browserRequirements": "Requires JavaScript",
+    "description": "Compare dollar cost averaging and lump sum investing returns.",
+    "featureList": [
+      "Strategy comparison",
+      "Return comparison",
+      "Risk comparison",
+      "Investment decision tool"
+    ],
     "offers": {
-    "@type": "Offer",
-    "price": "0",
-    "priceCurrency": "USD"
+      "@type": "Offer",
+      "price": "0",
+      "priceCurrency": "USD"
+    }
   }
-}
   </script>
+
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": [
+      {
+        "@type": "Question",
+        "name": "Is lump sum always better than DCA?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Not always. Lump sum often wins in rising markets because money is invested earlier, but DCA can be better for reducing timing risk."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Why does DCA feel safer?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "DCA spreads purchases across time, so you do not rely on one single entry price."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Does this calculator assume monthly DCA?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Yes. This version uses monthly DCA and splits the total amount evenly across the DCA period you enter."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Can DCA beat lump sum?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Yes. DCA can outperform in flat or falling markets, or when prices drop during the buying period."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "What return rate should I use?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Use a realistic long-term return estimate. Conservative assumptions usually produce more useful planning results."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Is this useful for crypto and stocks?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Yes. The logic works for stocks, ETFs, crypto, and any other asset where you want to compare one-time investing against recurring buys."
+        }
+      }
+    ]
+  }
+  </script>
+
   <style>
     *{
       box-sizing:border-box;
+    }
+
+    html{
+      scroll-behavior:smooth;
     }
 
     body{
@@ -93,6 +160,8 @@
       width:90%;
       max-width:560px;
       box-shadow:0 10px 25px rgba(0,0,0,0.35);
+      border:1px solid rgba(255,255,255,0.05);
+      backdrop-filter: blur(6px);
     }
 
     h1{
@@ -100,6 +169,17 @@
       margin-bottom:10px;
       font-size:32px;
       line-height:1.15;
+    }
+
+    .quick-answer{
+      background: rgba(59,130,246,0.12);
+      border: 1px solid rgba(59,130,246,0.25);
+      padding: 12px 14px;
+      border-radius: 10px;
+      font-size: 15px;
+      line-height: 1.6;
+      color: #e2e8f0;
+      margin: 0 0 18px;
     }
 
     .subhead{
@@ -392,9 +472,13 @@
 
   <div class="container">
     <h1>DCA vs Lump Sum Calculator</h1>
-    <p class="subhead">
+    <p class="quick-answer">
       Compare dollar cost averaging against lump sum investing using the same total amount.
       See how both strategies perform over time with a clean chart and simple results.
+    </p>
+
+    <p class="subhead">
+      Compare one-time investing versus recurring buys using the same capital, expected return, and time horizon.
     </p>
 
     <div class="badge-row">
@@ -426,7 +510,7 @@
       </div>
     </div>
 
-    <button onclick="calculateDCA()">Compare Strategies</button>
+    <button onclick="calculateDCA()" type="button">Compare Strategies</button>
 
     <div id="resultCard" class="result-card">
       <div class="result-line"><strong>Total invested:</strong> <span id="investedOut">—</span></div>
@@ -502,11 +586,11 @@
       <li>Click compare to see both strategies and the chart</li>
     </ul>
 
-    <h3>Frequently Asked Questions</h3>
+    <h2>Frequently Asked Questions</h2>
 
     <div class="faq">
       <div class="faq-item">
-        <button class="faq-question">
+        <button class="faq-question" type="button">
           Is lump sum always better than DCA?
           <span class="arrow">▼</span>
         </button>
@@ -519,7 +603,7 @@
       </div>
 
       <div class="faq-item">
-        <button class="faq-question">
+        <button class="faq-question" type="button">
           Why does DCA feel safer?
           <span class="arrow">▼</span>
         </button>
@@ -532,7 +616,7 @@
       </div>
 
       <div class="faq-item">
-        <button class="faq-question">
+        <button class="faq-question" type="button">
           Does this calculator assume monthly DCA?
           <span class="arrow">▼</span>
         </button>
@@ -545,7 +629,7 @@
       </div>
 
       <div class="faq-item">
-        <button class="faq-question">
+        <button class="faq-question" type="button">
           Can DCA beat lump sum?
           <span class="arrow">▼</span>
         </button>
@@ -558,7 +642,7 @@
       </div>
 
       <div class="faq-item">
-        <button class="faq-question">
+        <button class="faq-question" type="button">
           What return rate should I use?
           <span class="arrow">▼</span>
         </button>
@@ -571,7 +655,7 @@
       </div>
 
       <div class="faq-item">
-        <button class="faq-question">
+        <button class="faq-question" type="button">
           Is this useful for crypto and stocks?
           <span class="arrow">▼</span>
         </button>
@@ -672,7 +756,6 @@
 
       const difference = lumpSum - dcaValue;
       const absDifference = Math.abs(difference);
-      const better = difference > 0 ? "Lump Sum" : difference < 0 ? "DCA" : "Tie";
 
       document.getElementById("investedOut").innerText = money(totalInvestment);
       document.getElementById("monthlyOut").innerText = money(monthlyContribution);
@@ -811,4 +894,4 @@
     });
   </script>
 </body>
-</html>
+  </html>
