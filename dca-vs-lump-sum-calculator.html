@@ -15,14 +15,14 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>DCA vs Lump Sum Monte Carlo Calculator – Compare Investment Strategies</title>
-  <meta name="description" content="Compare dollar cost averaging vs lump sum investing with Monte Carlo simulation. Run thousands of market paths to estimate which strategy may perform better over time.">
+  <meta name="description" content="Compare dollar cost averaging vs lump sum investing with Monte Carlo simulation. Run 1000 simulated market paths to estimate which strategy may perform better over time.">
   <meta name="theme-color" content="#0f172a">
   <meta name="robots" content="index,follow,max-image-preview:large">
 
   <meta property="og:type" content="website">
   <meta property="og:url" content="https://novainvesttools.com/dca-vs-lump-sum-calculator.html">
   <meta property="og:title" content="DCA vs Lump Sum Monte Carlo Calculator – Compare Investment Strategies">
-  <meta property="og:description" content="Compare DCA vs lump sum investing with Monte Carlo simulation. Run thousands of simulated market paths and see which strategy comes out ahead.">
+  <meta property="og:description" content="Compare DCA vs lump sum investing with Monte Carlo simulation. See thousands of possible market paths and compare average outcomes, medians, and win rates.">
 
   <link rel="preconnect" href="https://cdn.jsdelivr.net">
   <link rel="dns-prefetch" href="https://cdn.jsdelivr.net">
@@ -46,7 +46,7 @@
     "featureList": [
       "Monte Carlo simulation",
       "Strategy comparison",
-      "Return comparison",
+      "Average and median outcome comparison",
       "Probability of outperformance"
     ],
     "offers": {
@@ -75,7 +75,15 @@
         "name": "Why use Monte Carlo instead of a single return rate?",
         "acceptedAnswer": {
           "@type": "Answer",
-          "text": "A single return rate assumes one fixed outcome. Monte Carlo testing shows a range of possible results, which is more useful for uncertain markets."
+          "text": "A single return rate assumes one fixed outcome. Monte Carlo testing shows a range of possible results, which is more useful when markets are uncertain."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "How many simulations does this calculator use?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "This calculator uses 1000 Monte Carlo simulations by default so the results stay realistic without requiring the user to choose a run count."
         }
       },
       {
@@ -96,18 +104,10 @@
       },
       {
         "@type": "Question",
-        "name": "Can this be used for stocks and crypto?",
-        "acceptedAnswer": {
-          "@type": "Answer",
-          "text": "Yes. The logic works for stocks, ETFs, crypto, and other assets where you want to compare one-time investing against recurring buys."
-        }
-      },
-      {
-        "@type": "Question",
         "name": "Is this more realistic than a fixed-return calculator?",
         "acceptedAnswer": {
           "@type": "Answer",
-          "text": "Yes. Monte Carlo simulation is more realistic because it tests many possible return paths instead of assuming one exact growth line."
+          "text": "Yes. Monte Carlo simulation is more realistic because it tests many possible return paths instead of assuming one straight line."
         }
       }
     ]
@@ -479,8 +479,8 @@
     </p>
 
     <p class="subhead">
-      This calculator simulates many possible market paths so you can estimate which strategy may perform better over time.
-      It is more realistic than a single-return calculator because markets do not move in a straight line.
+      This calculator uses 1000 Monte Carlo simulations by default so you can compare both strategies with a realistic range of market paths.
+      It is more useful than a fixed-return calculator because markets do not move in a straight line.
     </p>
 
     <div class="badge-row">
@@ -515,11 +515,6 @@
       <div class="field">
         <label for="annualVolatilityPct">Annual Volatility (%)</label>
         <input id="annualVolatilityPct" type="number" step="any" placeholder="e.g. 20">
-      </div>
-
-      <div class="field">
-        <label for="simulations">Monte Carlo Runs</label>
-        <input id="simulations" type="number" min="100" step="100" placeholder="e.g. 1000">
       </div>
     </div>
 
@@ -571,7 +566,7 @@
       <br>
       DCA = total amount / DCA months, invested monthly
       <br>
-      Final result = thousands of simulated ending values
+      Final result = 1000 simulated ending values by default
     </div>
 
     <p>
@@ -600,7 +595,6 @@
       <li>Choose how many months you want to use DCA</li>
       <li>Set your analysis horizon in years</li>
       <li>Enter an expected annual return and volatility</li>
-      <li>Choose how many Monte Carlo runs you want</li>
       <li>Click simulate to see the results and chart</li>
     </ul>
 
@@ -615,7 +609,7 @@
         <div class="faq-answer">
           <p>
             Monte Carlo simulation runs many possible market paths using random return scenarios.
-            This gives a range of possible outcomes instead of one fixed result.
+            This gives a range of possible outcomes instead of one fixed result, which is more realistic than a straight-line calculator.
           </p>
         </div>
       </div>
@@ -628,7 +622,19 @@
         <div class="faq-answer">
           <p>
             A single return rate assumes one exact outcome.
-            Monte Carlo testing shows a spread of possible outcomes, which is more useful when markets are uncertain.
+            Monte Carlo testing shows a spread of possible outcomes, which is much more useful when markets are uncertain and volatile.
+          </p>
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <button class="faq-question" type="button">
+          How many simulations does this calculator use?
+          <span class="arrow">▼</span>
+        </button>
+        <div class="faq-answer">
+          <p>
+            This calculator uses 1000 Monte Carlo simulations by default so the results stay realistic without making the tool complicated for casual users.
           </p>
         </div>
       </div>
@@ -654,18 +660,6 @@
         <div class="faq-answer">
           <p>
             Yes. This version uses monthly DCA and splits the total amount evenly across the DCA period you enter.
-          </p>
-        </div>
-      </div>
-
-      <div class="faq-item">
-        <button class="faq-question" type="button">
-          Can this be used for stocks and crypto?
-          <span class="arrow">▼</span>
-        </button>
-        <div class="faq-answer">
-          <p>
-            Yes. The logic works for stocks, ETFs, crypto, and other assets where you want to compare one-time investing against recurring buys.
           </p>
         </div>
       </div>
@@ -742,7 +736,8 @@
       const analysisYears = parseFloat(document.getElementById("analysisYears").value);
       const annualReturnPct = parseFloat(document.getElementById("annualReturnPct").value);
       const annualVolatilityPct = parseFloat(document.getElementById("annualVolatilityPct").value);
-      const simulations = parseInt(document.getElementById("simulations").value, 10) || 1000;
+
+      const simulations = 1000;
 
       if ([totalInvestment, dcaMonths, analysisYears, annualReturnPct, annualVolatilityPct].some(v => isNaN(v))){
         alert("Please fill in all required fields.");
@@ -771,15 +766,8 @@
         return;
       }
 
-      if (simulations < 100){
-        alert("Use at least 100 Monte Carlo runs.");
-        return;
-      }
-
       const monthlyContribution = totalInvestment / dcaMonths;
       const monthlyVol = (annualVolatilityPct / 100) / Math.sqrt(12);
-
-      // Log-return drift, adjusted so the path still roughly matches the expected annual return.
       const monthlyDrift = Math.log(1 + annualReturnPct / 100) / 12 - 0.5 * monthlyVol * monthlyVol;
 
       const labels = [0];
@@ -846,7 +834,12 @@
       const medLumpFinal = percentile(lumpFinals, 0.5);
       const medDcaFinal = percentile(dcaFinals, 0.5);
       const winRateDca = (dcaWins / simulations) * 100;
+      const winRateLump = (lumpWins / simulations) * 100;
+
       const avgDifference = avgLumpFinal - avgDcaFinal;
+      const medianDifference = medLumpFinal - medDcaFinal;
+      const avgEdgePct = Math.abs(avgDifference) / totalInvestment * 100;
+      const medianEdgePct = Math.abs(medianDifference) / totalInvestment * 100;
 
       document.getElementById("investedOut").innerText = money(totalInvestment);
       document.getElementById("monthlyOut").innerText = money(monthlyContribution);
@@ -861,28 +854,44 @@
       let insight = "";
       let insightClass = "";
 
-      if(winRateDca > 55){
+      const avgMentionsLump = avgDifference > 0;
+      const medianMentionsLump = medianDifference > 0;
+
+      if (winRateDca >= 60){
         winnerHTML = `<span class="insight-good">DCA wins more often</span>`;
-        insight = "In these simulations, spreading entries across time usually helped more than investing all at once.";
         insightClass = "insight-good";
-      } else if(winRateDca < 45){
+        insight = `DCA outperformed in ${fmt(winRateDca)}% of simulations, while lump sum won in ${fmt(winRateLump)}%. `;
+        insight += avgEdgePct >= 5
+          ? `The average advantage is meaningful, so spreading entries across time helped reduce timing risk in these scenarios.`
+          : `The edge is present but not huge, so the result is still fairly close.`;
+
+        if(!medianMentionsLump && avgMentionsLump){
+          insight += ` The median also leans toward DCA, which makes the result more consistent.`;
+        }
+      } else if (winRateDca <= 40){
         winnerHTML = `<span class="insight-good">Lump Sum wins more often</span>`;
-        insight = "In these simulations, investing earlier usually had the edge because money had more time to compound.";
         insightClass = "insight-good";
+        insight = `Lump sum outperformed in ${fmt(winRateLump)}% of simulations, while DCA won in ${fmt(winRateDca)}%. `;
+        insight += avgEdgePct >= 5
+          ? `Investing earlier had the clearer edge because the capital had more time to compound.`
+          : `The edge is real but modest, so the strategies are not far apart.`;
+
+        if(avgMentionsLump && medianMentionsLump){
+          insight += ` Both the average and median point in the same direction.`;
+        }
       } else {
         winnerHTML = `<span class="insight-medium">No clear winner</span>`;
-        insight = "Both strategies are close in these simulations. Market path and volatility matter a lot here.";
         insightClass = "insight-medium";
+        insight = `The contest is close. DCA won in ${fmt(winRateDca)}% of simulations and lump sum won in ${fmt(winRateLump)}%. `;
+        insight += `That means volatility and market path matter more than the strategy alone. `;
+
+        if(avgDifference !== 0 || medianDifference !== 0){
+          insight += `The average and median outcomes differ by about ${money(Math.max(avgEdgePct, medianEdgePct) / 100 * totalInvestment)} in this setup, so neither approach has a crushing edge.`;
+        }
       }
 
-      if(avgDifference > 0){
-        if(winRateDca < 45){
-          insight += " The average path still leaned toward lump sum.";
-        }
-      } else if(avgDifference < 0){
-        if(winRateDca > 55){
-          insight += " The average path still leaned toward DCA.";
-        }
+      if(ties > 0){
+        insight += ` A tiny number of runs ended nearly tied, which is normal in simulation.`;
       }
 
       document.getElementById("winnerOut").innerHTML = winnerHTML;
@@ -993,4 +1002,4 @@
     });
   </script>
 </body>
-  </html>
+                                 </html>
