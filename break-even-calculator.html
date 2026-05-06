@@ -1,39 +1,131 @@
 <!DOCTYPE html>
-<html>
-
+<html lang="en">
 <head>
-<link rel="canonical" href="https://novainvesttools.com/break-even-calculator.html">
-<!-- Google tag (gtag.js) -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-ZPCXDVE8C5"></script>
-<script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
+  <link rel="canonical" href="https://novainvesttools.com/break-even-calculator.html">
 
-  gtag('config', 'G-ZPCXDVE8C5');
-</script>
-<meta charset="UTF-8">
-<title>Break Even Calculator – Know When You Profit</title>
-<meta name="description" content="Find your break-even point instantly. Ideal for traders and investors in stocks, crypto, and forex markets.">
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-ZPCXDVE8C5"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-ZPCXDVE8C5');
+  </script>
 
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Break Even Calculator – Know When You Profit</title>
+  <meta name="description" content="Find your break-even point instantly. See how much gain you need to recover from a loss and return to profit in trading or investing.">
+  <meta name="theme-color" content="#0f172a">
+  <meta name="robots" content="index,follow,max-image-preview:large">
 
-<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-<link rel="stylesheet" href="style.css">
-<style>
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://novainvesttools.com/break-even-calculator.html">
+  <meta property="og:title" content="Break Even Calculator – Know When You Profit">
+  <meta property="og:description" content="Find your break-even point instantly. See how much gain you need to recover from a loss and return to profit.">
 
-body{
-font-family: Arial;
-background:#0b1a33;
-color:white;
-display:flex;
-justify-content:center;
-align-items:center;
-min-height:100vh;
-flex-direction:column;
-}
+  <link rel="preconnect" href="https://cdn.jsdelivr.net">
+  <link rel="dns-prefetch" href="https://cdn.jsdelivr.net">
 
- .container{
+  <link rel="stylesheet" href="style.css">
+  <link rel="icon" href="favicon.png" type="image/png">
+  <link rel="apple-touch-icon" href="favicon.png">
+
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "WebApplication",
+    "name": "Break Even Calculator",
+    "url": "https://novainvesttools.com/break-even-calculator.html",
+    "applicationCategory": "FinanceApplication",
+    "operatingSystem": "All",
+    "browserRequirements": "Requires JavaScript",
+    "description": "Calculate the break-even price and the gain required to recover from a loss.",
+    "featureList": [
+      "Break-even price calculation",
+      "Required gain calculation",
+      "Trading loss recovery",
+      "Investment recovery planning"
+    ],
+    "offers": {
+      "@type": "Offer",
+      "price": "0",
+      "priceCurrency": "USD"
+    }
+  }
+  </script>
+
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": [
+      {
+        "@type": "Question",
+        "name": "What is break-even?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Break-even is the point where your investment or trade returns to zero profit after a loss."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Why do I need a bigger gain than my loss?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Losses reduce your base capital, so the required recovery gain is always larger than the original percentage loss."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Can a 50% loss be recovered with a 50% gain?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "No. A 50% loss requires a 100% gain to return to break-even."
+        }
+      }
+    ]
+  }
+  </script>
+
+  <style>
+    *{
+      box-sizing:border-box;
+    }
+
+    body{
+      font-family: Arial, sans-serif;
+      background:#0b1a33;
+      color:white;
+      display:flex;
+      justify-content:center;
+      align-items:center;
+      flex-direction:column;
+      min-height:100vh;
+      margin:0;
+      padding:24px 0;
+    }
+
+    .toptext{
+      font-size:14px;
+      color:#6b7a99;
+      margin-bottom:5px;
+    }
+
+    .menu{
+      margin-bottom:25px;
+    }
+
+    .menu a{
+      color:#3b82f6;
+      margin:10px;
+      text-decoration:none;
+      font-weight:600;
+    }
+
+    .container{
       background:#1e293b;
       padding:30px;
       border-radius:16px;
@@ -41,372 +133,493 @@ flex-direction:column;
       max-width:520px;
       box-shadow:0 10px 25px rgba(0,0,0,0.35);
     }
-subhead{
+
+    h1{
+      margin-top:0;
+      margin-bottom:10px;
+      font-size:32px;
+      line-height:1.15;
+    }
+
+    .subhead{
       color:#94a3b8;
       font-size:15px;
       line-height:1.6;
       margin-bottom:18px;
     }
 
-input{
-width:100%;
-padding:12px;
-margin:10px 0;
-border-radius:6px;
-border:none;
-}
+    input{
+      width:100%;
+      padding:14px;
+      margin:12px 0;
+      border-radius:10px;
+      border:none;
+      background:#e5e7eb;
+      font-size:16px;
+      outline:none;
+    }
 
-button{
-padding:12px 20px;
-background:#3b82f6;
-border:none;
-border-radius:8px;
-color:white;
-cursor:pointer;
-}
+    input:focus{
+      box-shadow:0 0 0 3px rgba(59,130,246,0.18);
+    }
 
-canvas{
-margin-top:30px;
-}
+    button{
+      padding:14px;
+      background:#3b82f6;
+      border:none;
+      border-radius:10px;
+      color:white;
+      cursor:pointer;
+      margin-top:10px;
+      width:100%;
+      font-size:16px;
+      font-weight:700;
+      transition:0.2s;
+    }
 
-.menu{
-margin-bottom:25px;
-}
+    button:hover{
+      background:#2563eb;
+      transform:translateY(-1px);
+    }
 
-.menu a{
-color:#3b82f6;
-margin:10px;
-text-decoration:none;
-}
+    .result-card{
+      margin-top:18px;
+      padding:16px;
+      border-radius:14px;
+      background:rgba(255,255,255,0.05);
+      border:1px solid rgba(255,255,255,0.08);
+      display:none;
+    }
 
-.toptext{
-font-size:14px;
-color:#6b7a99;
-margin-bottom:5px;
-}
+    .result-line{
+      margin:10px 0;
+      font-size:16px;
+      line-height:1.5;
+      color:#e5e7eb;
+    }
 
-.disclaimer{
-margin-top:40px;
-padding-top:20px;
-border-top:1px solid rgba(255,255,255,0.1);
-font-size:13px;
-color:#9ca3af;
-max-width:500px;
-text-align:center;
-line-height:1.6;
-}
+    .result-line strong{
+      color:#cbd5f5;
+    }
 
-</style>
+    .insight-good{
+      color:#22c55e;
+      font-weight:700;
+    }
 
+    .insight-medium{
+      color:#facc15;
+      font-weight:700;
+    }
+
+    .insight-weak{
+      color:#ef4444;
+      font-weight:700;
+    }
+
+    canvas{
+      margin-top:26px;
+    }
+
+    .content{
+      width:90%;
+      max-width:900px;
+      margin-top:34px;
+    }
+
+    .content h2{
+      margin-top:34px;
+      margin-bottom:10px;
+      font-size:28px;
+    }
+
+    .content p,
+    .content li{
+      color:#cbd5e1;
+      line-height:1.7;
+      font-size:15px;
+    }
+
+    .content ul{
+      padding-left:20px;
+    }
+
+    .formula{
+      background:rgba(255,255,255,0.05);
+      border:1px solid rgba(255,255,255,0.08);
+      padding:14px 16px;
+      border-radius:12px;
+      margin:12px 0;
+      color:#e2e8f0;
+      overflow:auto;
+      line-height:1.7;
+    }
+
+    .faq{
+      margin-top:14px;
+    }
+
+    .faq-item{
+      border-bottom:1px solid rgba(255,255,255,0.08);
+    }
+
+    .faq-question{
+      width:100%;
+      background:none;
+      border:none;
+      color:white;
+      text-align:left;
+      padding:14px 8px;
+      font-size:15px;
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      cursor:pointer;
+    }
+
+    .faq-question:hover{
+      color:#93c5fd;
+    }
+
+    .arrow{
+      transition:0.25s;
+    }
+
+    .faq-item.active .arrow{
+      transform:rotate(180deg);
+    }
+
+    .faq-answer{
+      max-height:0;
+      overflow:hidden;
+      transition:max-height 0.3s ease;
+      color:#cbd5e1;
+      font-size:14px;
+      padding:0 8px;
+    }
+
+    .faq-item.active .faq-answer{
+      max-height:260px;
+      padding-bottom:12px;
+    }
+
+    .related{
+      width:90%;
+      max-width:900px;
+      margin-top:34px;
+    }
+
+    .related a{
+      color:#93c5fd;
+      text-decoration:none;
+    }
+
+    .related a:hover{
+      text-decoration:underline;
+    }
+
+    .disclaimer{
+      margin-top:40px;
+      padding-top:20px;
+      border-top:1px solid rgba(255,255,255,0.1);
+      font-size:13px;
+      color:#9ca3af;
+      max-width:900px;
+      text-align:center;
+      line-height:1.6;
+      width:90%;
+    }
+
+    @media (max-width: 700px){
+      .container{
+        padding:22px;
+      }
+
+      h1{
+        font-size:28px;
+      }
+
+      .content h2{
+        font-size:24px;
+      }
+    }
+  </style>
 </head>
 
 <body>
+  <p class="toptext">Explore more calculators</p>
 
-<p class="toptext">Explore more calculators</p> 
-
-<div class="menu">
-<a href="index.html">Home</a>
-</div>
-
-<h1>Break Even Calculator</h1>
-
-<div class="container">
-
-<input id="buy" placeholder="Buy price ($)">
-<input id="lossPercent" placeholder="Loss % (e.g. 20)">
-
-<button onclick="calculate()">Calculate</button>
-
-<h3 id="result"></h3>
-
-<canvas id="myChart"></canvas>
-
-</div>
-
-
-<h2>What is Break-Even?</h2>
-
-<p>
-Break-even is the point where your investment recovers all losses and returns to zero profit.
-</p>
-
-<p>
-In other words, it is the percentage gain required to recover from a loss.
-</p>
-
-<p>
-Many investors underestimate how much they need to gain after a loss—and this is where break-even calculations become essential.
-</p>
-
-
-
-<h2>Why Break-Even Matters</h2>
-
-<p>
-Losses and gains are not symmetrical.
-</p>
-
-<p>
-For example, if your investment drops by 50%, you don’t need a 50% gain to recover—you need a 100% gain.
-</p>
-
-<p>
-Understanding this helps you avoid unrealistic expectations and manage risk more effectively.
-</p>
-
-
-
-<h2>Break-Even Formula</h2>
-
-<p>
-The formula is:
-</p>
-
-<p>
-<strong>
-Required Gain (%) = Loss % ÷ (1 − Loss %)
-</strong>
-</p>
-
-<p>
-This shows how much percentage gain is needed to recover from a given loss.
-</p>
-
-  -<h2>Example</h2>
-
-<p>
-Let’s say your investment drops by 20%.
-</p>
-
-<ul>
-<li>Loss = 20%</li>
-<li>Required Gain = 20 ÷ (1 − 0.20)</li>
-<li>Required Gain = 25%</li>
-</ul>
-
-<p>
-This means you need a 25% gain just to return to your original value.
-</p>
-
-
-<h2>Why Losses Are Dangerous</h2>
-
-<ul>
-<li>Small losses are easy to recover</li>
-<li>Large losses require exponential gains</li>
-</ul>
-
-<p>
-For example:
-</p>
-
-<ul>
-<li>10% loss → 11.1% gain needed</li>
-<li>30% loss → 42.8% gain needed</li>
-<li>50% loss → 100% gain needed</li>
-<li>70% loss → 233% gain needed</li>
-</ul>
-
-<p>
-This is why protecting your capital is more important than chasing high returns.
-</p>
-
-<h2>Common Mistake</h2>
-
-<p>
-Many traders try to recover losses quickly by taking bigger risks. This often leads to even larger losses instead of recovery.
-</p>
-
-<p>
-The smarter approach is to manage risk and focus on consistent returns rather than chasing break-even aggressively.
-</p>
-
-<h2>How to Use This Calculator</h2>
-
-<ul>
-<li>Enter your loss percentage</li>
-<li>Click calculate</li>
-</ul>
-
-<p>
-The calculator will show the exact gain required to break even.
-</p>
-
-<h3>Frequently Asked Questions</h3>
-
-<div class="faq">
-
-  <div class="faq-item">
-    <button class="faq-question">
-      Why do I need a bigger gain than my loss?
-      <span class="arrow">▼</span>
-    </button>
-    <div class="faq-answer">
-      <p>
-        Losses reduce your base capital. After a loss, your gains are calculated on a smaller amount, which means you need a higher percentage return to recover.
-      </p>
-    </div>
+  <div class="menu">
+    <a href="index.html">Home</a>
   </div>
 
-  <div class="faq-item">
-    <button class="faq-question">
-      Can I recover from any loss?
-      <span class="arrow">▼</span>
-    </button>
-    <div class="faq-answer">
-      <p>
-        Technically yes, but large losses require extremely high returns. For example, a 70% loss requires a 233% gain to break even, which is very difficult to achieve.
-      </p>
+  <div class="container" data-search="break even calculator recover from losses required gain break-even point trading risk recovery">
+    <h1>Break Even Calculator</h1>
+    <p class="subhead">
+      Find the price or gain needed to recover from a loss and return to break-even.
+      Useful for trading, investing, and risk management decisions.
+    </p>
+
+    <input id="buy" placeholder="Buy price ($)">
+    <input id="lossPercent" placeholder="Loss % (e.g. 20)">
+
+    <button onclick="calculate()">Calculate</button>
+
+    <div id="resultCard" class="result-card">
+      <div class="result-line"><strong>Break-even price:</strong> <span id="breakEvenOut">—</span></div>
+      <div class="result-line"><strong>Required gain:</strong> <span id="gainOut">—</span></div>
+      <div class="result-line"><strong>Insight:</strong> <span id="insightOut">—</span></div>
     </div>
+
+    <canvas id="myChart"></canvas>
   </div>
 
-  <div class="faq-item">
-    <button class="faq-question">
-      Should I try to recover losses quickly?
-      <span class="arrow">▼</span>
-    </button>
-    <div class="faq-answer">
-      <p>
-        No. Trying to recover losses quickly often leads to taking excessive risks, which can result in even bigger losses. A disciplined approach is more effective.
-      </p>
+  <div class="content">
+    <h2>What is Break-Even?</h2>
+    <p>
+      Break-even is the point where your investment recovers all losses and returns to zero profit.
+      In simple terms, it shows the gain required to get back to your starting value after a drop.
+    </p>
+
+    <p>
+      This matters because losses and gains are not symmetrical.
+      A smaller loss may look harmless, but bigger losses require much larger gains to recover.
+    </p>
+
+    <h2>Break-Even Formula</h2>
+    <p>The basic formula is:</p>
+
+    <div class="formula">
+      Required Gain (%) = Loss % ÷ (1 − Loss %)
+      <br>
+      Break-even Price = Buy Price ÷ (1 − Loss %)
+    </div>
+
+    <p>
+      Example: if a position drops by 20%, you need a 25% gain to recover.
+      If it drops by 50%, you need a 100% gain just to get back to break-even.
+    </p>
+
+    <h2>Why Break-Even Matters</h2>
+    <p>
+      Understanding break-even helps you manage risk more realistically.
+      It can stop you from chasing unrealistic recovery trades and can help you cut losses earlier.
+    </p>
+
+    <ul>
+      <li>Small losses are easier to recover</li>
+      <li>Large losses require exponential gains</li>
+      <li>Capital protection matters more than revenge trading</li>
+      <li>Break-even helps you plan exits more intelligently</li>
+    </ul>
+
+    <h2>How to Use This Calculator</h2>
+    <ul>
+      <li>Enter your buy price</li>
+      <li>Enter the percentage loss</li>
+      <li>Click calculate to see the break-even price and required gain</li>
+    </ul>
+
+    <h2>Frequently Asked Questions</h2>
+
+    <div class="faq">
+      <div class="faq-item">
+        <button class="faq-question">
+          Why do I need a bigger gain than my loss?
+          <span class="arrow">▼</span>
+        </button>
+        <div class="faq-answer">
+          <p>
+            Losses reduce your base capital. After a loss, gains are calculated on a smaller amount, which means you need a larger percentage increase to recover.
+          </p>
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <button class="faq-question">
+          Can I recover from any loss?
+          <span class="arrow">▼</span>
+        </button>
+        <div class="faq-answer">
+          <p>
+            Technically yes, but large losses require very high returns. For example, a 70% loss requires a 233% gain to break even.
+          </p>
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <button class="faq-question">
+          Is it better to cut losses early?
+          <span class="arrow">▼</span>
+        </button>
+        <div class="faq-answer">
+          <p>
+            Yes. Smaller losses are much easier to recover. Protecting capital early is usually more effective than trying to recover later.
+          </p>
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <button class="faq-question">
+          Can averaging down help break even faster?
+          <span class="arrow">▼</span>
+        </button>
+        <div class="faq-answer">
+          <p>
+            Averaging down can lower your break-even point, but it also increases your exposure. It should only be used with a clear strategy.
+          </p>
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <button class="faq-question">
+          What is the safest way to recover losses?
+          <span class="arrow">▼</span>
+        </button>
+        <div class="faq-answer">
+          <p>
+            The safest approach is to manage risk carefully, avoid large drawdowns, and focus on consistent returns rather than aggressive recovery.
+          </p>
+        </div>
+      </div>
     </div>
   </div>
-
-  <div class="faq-item">
-    <button class="faq-question">
-      Is it better to cut losses early?
-      <span class="arrow">▼</span>
-    </button>
-    <div class="faq-answer">
-      <p>
-        Yes. Smaller losses are much easier to recover. For example, a 10% loss requires only an 11.1% gain, while a 50% loss requires a 100% gain.
-      </p>
-    </div>
-  </div>
-
-  <div class="faq-item">
-    <button class="faq-question">
-      Can averaging down help me break even faster?
-      <span class="arrow">▼</span>
-    </button>
-    <div class="faq-answer">
-      <p>
-        Averaging down can reduce your break-even point, but it increases your exposure and risk. It should only be used with a clear strategy.
-      </p>
-    </div>
-  </div>
-
-  <div class="faq-item">
-    <button class="faq-question">
-      How long does it take to recover a loss?
-      <span class="arrow">▼</span>
-    </button>
-    <div class="faq-answer">
-      <p>
-        It depends on your return rate. For example, recovering a 50% loss with a 10% annual return could take many years. Time plays a critical role in recovery.
-      </p>
-    </div>
-  </div>
-
-  <div class="faq-item">
-    <button class="faq-question">
-      What is the safest way to recover losses?
-      <span class="arrow">▼</span>
-    </button>
-    <div class="faq-answer">
-      <p>
-        The safest approach is to focus on consistent returns, manage risk carefully, and avoid large drawdowns in the first place.
-      </p>
-    </div>
-  </div>
-
-</div>
 
   <div class="related">
-<h3>Related Calculators</h3>
-<p>You may also find these tools useful:</p>
-<ul>
-<li><a href="drawdown-calculator.html">Drawdown FeesCalculator</a></li>
-<li><a href="margin-calculator.html">Margin Calculator</a></li>
-<li><a href="profit-loss-calculator.html">Profit Loss Calculator</a></li>
-<li><a href="roi-calculator.html">ROI Calculator</a></li>
-<li><a href="trading-fees-calculator.html">Trading Fees Calculator</a></li>
-</ul>
+    <h3>Related Calculators</h3>
+    <p>You may also find these tools useful:</p>
+    <ul>
+      <li><a href="drawdown-calculator.html">Drawdown Calculator</a></li>
+      <li><a href="margin-calculator.html">Margin Calculator</a></li>
+      <li><a href="profit-loss-calculator.html">Profit Loss Calculator</a></li>
+      <li><a href="roi-calculator.html">ROI Calculator</a></li>
+      <li><a href="trading-fees-calculator.html">Trading Fees Calculator</a></li>
+    </ul>
   </div>
-  
-<div class="disclaimer">
-<p>
-<strong>Disclaimer:</strong> This tool provides estimates and is not financial advice.
-</p>
-</div>
-<script src="footer.js"></script>
-<script>
 
-let chart;
+  <div class="disclaimer">
+    <p>
+      <strong>Disclaimer:</strong> This tool provides estimates and is not financial advice.
+    </p>
+  </div>
 
-function calculate(){
+  <script src="footer.js"></script>
+  <script>
+    let chart;
 
-let buy = parseFloat(document.getElementById("buy").value)
-let lossPercent = parseFloat(document.getElementById("lossPercent").value)
+    function calculate(){
+      const buy = parseFloat(document.getElementById("buy").value);
+      const lossPercent = parseFloat(document.getElementById("lossPercent").value);
+      const resultCard = document.getElementById("resultCard");
+      const breakEvenOut = document.getElementById("breakEvenOut");
+      const gainOut = document.getElementById("gainOut");
+      const insightOut = document.getElementById("insightOut");
 
-if(!buy || !lossPercent){
-alert("Fill all fields")
-return
-}
+      if (isNaN(buy) || isNaN(lossPercent)) {
+        alert("Fill all fields");
+        return;
+      }
 
-let lossFactor = 1 - (lossPercent / 100)
-let breakEvenPrice = buy / lossFactor
+      if (buy <= 0) {
+        alert("Buy price must be greater than zero");
+        return;
+      }
 
-let neededGain = ((breakEvenPrice - buy) / buy) * 100
+      if (lossPercent < 0 || lossPercent >= 100) {
+        alert("Loss % must be between 0 and 99.99");
+        return;
+      }
 
-document.getElementById("result").innerHTML =
-`Break Even Price: $${breakEvenPrice.toFixed(2)}
-<br>Required Gain: ${neededGain.toFixed(2)}%`
+      const lossFactor = 1 - (lossPercent / 100);
+      const breakEvenPrice = buy / lossFactor;
+      const neededGain = ((breakEvenPrice - buy) / buy) * 100;
 
-drawChart(buy, breakEvenPrice)
+      breakEvenOut.innerHTML = `$${breakEvenPrice.toFixed(2)}`;
+      gainOut.innerHTML = `${neededGain.toFixed(2)}%`;
 
-}
+      let insight = "";
+      let insightClass = "";
 
-function drawChart(buy, breakEvenPrice){
+      if (lossPercent <= 10) {
+        insight = "Small losses are relatively easy to recover.";
+        insightClass = "insight-good";
+      } else if (lossPercent <= 30) {
+        insight = "Recovery is possible, but the required gain is already meaningfully higher.";
+        insightClass = "insight-medium";
+      } else {
+        insight = "Large losses require very high gains to recover. Risk control matters here.";
+        insightClass = "insight-weak";
+      }
 
-let ctx = document.getElementById('myChart')
+      insightOut.innerHTML = `<span class="${insightClass}">${insight}</span>`;
+      resultCard.style.display = "block";
 
-if(chart){
-chart.destroy()
-}
+      drawChart(buy, breakEvenPrice);
+    }
 
-chart = new Chart(ctx,{
-type:'bar',
-data:{
-labels:['Buy Price','Break Even Price'],
-datasets:[{
-label:'Trading Overview',
-data:[buy, breakEvenPrice],
-backgroundColor:['#147bdf','#22c55e']
-}]
-}
-})
+    function drawChart(buy, breakEvenPrice){
+      const ctx = document.getElementById('myChart').getContext('2d');
 
-}
-document.addEventListener("DOMContentLoaded", function(){
+      if(chart){
+        chart.destroy();
+      }
 
-  document.querySelectorAll(".faq-question").forEach(btn => {
-    btn.addEventListener("click", () => {
-
-      const item = btn.parentElement;
-
-      document.querySelectorAll(".faq-item").forEach(i => {
-        if(i !== item) i.classList.remove("active");
+      chart = new Chart(ctx,{
+        type:'bar',
+        data:{
+          labels:['Buy Price','Break Even Price'],
+          datasets:[{
+            label:'Trading Overview',
+            data:[buy, breakEvenPrice],
+            backgroundColor:['#3b82f6','#22c55e']
+          }]
+        },
+        options:{
+          responsive:true,
+          plugins:{
+            legend:{
+              labels:{ color:'white' }
+            },
+            tooltip:{
+              callbacks:{
+                label: function(context){
+                  return `$${Number(context.parsed.y).toFixed(2)}`;
+                }
+              }
+            }
+          },
+          scales:{
+            x:{
+              ticks:{ color:'white' },
+              grid:{ color:'rgba(255,255,255,0.08)' }
+            },
+            y:{
+              ticks:{
+                color:'white',
+                callback: function(value){
+                  return "$" + Number(value).toLocaleString();
+                }
+              },
+              grid:{ color:'rgba(255,255,255,0.08)' }
+            }
+          }
+        }
       });
+    }
 
-      item.classList.toggle("active");
+    document.addEventListener("DOMContentLoaded", function(){
+      document.querySelectorAll(".faq-question").forEach(btn => {
+        btn.addEventListener("click", () => {
+          const item = btn.parentElement;
 
+          document.querySelectorAll(".faq-item").forEach(i => {
+            if(i !== item) i.classList.remove("active");
+          });
+
+          item.classList.toggle("active");
+        });
+      });
     });
-  });
-
-});
-</script>
-
+  </script>
 </body>
-
-  </html>
+            </html>
