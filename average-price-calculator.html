@@ -1,445 +1,695 @@
 <!DOCTYPE html>
-<html>
-
+<html lang="en">
 <head>
-<link rel="canonical" href="https://novainvesttools.com/average-price-calculator.html">
-<!-- Google tag (gtag.js) -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-ZPCXDVE8C5"></script>
-<script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
+  <link rel="canonical" href="https://novainvesttools.com/average-price-calculator.html">
 
-  gtag('config', 'G-ZPCXDVE8C5');
-</script>
-<meta charset="UTF-8">
-<title>Average Price Calculator – Find Your True Entry Price</title>
-<meta name="description" content="Calculate your average price easily with this free tool. Perfect for stock and crypto investors managing multiple entries.">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<link rel="stylesheet" href="style.css">
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-ZPCXDVE8C5"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-ZPCXDVE8C5');
+  </script>
 
-<style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Average Price Calculator – Find Your True Entry Price</title>
+  <meta name="description" content="Calculate your average price easily with this free tool. Perfect for stock and crypto investors managing multiple entries.">
+  <meta name="theme-color" content="#0b1a33">
+  <meta name="robots" content="index,follow,max-image-preview:large">
 
-body{
-font-family: Arial;
-background:#0b1a33;
-color:white;
-display:flex;
-justify-content:center;
-align-items:center;
-min-height:100vh;
-flex-direction:column;
-}
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://novainvesttools.com/average-price-calculator.html">
+  <meta property="og:title" content="Average Price Calculator – Find Your True Entry Price">
+  <meta property="og:description" content="Calculate your average price easily with this free tool. Perfect for stock and crypto investors managing multiple entries.">
 
-.container{
-background:#1e293b;
-padding:30px;
-border-radius:16px;
-width:90%;
-max-width:520px;
+  <link rel="stylesheet" href="style.css">
+  <link rel="icon" href="favicon.png" type="image/png">
+  <link rel="apple-touch-icon" href="favicon.png">
 
-box-shadow:0 10px 25px rgba(0,0,0,0.35);
-
-border:1px solid rgba(255,255,255,0.05);
-
-backdrop-filter: blur(6px);
-}
-
-input{
-width:90%;
-padding:10px;
-margin:8px;
-border-radius:5px;
-border:none;
-}
-
-button{
-padding:14px;
-background:#3b82f6;
-border:none;
-border-radius:10px;
-color:white;
-cursor:pointer;
-margin-top:10px;
-
-transition:0.2s;
-}
-
-button:hover{
-background:#2563eb;
-}
-.menu{
-margin-bottom:25px;
-}
-
-.menu a{
-color:#3b82f6;
-margin:10px;
-text-decoration:none;
-}
-.toptext{
-font-size:14px;
-color:#6b7a99;
-margin-bottom:5px;
-}
-.disclaimer{
-margin-top:40px;
-padding-top:20px;
-border-top:1px solid rgba(255,255,255,0.1);
-font-size:13px;
-color:#9ca3af;
-max-width:500px;
-text-align:center;
-line-height:1.6;
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "WebApplication",
+    "name": "Average Price Calculator",
+    "url": "https://novainvesttools.com/average-price-calculator.html",
+    "applicationCategory": "FinanceApplication",
+    "operatingSystem": "All",
+    "browserRequirements": "Requires JavaScript",
+    "description": "Calculate your true average entry price after multiple purchases.",
+    "featureList": [
+      "Multiple buy price calculation",
+      "Weighted average entry price",
+      "Cost basis estimation",
+      "DCA entry tracking"
+    ],
+    "offers": {
+      "@type": "Offer",
+      "price": "0",
+      "priceCurrency": "USD"
+    }
   }
-</style>
+  </script>
 
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": [
+      {
+        "@type": "Question",
+        "name": "What is average price?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Average price is the weighted cost basis of your investment after multiple purchases at different prices."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Does average price include fees?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Not unless you manually include fees in your inputs. Adding fees gives a more accurate cost basis."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Is average price the same as break-even?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "No. Break-even includes costs and fees, while average price only reflects your entry cost."
+        }
+      }
+    ]
+  }
+  </script>
 
+  <style>
+    *{
+      box-sizing:border-box;
+    }
+
+    body{
+      font-family: Arial, sans-serif;
+      background:#0b1a33;
+      color:white;
+      display:flex;
+      justify-content:center;
+      align-items:center;
+      min-height:100vh;
+      flex-direction:column;
+      margin:0;
+      padding:24px 0;
+    }
+
+    .toptext{
+      font-size:14px;
+      color:#6b7a99;
+      margin-bottom:5px;
+    }
+
+    .menu{
+      margin-bottom:25px;
+    }
+
+    .menu a{
+      color:#3b82f6;
+      margin:10px;
+      text-decoration:none;
+      font-weight:600;
+    }
+
+    .container{
+      background:#1e293b;
+      padding:30px;
+      border-radius:16px;
+      width:90%;
+      max-width:620px;
+      box-shadow:0 10px 25px rgba(0,0,0,0.35);
+      border:1px solid rgba(255,255,255,0.05);
+      backdrop-filter: blur(6px);
+    }
+
+    h1{
+      margin-top:0;
+      margin-bottom:10px;
+      font-size:32px;
+      line-height:1.15;
+    }
+
+    .quick-answer{
+      background: rgba(59,130,246,0.12);
+      border: 1px solid rgba(59,130,246,0.25);
+      padding: 12px 14px;
+      border-radius: 10px;
+      font-size: 15px;
+      line-height: 1.6;
+      color: #e2e8f0;
+      margin: 0 0 18px;
+    }
+
+    .subhead{
+      color:#94a3b8;
+      font-size:15px;
+      line-height:1.6;
+      margin-bottom:18px;
+    }
+
+    .buy-row{
+      display:grid;
+      grid-template-columns: 1fr 1fr auto;
+      gap:10px;
+      margin-bottom:10px;
+      align-items:center;
+    }
+
+    input{
+      width:100%;
+      padding:12px;
+      border-radius:8px;
+      border:none;
+      background:#e5e7eb;
+      font-size:16px;
+      outline:none;
+    }
+
+    input:focus{
+      box-shadow:0 0 0 3px rgba(59,130,246,0.18);
+    }
+
+    button{
+      padding:12px 18px;
+      background:#3b82f6;
+      border:none;
+      border-radius:10px;
+      color:white;
+      cursor:pointer;
+      margin-top:10px;
+      width:100%;
+      font-size:16px;
+      font-weight:700;
+      transition:0.2s;
+    }
+
+    button:hover{
+      background:#2563eb;
+      transform:translateY(-1px);
+    }
+
+    .secondary-btn{
+      background:rgba(255,255,255,0.08);
+    }
+
+    .secondary-btn:hover{
+      background:rgba(255,255,255,0.14);
+    }
+
+    .result-card{
+      margin-top:18px;
+      padding:16px;
+      border-radius:14px;
+      background:rgba(255,255,255,0.05);
+      border:1px solid rgba(255,255,255,0.08);
+      display:none;
+    }
+
+    .result-line{
+      margin:10px 0;
+      font-size:16px;
+      line-height:1.5;
+      color:#e5e7eb;
+    }
+
+    .result-line strong{
+      color:#cbd5f5;
+    }
+
+    .insight-good{
+      color:#22c55e;
+      font-weight:700;
+    }
+
+    .insight-medium{
+      color:#facc15;
+      font-weight:700;
+    }
+
+    .insight-weak{
+      color:#ef4444;
+      font-weight:700;
+    }
+
+    canvas{
+      margin-top:26px;
+    }
+
+    .content{
+      width:90%;
+      max-width:900px;
+      margin-top:34px;
+    }
+
+    .content h2{
+      margin-top:34px;
+      margin-bottom:10px;
+      font-size:28px;
+    }
+
+    .content p,
+    .content li{
+      color:#cbd5e1;
+      line-height:1.7;
+      font-size:15px;
+    }
+
+    .content ul{
+      padding-left:20px;
+    }
+
+    .formula{
+      background:rgba(255,255,255,0.05);
+      border:1px solid rgba(255,255,255,0.08);
+      padding:14px 16px;
+      border-radius:12px;
+      margin:12px 0;
+      color:#e2e8f0;
+      overflow:auto;
+      line-height:1.7;
+    }
+
+    .faq{
+      margin-top:14px;
+    }
+
+    .faq-item{
+      border-bottom:1px solid rgba(255,255,255,0.08);
+    }
+
+    .faq-question{
+      width:100%;
+      background:none;
+      border:none;
+      color:white;
+      text-align:left;
+      padding:14px 8px;
+      font-size:15px;
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      cursor:pointer;
+    }
+
+    .faq-question:hover{
+      color:#93c5fd;
+    }
+
+    .arrow{
+      transition:0.25s;
+    }
+
+    .faq-item.active .arrow{
+      transform:rotate(180deg);
+    }
+
+    .faq-answer{
+      max-height:0;
+      overflow:hidden;
+      transition:max-height 0.3s ease;
+      color:#cbd5e1;
+      font-size:14px;
+      padding:0 8px;
+    }
+
+    .faq-item.active .faq-answer{
+      max-height:260px;
+      padding-bottom:12px;
+    }
+
+    .related{
+      width:90%;
+      max-width:900px;
+      margin-top:34px;
+    }
+
+    .related a{
+      color:#93c5fd;
+      text-decoration:none;
+    }
+
+    .related a:hover{
+      text-decoration:underline;
+    }
+
+    .disclaimer{
+      margin-top:40px;
+      padding-top:20px;
+      border-top:1px solid rgba(255,255,255,0.1);
+      font-size:13px;
+      color:#9ca3af;
+      max-width:900px;
+      text-align:center;
+      line-height:1.6;
+      width:90%;
+    }
+
+    @media (max-width: 700px){
+      .container{
+        padding:22px;
+      }
+
+      h1{
+        font-size:28px;
+      }
+
+      .content h2{
+        font-size:24px;
+      }
+
+      .buy-row{
+        grid-template-columns:1fr;
+      }
+    }
+  </style>
 </head>
 
 <body>
-<p class="toptext">Explore more calculators</p>
+  <p class="toptext">Explore more calculators</p>
 
-<div class="menu">
-<a href="index.html">Home</a>
-</div>
+  <div class="menu">
+    <a href="index.html">Home</a>
+  </div>
 
-<h1>Average Price Calculator</h1>
-  
-<div class="calculator">
+  <div class="container" data-search="average price calculator true entry price cost basis dca crypto stock multiple buys">
+    <h1>Average Price Calculator</h1>
 
-<div id="buys"></div>
+    <p class="quick-answer">
+      Average price is your weighted cost basis after multiple purchases at different prices, and this calculator shows your true entry price instantly.
+    </p>
 
-<button onclick="addBuy()">Add Buy</button>
+    <p class="subhead">
+      Calculate your average entry price after multiple buys. Useful for stock, crypto, and DCA investors managing cost basis and break-even levels.
+    </p>
 
-<br>
+    <div id="buys"></div>
 
-<button onclick="calculate()">Calculate</button>
+    <button class="secondary-btn" onclick="addBuy()">Add Buy</button>
+    <button onclick="calculate()">Calculate</button>
 
-<p id="result"></p>
-<h2>What is Average Price?</h2>
+    <div id="resultCard" class="result-card">
+      <div class="result-line"><strong>Average price:</strong> <span id="avgOut">—</span></div>
+      <div class="result-line"><strong>Total cost:</strong> <span id="costOut">—</span></div>
+      <div class="result-line"><strong>Total quantity:</strong> <span id="qtyOut">—</span></div>
+      <div class="result-line"><strong>Insight:</strong> <span id="insightOut">—</span></div>
+    </div>
 
-<p>
-Average price (also known as cost basis) is the average cost of your investment after multiple purchases at different prices.
-</p>
+    <canvas id="myChart"></canvas>
+  </div>
 
-<p>
-Instead of tracking each buy separately, average price gives you a single value that represents your true entry price.
-</p>
+  <div class="content">
+    <h2>What is Average Price?</h2>
+    <p>
+      Average price, also known as cost basis, is the weighted cost of your investment after multiple purchases at different prices.
+      It gives you a single entry price that reflects all of your buys combined.
+    </p>
 
-<p>
-This is especially useful when you buy the same asset multiple times at different prices.
-</p>
+    <p>
+      This is useful when you buy the same asset more than once.
+      Instead of tracking each order separately, average price tells you what your real entry level is.
+    </p>
 
+    <h2>How Average Price Works</h2>
+    <p>
+      Each purchase contributes to your total cost and total quantity. The calculator combines those values into one weighted result.
+      Higher-priced buys push the average up. Lower-priced buys pull the average down.
+    </p>
 
-<h2>How Average Price Works</h2>
+    <div class="formula">
+      Average Price = Total Cost ÷ Total Quantity
+      <br>
+      Total Cost = sum of all (price × amount) entries
+      <br>
+      Total Quantity = sum of all amounts
+    </div>
 
-<p>
-When you invest multiple times, each purchase has a different price and quantity. The average price combines all of them into one number.
-</p>
+    <h2>Example</h2>
+    <p>
+      If you buy 1 unit at $100 and 1 unit at $200, your total cost is $300 and your total quantity is 2.
+      Your average price is $150.
+    </p>
 
-<ul>
-<li><strong>Higher buys</strong> increase your average</li>
-<li><strong>Lower buys</strong> reduce your average</li>
-</ul>
+    <h2>Why Average Price Matters</h2>
+    <ul>
+      <li>Know your true entry point</li>
+      <li>Estimate profit and loss more accurately</li>
+      <li>Plan exits and recovery levels better</li>
+      <li>Manage risk more effectively</li>
+    </ul>
 
-<p>
-This helps you understand your real break-even point.
-</p>
+    <p>
+      Without average price, you may misread your position and think you are in profit when you are not.
+    </p>
 
+    <h2>How to Use This Calculator</h2>
+    <ul>
+      <li>Enter each purchase price</li>
+      <li>Enter the quantity bought</li>
+      <li>Add more entries if needed</li>
+      <li>Click calculate</li>
+    </ul>
 
+    <h2>Average Price vs DCA</h2>
+    <p>
+      Average price is the result of multiple buys. DCA is the strategy of investing regularly over time.
+      DCA often leads to a smoother average price, but the two are not the same thing.
+    </p>
 
-<h2>Average Price Formula</h2>
+    <h2>Frequently Asked Questions</h2>
 
-<p>
-The formula is:
-</p>
+    <div class="faq">
+      <div class="faq-item">
+        <button class="faq-question">
+          What is a good average price?
+          <span class="arrow">▼</span>
+        </button>
+        <div class="faq-answer">
+          <p>
+            A good average price is one that allows you to exit with profit based on your strategy and market conditions.
+          </p>
+        </div>
+      </div>
 
-<p>
-<strong>
-Average Price = Total Cost ÷ Total Quantity
-</strong>
-</p>
+      <div class="faq-item">
+        <button class="faq-question">
+          Can I lower my average price after a loss?
+          <span class="arrow">▼</span>
+        </button>
+        <div class="faq-answer">
+          <p>
+            Yes, but it increases your exposure. Lowering your average should be done with a clear plan and risk control.
+          </p>
+        </div>
+      </div>
 
-<ul>
-<li><strong>Total Cost</strong> = sum of all purchases</li>
-<li><strong>Total Quantity</strong> = total units owned</li>
-</ul>
+      <div class="faq-item">
+        <button class="faq-question">
+          Does average price include fees?
+          <span class="arrow">▼</span>
+        </button>
+        <div class="faq-answer">
+          <p>
+            Not unless you include fees manually. Adding fees gives a more accurate cost basis.
+          </p>
+        </div>
+      </div>
 
+      <div class="faq-item">
+        <button class="faq-question">
+          Is average price the same as break-even price?
+          <span class="arrow">▼</span>
+        </button>
+        <div class="faq-answer">
+          <p>
+            Not exactly. Break-even includes fees and costs, while average price only reflects your entry cost.
+          </p>
+        </div>
+      </div>
 
-
-<h2>Example</h2>
-
-<p>
-Let’s say you buy:
-</p>
-<ul>
-<li>1 unit at $100</li>
-<li>1 unit at $200</li>
-</ul>
-
-<p>
-Total cost = $300  
-Total quantity = 2
-</p>
-
-<p>
-<strong>Average Price = $300 ÷ 2 = $150</strong>
-</p>
-
-<p>
-This means your real entry price is $150, not $100 or $200.
-</p>
-
-<h2>Should You Lower Your Average Price?</h2>
-
-<p>
-Lowering your average price means buying more of an asset after its price drops. This reduces your overall entry price and makes it easier to break even.
-</p>
-
-<p>
-While this strategy can be powerful, it also carries risk. Buying more just because the price is falling can lead to larger losses if the asset continues to decline.
-</p>
-
-<h3>The Right Way to Lower Your Average</h3>
-
-<ul>
-<li>Have a clear long-term belief in the asset</li>
-<li>Use planned entries (not emotional decisions)</li>
-<li>Invest in steps instead of all at once</li>
-<li>Manage risk and avoid overexposure</li>
-</ul>
-
-<h3>The Biggest Mistake</h3>
-
-<p>
-Many traders lower their average out of frustration or hope, not strategy. This is known as “catching a falling knife” and can quickly turn small losses into large ones.
-</p>
-
-<p>
-Lowering your average only works when it is part of a disciplined strategy—not an emotional reaction.
-</p>
-
-<h2>Why Average Price Matters</h2>
-
-<ul>
-<li>Know your true entry point</li>
-<li>Calculate profit and loss accurately</li>
-<li>Plan better exit strategies</li>
-<li>Manage risk more effectively</li>
-</ul>
-
-<p>
-Without average price, you may think you're in profit while actually being at a loss.
-</p>
-
-
-
-<h2>How to Use This Calculator</h2>
-
-<ul>
-<li>Enter each purchase price</li>
-<li>Enter the quantity bought</li>
-<li>Add multiple entries if needed</li>
-<li>Click calculate</li>
-</ul>
-
-<p>
-The calculator will show your average price and total investment.
-</p>
-
-  
-
-<h2>Average Price vs DCA</h2>
-
-<p>
-Average price and Dollar Cost Averaging (DCA) are closely related but not the same.
-</p>
-
-<ul>
-<li><strong>Average Price:</strong> calculates your current cost basis</li>
-<li><strong>DCA:</strong> is a strategy of investing regularly over time</li>
-</ul>
-
-<p>
-This calculator helps you measure the result of your DCA strategy.
-</p>
-<ul>
-
-<h2>Frequently Asked Questions</h2>
-
-<div class="faq">
-
-  <div class="faq-item">
-    <button class="faq-question">
-      What is a good average price?
-      <span class="arrow">▼</span>
-    </button>
-    <div class="faq-answer">
-      <p>
-        A good average price is one that allows you to exit with profit based on your strategy. It depends on market conditions, not a fixed number.
-      </p>
+      <div class="faq-item">
+        <button class="faq-question">
+          Can average price be used for crypto and stocks?
+          <span class="arrow">▼</span>
+        </button>
+        <div class="faq-answer">
+          <p>
+            Yes. It works for any asset where you buy multiple times at different prices, including crypto, stocks, and forex.
+          </p>
+        </div>
+      </div>
     </div>
   </div>
 
-  <div class="faq-item">
-    <button class="faq-question">
-      Can I lower my average price after a loss?
-      <span class="arrow">▼</span>
-    </button>
-    <div class="faq-answer">
-      <p>
-        Yes. Buying more at a lower price reduces your average, but it increases your exposure. This should only be done with a clear plan and risk control.
-      </p>
-    </div>
+  <div class="related">
+    <h3>Related Calculators</h3>
+    <p>You may also find these tools useful:</p>
+    <ul>
+      <li><a href="crypto-profit-calculator.html">Crypto Profit Calculator</a></li>
+      <li><a href="dca-calculator.html">DCA Calculator</a></li>
+      <li><a href="break-even-calculator.html">Break Even Calculator</a></li>
+      <li><a href="profit-loss-calculator.html">Profit Loss Calculator</a></li>
+      <li><a href="roi-calculator.html">ROI Calculator</a></li>
+    </ul>
   </div>
 
-  <div class="faq-item">
-    <button class="faq-question">
-      Does average price include fees?
-      <span class="arrow">▼</span>
-    </button>
-    <div class="faq-answer">
-      <p>
-        In most cases, fees are not included unless added manually. Including fees gives a more accurate average cost.
-      </p>
-    </div>
+  <div class="disclaimer">
+    <p>
+      <strong>Disclaimer:</strong> The calculators on this website are provided for informational and educational purposes only.
+      All results are estimates based on the values entered and do not constitute financial, investment, or trading advice.
+      Always conduct your own research before making financial decisions.
+    </p>
   </div>
 
-  <div class="faq-item">
-    <button class="faq-question">
-      Is average price the same as break-even price?
-      <span class="arrow">▼</span>
-    </button>
-    <div class="faq-answer">
-      <p>
-        Not exactly. Break-even price includes fees and costs, while average price only reflects your entry cost.
-      </p>
-    </div>
-  </div>
+  <script src="footer.js"></script>
+  <script>
+    let chart;
 
-  <div class="faq-item">
-    <button class="faq-question">
-      Can average price be used for crypto and stocks?
-      <span class="arrow">▼</span>
-    </button>
-    <div class="faq-answer">
-      <p>
-        Yes. Average price works for any asset where you buy multiple times at different prices, including crypto, stocks, and forex.
-      </p>
-    </div>
-  </div>
+    function addBuy(){
+      const div = document.createElement("div");
+      div.className = "buy-row";
+      div.innerHTML = `
+        <input class="price" placeholder="Price">
+        <input class="amount" placeholder="Amount">
+        <button class="remove" onclick="removeBuy(this)" type="button">Remove</button>
+      `;
+      document.getElementById("buys").appendChild(div);
+    }
 
-  <div class="faq-item">
-    <button class="faq-question">
-      What is the difference between average price and DCA?
-      <span class="arrow">▼</span>
-    </button>
-    <div class="faq-answer">
-      <p>
-        Average price is the result of your buys, while DCA is a strategy of investing regularly. DCA often leads to a smoother average price over time.
-      </p>
-    </div>
-  </div>
+    function removeBuy(button){
+      button.parentElement.remove();
+    }
 
-</div>
-  
-<div class="related">
-<h3>Related Calculators</h3>
-<p>You may also find these tools useful:</p>
-<ul>
-<li><a href="crypto-profit-calculator.html">Crypto Profit Calculator</a></li>
-<li><a href="dca-calculator.html">DCA Calculator</a></li>
-<li><a href="break-even-calculator.html">Break Even Calculator</a></li>
-<li><a href="profit-loss-calculator.html">Profit Loss Calculator</a></li>
-<li><a href="roi-calculator.html">ROI Calculator</a></li>
-</ul>
-</div>
-  
-<div class="disclaimer">
-<p>
-<strong>Disclaimer:</strong> The calculators on this website are provided for informational and educational purposes only. 
-All results are estimates based on the values entered and do not constitute financial, investment, or trading advice. 
-Always conduct your own research before making financial decisions.
-</p>
-</div>
-<script src="footer.js"></script>  
-<script>
+    function calculate(){
+      const prices = document.querySelectorAll(".price");
+      const amounts = document.querySelectorAll(".amount");
 
-function addBuy(){
+      let totalCost = 0;
+      let totalAmount = 0;
 
-let div=document.createElement("div");
+      for(let i = 0; i < prices.length; i++){
+        const p = parseFloat(prices[i].value);
+        const a = parseFloat(amounts[i].value);
 
-div.className="buy-row";
+        if(!isNaN(p) && !isNaN(a)){
+          totalCost += p * a;
+          totalAmount += a;
+        }
+      }
 
-div.innerHTML=`
-<input class="price" placeholder="Price">
-<input class="amount" placeholder="Amount">
-<button class="remove" onclick="removeBuy(this)">Remove</button>
-`;
+      const resultCard = document.getElementById("resultCard");
+      const avgOut = document.getElementById("avgOut");
+      const costOut = document.getElementById("costOut");
+      const qtyOut = document.getElementById("qtyOut");
+      const insightOut = document.getElementById("insightOut");
 
-document.getElementById("buys").appendChild(div);
+      if(totalAmount === 0){
+        alert("Enter at least one valid buy row.");
+        return;
+      }
 
-}
+      const avg = totalCost / totalAmount;
 
-function removeBuy(button){
+      avgOut.innerText = `$${avg.toFixed(2)}`;
+      costOut.innerText = `$${totalCost.toFixed(2)}`;
+      qtyOut.innerText = totalAmount.toFixed(6);
 
-button.parentElement.remove();
+      let insight = "";
+      let insightClass = "";
 
-}
+      if (prices.length <= 2) {
+        insight = "This shows your entry cost clearly with a simple average.";
+        insightClass = "insight-good";
+      } else if (prices.length <= 5) {
+        insight = "Multiple entries are smoothing your cost basis.";
+        insightClass = "insight-medium";
+      } else {
+        insight = "Your cost basis is highly diversified across entries.";
+        insightClass = "insight-medium";
+      }
 
-function calculate(){
+      insightOut.innerHTML = `<span class="${insightClass}">${insight}</span>`;
+      resultCard.style.display = "block";
 
-let prices=document.querySelectorAll(".price");
-let amounts=document.querySelectorAll(".amount");
+      drawChart(totalCost, totalAmount, avg);
+    }
 
-let totalCost=0;
-let totalAmount=0;
+    function drawChart(totalCost, totalAmount, avg){
+      const ctx = document.getElementById('myChart').getContext('2d');
 
-for(let i=0;i<prices.length;i++){
+      if(chart){
+        chart.destroy();
+      }
 
-let p=parseFloat(prices[i].value);
-let a=parseFloat(amounts[i].value);
-
-if(!isNaN(p) && !isNaN(a)){
-totalCost+=p*a;
-totalAmount+=a;
-}
-
-}
-
-if(totalAmount===0){
-document.getElementById("result").innerText="Enter values";
-return;
-}
-
-let avg=totalCost/totalAmount;
-
-document.getElementById("result").innerText="Average price: "+avg;
-
-}
-
-addBuy();
-addBuy();
-
-document.addEventListener("DOMContentLoaded", function(){
-
-  document.querySelectorAll(".faq-question").forEach(btn => {
-    btn.addEventListener("click", () => {
-
-      const item = btn.parentElement;
-
-      document.querySelectorAll(".faq-item").forEach(i => {
-        if(i !== item) i.classList.remove("active");
+      chart = new Chart(ctx,{
+        type:'bar',
+        data:{
+          labels:['Total Cost','Total Quantity','Average Price'],
+          datasets:[{
+            label:'Average Price Overview',
+            data:[totalCost, totalAmount, avg],
+            backgroundColor:['#3b82f6','#22c55e','#facc15']
+          }]
+        },
+        options:{
+          responsive:true,
+          plugins:{
+            legend:{
+              labels:{ color:'white' }
+            },
+            tooltip:{
+              callbacks:{
+                label: function(context){
+                  const value = Number(context.parsed.y);
+                  if (context.label === "Total Quantity") return `Quantity: ${value.toFixed(6)}`;
+                  return `$${value.toFixed(2)}`;
+                }
+              }
+            }
+          },
+          scales:{
+            x:{
+              ticks:{ color:'white' },
+              grid:{ color:'rgba(255,255,255,0.08)' }
+            },
+            y:{
+              ticks:{
+                color:'white',
+                callback: function(value){
+                  return "$" + Number(value).toLocaleString();
+                }
+              },
+              grid:{ color:'rgba(255,255,255,0.08)' }
+            }
+          }
+        }
       });
+    }
 
-      item.classList.toggle("active");
+    addBuy();
+    addBuy();
 
+    document.addEventListener("DOMContentLoaded", function(){
+      document.querySelectorAll(".faq-question").forEach(btn => {
+        btn.addEventListener("click", () => {
+          const item = btn.parentElement;
+
+          document.querySelectorAll(".faq-item").forEach(i => {
+            if(i !== item) i.classList.remove("active");
+          });
+
+          item.classList.toggle("active");
+        });
+      });
     });
-  });
-
-});
-</script>
-
+  </script>
 </body>
-</html>
+  </html>
