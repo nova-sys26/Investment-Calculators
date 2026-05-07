@@ -192,22 +192,6 @@
       font-weight: 600;
     }
 
-    .input-shell {
-      position: relative;
-    }
-
-    .input-shell::after {
-      content: "⌄";
-      position: absolute;
-      right: 14px;
-      top: 50%;
-      transform: translateY(-54%);
-      color: #64748b;
-      pointer-events: none;
-      font-size: 18px;
-      line-height: 1;
-    }
-
     input, select {
       width: 100%;
       padding: 14px 16px;
@@ -220,11 +204,6 @@
       appearance: none;
       -webkit-appearance: none;
       -moz-appearance: none;
-    }
-
-    select {
-      padding-right: 42px;
-      background-image: none;
     }
 
     input[type="month"] {
@@ -309,10 +288,6 @@
       font-weight: 800;
       color: #e5e7eb;
     }
-
-    .insight-good { color: #22c55e; font-weight: 700; }
-    .insight-medium { color: #facc15; font-weight: 700; }
-    .insight-weak { color: #ef4444; font-weight: 700; }
 
     .chart-card {
       margin-top: 18px;
@@ -539,8 +514,8 @@
       </div>
 
       <div class="meta-row">
-        <span class="meta-pill" id="dataStatus">FRED CPI: ready</span>
-        <span class="meta-pill" id="seriesStatus">Series: CPIAUCSL</span>
+        <span class="meta-pill" id="dataStatus">Local CPI JSON: ready</span>
+        <span class="meta-pill" id="seriesStatus">Source: cpi-data.json</span>
       </div>
 
       <div class="section-title">Your details</div>
@@ -587,11 +562,6 @@
             <span class="result-label">Purchasing power remaining</span>
             <span id="remainingOut" class="result-value">—</span>
           </div>
-
-          <div class="result-box">
-            <span class="result-label">Insight</span>
-            <span id="insightOut" class="result-value">—</span>
-          </div>
         </div>
       </div>
 
@@ -618,7 +588,7 @@
 
       <h2>How it works</h2>
       <p>
-        The calculator uses monthly CPI data from FRED’s CPIAUCSL series. It compares the start and end months using the CPI ratio, which is the standard way to estimate preserved purchasing power across dates.
+        The calculator uses monthly CPI data from a local JSON file. It compares the start and end months using the CPI ratio, which is the standard way to estimate preserved purchasing power across dates.
       </p>
 
       <div class="formula">
@@ -657,7 +627,7 @@
       </ul>
 
       <p class="source-note">
-        Data source: FRED CPIAUCSL monthly CPI series.
+        Data source: local CPI JSON file.
       </p>
     </div>
   </div>
@@ -697,7 +667,7 @@
         </button>
         <div class="faq-answer">
           <p>
-            Yes. This version is built for monthly U.S. CPI data from FRED, so you can compare any months covered by the series.
+            Yes. This version is built for monthly CPI data stored in a local JSON file, so you can compare any months covered by the file.
           </p>
         </div>
       </div>
@@ -738,10 +708,6 @@
 
   <script>
     document.addEventListener("DOMContentLoaded", () => {
-      const API_KEY = "528cb65504834e44d0b9a6f4e9ba3a6c";
-      const SERIES_ID = "CPIAUCSL";
-      const FRED_URL = "https://api.stlouisfed.org/fred/series/observations";
-
       const amountInput = document.getElementById("amount");
       const startMonthInput = document.getElementById("startMonth");
       const endMonthInput = document.getElementById("endMonth");
@@ -753,8 +719,6 @@
       const increaseOut = document.getElementById("increaseOut");
       const inflationOut = document.getElementById("inflationOut");
       const remainingOut = document.getElementById("remainingOut");
-      const insightOut = document.getElementById("insightOut");
-
       const dataStatus = document.getElementById("dataStatus");
 
       let trendChart = null;
@@ -787,7 +751,7 @@
       }
 
       function monthLabel(dateStr) {
-        const [year, month] = dateStr.split("-");
+        const [year, month] = String(dateStr).split("-");
         const d = new Date(Date.UTC(Number(year), Number(month) - 1, 1));
         return new Intl.DateTimeFormat("en-US", {
           month: "short",
@@ -806,36 +770,38 @@
         if (cpiCache) return cpiCache;
         if (cpiCachePromise) return cpiCachePromise;
 
-        if (!API_KEY || API_KEY === "PASTE_YOUR_FRED_API_KEY_HERE") {
-          throw new Error("Insert your FRED API key in the code first.");
-        }
-
-        const url =
-          `${FRED_URL}?series_id=${encodeURIComponent(SERIES_ID)}` +
-          `&api_key=${encodeURIComponent(API_KEY)}` +
-          `&file_type=json` +
-          `&observation_start=1947-01-01`;
-
-        cpiCachePromise = fetch(url, { cache: "no-store" })
+        cpiCachePromise = fetch("./cpi-data.json", { cache: "no-store" })
           .then(async (res) => {
-            const data = await res.json();
-
             if (!res.ok) {
-              throw new Error(data?.error_message || data?.error || "Failed to load CPI data from FRED.");
+              throw new Error("Could not load local CPI data.");
             }
 
-            const observations = Array.isArray(data?.observations) ? data.observations : [];
-            const series = observations
-              .filter((d) => d && d.value !== ".")
-              .map((d) => ({
-                date: String(d.date || "").slice(0, 7),
-                cpi: Number(d.value)
-              }))
+            const data = await res.json();
+
+            let series = [];
+
+            if (Array.isArray(data)) {
+              series = data
+                .filter((d) => d && d.date && Number.isFinite(Number(d.cpi)))
+                .map((d) => ({
+                  date: String(d.date).slice(0, 7),
+                  cpi: Number(d.cpi)
+                }));
+            } else if (data && typeof data === "object") {
+              series = Object.entries(data)
+                .filter(([, v]) => Number.isFinite(Number(v)))
+                .map(([date, cpi]) => ({
+                  date: String(date).slice(0, 7),
+                  cpi: Number(cpi)
+                }));
+            }
+
+            series = series
               .filter((row) => row.date && Number.isFinite(row.cpi))
               .sort((a, b) => a.date.localeCompare(b.date));
 
             if (!series.length) {
-              throw new Error("No CPI data returned from FRED.");
+              throw new Error("Local CPI data is empty or invalid.");
             }
 
             cpiCache = series;
@@ -978,7 +944,7 @@
 
         calcBtn.disabled = true;
         calcBtn.textContent = "Calculating...";
-        dataStatus.textContent = "Loading FRED CPI data...";
+        dataStatus.textContent = "Loading local CPI data...";
 
         try {
           const series = await fetchCPI();
@@ -1009,39 +975,18 @@
           inflationOut.textContent = formatPct(inflation);
           remainingOut.textContent = `${remainingPct.toFixed(2)}% (erosion ${erosionPct.toFixed(2)}%)`;
 
-          let insight = "";
-          let insightClass = "";
-
-          if (Math.abs(inflation) < 0.01) {
-            insight = "No net change in purchasing power over the selected period.";
-            insightClass = "insight-medium";
-          } else if (inflation >= 300) {
-            insight = "Very strong erosion of purchasing power.";
-            insightClass = "insight-weak";
-          } else if (inflation >= 100) {
-            insight = "Noticeable inflation impact over this period.";
-            insightClass = "insight-medium";
-          } else if (inflation > 0) {
-            insight = "Purchasing power declined, but the change is more moderate.";
-            insightClass = "insight-good";
-          } else {
-            insight = "The selected period shows deflation or a real value gain.";
-            insightClass = "insight-good";
-          }
-
-          insightOut.innerHTML = `<span class="${insightClass}">${insight}</span>`;
           resultCard.style.display = "block";
 
           const chartPoints = buildChartPoints(rangeSeries, amount, startData.cpi);
           renderTrendChart(chartPoints);
           renderPowerChart(chartPoints);
 
-          dataStatus.textContent = "FRED CPI loaded successfully";
+          dataStatus.textContent = "Local CPI data loaded successfully";
           resultCard.scrollIntoView({ behavior: "smooth", block: "start" });
         } catch (error) {
           console.error(error);
           dataStatus.textContent = "CPI load failed";
-          alert(error.message || "Could not load CPI data from FRED.");
+          alert(error.message || "Could not load local CPI data.");
         } finally {
           calcBtn.disabled = false;
           calcBtn.textContent = "Calculate";
@@ -1059,9 +1004,8 @@
       });
 
       calcBtn.addEventListener("click", calculate);
-
       setDefaultMonths();
     });
   </script>
 </body>
-  </html>
+</html>
