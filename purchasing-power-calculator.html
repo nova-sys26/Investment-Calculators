@@ -1,0 +1,1354 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <link rel="canonical" href="https://novainvesttools.com/purchasing-power-calculator.html">
+
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-ZPCXDVE8C5"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-ZPCXDVE8C5');
+  </script>
+
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>Historical Purchasing Power Calculator – Compare Money Across Dates</title>
+  <meta name="description" content="Compare the same currency across two dates and see how inflation changed its purchasing power. Enter an amount, start month, and end month to get an instant estimate.">
+  <meta name="theme-color" content="#0b1a33">
+  <meta name="robots" content="index,follow,max-image-preview:large">
+
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://novainvesttools.com/purchasing-power-calculator.html">
+  <meta property="og:title" content="Historical Purchasing Power Calculator – Compare Money Across Dates">
+  <meta property="og:description" content="Compare the same currency across two dates and see how inflation changed its purchasing power.">
+
+  <link rel="preconnect" href="https://www.statbureau.org">
+  <link rel="dns-prefetch" href="https://www.statbureau.org">
+  <link rel="preconnect" href="https://cdn.jsdelivr.net">
+  <link rel="dns-prefetch" href="https://cdn.jsdelivr.net">
+
+  <link rel="stylesheet" href="style.css">
+  <link rel="icon" href="favicon.png" type="image/png">
+  <link rel="apple-touch-icon" href="favicon.png">
+
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "WebApplication",
+    "name": "Historical Purchasing Power Calculator",
+    "url": "https://novainvesttools.com/purchasing-power-calculator.html",
+    "applicationCategory": "FinanceApplication",
+    "operatingSystem": "All",
+    "browserRequirements": "Requires JavaScript",
+    "description": "Compare the same currency across two dates and estimate how inflation changed its purchasing power.",
+    "featureList": [
+      "Historical purchasing power comparison",
+      "Inflation-adjusted value estimate",
+      "Monthly trend chart",
+      "Purchasing power erosion chart"
+    ],
+    "offers": {
+      "@type": "Offer",
+      "price": "0",
+      "priceCurrency": "USD"
+    }
+  }
+  </script>
+
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": [
+      {
+        "@type": "Question",
+        "name": "What is a purchasing power calculator?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "A purchasing power calculator shows how much money from one date is worth in another date after inflation."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Why does money lose value over time?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Money loses value because prices rise over time, so the same amount buys less in the future."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Can I compare any two months?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Yes, as long as the selected country has monthly inflation data available for those dates."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Does this work for Turkey, USD, EUR, and GBP?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Yes. The calculator supports countries and currencies covered by the inflation data source."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Is the result exact?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "It is an inflation-based estimate. Real prices may vary, and some older periods can be affected by redenominations or data-source methodology."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Can I use this for salary or house price comparisons?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Yes. It is useful for salaries, rent, house prices, savings, and long-term money comparisons."
+        }
+      }
+    ]
+  }
+  </script>
+
+  <style>
+    *{ box-sizing:border-box; }
+
+    html{
+      scroll-behavior:smooth;
+    }
+
+    body{
+      font-family:Arial, sans-serif;
+      background:#0b1a33;
+      color:white;
+      display:flex;
+      justify-content:center;
+      align-items:center;
+      flex-direction:column;
+      min-height:100vh;
+      margin:0;
+      padding:24px 0;
+    }
+
+    .toptext{
+      font-size:14px;
+      color:#6b7a99;
+      margin-bottom:5px;
+    }
+
+    .menu{
+      margin-bottom:25px;
+    }
+
+    .menu a{
+      color:#3b82f6;
+      margin:10px;
+      text-decoration:none;
+      font-weight:600;
+    }
+
+    .container{
+      background:#1e293b;
+      padding:30px;
+      border-radius:16px;
+      width:90%;
+      max-width:620px;
+      box-shadow:0 10px 25px rgba(0,0,0,0.35);
+    }
+
+    h1{
+      margin-top:0;
+      margin-bottom:10px;
+      font-size:32px;
+      line-height:1.15;
+    }
+
+    .quick-answer{
+      background:rgba(59,130,246,0.12);
+      border:1px solid rgba(59,130,246,0.25);
+      padding:12px 14px;
+      border-radius:10px;
+      font-size:15px;
+      line-height:1.6;
+      color:#e2e8f0;
+      margin-bottom:18px;
+    }
+
+    .subhead{
+      color:#94a3b8;
+      font-size:15px;
+      line-height:1.6;
+      margin-bottom:18px;
+    }
+
+    .badge-row{
+      display:flex;
+      gap:10px;
+      flex-wrap:wrap;
+      margin:14px 0 6px;
+    }
+
+    .badge{
+      display:inline-flex;
+      padding:5px 10px;
+      border-radius:999px;
+      font-size:12px;
+      font-weight:700;
+      background:rgba(59,130,246,0.12);
+      color:#bfdbfe;
+      border:1px solid rgba(59,130,246,0.22);
+    }
+
+    .badge.soft{
+      background:rgba(255,255,255,0.05);
+      border-color:rgba(255,255,255,0.08);
+      color:#dbeafe;
+    }
+
+    .section-title{
+      margin:18px 0 8px;
+      font-size:16px;
+      color:#e2e8f0;
+      font-weight:700;
+    }
+
+    .grid{
+      display:grid;
+      grid-template-columns:1fr 1fr;
+      gap:12px;
+    }
+
+    @media (max-width: 700px){
+      .grid{
+        grid-template-columns:1fr;
+      }
+    }
+
+    .field{
+      margin:12px 0;
+    }
+
+    .field label{
+      display:block;
+      font-size:13px;
+      color:#cbd5e1;
+      margin:0 0 6px;
+      font-weight:600;
+    }
+
+    input,
+    select{
+      width:100%;
+      padding:14px;
+      margin:0;
+      border-radius:10px;
+      border:none;
+      background:#e5e7eb;
+      font-size:16px;
+      outline:none;
+    }
+
+    input:focus,
+    select:focus{
+      box-shadow:0 0 0 3px rgba(59,130,246,0.18);
+    }
+
+    button{
+      padding:14px;
+      background:#3b82f6;
+      border:none;
+      border-radius:10px;
+      color:white;
+      cursor:pointer;
+      margin-top:10px;
+      width:100%;
+      font-size:16px;
+      font-weight:700;
+      transition:0.2s;
+    }
+
+    button:hover{
+      background:#2563eb;
+      transform:translateY(-1px);
+    }
+
+    button:disabled{
+      opacity:0.7;
+      cursor:not-allowed;
+      transform:none;
+    }
+
+    .note{
+      margin-top:10px;
+      font-size:13px;
+      color:#94a3b8;
+      line-height:1.5;
+    }
+
+    .result-card{
+      margin-top:18px;
+      padding:16px;
+      border-radius:14px;
+      background:rgba(255,255,255,0.05);
+      border:1px solid rgba(255,255,255,0.08);
+      display:none;
+    }
+
+    .result-sentence{
+      margin:0 0 14px;
+      font-size:16px;
+      line-height:1.6;
+      color:#e5e7eb;
+    }
+
+    .result-grid{
+      display:grid;
+      grid-template-columns:repeat(auto-fit, minmax(220px, 1fr));
+      gap:12px;
+    }
+
+    .result-box{
+      background:rgba(15,23,42,0.72);
+      border:1px solid rgba(255,255,255,0.06);
+      border-radius:14px;
+      padding:14px;
+    }
+
+    .result-label{
+      display:block;
+      color:#cbd5f5;
+      font-size:13px;
+      font-weight:700;
+      margin-bottom:4px;
+    }
+
+    .result-value{
+      font-size:18px;
+      font-weight:800;
+      color:#e5e7eb;
+    }
+
+    .insight-good{ color:#22c55e; font-weight:700; }
+    .insight-medium{ color:#facc15; font-weight:700; }
+    .insight-weak{ color:#ef4444; font-weight:700; }
+
+    .chart-card{
+      margin-top:18px;
+      padding:18px;
+      border-radius:16px;
+      background:rgba(255,255,255,0.04);
+      border:1px solid rgba(255,255,255,0.08);
+    }
+
+    .chart-title{
+      margin:0 0 10px;
+      font-size:16px;
+      color:#e2e8f0;
+      font-weight:700;
+    }
+
+    canvas{
+      margin-top:8px;
+    }
+
+    .content-sections{
+      width:90%;
+      max-width:1100px;
+      margin-top:34px;
+      display:grid;
+      grid-template-columns:1.15fr 0.85fr;
+      gap:18px;
+    }
+
+    @media (max-width:900px){
+      .content-sections{
+        grid-template-columns:1fr;
+      }
+    }
+
+    .content-box{
+      background:rgba(30,41,59,0.62);
+      border:1px solid rgba(255,255,255,0.08);
+      border-radius:16px;
+      padding:20px;
+    }
+
+    .content-box h2{
+      margin:0 0 10px;
+      font-size:22px;
+    }
+
+    .content-box p,
+    .content-box li{
+      color:#cbd5e1;
+      line-height:1.7;
+      font-size:15px;
+    }
+
+    .content-box ul{
+      padding-left:18px;
+      margin-bottom:0;
+    }
+
+    .formula{
+      background:rgba(255,255,255,0.05);
+      border:1px solid rgba(255,255,255,0.08);
+      padding:14px 16px;
+      border-radius:12px;
+      margin:12px 0;
+      color:#e2e8f0;
+      line-height:1.7;
+      overflow:auto;
+    }
+
+    .example{
+      background:rgba(59,130,246,0.10);
+      border:1px solid rgba(59,130,246,0.20);
+      border-radius:14px;
+      padding:14px 16px;
+      margin-top:14px;
+      color:#e2e8f0;
+      line-height:1.6;
+    }
+
+    .source-note{
+      margin-top:14px;
+      color:#94a3b8;
+      font-size:13px;
+      line-height:1.5;
+    }
+
+    .faq-wrap{
+      width:90%;
+      max-width:1100px;
+      margin-top:34px;
+    }
+
+    .faq{
+      margin-top:14px;
+      background:rgba(30,41,59,0.62);
+      border:1px solid rgba(255,255,255,0.08);
+      border-radius:16px;
+      overflow:hidden;
+    }
+
+    .faq-item{
+      border-bottom:1px solid rgba(255,255,255,0.08);
+    }
+
+    .faq-item:last-child{
+      border-bottom:none;
+    }
+
+    .faq-question{
+      width:100%;
+      background:none;
+      border:none;
+      color:white;
+      text-align:left;
+      padding:14px 16px;
+      font-size:15px;
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      cursor:pointer;
+    }
+
+    .faq-question:hover{
+      color:#93c5fd;
+    }
+
+    .arrow{
+      transition:0.25s;
+    }
+
+    .faq-item.active .arrow{
+      transform:rotate(180deg);
+    }
+
+    .faq-answer{
+      max-height:0;
+      overflow:hidden;
+      transition:max-height 0.3s ease;
+      color:#cbd5e1;
+      font-size:14px;
+      padding:0 16px;
+    }
+
+    .faq-item.active .faq-answer{
+      max-height:260px;
+      padding-bottom:14px;
+    }
+
+    .related{
+      width:90%;
+      max-width:1100px;
+      margin-top:28px;
+      background:rgba(30,41,59,0.62);
+      border:1px solid rgba(255,255,255,0.08);
+      border-radius:16px;
+      padding:22px;
+    }
+
+    .related h3{
+      margin-top:0;
+      margin-bottom:10px;
+    }
+
+    .related p,
+    .related li{
+      color:#cbd5e1;
+      line-height:1.7;
+      font-size:15px;
+    }
+
+    .related ul{
+      padding-left:18px;
+      margin-bottom:0;
+    }
+
+    .related a{
+      color:#93c5fd;
+      text-decoration:none;
+    }
+
+    .related a:hover{
+      text-decoration:underline;
+    }
+
+    .disclaimer{
+      margin-top:24px;
+      padding-top:20px;
+      border-top:1px solid rgba(255,255,255,0.1);
+      font-size:13px;
+      color:#9ca3af;
+      max-width:1100px;
+      text-align:center;
+      line-height:1.6;
+      width:90%;
+    }
+
+    @media (max-width:700px){
+      .container{
+        padding:22px;
+      }
+
+      h1{
+        font-size:28px;
+      }
+
+      .content-box h2{
+        font-size:24px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <p class="toptext">Explore more calculators</p>
+
+  <div class="menu">
+    <a href="index.html">Home</a>
+  </div>
+
+  <div class="container">
+    <h1>Historical Purchasing Power Calculator</h1>
+    <p class="quick-answer">
+      A historical purchasing power calculator shows how much money from one month is worth in another month after inflation — use it to compare the same currency across two dates instantly.
+    </p>
+
+    <p class="subhead">
+      Enter a country/currency, two dates, and an amount to see how inflation changed the money’s purchasing power over time.
+    </p>
+
+    <div class="badge-row">
+      <span class="badge">Inflation comparison</span>
+      <span class="badge soft">Purchasing power</span>
+      <span class="badge soft">Historical value</span>
+    </div>
+
+    <div class="section-title">Your details</div>
+    <div class="grid">
+      <div class="field" style="grid-column:1 / -1;">
+        <label for="country">Country / currency</label>
+        <select id="country">
+          <option value="turkey" data-currency="TRY" data-symbol="₺">Turkey — TRY</option>
+          <option value="united-states" data-currency="USD" data-symbol="$">United States — USD</option>
+          <option value="eurozone" data-currency="EUR" data-symbol="€">Eurozone — EUR</option>
+          <option value="european-union" data-currency="EUR" data-symbol="€">European Union — EUR</option>
+          <option value="united-kingdom" data-currency="GBP" data-symbol="£">United Kingdom — GBP</option>
+          <option value="japan" data-currency="JPY" data-symbol="¥">Japan — JPY</option>
+          <option value="canada" data-currency="CAD" data-symbol="C$">Canada — CAD</option>
+          <option value="brazil" data-currency="BRL" data-symbol="R$">Brazil — BRL</option>
+          <option value="india" data-currency="INR" data-symbol="₹">India — INR</option>
+          <option value="mexico" data-currency="MXN" data-symbol="MX$">Mexico — MXN</option>
+          <option value="russia" data-currency="RUB" data-symbol="₽">Russia — RUB</option>
+          <option value="kazakhstan" data-currency="KZT" data-symbol="₸">Kazakhstan — KZT</option>
+          <option value="ukraine" data-currency="UAH" data-symbol="₴">Ukraine — UAH</option>
+          <option value="germany" data-currency="EUR" data-symbol="€">Germany — EUR</option>
+          <option value="france" data-currency="EUR" data-symbol="€">France — EUR</option>
+          <option value="spain" data-currency="EUR" data-symbol="€">Spain — EUR</option>
+          <option value="greece" data-currency="EUR" data-symbol="€">Greece — EUR</option>
+        </select>
+        <div class="note">This tool uses country inflation data, so the country selection is the meaningful input behind the currency.</div>
+      </div>
+
+      <div class="field">
+        <label for="amount">Amount</label>
+        <input id="amount" type="number" min="0" step="any" placeholder="e.g. 1000">
+      </div>
+
+      <div class="field">
+        <label for="startMonth">Start Month</label>
+        <input id="startMonth" type="month">
+      </div>
+
+      <div class="field">
+        <label for="endMonth">End Month</label>
+        <input id="endMonth" type="month">
+      </div>
+    </div>
+
+    <button id="calcBtn" onclick="calculateHistoricalValue()">Calculate</button>
+
+    <div id="resultCard" class="result-card" aria-live="polite">
+      <p id="resultSentence" class="result-sentence">—</p>
+      <div class="result-grid">
+        <div class="result-box">
+          <span class="result-label">Equivalent value in end month</span>
+          <span id="equivalentOut" class="result-value">—</span>
+        </div>
+        <div class="result-box">
+          <span class="result-label">Price increase needed</span>
+          <span id="increaseOut" class="result-value">—</span>
+        </div>
+        <div class="result-box">
+          <span class="result-label">Period inflation</span>
+          <span id="inflationOut" class="result-value">—</span>
+        </div>
+        <div class="result-box">
+          <span class="result-label">Purchasing power remaining</span>
+          <span id="remainingOut" class="result-value">—</span>
+        </div>
+        <div class="result-box">
+          <span class="result-label">Insight</span>
+          <span id="insightOut" class="result-value">—</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="chart-card">
+      <h3 class="chart-title">Equivalent value over time</h3>
+      <canvas id="trendChart"></canvas>
+    </div>
+
+    <div class="chart-card">
+      <h3 class="chart-title">Purchasing power remaining</h3>
+      <canvas id="powerChart"></canvas>
+    </div>
+  </div>
+
+  <div class="content-sections">
+    <div class="content-box">
+      <h2>What is this calculator?</h2>
+      <p>
+        This calculator shows how much an amount of money from one month is worth in another month after inflation.
+        It is useful when you want to compare salaries, savings, rents, home prices, business costs, or any amount of money across time.
+      </p>
+
+      <p>
+        The result is the later month’s equivalent value needed to preserve the same buying power.
+        That makes it much more practical than a plain inflation percentage.
+      </p>
+
+      <h2>How it works</h2>
+      <p>
+        The tool uses inflation data for the selected country and compares the start month and end month.
+        It calculates the later-date amount needed to buy the same basket of goods and services as the original amount.
+      </p>
+
+      <div class="formula">
+        Equivalent value = starting amount × inflation factor<br>
+        Price increase needed = equivalent value − starting amount<br>
+        Purchasing power remaining = starting amount ÷ equivalent value × 100
+      </div>
+
+      <p>
+        The line chart shows how the equivalent amount changes month by month.
+        The second chart shows how much purchasing power remains relative to the starting month.
+      </p>
+    </div>
+
+    <div class="content-box">
+      <h2>Why it matters</h2>
+      <p>
+        Inflation slowly erodes what money can buy.
+        A number on paper can look the same while its real-world value drops hard over time.
+      </p>
+
+      <div class="example">
+        <strong>Example:</strong><br>
+        ₺1,000 in an earlier month may require several thousand lira in a later month to buy the same basket.
+        The exact result depends on the country and the dates you choose.
+      </div>
+
+      <h2 style="margin-top:18px;">Use cases</h2>
+      <ul>
+        <li>Salary and wage comparisons</li>
+        <li>Savings and retirement planning</li>
+        <li>Rent and house price comparisons</li>
+        <li>Budget planning across years</li>
+        <li>Historical cost-of-living checks</li>
+      </ul>
+
+      <p class="source-note">
+        Data source: StatBureau monthly inflation API. Their terms state free use is for non-commercial projects and require attribution.
+      </p>
+    </div>
+  </div>
+
+  <div class="faq-wrap">
+    <h2 style="margin:0 0 10px; font-size:28px;">Frequently Asked Questions</h2>
+    <div class="faq">
+      <div class="faq-item">
+        <button class="faq-question" type="button">
+          What does a purchasing power calculator do?
+          <span class="arrow">▼</span>
+        </button>
+        <div class="faq-answer">
+          <p>
+            It shows how much money from one date is worth in another date after inflation, so you can compare real value over time instead of just nominal value.
+          </p>
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <button class="faq-question" type="button">
+          Why does money lose value over time?
+          <span class="arrow">▼</span>
+        </button>
+        <div class="faq-answer">
+          <p>
+            Prices rise over time. When prices rise, the same amount of money buys less, which is why older money needs to be adjusted for inflation.
+          </p>
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <button class="faq-question" type="button">
+          Can I compare any two months?
+          <span class="arrow">▼</span>
+        </button>
+        <div class="faq-answer">
+          <p>
+            Yes, as long as the selected country has monthly inflation data available for those dates.
+            Very old dates may need extra handling in countries with currency redenominations.
+          </p>
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <button class="faq-question" type="button">
+          Does this work for Turkey, USD, EUR, and GBP?
+          <span class="arrow">▼</span>
+        </button>
+        <div class="faq-answer">
+          <p>
+            Yes. The calculator supports the countries covered by the data source, including Turkey, the United States, Eurozone, and the United Kingdom.
+          </p>
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <button class="faq-question" type="button">
+          Is the result exact?
+          <span class="arrow">▼</span>
+        </button>
+        <div class="faq-answer">
+          <p>
+            It is an inflation-based estimate. Real prices can still vary by product, location, taxes, and timing.
+          </p>
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <button class="faq-question" type="button">
+          Can I use this for salaries or house prices?
+          <span class="arrow">▼</span>
+        </button>
+        <div class="faq-answer">
+          <p>
+            Yes. It is especially useful for salary comparisons, rent, home prices, savings, and any long-term money comparison.
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="related">
+    <h3>Related Calculators</h3>
+    <p>You may also find these tools useful:</p>
+    <ul>
+      <li><a href="inflation-calculator.html">Inflation Calculator</a></li>
+      <li><a href="future-value-calculator.html">Future Value Calculator</a></li>
+      <li><a href="compound-interest-calculator.html">Compound Interest Calculator</a></li>
+      <li><a href="retirement-calculator.html">Retirement Calculator</a></li>
+      <li><a href="currency-converter-calculator.html">Currency Converter</a></li>
+    </ul>
+  </div>
+
+  <div class="disclaimer">
+    <p>
+      <strong>Disclaimer:</strong> The calculators on this website are provided for informational and educational purposes only.
+      Results are estimates based on the values entered and on the selected inflation data source.
+      StatBureau’s free API is intended for non-commercial use and requires attribution. Always verify important financial decisions with authoritative sources.
+    </p>
+  </div>
+
+  <script src="footer.js"></script>
+  <script>
+    const SB_BASE = "https://www.statbureau.org";
+    const API_TIMEOUT_MS = 15000;
+
+    let trendChart = null;
+    let powerChart = null;
+    let activeRequestId = 0;
+    const countryDataCache = new Map();
+
+    const calcBtn = document.getElementById("calcBtn");
+    const resultCard = document.getElementById("resultCard");
+    const resultSentence = document.getElementById("resultSentence");
+    const equivalentOut = document.getElementById("equivalentOut");
+    const increaseOut = document.getElementById("increaseOut");
+    const inflationOut = document.getElementById("inflationOut");
+    const remainingOut = document.getElementById("remainingOut");
+    const insightOut = document.getElementById("insightOut");
+    const countrySelect = document.getElementById("country");
+    const amountInput = document.getElementById("amount");
+    const startMonthInput = document.getElementById("startMonth");
+    const endMonthInput = document.getElementById("endMonth");
+
+    function getSelectedMeta(){
+      const opt = countrySelect.options[countrySelect.selectedIndex];
+      return {
+        code: opt.value,
+        currency: opt.dataset.currency || "USD",
+        symbol: opt.dataset.symbol || "$",
+        label: opt.textContent.trim()
+      };
+    }
+
+    function formatMoney(value, symbol){
+      const sign = value < 0 ? "-" : "";
+      const abs = Math.abs(Number(value));
+      return `${sign}${symbol}${abs.toLocaleString(undefined, {
+        minimumFractionDigits: 0,
+        maximumFractionDigits: 2
+      })}`;
+    }
+
+    function formatPct(value){
+      return `${Number(value).toLocaleString(undefined, {
+        minimumFractionDigits: 0,
+        maximumFractionDigits: 2
+      })}%`;
+    }
+
+    function parseMonthInput(value){
+      if (!value) return null;
+      const parts = value.split("-");
+      if (parts.length !== 2) return null;
+      const year = Number(parts[0]);
+      const month = Number(parts[1]);
+      if (!Number.isFinite(year) || !Number.isFinite(month)) return null;
+      return new Date(Date.UTC(year, month - 1, 1));
+    }
+
+    function monthKey(date){
+      const y = date.getUTCFullYear();
+      const m = String(date.getUTCMonth() + 1).padStart(2, "0");
+      return `${y}-${m}`;
+    }
+
+    function addMonths(date, count){
+      const d = new Date(Date.UTC(date.getUTCFullYear(), date.getUTCMonth(), 1));
+      d.setUTCMonth(d.getUTCMonth() + count);
+      return d;
+    }
+
+    function monthLabel(date){
+      return new Intl.DateTimeFormat("en-US", {
+        month: "short",
+        year: "numeric",
+        timeZone: "UTC"
+      }).format(date);
+    }
+
+    function toApiMonth(date){
+      const y = date.getUTCFullYear();
+      const m = date.getUTCMonth() + 1;
+      return `${y}/${m}/1`;
+    }
+
+    function extractNumber(value){
+      if (typeof value === "number" && Number.isFinite(value)) return value;
+      if (typeof value === "string"){
+        const cleaned = value.replace(/[^0-9.-]/g, "");
+        if (!cleaned) return null;
+        const parsed = Number(cleaned);
+        return Number.isFinite(parsed) ? parsed : null;
+      }
+      return null;
+    }
+
+    function normalizeMonthlyEntry(item){
+      if (!item) return null;
+
+      if (Array.isArray(item) && item.length >= 2){
+        const date = parseAnyDate(item[0]);
+        const rate = extractNumber(item[1]);
+        if (date && rate !== null) return { date, rate };
+        return null;
+      }
+
+      if (typeof item === "object"){
+        const dateCandidate = item.date || item.month || item.time || item.valueDate || item.start;
+        const date = parseAnyDate(dateCandidate);
+        const rateCandidates = [
+          item.rate,
+          item.value,
+          item.inflation,
+          item.mom,
+          item.monthlyInflation,
+          item.change,
+          item.percent,
+          item.yoy
+        ];
+        let rate = null;
+        for (const candidate of rateCandidates){
+          const n = extractNumber(candidate);
+          if (n !== null){
+            rate = n;
+            break;
+          }
+        }
+        if (date && rate !== null) return { date, rate };
+      }
+
+      return null;
+    }
+
+    function parseAnyDate(value){
+      if (!value) return null;
+
+      if (value instanceof Date && !isNaN(value.getTime())){
+        return new Date(Date.UTC(value.getUTCFullYear(), value.getUTCMonth(), 1));
+      }
+
+      if (typeof value === "number"){
+        const d = new Date(value);
+        if (!isNaN(d.getTime())) return new Date(Date.UTC(d.getUTCFullYear(), d.getUTCMonth(), 1));
+        return null;
+      }
+
+      if (typeof value === "string"){
+        const s = value.trim();
+        const match = s.match(/^(\d{4})[\/-](\d{1,2})(?:[\/-]\d{1,2})?/);
+        if (match){
+          const year = Number(match[1]);
+          const month = Number(match[2]);
+          if (Number.isFinite(year) && Number.isFinite(month)){
+            return new Date(Date.UTC(year, month - 1, 1));
+          }
+        }
+        const parsed = new Date(s);
+        if (!isNaN(parsed.getTime())){
+          return new Date(Date.UTC(parsed.getUTCFullYear(), parsed.getUTCMonth(), 1));
+        }
+      }
+
+      return null;
+    }
+
+    function flattenMonthlyData(raw){
+      const candidates = [];
+
+      const pushIfArray = (v) => {
+        if (Array.isArray(v)) candidates.push(...v);
+      };
+
+      if (Array.isArray(raw)){
+        candidates.push(...raw);
+      } else if (raw && typeof raw === "object"){
+        pushIfArray(raw.data);
+        pushIfArray(raw.result);
+        pushIfArray(raw.items);
+        pushIfArray(raw.values);
+        pushIfArray(raw.monthlyInflation);
+        pushIfArray(raw.MonthlyInflation);
+        pushIfArray(raw.d);
+
+        if (!candidates.length){
+          for (const value of Object.values(raw)){
+            if (Array.isArray(value)){
+              candidates.push(...value);
+            }
+          }
+        }
+      }
+
+      const normalized = candidates
+        .map(normalizeMonthlyEntry)
+        .filter(Boolean)
+        .sort((a, b) => a.date - b.date);
+
+      return normalized;
+    }
+
+    function buildSeries(monthlyData, startDate, endDate, amount){
+      const rateMap = new Map();
+      for (const entry of monthlyData){
+        rateMap.set(monthKey(entry.date), entry.rate);
+      }
+
+      const points = [];
+      let currentDate = new Date(Date.UTC(startDate.getUTCFullYear(), startDate.getUTCMonth(), 1));
+      let equivalent = amount;
+      const startKey = monthKey(startDate);
+      const endKey = monthKey(endDate);
+
+      points.push({
+        date: new Date(currentDate),
+        equivalent,
+        remainingPct: 100
+      });
+
+      while (monthKey(currentDate) !== endKey){
+        currentDate = addMonths(currentDate, 1);
+        const rate = rateMap.get(monthKey(currentDate));
+        if (typeof rate === "number" && Number.isFinite(rate)){
+          equivalent *= (1 + rate / 100);
+        }
+        points.push({
+          date: new Date(currentDate),
+          equivalent,
+          remainingPct: equivalent > 0 ? (amount / equivalent) * 100 : 0
+        });
+      }
+
+      if (points.length === 1 && startKey !== endKey){
+        points.push({
+          date: new Date(endDate),
+          equivalent,
+          remainingPct: equivalent > 0 ? (amount / equivalent) * 100 : 0
+        });
+      }
+
+      return points;
+    }
+
+    function jsonp(endpoint, params){
+      return new Promise((resolve, reject) => {
+        const callbackName = `sb_cb_${Date.now()}_${Math.random().toString(36).slice(2)}`;
+        const script = document.createElement("script");
+        const url = new URL(`${SB_BASE}/${endpoint}`);
+        Object.entries(params || {}).forEach(([key, value]) => {
+          if (value !== undefined && value !== null && value !== ""){
+            url.searchParams.set(key, String(value));
+          }
+        });
+        url.searchParams.set("jsoncallback", callbackName);
+
+        const timeout = setTimeout(() => {
+          cleanup();
+          reject(new Error("Request timed out"));
+        }, API_TIMEOUT_MS);
+
+        function cleanup(){
+          clearTimeout(timeout);
+          try { delete window[callbackName]; } catch {}
+          if (script.parentNode) script.parentNode.removeChild(script);
+        }
+
+        window[callbackName] = (data) => {
+          cleanup();
+          resolve(data);
+        };
+
+        script.onerror = () => {
+          cleanup();
+          reject(new Error("Request failed"));
+        };
+
+        script.src = url.toString();
+        document.body.appendChild(script);
+      });
+    }
+
+    async function loadCountryData(country){
+      if (countryDataCache.has(country)) return countryDataCache.get(country);
+
+      const data = await jsonp("get-data-jsonp", { country, format: false });
+      const parsed = flattenMonthlyData(data);
+
+      countryDataCache.set(country, parsed);
+      return parsed;
+    }
+
+    async function loadEquivalentAmount(country, start, end, amount){
+      const raw = await jsonp("calculate-inflation-price-jsonp", {
+        country,
+        start: toApiMonth(start),
+        end: toApiMonth(end),
+        amount,
+        format: false
+      });
+
+      const parsed = extractNumber(raw);
+      if (parsed !== null) return parsed;
+      throw new Error("Could not parse calculator response");
+    }
+
+    async function loadPeriodInflation(country, start, end){
+      const raw = await jsonp("calculate-inflation-rate-jsonp", {
+        country,
+        start: toApiMonth(start),
+        end: toApiMonth(end),
+        format: false
+      });
+
+      const parsed = extractNumber(raw);
+      if (parsed !== null) return parsed;
+      throw new Error("Could not parse inflation rate response");
+    }
+
+    function renderTrendChart(series, symbol){
+      const ctx = document.getElementById("trendChart").getContext("2d");
+
+      if (trendChart) trendChart.destroy();
+
+      trendChart = new Chart(ctx, {
+        type: "line",
+        data: {
+          labels: series.map(p => monthLabel(p.date)),
+          datasets: [{
+            label: "Equivalent value",
+            data: series.map(p => p.equivalent),
+            borderColor: "#3b82f6",
+            backgroundColor: "rgba(59,130,246,0.14)",
+            tension: 0.25,
+            fill: true,
+            pointRadius: 2,
+            pointHoverRadius: 4
+          }]
+        },
+        options: {
+          responsive: true,
+          plugins: {
+            legend: { labels: { color: "white" } },
+            tooltip: {
+              callbacks: {
+                label: function(context){
+                  return ` ${context.dataset.label}: ${formatMoney(context.parsed.y, symbol)}`;
+                }
+              }
+            }
+          },
+          scales: {
+            x: {
+              ticks: {
+                color: "white",
+                autoSkip: true,
+                maxTicksLimit: 8
+              },
+              grid: { color: "rgba(255,255,255,0.08)" }
+            },
+            y: {
+              ticks: {
+                color: "white",
+                callback: function(value){
+                  return `${symbol}${Number(value).toLocaleString()}`;
+                }
+              },
+              grid: { color: "rgba(255,255,255,0.08)" }
+            }
+          }
+        }
+      });
+    }
+
+    function renderPowerChart(series){
+      const ctx = document.getElementById("powerChart").getContext("2d");
+
+      if (powerChart) powerChart.destroy();
+
+      powerChart = new Chart(ctx, {
+        type: "line",
+        data: {
+          labels: series.map(p => monthLabel(p.date)),
+          datasets: [{
+            label: "Purchasing power remaining (%)",
+            data: series.map(p => p.remainingPct),
+            borderColor: "#22c55e",
+            backgroundColor: "rgba(34,197,94,0.10)",
+            tension: 0.25,
+            fill: true,
+            pointRadius: 2,
+            pointHoverRadius: 4
+          }]
+        },
+        options: {
+          responsive: true,
+          plugins: {
+            legend: { labels: { color: "white" } },
+            tooltip: {
+              callbacks: {
+                label: function(context){
+                  return ` ${context.dataset.label}: ${Number(context.parsed.y).toFixed(2)}%`;
+                }
+              }
+            }
+          },
+          scales: {
+            x: {
+              ticks: {
+                color: "white",
+                autoSkip: true,
+                maxTicksLimit: 8
+              },
+              grid: { color: "rgba(255,255,255,0.08)" }
+            },
+            y: {
+              ticks: {
+                color: "white",
+                callback: function(value){
+                  return `${Number(value).toFixed(0)}%`;
+                }
+              },
+              grid: { color: "rgba(255,255,255,0.08)" }
+            }
+          }
+        }
+      });
+    }
+
+    async function calculateHistoricalValue(){
+      const requestId = ++activeRequestId;
+      const meta = getSelectedMeta();
+      const amount = Number(amountInput.value);
+      const start = parseMonthInput(startMonthInput.value);
+      const end = parseMonthInput(endMonthInput.value);
+
+      if (!Number.isFinite(amount) || amount <= 0){
+        alert("Enter a valid amount greater than zero.");
+        return;
+      }
+
+      if (!start || !end){
+        alert("Select both start month and end month.");
+        return;
+      }
+
+      if (end < start){
+        alert("End month must be the same as or later than the start month.");
+        return;
+      }
+
+      calcBtn.disabled = true;
+      calcBtn.textContent = "Calculating...";
+
+      try {
+        const [equivalent, periodInflation, monthlyData] = await Promise.all([
+          loadEquivalentAmount(meta.code, start, end, amount),
+          loadPeriodInflation(meta.code, start, end),
+          loadCountryData(meta.code)
+        ]);
+
+        if (requestId !== activeRequestId) return;
+
+        const increaseNeeded = equivalent - amount;
+        const increasePct = amount > 0 ? ((equivalent / amount) - 1) * 100 : 0;
+        const remainingPct = equivalent > 0 ? (amount / equivalent) * 100 : 0;
+        const erosionPct = 100 - remainingPct;
+        const series = buildSeries(monthlyData, start, end, amount);
+
+        const startLabel = monthLabel(start);
+        const endLabel = monthLabel(end);
+
+        resultSentence.textContent =
+          `${formatMoney(amount, meta.symbol)} in ${startLabel} is equivalent to about ${formatMoney(equivalent, meta.symbol)} in ${endLabel}.`;
+
+        equivalentOut.textContent = formatMoney(equivalent, meta.symbol);
+        increaseOut.textContent = formatMoney(increaseNeeded, meta.symbol) + ` (${increasePct >= 0 ? "+" : ""}${increasePct.toFixed(2)}%)`;
+        inflationOut.textContent = formatPct(periodInflation);
+        remainingOut.textContent = `${remainingPct.toFixed(2)}% (erosion ${erosionPct.toFixed(2)}%)`;
+
+        let insight = "";
+        let insightClass = "";
+
+        if (increasePct >= 300){
+          insight = "Very strong erosion of purchasing power.";
+          insightClass = "insight-weak";
+        } else if (increasePct >= 100){
+          insight = "Noticeable inflation impact over this period.";
+          insightClass = "insight-medium";
+        } else if (increasePct > 0){
+          insight = "Purchasing power declined, but the change is more moderate.";
+          insightClass = "insight-good";
+        } else if (increasePct === 0){
+          insight = "No net change in purchasing power over the selected period.";
+          insightClass = "insight-medium";
+        } else {
+          insight = "The selected period shows deflation or a real value gain.";
+          insightClass = "insight-good";
+        }
+
+        insightOut.innerHTML = `<span class="${insightClass}">${insight}</span>`;
+        resultCard.style.display = "block";
+
+        renderTrendChart(series, meta.symbol);
+        renderPowerChart(series);
+
+        resultCard.scrollIntoView({ behavior: "smooth", block: "start" });
+      } catch (error) {
+        console.error(error);
+        alert("Could not load inflation data. Try another country or date range.");
+      } finally {
+        if (requestId === activeRequestId){
+          calcBtn.disabled = false;
+          calcBtn.textContent = "Calculate";
+        }
+      }
+    }
+
+    document.addEventListener("DOMContentLoaded", function(){
+      const now = new Date();
+      const currentMonth = `${now.getUTCFullYear()}-${String(now.getUTCMonth() + 1).padStart(2, "0")}`;
+      const fiveYearsAgo = new Date(Date.UTC(now.getUTCFullYear() - 5, now.getUTCMonth(), 1));
+      const fiveYearsAgoMonth = `${fiveYearsAgo.getUTCFullYear()}-${String(fiveYearsAgo.getUTCMonth() + 1).padStart(2, "0")}`;
+
+      if (!startMonthInput.value) startMonthInput.value = fiveYearsAgoMonth;
+      if (!endMonthInput.value) endMonthInput.value = currentMonth;
+
+      document.querySelectorAll(".faq-question").forEach(btn => {
+        btn.addEventListener("click", () => {
+          const item = btn.parentElement;
+
+          document.querySelectorAll(".faq-item").forEach(i => {
+            if(i !== item) i.classList.remove("active");
+          });
+
+          item.classList.toggle("active");
+        });
+      });
+    });
+  </script>
+</body>
+    </html>
