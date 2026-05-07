@@ -16,7 +16,6 @@
   <meta property="og:title" content="Historical Purchasing Power Calculator – Compare Money Across Dates">
   <meta property="og:description" content="Compare the same currency across two dates and see how inflation changed its purchasing power.">
 
-   
   <link rel="stylesheet" href="style.css">
   <link rel="icon" href="favicon.png" type="image/png">
   <link rel="apple-touch-icon" href="favicon.png">
@@ -48,186 +47,566 @@
   </script>
 
   <style>
-    *{box-sizing:border-box}
-    html{scroll-behavior:smooth}
-    body{
-      font-family:Arial,sans-serif;
+    * { box-sizing: border-box; }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: Arial, sans-serif;
       background:
         radial-gradient(circle at top, rgba(59,130,246,0.18), transparent 35%),
         radial-gradient(circle at bottom right, rgba(34,197,94,0.10), transparent 30%),
         #0b1a33;
-      color:white;
-      margin:0;
-      min-height:100vh;
-      display:flex;
-      justify-content:center;
-      align-items:center;
-      flex-direction:column;
-      padding:24px 0;
+      color: white;
+      margin: 0;
+      min-height: 100vh;
+      padding: 24px 0 40px;
     }
-    .toptext{font-size:14px;color:#6b7a99;margin:0 0 6px}
-    .menu{margin-bottom:22px}
-    .menu a{color:#3b82f6;text-decoration:none;font-weight:600}
-    .container{
-      width:min(620px, calc(100% - 22px));
-      background:rgba(30,41,59,0.92);
-      border:1px solid rgba(255,255,255,0.06);
-      box-shadow:0 18px 40px rgba(0,0,0,0.35);
-      border-radius:18px;
-      padding:30px;
+
+    .page-wrap {
+      width: min(1100px, calc(100% - 24px));
+      margin: 0 auto;
     }
-    h1{margin:0 0 10px;font-size:clamp(28px, 4vw, 36px);line-height:1.12}
-    .quick-answer{
-      background:rgba(59,130,246,0.12);
-      border:1px solid rgba(59,130,246,0.25);
-      padding:12px 14px;
-      border-radius:12px;
-      font-size:15px;
-      line-height:1.6;
-      color:#e2e8f0;
-      margin:0 0 16px;
+
+    .toptext {
+      font-size: 14px;
+      color: #94a3b8;
+      margin: 0 0 6px;
     }
-    .subhead{color:#94a3b8;font-size:15px;line-height:1.6;margin:0 0 18px}
-    .badge-row{display:flex;gap:10px;flex-wrap:wrap;margin:14px 0 8px}
-    .badge{
-      display:inline-flex;align-items:center;padding:5px 10px;border-radius:999px;
-      font-size:12px;font-weight:700;background:rgba(59,130,246,0.12);
-      color:#bfdbfe;border:1px solid rgba(59,130,246,0.22)
+
+    .menu {
+      margin-bottom: 18px;
     }
-    .badge.soft{background:rgba(255,255,255,0.05);border-color:rgba(255,255,255,0.08);color:#dbeafe}
-    .meta-row{display:flex;gap:10px;flex-wrap:wrap;margin-top:10px;color:#94a3b8;font-size:13px}
-    .meta-pill{display:inline-flex;align-items:center;padding:6px 10px;border-radius:999px;background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.08)}
-    .section-title{margin:18px 0 8px;font-size:16px;color:#e2e8f0;font-weight:700}
-    .grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
-    @media (max-width:700px){.grid{grid-template-columns:1fr}}
-    .field{margin:10px 0}
-    .field label{display:block;font-size:13px;color:#cbd5e1;margin:0 0 6px;font-weight:600}
-    .input-shell{position:relative}
-    .input-shell::after{
-      content:"⌄";position:absolute;right:14px;top:50%;transform:translateY(-54%);
-      color:#64748b;pointer-events:none;font-size:18px;line-height:1
+
+    .menu a {
+      color: #93c5fd;
+      text-decoration: none;
+      font-weight: 700;
     }
-    input, select{
-      width:100%;padding:14px 16px;border-radius:12px;border:1px solid rgba(255,255,255,0.10);
-      background:#e5e7eb;color:#0f172a;font-size:16px;outline:none;
-      appearance:none;-webkit-appearance:none;-moz-appearance:none
+
+    .menu a:hover {
+      text-decoration: underline;
     }
-    select{padding-right:42px;background-image:none}
-    input[type="month"]{color-scheme:dark}
-    input::-webkit-calendar-picker-indicator{filter:invert(1);opacity:0.75;cursor:pointer}
-    input:focus, select:focus{box-shadow:0 0 0 3px rgba(59,130,246,0.18);border-color:#3b82f6}
-    button{
-      padding:14px;background:#3b82f6;border:none;border-radius:12px;color:white;cursor:pointer;
-      margin-top:10px;width:100%;font-size:16px;font-weight:700;transition:0.2s
+
+    .container {
+      width: 100%;
+      background: rgba(30,41,59,0.92);
+      border: 1px solid rgba(255,255,255,0.06);
+      box-shadow: 0 18px 40px rgba(0,0,0,0.35);
+      border-radius: 18px;
+      padding: 30px;
     }
-    button:hover{background:#2563eb;transform:translateY(-1px)}
-    button:disabled{opacity:0.7;cursor:not-allowed;transform:none}
-    .result-card{
-      margin-top:18px;padding:16px;border-radius:16px;background:rgba(255,255,255,0.05);
-      border:1px solid rgba(255,255,255,0.08);display:none
+
+    h1 {
+      margin: 0 0 10px;
+      font-size: clamp(28px, 4vw, 36px);
+      line-height: 1.12;
     }
-    .result-sentence{margin:0 0 14px;font-size:16px;line-height:1.6;color:#e5e7eb}
-    .result-grid{display:grid;grid-template-columns:repeat(auto-fit, minmax(220px, 1fr));gap:12px}
-    .result-box{background:rgba(15,23,42,0.72);border:1px solid rgba(255,255,255,0.06);border-radius:14px;padding:14px}
-    .result-label{display:block;color:#cbd5f5;font-size:13px;font-weight:700;margin-bottom:4px}
-    .result-value{font-size:18px;font-weight:800;color:#e5e7eb}
-    .insight-good{color:#22c55e;font-weight:700}
-    .insight-medium{color:#facc15;font-weight:700}
-    .insight-weak{color:#ef4444;font-weight:700}
-    .chart-card{
-      margin-top:18px;padding:18px;border-radius:16px;background:rgba(255,255,255,0.04);
-      border:1px solid rgba(255,255,255,0.08)
+
+    .quick-answer {
+      background: rgba(59,130,246,0.12);
+      border: 1px solid rgba(59,130,246,0.25);
+      padding: 12px 14px;
+      border-radius: 12px;
+      font-size: 15px;
+      line-height: 1.6;
+      color: #e2e8f0;
+      margin: 0 0 16px;
     }
-    .chart-title{margin:0 0 10px;font-size:16px;color:#e2e8f0;font-weight:700}
-    canvas{margin-top:8px}
-    .content-sections{
-      width:min(1100px, calc(100% - 22px));
-      margin-top:34px;display:grid;grid-template-columns:1.15fr 0.85fr;gap:18px
+
+    .subhead {
+      color: #94a3b8;
+      font-size: 15px;
+      line-height: 1.6;
+      margin: 0 0 18px;
     }
-    @media (max-width:900px){.content-sections{grid-template-columns:1fr}}
-    .content-box{
-      background:rgba(30,41,59,0.62);border:1px solid rgba(255,255,255,0.08);
-      border-radius:16px;padding:20px
+
+    .badge-row {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      margin: 14px 0 8px;
     }
-    .content-box h2{margin:0 0 10px;font-size:22px}
-    .content-box p,.content-box li{color:#cbd5e1;line-height:1.7;font-size:15px}
-    .content-box ul{padding-left:18px;margin-bottom:0}
-    .formula{
-      background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.08);
-      padding:14px 16px;border-radius:12px;margin:12px 0;color:#e2e8f0;line-height:1.7;overflow:auto
+
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      padding: 5px 10px;
+      border-radius: 999px;
+      font-size: 12px;
+      font-weight: 700;
+      background: rgba(59,130,246,0.12);
+      color: #bfdbfe;
+      border: 1px solid rgba(59,130,246,0.22);
     }
-    .example{
-      background:rgba(59,130,246,0.10);border:1px solid rgba(59,130,246,0.20);
-      border-radius:14px;padding:14px 16px;margin-top:14px;color:#e2e8f0;line-height:1.6
+
+    .badge.soft {
+      background: rgba(255,255,255,0.05);
+      border-color: rgba(255,255,255,0.08);
+      color: #dbeafe;
     }
-    .source-note{margin-top:14px;color:#94a3b8;font-size:13px;line-height:1.5}
-    .faq-wrap{width:min(1100px, calc(100% - 22px));margin-top:34px}
-    .faq{
-      margin-top:14px;background:rgba(30,41,59,0.62);border:1px solid rgba(255,255,255,0.08);
-      border-radius:16px;overflow:hidden
+
+    .meta-row {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      margin-top: 10px;
+      color: #94a3b8;
+      font-size: 13px;
     }
-    .faq-item{border-bottom:1px solid rgba(255,255,255,0.08)}
-    .faq-item:last-child{border-bottom:none}
-    .faq-question{
-      width:100%;background:none;border:none;color:white;text-align:left;padding:14px 16px;
-      font-size:15px;display:flex;justify-content:space-between;align-items:center;cursor:pointer
+
+    .meta-pill {
+      display: inline-flex;
+      align-items: center;
+      padding: 6px 10px;
+      border-radius: 999px;
+      background: rgba(255,255,255,0.05);
+      border: 1px solid rgba(255,255,255,0.08);
     }
-    .faq-question:hover{color:#93c5fd}
-    .arrow{transition:0.25s}
-    .faq-item.active .arrow{transform:rotate(180deg)}
-    .faq-answer{
-      max-height:0;overflow:hidden;transition:max-height 0.3s ease;color:#cbd5e1;
-      font-size:14px;padding:0 16px
+
+    .section-title {
+      margin: 18px 0 8px;
+      font-size: 16px;
+      color: #e2e8f0;
+      font-weight: 700;
     }
-    .faq-item.active .faq-answer{max-height:260px;padding-bottom:14px}
-    .related{
-      width:min(1100px, calc(100% - 22px));
-      margin-top:28px;background:rgba(30,41,59,0.62);border:1px solid rgba(255,255,255,0.08);
-      border-radius:16px;padding:22px
+
+    .grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
     }
-    .related h3{margin-top:0;margin-bottom:10px}
-    .related p,.related li{color:#cbd5e1;line-height:1.7;font-size:15px}
-    .related ul{padding-left:18px;margin-bottom:0}
-    .related a{color:#93c5fd;text-decoration:none}
-    .related a:hover{text-decoration:underline}
-    .disclaimer{
-      margin-top:24px;padding-top:20px;border-top:1px solid rgba(255,255,255,0.1);
-      font-size:13px;color:#9ca3af;max-width:1100px;text-align:center;line-height:1.6;
-      width:min(1100px, calc(100% - 22px))
+
+    @media (max-width: 700px) {
+      .grid {
+        grid-template-columns: 1fr;
+      }
     }
-    @media (max-width:700px){.container{padding:22px}}
+
+    .field {
+      margin: 10px 0;
+    }
+
+    .field label {
+      display: block;
+      font-size: 13px;
+      color: #cbd5e1;
+      margin: 0 0 6px;
+      font-weight: 600;
+    }
+
+    .input-shell {
+      position: relative;
+    }
+
+    .input-shell::after {
+      content: "⌄";
+      position: absolute;
+      right: 14px;
+      top: 50%;
+      transform: translateY(-54%);
+      color: #64748b;
+      pointer-events: none;
+      font-size: 18px;
+      line-height: 1;
+    }
+
+    input, select {
+      width: 100%;
+      padding: 14px 16px;
+      border-radius: 12px;
+      border: 1px solid rgba(255,255,255,0.10);
+      background: #e5e7eb;
+      color: #0f172a;
+      font-size: 16px;
+      outline: none;
+      appearance: none;
+      -webkit-appearance: none;
+      -moz-appearance: none;
+    }
+
+    select {
+      padding-right: 42px;
+      background-image: none;
+    }
+
+    input[type="month"] {
+      color-scheme: dark;
+    }
+
+    input::-webkit-calendar-picker-indicator {
+      filter: invert(1);
+      opacity: 0.75;
+      cursor: pointer;
+    }
+
+    input:focus, select:focus {
+      box-shadow: 0 0 0 3px rgba(59,130,246,0.18);
+      border-color: #3b82f6;
+    }
+
+    button {
+      padding: 14px;
+      background: #3b82f6;
+      border: none;
+      border-radius: 12px;
+      color: white;
+      cursor: pointer;
+      margin-top: 10px;
+      width: 100%;
+      font-size: 16px;
+      font-weight: 700;
+      transition: 0.2s;
+    }
+
+    button:hover {
+      background: #2563eb;
+      transform: translateY(-1px);
+    }
+
+    button:disabled {
+      opacity: 0.7;
+      cursor: not-allowed;
+      transform: none;
+    }
+
+    .result-card {
+      margin-top: 18px;
+      padding: 16px;
+      border-radius: 16px;
+      background: rgba(255,255,255,0.05);
+      border: 1px solid rgba(255,255,255,0.08);
+      display: none;
+    }
+
+    .result-sentence {
+      margin: 0 0 14px;
+      font-size: 16px;
+      line-height: 1.6;
+      color: #e5e7eb;
+    }
+
+    .result-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 12px;
+    }
+
+    .result-box {
+      background: rgba(15,23,42,0.72);
+      border: 1px solid rgba(255,255,255,0.06);
+      border-radius: 14px;
+      padding: 14px;
+    }
+
+    .result-label {
+      display: block;
+      color: #cbd5f5;
+      font-size: 13px;
+      font-weight: 700;
+      margin-bottom: 4px;
+    }
+
+    .result-value {
+      font-size: 18px;
+      font-weight: 800;
+      color: #e5e7eb;
+    }
+
+    .insight-good { color: #22c55e; font-weight: 700; }
+    .insight-medium { color: #facc15; font-weight: 700; }
+    .insight-weak { color: #ef4444; font-weight: 700; }
+
+    .chart-card {
+      margin-top: 18px;
+      padding: 18px;
+      border-radius: 16px;
+      background: rgba(255,255,255,0.04);
+      border: 1px solid rgba(255,255,255,0.08);
+    }
+
+    .chart-title {
+      margin: 0 0 10px;
+      font-size: 16px;
+      color: #e2e8f0;
+      font-weight: 700;
+    }
+
+    canvas {
+      margin-top: 8px;
+      max-width: 100%;
+    }
+
+    .content-sections {
+      width: min(1100px, calc(100% - 24px));
+      margin: 34px auto 0;
+      display: grid;
+      grid-template-columns: 1.15fr 0.85fr;
+      gap: 18px;
+    }
+
+    @media (max-width: 900px) {
+      .content-sections {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .content-box {
+      background: rgba(30,41,59,0.62);
+      border: 1px solid rgba(255,255,255,0.08);
+      border-radius: 16px;
+      padding: 20px;
+    }
+
+    .content-box h2 {
+      margin: 0 0 10px;
+      font-size: 22px;
+    }
+
+    .content-box p, .content-box li {
+      color: #cbd5e1;
+      line-height: 1.7;
+      font-size: 15px;
+    }
+
+    .content-box ul {
+      padding-left: 18px;
+      margin-bottom: 0;
+    }
+
+    .formula {
+      background: rgba(255,255,255,0.05);
+      border: 1px solid rgba(255,255,255,0.08);
+      padding: 14px 16px;
+      border-radius: 12px;
+      margin: 12px 0;
+      color: #e2e8f0;
+      line-height: 1.7;
+      overflow: auto;
+    }
+
+    .example {
+      background: rgba(59,130,246,0.10);
+      border: 1px solid rgba(59,130,246,0.20);
+      border-radius: 14px;
+      padding: 14px 16px;
+      margin-top: 14px;
+      color: #e2e8f0;
+      line-height: 1.6;
+    }
+
+    .source-note {
+      margin-top: 14px;
+      color: #94a3b8;
+      font-size: 13px;
+      line-height: 1.5;
+    }
+
+    .faq-wrap {
+      width: min(1100px, calc(100% - 24px));
+      margin: 34px auto 0;
+    }
+
+    .faq {
+      margin-top: 14px;
+      background: rgba(30,41,59,0.62);
+      border: 1px solid rgba(255,255,255,0.08);
+      border-radius: 16px;
+      overflow: hidden;
+    }
+
+    .faq-item {
+      border-bottom: 1px solid rgba(255,255,255,0.08);
+    }
+
+    .faq-item:last-child {
+      border-bottom: none;
+    }
+
+    .faq-question {
+      width: 100%;
+      background: none;
+      border: none;
+      color: white;
+      text-align: left;
+      padding: 14px 16px;
+      font-size: 15px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      cursor: pointer;
+      margin-top: 0;
+      border-radius: 0;
+    }
+
+    .faq-question:hover {
+      color: #93c5fd;
+      transform: none;
+    }
+
+    .arrow {
+      transition: 0.25s;
+    }
+
+    .faq-item.active .arrow {
+      transform: rotate(180deg);
+    }
+
+    .faq-answer {
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height 0.3s ease;
+      color: #cbd5e1;
+      font-size: 14px;
+      padding: 0 16px;
+    }
+
+    .faq-item.active .faq-answer {
+      max-height: 260px;
+      padding-bottom: 14px;
+    }
+
+    .related {
+      width: min(1100px, calc(100% - 24px));
+      margin: 28px auto 0;
+      background: rgba(30,41,59,0.62);
+      border: 1px solid rgba(255,255,255,0.08);
+      border-radius: 16px;
+      padding: 22px;
+    }
+
+    .related h3 {
+      margin-top: 0;
+      margin-bottom: 10px;
+    }
+
+    .related p, .related li {
+      color: #cbd5e1;
+      line-height: 1.7;
+      font-size: 15px;
+    }
+
+    .related ul {
+      padding-left: 18px;
+      margin-bottom: 0;
+    }
+
+    .related a {
+      color: #93c5fd;
+      text-decoration: none;
+    }
+
+    .related a:hover {
+      text-decoration: underline;
+    }
+
+    .disclaimer {
+      margin: 24px auto 0;
+      padding-top: 20px;
+      border-top: 1px solid rgba(255,255,255,0.1);
+      font-size: 13px;
+      color: #9ca3af;
+      max-width: 1100px;
+      text-align: center;
+      line-height: 1.6;
+      width: min(1100px, calc(100% - 24px));
+    }
+
+    @media (max-width: 700px) {
+      .container { padding: 22px; }
+    }
   </style>
 </head>
 
 <body>
-  <p class="toptext">Explore more calculators</p>
-  <div class="menu"><a href="index.html">Home</a></div>
+  <div class="page-wrap">
+    <p class="toptext">Explore more calculators</p>
+    <div class="menu"><a href="index.html">Home</a></div>
 
-  <div class="container">
-    <h1>Historical Purchasing Power Calculator</h1>
-    <p class="quick-answer">
-      A historical purchasing power calculator shows how much money from one month is worth in another month after inflation — use it to compare the same currency across two dates instantly.
-    </p>
-    <p class="subhead">
-      Enter a country, two dates, and an amount to see how inflation changed the money’s purchasing power over time.
-    </p>
+    <div class="container">
+      <h1>Historical Purchasing Power Calculator</h1>
 
-    <div class="badge-row">
-      <span class="badge">Inflation comparison</span>
-      <span class="badge soft">Purchasing power</span>
-      <span class="badge soft">Historical value</span>
+      <p class="quick-answer">
+        A historical purchasing power calculator shows how much money from one month is worth in another month after inflation.
+      </p>
+
+      <p class="subhead">
+        Enter an amount, a start month, and an end month to see how inflation changed the money’s purchasing power over time.
+      </p>
+
+      <div class="badge-row">
+        <span class="badge">Inflation comparison</span>
+        <span class="badge soft">Purchasing power</span>
+        <span class="badge soft">Historical value</span>
+      </div>
+
+      <div class="meta-row">
+        <span class="meta-pill" id="dataStatus">FRED CPI: ready</span>
+        <span class="meta-pill" id="seriesStatus">Series: CPIAUCSL</span>
+      </div>
+
+      <div class="section-title">Your details</div>
+
+      <div class="grid">
+        <div class="field" style="grid-column: 1 / -1;">
+          <label for="amount">Amount (USD)</label>
+          <input id="amount" type="number" min="0" step="any" placeholder="e.g. 1000">
+        </div>
+
+        <div class="field">
+          <label for="startMonth">Start Month</label>
+          <input id="startMonth" type="month">
+        </div>
+
+        <div class="field">
+          <label for="endMonth">End Month</label>
+          <input id="endMonth" type="month">
+        </div>
+      </div>
+
+      <button id="calcBtn" type="button">Calculate</button>
+
+      <div id="resultCard" class="result-card" aria-live="polite">
+        <p id="resultSentence" class="result-sentence">—</p>
+
+        <div class="result-grid">
+          <div class="result-box">
+            <span class="result-label">Equivalent value in end month</span>
+            <span id="equivalentOut" class="result-value">—</span>
+          </div>
+
+          <div class="result-box">
+            <span class="result-label">Price increase needed</span>
+            <span id="increaseOut" class="result-value">—</span>
+          </div>
+
+          <div class="result-box">
+            <span class="result-label">Period inflation</span>
+            <span id="inflationOut" class="result-value">—</span>
+          </div>
+
+          <div class="result-box">
+            <span class="result-label">Purchasing power remaining</span>
+            <span id="remainingOut" class="result-value">—</span>
+          </div>
+
+          <div class="result-box">
+            <span class="result-label">Insight</span>
+            <span id="insightOut" class="result-value">—</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="chart-card">
+        <h3 class="chart-title">Equivalent value over time</h3>
+        <canvas id="trendChart"></canvas>
+      </div>
+
+      <div class="chart-card">
+        <h3 class="chart-title">Purchasing power remaining</h3>
+        <canvas id="powerChart"></canvas>
+      </div>
     </div>
-
-    <input id="amount" type="number" placeholder="Amount (e.g. 1000)">
-
-    <input id="start" type="month">
-    <input id="end" type="month">
-
-    <button onclick="calculate()">Calculate</button>
-
-    <div class="result" id="result" style="display:none;"></div>
-
-    <canvas id="chart"></canvas>
   </div>
 
   <div class="content-sections">
@@ -241,7 +620,7 @@
 
       <h2>How it works</h2>
       <p>
-        The backend proxy returns monthly CPI data for the selected country. The frontend compares the start and end months using the CPI ratio, which is the correct way to preserve purchasing power across dates.
+        The calculator uses monthly CPI data from FRED’s CPIAUCSL series. It compares the start and end months using the CPI ratio, which is the standard way to estimate preserved purchasing power across dates.
       </p>
 
       <div class="formula">
@@ -266,8 +645,8 @@
 
       <div class="example">
         <strong>Example:</strong><br>
-        ₺1,000 in an earlier month may require several thousand lira in a later month to buy the same basket.
-        The exact result depends on the country and the dates you choose.
+        $1,000 in an earlier month may require several thousand dollars in a later month to buy the same basket.
+        The exact result depends on the dates you choose.
       </div>
 
       <h2 style="margin-top:18px;">Use cases</h2>
@@ -278,10 +657,16 @@
         <li>Budget planning across years</li>
         <li>Historical cost-of-living checks</li>
       </ul>
+
+      <p class="source-note">
+        Data source: FRED CPIAUCSL monthly CPI series.
+      </p>
+    </div>
   </div>
 
   <div class="faq-wrap">
     <h2 style="margin:0 0 10px; font-size:28px;">Frequently Asked Questions</h2>
+
     <div class="faq">
       <div class="faq-item">
         <button class="faq-question" type="button">
@@ -314,7 +699,7 @@
         </button>
         <div class="faq-answer">
           <p>
-            Yes, as long as the selected country has monthly inflation data available for those dates.
+            Yes. This version is built for monthly U.S. CPI data from FRED, so you can compare any months covered by the series.
           </p>
         </div>
       </div>
@@ -341,7 +726,7 @@
       <li><a href="future-value-calculator.html">Future Value Calculator</a></li>
       <li><a href="compound-interest-calculator.html">Compound Interest Calculator</a></li>
       <li><a href="retirement-calculator.html">Retirement Calculator</a></li>
-      <li><a href="currency-converter-calculator.html">Currency Converter</a></li>
+      <li><a href="currency-converter.html">Currency Converter</a></li>
     </ul>
   </div>
 
@@ -355,92 +740,329 @@
 
   <script src="footer.js"></script>
   <script>
-    const API_KEY = 528cb65504834e44d0b9a6f4e9ba3a6c
+    const API_KEY = 528cb65504834e44d0b9a6f4e9ba3a6c;
+    const SERIES_ID = "CPIAUCSL";
+    const FRED_URL = "https://api.stlouisfed.org/fred/series/observations";
 
-let chart;
+    const amountInput = document.getElementById("amount");
+    const startMonthInput = document.getElementById("startMonth");
+    const endMonthInput = document.getElementById("endMonth");
+    const calcBtn = document.getElementById("calcBtn");
 
-async function fetchCPI() {
-  const url =
-    `https://api.stlouisfed.org/fred/series/observations` +
-    `?series_id=CPIAUCSL` +
-    `&api_key=${API_KEY}` +
-    `&file_type=json` +
-    `&observation_start=1947-01-01`;
+    const resultCard = document.getElementById("resultCard");
+    const resultSentence = document.getElementById("resultSentence");
+    const equivalentOut = document.getElementById("equivalentOut");
+    const increaseOut = document.getElementById("increaseOut");
+    const inflationOut = document.getElementById("inflationOut");
+    const remainingOut = document.getElementById("remainingOut");
+    const insightOut = document.getElementById("insightOut");
 
-  const res = await fetch(url);
-  const data = await res.json();
+    const dataStatus = document.getElementById("dataStatus");
+    const seriesStatus = document.getElementById("seriesStatus");
 
-  return data.observations
-    .filter(d => d.value !== ".")
-    .map(d => ({
-      date: d.date.slice(0, 7),
-      cpi: Number(d.value)
-    }));
-}
+    let trendChart = null;
+    let powerChart = null;
 
-function findClosest(series, target) {
-  return series.reduce((prev, curr) => {
-    return Math.abs(curr.date.localeCompare(target)) <
-           Math.abs(prev.date.localeCompare(target))
-      ? curr
-      : prev;
-  });
-}
+    let cpiCache = null;
+    let cpiCachePromise = null;
 
-async function calculate() {
-  const amount = Number(document.getElementById("amount").value);
-  const start = document.getElementById("start").value;
-  const end = document.getElementById("end").value;
+    function setDefaultMonths() {
+      const now = new Date();
+      const currentMonth = `${now.getUTCFullYear()}-${String(now.getUTCMonth() + 1).padStart(2, "0")}`;
 
-  const series = await fetchCPI();
+      const fiveYearsAgo = new Date(Date.UTC(now.getUTCFullYear() - 5, now.getUTCMonth(), 1));
+      const fiveYearsAgoMonth = `${fiveYearsAgo.getUTCFullYear()}-${String(fiveYearsAgo.getUTCMonth() + 1).padStart(2, "0")}`;
 
-  const startData = findClosest(series, start);
-  const endData = findClosest(series, end);
-
-  const equivalent = amount * (endData.cpi / startData.cpi);
-  const inflation = ((endData.cpi / startData.cpi) - 1) * 100;
-
-  document.getElementById("result").style.display = "block";
-  document.getElementById("result").innerHTML = `
-    <b>Result</b><br><br>
-    ${amount} USD in ${start} ≈ <b>${equivalent.toFixed(2)} USD</b> in ${end}<br><br>
-    Inflation: <b>${inflation.toFixed(2)}%</b>
-  `;
-
-  const labels = series
-    .filter(x => x.date >= start && x.date <= end)
-    .map(x => x.date);
-
-  const values = series
-    .filter(x => x.date >= start && x.date <= end)
-    .map(x => amount * (x.cpi / startData.cpi));
-
-  if (chart) chart.destroy();
-
-  chart = new Chart(document.getElementById("chart"), {
-    type: "line",
-    data: {
-      labels,
-      datasets: [{
-        label: "Purchasing Power",
-        data: values,
-        borderColor: "#3b82f6",
-        fill: false
-      }]
-    }
-  });
+      if (!startMonthInput.value) startMonthInput.value = fiveYearsAgoMonth;
+      if (!endMonthInput.value) endMonthInput.value = currentMonth;
     }
 
-                          
-      document.querySelectorAll(".faq-question").forEach(btn => {
-        btn.addEventListener("click", () => {
-          const item = btn.parentElement;
-          document.querySelectorAll(".faq-item").forEach(i => {
-            if (i !== item) i.classList.remove("active");
-          });
-          item.classList.toggle("active");
+    function formatMoney(value) {
+      return `$${Number(value).toLocaleString("en-US", {
+        minimumFractionDigits: 0,
+        maximumFractionDigits: 2
+      })}`;
+    }
+
+    function formatPct(value) {
+      return `${Number(value).toLocaleString("en-US", {
+        minimumFractionDigits: 0,
+        maximumFractionDigits: 2
+      })}%`;
+    }
+
+    function monthLabel(dateStr) {
+      const [year, month] = dateStr.split("-");
+      const d = new Date(Date.UTC(Number(year), Number(month) - 1, 1));
+      return new Intl.DateTimeFormat("en-US", {
+        month: "short",
+        year: "numeric",
+        timeZone: "UTC"
+      }).format(d);
+    }
+
+    function normalizeMonthValue(value) {
+      if (!value) return "";
+      const [year, month] = value.split("-");
+      return `${year}-${String(month).padStart(2, "0")}`;
+    }
+
+    async function fetchCPI() {
+      if (cpiCache) return cpiCache;
+      if (cpiCachePromise) return cpiCachePromise;
+
+      const url =
+        `${FRED_URL}?series_id=${encodeURIComponent(SERIES_ID)}` +
+        `&api_key=${encodeURIComponent(API_KEY)}` +
+        `&file_type=json` +
+        `&observation_start=1947-01-01`;
+
+      cpiCachePromise = fetch(url, { cache: "no-store" })
+        .then(async (res) => {
+          const data = await res.json();
+
+          if (!res.ok) {
+            throw new Error(data?.error_message || data?.error || "Failed to load CPI data from FRED.");
+          }
+
+          const observations = Array.isArray(data?.observations) ? data.observations : [];
+
+          const series = observations
+            .filter((d) => d && d.value !== ".")
+            .map((d) => ({
+              date: String(d.date || "").slice(0, 7),
+              cpi: Number(d.value)
+            }))
+            .filter((row) => row.date && Number.isFinite(row.cpi))
+            .sort((a, b) => a.date.localeCompare(b.date));
+
+          if (!series.length) {
+            throw new Error("No CPI data returned from FRED.");
+          }
+
+          cpiCache = series;
+          return series;
+        })
+        .finally(() => {
+          cpiCachePromise = null;
         });
+
+      return cpiCachePromise;
+    }
+
+    function findClosestOnOrBefore(series, targetMonth) {
+      const exact = series.find((row) => row.date === targetMonth);
+      if (exact) return exact;
+
+      const filtered = series.filter((row) => row.date <= targetMonth);
+      return filtered.length ? filtered[filtered.length - 1] : null;
+    }
+
+    function buildChartPoints(series, amount, startCpi) {
+      return series.map((row) => ({
+        date: row.date,
+        equivalent: amount * (row.cpi / startCpi),
+        remainingPct: (startCpi / row.cpi) * 100
+      }));
+    }
+
+    function renderTrendChart(points) {
+      const ctx = document.getElementById("trendChart").getContext("2d");
+      if (trendChart) trendChart.destroy();
+
+      trendChart = new Chart(ctx, {
+        type: "line",
+        data: {
+          labels: points.map((p) => p.date),
+          datasets: [{
+            label: "Equivalent value",
+            data: points.map((p) => p.equivalent),
+            borderColor: "#3b82f6",
+            backgroundColor: "rgba(59,130,246,0.14)",
+            tension: 0.25,
+            fill: true,
+            pointRadius: 2,
+            pointHoverRadius: 4
+          }]
+        },
+        options: {
+          responsive: true,
+          plugins: {
+            legend: { labels: { color: "white" } },
+            tooltip: {
+              callbacks: {
+                label: (context) => ` Equivalent value: ${formatMoney(context.parsed.y)}`
+              }
+            }
+          },
+          scales: {
+            x: {
+              ticks: { color: "white", autoSkip: true, maxTicksLimit: 8 },
+              grid: { color: "rgba(255,255,255,0.08)" }
+            },
+            y: {
+              ticks: {
+                color: "white",
+                callback: (value) => `$${Number(value).toLocaleString("en-US")}`
+              },
+              grid: { color: "rgba(255,255,255,0.08)" }
+            }
+          }
+        }
       });
+    }
+
+    function renderPowerChart(points) {
+      const ctx = document.getElementById("powerChart").getContext("2d");
+      if (powerChart) powerChart.destroy();
+
+      powerChart = new Chart(ctx, {
+        type: "line",
+        data: {
+          labels: points.map((p) => p.date),
+          datasets: [{
+            label: "Purchasing power remaining (%)",
+            data: points.map((p) => p.remainingPct),
+            borderColor: "#22c55e",
+            backgroundColor: "rgba(34,197,94,0.10)",
+            tension: 0.25,
+            fill: true,
+            pointRadius: 2,
+            pointHoverRadius: 4
+          }]
+        },
+        options: {
+          responsive: true,
+          plugins: {
+            legend: { labels: { color: "white" } },
+            tooltip: {
+              callbacks: {
+                label: (context) => ` Purchasing power remaining: ${Number(context.parsed.y).toFixed(2)}%`
+              }
+            }
+          },
+          scales: {
+            x: {
+              ticks: { color: "white", autoSkip: true, maxTicksLimit: 8 },
+              grid: { color: "rgba(255,255,255,0.08)" }
+            },
+            y: {
+              ticks: {
+                color: "white",
+                callback: (value) => `${Number(value).toFixed(0)}%`
+              },
+              grid: { color: "rgba(255,255,255,0.08)" }
+            }
+          }
+        }
+      });
+    }
+
+    async function calculate() {
+      const amount = Number(amountInput.value);
+      const startMonth = normalizeMonthValue(startMonthInput.value);
+      const endMonth = normalizeMonthValue(endMonthInput.value);
+
+      if (!Number.isFinite(amount) || amount <= 0) {
+        alert("Enter a valid amount greater than zero.");
+        return;
+      }
+
+      if (!startMonth || !endMonth) {
+        alert("Select both start month and end month.");
+        return;
+      }
+
+      if (endMonth < startMonth) {
+        alert("End month must be the same as or later than the start month.");
+        return;
+      }
+
+      calcBtn.disabled = true;
+      calcBtn.textContent = "Calculating...";
+      dataStatus.textContent = "Loading FRED CPI data...";
+
+      try {
+        const series = await fetchCPI();
+
+        const startData = findClosestOnOrBefore(series, startMonth);
+        const endData = findClosestOnOrBefore(series, endMonth);
+
+        if (!startData || !endData) {
+          throw new Error("Could not find CPI data for the selected months.");
+        }
+
+        const rangeSeries = series.filter((row) => row.date >= startData.date && row.date <= endData.date);
+
+        if (!rangeSeries.length) {
+          throw new Error("No data points available for the selected date range.");
+        }
+
+        const equivalent = amount * (endData.cpi / startData.cpi);
+        const inflation = ((endData.cpi / startData.cpi) - 1) * 100;
+        const increaseNeeded = equivalent - amount;
+        const remainingPct = (startData.cpi / endData.cpi) * 100;
+        const erosionPct = 100 - remainingPct;
+
+        resultSentence.textContent =
+          `${formatMoney(amount)} in ${monthLabel(startData.date)} is equivalent to about ${formatMoney(equivalent)} in ${monthLabel(endData.date)}.`;
+
+        equivalentOut.textContent = formatMoney(equivalent);
+        increaseOut.textContent = `${formatMoney(increaseNeeded)} (${inflation >= 0 ? "+" : ""}${inflation.toFixed(2)}%)`;
+        inflationOut.textContent = formatPct(inflation);
+        remainingOut.textContent = `${remainingPct.toFixed(2)}% (erosion ${erosionPct.toFixed(2)}%)`;
+
+        let insight = "";
+        let insightClass = "";
+
+        if (Math.abs(inflation) < 0.01) {
+          insight = "No net change in purchasing power over the selected period.";
+          insightClass = "insight-medium";
+        } else if (inflation >= 300) {
+          insight = "Very strong erosion of purchasing power.";
+          insightClass = "insight-weak";
+        } else if (inflation >= 100) {
+          insight = "Noticeable inflation impact over this period.";
+          insightClass = "insight-medium";
+        } else if (inflation > 0) {
+          insight = "Purchasing power declined, but the change is more moderate.";
+          insightClass = "insight-good";
+        } else {
+          insight = "The selected period shows deflation or a real value gain.";
+          insightClass = "insight-good";
+        }
+
+        insightOut.innerHTML = `<span class="${insightClass}">${insight}</span>`;
+        resultCard.style.display = "block";
+
+        const chartPoints = buildChartPoints(rangeSeries, amount, startData.cpi);
+        renderTrendChart(chartPoints);
+        renderPowerChart(chartPoints);
+
+        dataStatus.textContent = "FRED CPI loaded successfully";
+      } catch (error) {
+        console.error(error);
+        dataStatus.textContent = "CPI load failed";
+        alert(error.message || "Could not load CPI data from FRED.");
+      } finally {
+        calcBtn.disabled = false;
+        calcBtn.textContent = "Calculate";
+      }
+    }
+
+    document.querySelectorAll(".faq-question").forEach((btn) => {
+      btn.addEventListener("click", () => {
+        const item = btn.parentElement;
+        document.querySelectorAll(".faq-item").forEach((i) => {
+          if (i !== item) i.classList.remove("active");
+        });
+        item.classList.toggle("active");
+      });
+    });
+
+    calcBtn.addEventListener("click", calculate);
+
+    setDefaultMonths();
   </script>
 </body>
-          </html>
+  </html>
