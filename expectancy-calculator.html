@@ -1,512 +1,730 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<link rel="canonical" href="https://novainvesttools.com/expectancy-calculator.html">
-<!-- Google tag (gtag.js) -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-ZPCXDVE8C5"></script>
-<script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
-
-  gtag('config', 'G-ZPCXDVE8C5');
-</script>
-<meta charset="UTF-8">
-<title>Expectancy Calculator – Measure Trading Edge & Expected Profit</title>
-<meta name="description" content="Free expectancy calculator for traders. Calculate trading expectancy, break-even win rate, expected profit per trade, and total edge based on win rate, average win, and average loss.">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-
-<link rel="stylesheet" href="style.css">
-  
-<style>
-body{
-font-family:Arial;
-background:#0f172a;
-color:white;
-display:flex;
-justify-content:center;
-align-items:center;
-flex-direction:column;
-min-height:100vh;
-}
-
-.container{
-background:#1e293b;
-padding:30px;
-border-radius:16px;
-width:90%;
-max-width:500px;
-box-shadow:0 10px 25px rgba(0,0,0,0.35);
-}
-
-input{
-width:100%;
-padding:14px;
-margin:12px 0;
-border-radius:10px;
-border:none;
-background:#e5e7eb;
-font-size:16px;
-}
-
-button{
-padding:14px;
-background:#3b82f6;
-border:none;
-border-radius:10px;
-color:white;
-cursor:pointer;
-margin-top:10px;
-width:100%;
-}
-
-button:hover{
-background:#2563eb;
-}
-
-canvas{
-margin-top:30px;
-}
-
-.menu{
-margin-bottom:25px;
-}
-
-.menu a{
-color:#3b82f6;
-margin:10px;
-text-decoration:none;
-}
-
-.toptext{
-font-size:14px;
-color:#6b7a99;
-margin-bottom:5px;
-}
-
-.disclaimer{
-margin-top:40px;
-padding-top:20px;
-border-top:1px solid rgba(255,255,255,0.1);
-font-size:13px;
-color:#9ca3af;
-max-width:500px;
-text-align:center;
-line-height:1.6;
-}
-
-.result-card{
-margin-top:18px;
-padding:16px;
-border-radius:12px;
-background:rgba(255,255,255,0.04);
-border:1px solid rgba(255,255,255,0.08);
-line-height:1.8;
-display:none;
-}
-
-.result-line{
-margin:8px 0;
-}
-
-.result-label{
-color:#cbd5f5;
-font-weight:600;
-}
-
-.result-value{
-font-weight:700;
-}
-
-.faq{
-margin-top:24px;
-}
-
-.faq-item{
-border-bottom:1px solid rgba(255,255,255,0.08);
-}
-
-.faq-question{
-width:100%;
-background:none;
-border:none;
-color:white;
-text-align:left;
-padding:14px 8px;
-font-size:15px;
-display:flex;
-justify-content:space-between;
-align-items:center;
-cursor:pointer;
-}
-
-.faq-question:hover{
-color:#93c5fd;
-}
-
-.arrow{
-transition:0.25s;
-}
-
-.faq-item.active .arrow{
-transform:rotate(180deg);
-}
-
-.faq-answer{
-max-height:0;
-overflow:hidden;
-transition:max-height 0.3s ease;
-color:#cbd5e1;
-font-size:14px;
-padding:0 8px;
-}
-
-.faq-item.active .faq-answer{
-max-height:260px;
-padding-bottom:12px;
-}
-
-.related{
-margin-top:28px;
-}
-
-.related a{
-color:#93c5fd;
-text-decoration:none;
-}
-
-.related a:hover{
-text-decoration:underline;
-}
-</style>
-
-</head>
-<body>
-  
-<p class="toptext">Explore more calculators</p>
-<div class="menu">
-<a href="index.html">Home</a>
-</div>
-
-<div class="container">
-
-<h1>Expectancy Calculator – Measure Trading Edge & Expected Profit</h1>
-
-<input id="winRate" placeholder="Win Rate (%)">
-<input id="avgWin" placeholder="Average Win ($)">
-<input id="avgLoss" placeholder="Average Loss ($)">
-<input id="trades" placeholder="Number of Trades">
-
-<button onclick="calculateExpectancy()">Calculate Expectancy</button>
-
-<div id="resultBox" class="result-card">
-  <p class="result-line"><span class="result-label">Expectancy per Trade:</span> <span id="expectancyOut" class="result-value">—</span></p>
-  <p class="result-line"><span class="result-label">Expected Profit / Loss:</span> <span id="totalOut" class="result-value">—</span></p>
-  <p class="result-line"><span class="result-label">Break-even Win Rate:</span> <span id="breakevenOut" class="result-value">—</span></p>
-  <p class="result-line"><span class="result-label">Insight:</span> <span id="insightOut" class="result-value">—</span></p>
-</div>
-
-<canvas id="myChart"></canvas>
-
-</div>
-
-
-<h2>What is an Expectancy Calculator?</h2>
-
-<p>
-An Expectancy Calculator helps traders measure whether a trading strategy has a real edge over time. Instead of looking only at win rate, it combines win rate, average win, and average loss to show the average amount you expect to make or lose per trade. This makes it one of the most important tools for evaluating trading performance because a strategy can look good on the surface and still lose money in the long run.
-</p>
-
-<p>
-Many traders focus too much on how often they win and not enough on how much they win when they are right versus how much they lose when they are wrong. That is where expectancy becomes valuable. It gives you a clearer picture of whether your system is statistically favorable, whether your average trade is worth taking, and whether your strategy is likely to survive over a large sample of trades.
-</p>
-
-<h2>How This Calculator Works</h2>
-
-<p>
-This calculator uses your win rate, average win, average loss, and number of trades to estimate the expected result of your strategy. It calculates expectancy per trade and then projects that result across the number of trades you enter. That means you can see both the strength of the strategy and the possible total outcome over time.
-</p>
-
-<p>
-The core formula is:
-</p>
-
-<p><strong>Expectancy = (Win Rate × Average Win) − ((1 − Win Rate) × Average Loss)</strong></p>
-
-<p>
-If the result is positive, your strategy has a statistical edge. If it is negative, the strategy is likely losing money over time. If it is near zero, the system is close to break-even and may not be strong enough after fees, slippage, or emotional mistakes are added.
-</p>
-
-<h2>Why Expectancy Matters</h2>
-
-<p>
-Expectancy matters because trading success is not built on a single trade. It is built on a repeatable system that performs well across many trades. A trader can have a low win rate and still be profitable if the average winners are much larger than the average losers. On the other hand, a trader can win most of the time and still lose money if losses are too large.
-</p>
-
-<p>
-This is why expectancy is often more useful than win rate alone. It helps you evaluate the real quality of a strategy and understand whether your trading approach has a true edge or just looks good in the short term.
-</p>
-
-<ul>
-  <li>Shows whether a strategy is profitable over time</li>
-  <li>Combines win rate and payoff size</li>
-  <li>Helps compare different trading systems</li>
-  <li>Reveals the real edge behind your trades</li>
-  <li>Supports better risk management decisions</li>
-</ul>
-
-<h2>Break-even Win Rate</h2>
-
-<p>
-The break-even win rate is the minimum win rate required for a strategy to stop losing money. It depends on how large your average win is compared to your average loss. If your actual win rate is above the break-even level, expectancy becomes positive. If it is below that level, the strategy is likely losing money over time.
-</p>
-
-<p>
-That makes break-even win rate a useful benchmark for evaluating any trading system. It tells you the line between survival and decline.
-</p>
-
-<h2>How to Use This Calculator</h2>
-
-<ul>
-  <li>Enter your win rate</li>
-  <li>Enter your average win amount</li>
-  <li>Enter your average loss amount</li>
-  <li>Enter the number of trades you want to project</li>
-  <li>Click calculate to see your expectancy, total expected result, and break-even level</li>
-</ul>
-
-<p>
-This gives you a simple but powerful way to test whether your strategy is worth using before you risk real capital.
-</p>
-
-<h2>Why Traders Use Expectancy</h2>
-
-<p>
-Traders use expectancy because it answers a more important question than “Do I win often?” It answers “Does my system make money overall?” That is the question that matters if your goal is consistency, survival, and long-term profitability.
-</p>
-
-<p>
-A strong expectancy does not guarantee every trade will work, but it does show that your strategy has a statistical advantage. That is what separates a repeatable system from random guessing.
-</p>
-
-<p style="font-weight:bold; color:#f87171;">
-⚠️ A high win rate is not enough. A strategy only matters if the numbers work over time.
-</p>
-
-<h3>Frequently Asked Questions</h3>
-
-<div class="faq">
-
-  <div class="faq-item">
-    <button class="faq-question">
-      What does expectancy tell me in trading?
-      <span class="arrow">▼</span>
-    </button>
-    <div class="faq-answer">
-      <p>
-        Expectancy tells you the average amount you can expect to gain or lose per trade over a large number of trades. It is one of the clearest ways to measure whether a strategy has a real edge.
-      </p>
-    </div>
-  </div>
-
-  <div class="faq-item">
-    <button class="faq-question">
-      Is a positive expectancy always good?
-      <span class="arrow">▼</span>
-    </button>
-    <div class="faq-answer">
-      <p>
-        A positive expectancy is a good sign because it means the strategy has potential to make money over time. Still, you should also consider fees, slippage, discipline, and market conditions before relying on it.
-      </p>
-    </div>
-  </div>
-
-  <div class="faq-item">
-    <button class="faq-question">
-      Can a low win rate strategy still be profitable?
-      <span class="arrow">▼</span>
-    </button>
-    <div class="faq-answer">
-      <p>
-        Yes. A strategy can be profitable with a low win rate if the average winning trades are much larger than the average losing trades. That is exactly why expectancy is more useful than win rate alone.
-      </p>
-    </div>
-  </div>
-
-  <div class="faq-item">
-    <button class="faq-question">
-      Why is break-even win rate important?
-      <span class="arrow">▼</span>
-    </button>
-    <div class="faq-answer">
-      <p>
-        Break-even win rate shows the minimum win rate needed to avoid losing money. It gives you a reference point so you can see whether your current strategy is strong enough to survive long term.
-      </p>
-    </div>
-  </div>
-
-  <div class="faq-item">
-    <button class="faq-question">
-      Can expectancy change after fees?
-      <span class="arrow">▼</span>
-    </button>
-    <div class="faq-answer">
-      <p>
-        Yes. Fees, spreads, and slippage can reduce your real expectancy. A strategy that looks profitable on paper may become less attractive once actual trading costs are included.
-      </p>
-    </div>
-  </div>
-
-  <div class="faq-item">
-    <button class="faq-question">
-      Does this calculator work for forex, crypto, and stocks?
-      <span class="arrow">▼</span>
-    </button>
-    <div class="faq-answer">
-      <p>
-        Yes. It works for any market where you can estimate your win rate, average win, average loss, and number of trades. That includes forex, crypto, stocks, futures, and other markets.
-      </p>
-    </div>
-  </div>
-
-</div>
-
-  
-<div class="related">
-  
-<h3>Related Calculators</h3>
-<p>You may also find these tools useful:</p>
-<ul>
-<li><a href="risk-of-ruin-calculator.html">Risk of Ruin Calculator</a></li>
-<li><a href="drawdown-calculator.html">Drawdown Calculator</a></li>
-<li><a href="position-size-calculator.html">Position Size Calculator</a></li>
-<li><a href="risk-reward-calculator.html">Risk Reward Calculator</a></li>
-<li><a href="stop-loss-calculator.html">Stop Loss Calculator</a></li>
-</ul>
-</div> 
-  
-<div class="disclaimer">
-<p>
-<strong>Disclaimer:</strong> The calculators on this website are provided for informational and educational purposes only. 
-All results are estimates based on the values entered and do not constitute financial, investment, or trading advice. 
-Always conduct your own research before making financial decisions.
-</p>
-</div>
-
-<script src="footer.js"></script>
-<script>
-let chart;
-
-function formatMoney(value){
-  const sign = value < 0 ? "-" : "";
-  return sign + "$" + Math.abs(value).toLocaleString(undefined, {
-    minimumFractionDigits: 2,
-    maximumFractionDigits: 2
-  });
-}
-
-function calculateExpectancy(){
-  const winRateInput = parseFloat(document.getElementById("winRate").value);
-  const avgWin = parseFloat(document.getElementById("avgWin").value);
-  const avgLoss = parseFloat(document.getElementById("avgLoss").value);
-  const trades = parseFloat(document.getElementById("trades").value);
-
-  if(
-    isNaN(winRateInput) || isNaN(avgWin) || isNaN(avgLoss) || isNaN(trades) ||
-    winRateInput <= 0 || winRateInput >= 100 ||
-    avgWin <= 0 || avgLoss <= 0 || trades <= 0
-  ){
-    alert("Please enter valid values.");
-    return;
+  <link rel="canonical" href="https://novainvesttools.com/expectancy-calculator.html">
+
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-ZPCXDVE8C5"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-ZPCXDVE8C5');
+  </script>
+
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Expectancy Calculator – Measure Trading Edge & Expected Profit</title>
+  <meta name="description" content="Free expectancy calculator for traders. Calculate trading expectancy, break-even win rate, expected profit per trade, and total edge based on win rate, average win, and average loss.">
+  <meta name="theme-color" content="#0f172a">
+  <meta name="robots" content="index,follow,max-image-preview:large">
+
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://novainvesttools.com/expectancy-calculator.html">
+  <meta property="og:title" content="Expectancy Calculator – Measure Trading Edge & Expected Profit">
+  <meta property="og:description" content="Free expectancy calculator for traders. Calculate trading expectancy, break-even win rate, expected profit per trade, and total edge.">
+
+  <link rel="preconnect" href="https://cdn.jsdelivr.net">
+  <link rel="dns-prefetch" href="https://cdn.jsdelivr.net">
+
+  <link rel="stylesheet" href="style.css">
+  <link rel="icon" href="favicon.png" type="image/png">
+  <link rel="apple-touch-icon" href="favicon.png">
+
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "WebApplication",
+    "name": "Expectancy Calculator",
+    "url": "https://novainvesttools.com/expectancy-calculator.html",
+    "applicationCategory": "FinanceApplication",
+    "operatingSystem": "All",
+    "browserRequirements": "Requires JavaScript",
+    "description": "Calculate trading expectancy, break-even win rate, and expected profit per trade.",
+    "featureList": [
+      "Expectancy per trade calculation",
+      "Total expected profit or loss",
+      "Break-even win rate",
+      "Trading edge analysis"
+    ],
+    "offers": {
+      "@type": "Offer",
+      "price": "0",
+      "priceCurrency": "USD"
+    }
   }
+  </script>
 
-  const winRate = winRateInput / 100;
-  const lossRate = 1 - winRate;
-
-  const expectancyPerTrade = (winRate * avgWin) - (lossRate * avgLoss);
-  const totalExpected = expectancyPerTrade * trades;
-  const breakevenWinRate = avgLoss / (avgWin + avgLoss);
-
-  let insight = "";
-  let insightColor = "#cbd5e1";
-
-  if(expectancyPerTrade > 0){
-    insight = "Profitable strategy";
-    insightColor = "#22c55e";
-  } else if(expectancyPerTrade === 0){
-    insight = "Break-even strategy";
-    insightColor = "#facc15";
-  } else {
-    insight = "Losing strategy";
-    insightColor = "#ef4444";
-  }
-
-  document.getElementById("expectancyOut").innerText = formatMoney(expectancyPerTrade);
-  document.getElementById("totalOut").innerText = formatMoney(totalExpected);
-  document.getElementById("breakevenOut").innerText = (breakevenWinRate * 100).toFixed(2) + "%";
-
-  const insightEl = document.getElementById("insightOut");
-  insightEl.innerText = insight;
-  insightEl.style.color = insightColor;
-
-  document.getElementById("resultBox").style.display = "block";
-
-  drawChart(avgWin, avgLoss, expectancyPerTrade);
-}
-
-function drawChart(avgWin, avgLoss, expectancyPerTrade){
-  const ctx = document.getElementById('myChart').getContext('2d');
-
-  if(chart){
-    chart.destroy();
-  }
-
-  chart = new Chart(ctx,{
-    type:'bar',
-    data:{
-      labels:['Average Win','Average Loss','Expectancy'],
-      datasets:[{
-        label:'Trading Edge',
-        data:[avgWin, avgLoss, expectancyPerTrade],
-        backgroundColor:['#22c55e','#ef4444','#3b82f6']
-      }]
-    },
-    options:{
-      plugins:{
-        legend:{
-          labels:{ color:'white' }
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": [
+      {
+        "@type": "Question",
+        "name": "What does expectancy tell me in trading?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Expectancy tells you the average amount you can expect to gain or lose per trade over a large number of trades."
         }
       },
-      scales:{
-        x:{
-          ticks:{ color:'white' },
-          grid:{ color:'rgba(255,255,255,0.08)' }
-        },
-        y:{
-          ticks:{ color:'white' },
-          grid:{ color:'rgba(255,255,255,0.08)' }
+      {
+        "@type": "Question",
+        "name": "Is a positive expectancy always good?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "A positive expectancy is a good sign because it means the strategy has potential to make money over time, but fees, slippage, and discipline still matter."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Can a low win rate strategy still be profitable?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Yes. A strategy can be profitable with a low win rate if the average winning trades are much larger than the average losing trades."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Why is break-even win rate important?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Break-even win rate shows the minimum win rate needed to avoid losing money, so you can judge whether your strategy has an edge."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Can expectancy change after fees?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Yes. Fees, spreads, and slippage can reduce your real expectancy and make a strategy less profitable than it looks on paper."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Does this calculator work for forex, crypto, and stocks?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Yes. It works for any market where you can estimate win rate, average win, average loss, and number of trades."
         }
       }
+    ]
+  }
+  </script>
+
+  <style>
+    *{
+      box-sizing:border-box;
     }
-  });
-}
 
-document.addEventListener("DOMContentLoaded", function(){
-  document.querySelectorAll(".faq-question").forEach(btn => {
-    btn.addEventListener("click", () => {
-      const item = btn.parentElement;
+    body{
+      font-family: Arial, sans-serif;
+      background:#0b1a33;
+      color:white;
+      display:flex;
+      justify-content:center;
+      align-items:center;
+      flex-direction:column;
+      min-height:100vh;
+      margin:0;
+      padding:24px 0;
+    }
 
-      document.querySelectorAll(".faq-item").forEach(i => {
-        if(i !== item) i.classList.remove("active");
+    .toptext{
+      font-size:14px;
+      color:#6b7a99;
+      margin-bottom:5px;
+    }
+
+    .menu{
+      margin-bottom:25px;
+    }
+
+    .menu a{
+      color:#3b82f6;
+      margin:10px;
+      text-decoration:none;
+      font-weight:600;
+    }
+
+    .container{
+      background:#1e293b;
+      padding:30px;
+      border-radius:16px;
+      width:90%;
+      max-width:520px;
+      box-shadow:0 10px 25px rgba(0,0,0,0.35);
+    }
+
+    h1{
+      margin-top:0;
+      margin-bottom:10px;
+      font-size:32px;
+      line-height:1.15;
+    }
+
+    .subhead{
+      color:#94a3b8;
+      font-size:15px;
+      line-height:1.6;
+      margin-bottom:18px;
+    }
+
+    .quick-answer{
+      background: rgba(59,130,246,0.12);
+      border: 1px solid rgba(59,130,246,0.25);
+      padding: 12px 14px;
+      border-radius: 10px;
+      font-size: 15px;
+      line-height: 1.6;
+      color: #e2e8f0;
+      margin-bottom: 18px;
+    }
+
+    input{
+      width:100%;
+      padding:14px;
+      margin:12px 0;
+      border-radius:10px;
+      border:none;
+      background:#e5e7eb;
+      font-size:16px;
+      outline:none;
+    }
+
+    input:focus{
+      box-shadow:0 0 0 3px rgba(59,130,246,0.18);
+    }
+
+    button{
+      padding:14px;
+      background:#3b82f6;
+      border:none;
+      border-radius:10px;
+      color:white;
+      cursor:pointer;
+      margin-top:10px;
+      width:100%;
+      font-size:16px;
+      font-weight:700;
+      transition:0.2s;
+    }
+
+    button:hover{
+      background:#2563eb;
+      transform:translateY(-1px);
+    }
+
+    .result-card{
+      margin-top:18px;
+      padding:16px;
+      border-radius:14px;
+      background:rgba(255,255,255,0.05);
+      border:1px solid rgba(255,255,255,0.08);
+      display:none;
+    }
+
+    .result-line{
+      margin:10px 0;
+      font-size:16px;
+      line-height:1.5;
+      color:#e5e7eb;
+    }
+
+    .result-line strong{
+      color:#cbd5f5;
+    }
+
+    .insight-good{
+      color:#22c55e;
+      font-weight:700;
+    }
+
+    .insight-medium{
+      color:#facc15;
+      font-weight:700;
+    }
+
+    .insight-weak{
+      color:#ef4444;
+      font-weight:700;
+    }
+
+    canvas{
+      margin-top:26px;
+    }
+
+    .content{
+      width:90%;
+      max-width:900px;
+      margin-top:34px;
+    }
+
+    .content h2{
+      margin-top:34px;
+      margin-bottom:10px;
+      font-size:28px;
+    }
+
+    .content p,
+    .content li{
+      color:#cbd5e1;
+      line-height:1.7;
+      font-size:15px;
+    }
+
+    .content ul{
+      padding-left:20px;
+    }
+
+    .formula{
+      background:rgba(255,255,255,0.05);
+      border:1px solid rgba(255,255,255,0.08);
+      padding:14px 16px;
+      border-radius:12px;
+      margin:12px 0;
+      color:#e2e8f0;
+      overflow:auto;
+      line-height:1.7;
+    }
+
+    .faq{
+      margin-top:14px;
+    }
+
+    .faq-item{
+      border-bottom:1px solid rgba(255,255,255,0.08);
+    }
+
+    .faq-question{
+      width:100%;
+      background:none;
+      border:none;
+      color:white;
+      text-align:left;
+      padding:14px 8px;
+      font-size:15px;
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      cursor:pointer;
+    }
+
+    .faq-question:hover{
+      color:#93c5fd;
+    }
+
+    .arrow{
+      transition:0.25s;
+    }
+
+    .faq-item.active .arrow{
+      transform:rotate(180deg);
+    }
+
+    .faq-answer{
+      max-height:0;
+      overflow:hidden;
+      transition:max-height 0.3s ease;
+      color:#cbd5e1;
+      font-size:14px;
+      padding:0 8px;
+    }
+
+    .faq-item.active .faq-answer{
+      max-height:260px;
+      padding-bottom:12px;
+    }
+
+    .related{
+      width:90%;
+      max-width:900px;
+      margin-top:34px;
+    }
+
+    .related a{
+      color:#93c5fd;
+      text-decoration:none;
+    }
+
+    .related a:hover{
+      text-decoration:underline;
+    }
+
+    .disclaimer{
+      margin-top:40px;
+      padding-top:20px;
+      border-top:1px solid rgba(255,255,255,0.1);
+      font-size:13px;
+      color:#9ca3af;
+      max-width:900px;
+      text-align:center;
+      line-height:1.6;
+      width:90%;
+    }
+
+    @media (max-width: 700px){
+      .container{
+        padding:22px;
+      }
+
+      h1{
+        font-size:28px;
+      }
+
+      .content h2{
+        font-size:24px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <p class="toptext">Explore more calculators</p>
+
+  <div class="menu">
+    <a href="index.html">Home</a>
+  </div>
+
+  <div class="container" data-search="expectancy calculator trading edge expected profit break even win rate risk reward strategy edge">
+    <h1>Expectancy Calculator</h1>
+    <p class="quick-answer">
+      Measure whether your strategy has a real edge.
+      This calculator shows expectancy per trade, total expected result, and the break-even win rate for your system.
+    </p>
+    <p class="subhead">
+      Use win rate, average win, average loss, and trade count to check if your strategy is statistically favorable over time.
+    </p>
+
+    <input id="winRate" placeholder="Win Rate (%)">
+    <input id="avgWin" placeholder="Average Win ($)">
+    <input id="avgLoss" placeholder="Average Loss ($)">
+    <input id="trades" placeholder="Number of Trades">
+
+    <button onclick="calculateExpectancy()">Calculate Expectancy</button>
+
+    <div id="resultBox" class="result-card">
+      <p class="result-line"><span class="result-label">Expectancy per Trade:</span> <span id="expectancyOut" class="result-value">—</span></p>
+      <p class="result-line"><span class="result-label">Expected Profit / Loss:</span> <span id="totalOut" class="result-value">—</span></p>
+      <p class="result-line"><span class="result-label">Break-even Win Rate:</span> <span id="breakevenOut" class="result-value">—</span></p>
+      <p class="result-line"><span class="result-label">Insight:</span> <span id="insightOut" class="result-value">—</span></p>
+    </div>
+
+    <canvas id="myChart"></canvas>
+  </div>
+
+  <div class="content">
+    <h2>What is an Expectancy Calculator?</h2>
+    <p>
+      An expectancy calculator helps traders measure whether a trading strategy has a real edge over time.
+      Instead of looking only at win rate, it combines win rate, average win, and average loss to show the average amount you expect to make or lose per trade.
+      That makes it one of the most useful tools for evaluating trading performance.
+    </p>
+
+    <p>
+      Many traders focus too much on how often they win and not enough on how much they win when they are right versus how much they lose when they are wrong.
+      Expectancy gives a clearer picture of whether your system is statistically favorable, whether your average trade is worth taking, and whether your strategy is likely to survive over a large sample of trades.
+    </p>
+
+    <h2>How This Calculator Works</h2>
+    <p>
+      This calculator uses your win rate, average win, average loss, and number of trades to estimate the expected result of your strategy.
+      It calculates expectancy per trade and then projects that result across the number of trades you enter.
+      That means you can see both the strength of the strategy and the possible total outcome over time.
+    </p>
+
+    <p>The core formula is:</p>
+
+    <div class="formula">
+      Expectancy = (Win Rate × Average Win) − ((1 − Win Rate) × Average Loss)
+    </div>
+
+    <p>
+      If the result is positive, your strategy has a statistical edge.
+      If it is negative, the strategy is likely losing money over time.
+      If it is near zero, the system is close to break-even and may not be strong enough after fees, slippage, or emotional mistakes are added.
+    </p>
+
+    <h2>Why Expectancy Matters</h2>
+    <p>
+      Expectancy matters because trading success is not built on a single trade.
+      It is built on a repeatable system that performs well across many trades.
+      A trader can have a low win rate and still be profitable if the average winners are much larger than the average losers.
+      On the other hand, a trader can win most of the time and still lose money if losses are too large.
+    </p>
+
+    <p>
+      This is why expectancy is often more useful than win rate alone.
+      It helps you evaluate the real quality of a strategy and understand whether your trading approach has a true edge or just looks good in the short term.
+    </p>
+
+    <ul>
+      <li>Shows whether a strategy is profitable over time</li>
+      <li>Combines win rate and payoff size</li>
+      <li>Helps compare different trading systems</li>
+      <li>Reveals the real edge behind your trades</li>
+      <li>Supports better risk management decisions</li>
+    </ul>
+
+    <h2>Break-even Win Rate</h2>
+    <p>
+      The break-even win rate is the minimum win rate required for a strategy to stop losing money.
+      It depends on how large your average win is compared to your average loss.
+      If your actual win rate is above the break-even level, expectancy becomes positive.
+      If it is below that level, the strategy is likely losing money over time.
+    </p>
+
+    <p>
+      That makes break-even win rate a useful benchmark for evaluating any trading system.
+      It tells you the line between survival and decline.
+    </p>
+
+    <h2>How to Use This Calculator</h2>
+    <ul>
+      <li>Enter your win rate</li>
+      <li>Enter your average win amount</li>
+      <li>Enter your average loss amount</li>
+      <li>Enter the number of trades you want to project</li>
+      <li>Click calculate to see your expectancy, total expected result, and break-even level</li>
+    </ul>
+
+    <p>
+      This gives you a simple but powerful way to test whether your strategy is worth using before you risk real capital.
+    </p>
+
+    <h2>Why Traders Use Expectancy</h2>
+    <p>
+      Traders use expectancy because it answers a more important question than “Do I win often?”
+      It answers “Does my system make money overall?”
+      That is the question that matters if your goal is consistency, survival, and long-term profitability.
+    </p>
+
+    <p>
+      A strong expectancy does not guarantee every trade will work, but it does show that your strategy has a statistical advantage.
+      That is what separates a repeatable system from random guessing.
+    </p>
+
+    <p style="font-weight:bold; color:#f87171;">
+      ⚠️ A high win rate is not enough. A strategy only matters if the numbers work over time.
+    </p>
+
+    <h2>Frequently Asked Questions</h2>
+
+    <div class="faq">
+      <div class="faq-item">
+        <button class="faq-question" type="button">
+          What does expectancy tell me in trading?
+          <span class="arrow">▼</span>
+        </button>
+        <div class="faq-answer">
+          <p>
+            Expectancy tells you the average amount you can expect to gain or lose per trade over a large number of trades.
+            It is one of the clearest ways to measure whether a strategy has a real edge.
+          </p>
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <button class="faq-question" type="button">
+          Is a positive expectancy always good?
+          <span class="arrow">▼</span>
+        </button>
+        <div class="faq-answer">
+          <p>
+            A positive expectancy is a good sign because it means the strategy has potential to make money over time.
+            Still, you should also consider fees, slippage, discipline, and market conditions before relying on it.
+          </p>
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <button class="faq-question" type="button">
+          Can a low win rate strategy still be profitable?
+          <span class="arrow">▼</span>
+        </button>
+        <div class="faq-answer">
+          <p>
+            Yes. A strategy can be profitable with a low win rate if the average winning trades are much larger than the average losing trades.
+            That is exactly why expectancy is more useful than win rate alone.
+          </p>
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <button class="faq-question" type="button">
+          Why is break-even win rate important?
+          <span class="arrow">▼</span>
+        </button>
+        <div class="faq-answer">
+          <p>
+            Break-even win rate shows the minimum win rate needed to avoid losing money.
+            It gives you a reference point so you can see whether your current strategy is strong enough to survive long term.
+          </p>
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <button class="faq-question" type="button">
+          Can expectancy change after fees?
+          <span class="arrow">▼</span>
+        </button>
+        <div class="faq-answer">
+          <p>
+            Yes. Fees, spreads, and slippage can reduce your real expectancy.
+            A strategy that looks profitable on paper may become less attractive once actual trading costs are included.
+          </p>
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <button class="faq-question" type="button">
+          Does this calculator work for forex, crypto, and stocks?
+          <span class="arrow">▼</span>
+        </button>
+        <div class="faq-answer">
+          <p>
+            Yes. It works for any market where you can estimate your win rate, average win, average loss, and number of trades.
+            That includes forex, crypto, stocks, futures, and other markets.
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="related">
+    <h3>Related Calculators</h3>
+    <p>You may also find these tools useful:</p>
+    <ul>
+      <li><a href="risk-of-ruin-calculator.html">Risk of Ruin Calculator</a></li>
+      <li><a href="drawdown-calculator.html">Drawdown Calculator</a></li>
+      <li><a href="position-size-calculator.html">Position Size Calculator</a></li>
+      <li><a href="risk-reward-calculator.html">Risk Reward Calculator</a></li>
+      <li><a href="stop-loss-calculator.html">Stop Loss Calculator</a></li>
+    </ul>
+  </div>
+
+  <div class="disclaimer">
+    <p>
+      <strong>Disclaimer:</strong> The calculators on this website are provided for informational and educational purposes only.
+      All results are estimates based on the values entered and do not constitute financial, investment, or trading advice.
+      Always conduct your own research before making financial decisions.
+    </p>
+  </div>
+
+  <script src="footer.js"></script>
+  <script>
+    let chart;
+
+    function formatMoney(value){
+      const sign = value < 0 ? "-" : "";
+      return sign + "$" + Math.abs(value).toLocaleString(undefined, {
+        minimumFractionDigits: 2,
+        maximumFractionDigits: 2
       });
+    }
 
-      item.classList.toggle("active");
+    function calculateExpectancy(){
+      const winRateInput = parseFloat(document.getElementById("winRate").value);
+      const avgWin = parseFloat(document.getElementById("avgWin").value);
+      const avgLoss = parseFloat(document.getElementById("avgLoss").value);
+      const trades = parseFloat(document.getElementById("trades").value);
+
+      if(
+        isNaN(winRateInput) || isNaN(avgWin) || isNaN(avgLoss) || isNaN(trades) ||
+        winRateInput <= 0 || winRateInput >= 100 ||
+        avgWin <= 0 || avgLoss <= 0 || trades <= 0
+      ){
+        alert("Please enter valid values.");
+        return;
+      }
+
+      const winRate = winRateInput / 100;
+      const lossRate = 1 - winRate;
+
+      const expectancyPerTrade = (winRate * avgWin) - (lossRate * avgLoss);
+      const totalExpected = expectancyPerTrade * trades;
+      const breakevenWinRate = avgLoss / (avgWin + avgLoss);
+
+      let insight = "";
+      let insightColor = "#cbd5e1";
+
+      if(expectancyPerTrade > 0){
+        insight = "Profitable strategy";
+        insightColor = "#22c55e";
+      } else if(expectancyPerTrade === 0){
+        insight = "Break-even strategy";
+        insightColor = "#facc15";
+      } else {
+        insight = "Losing strategy";
+        insightColor = "#ef4444";
+      }
+
+      document.getElementById("expectancyOut").innerText = formatMoney(expectancyPerTrade);
+      document.getElementById("totalOut").innerText = formatMoney(totalExpected);
+      document.getElementById("breakevenOut").innerText = (breakevenWinRate * 100).toFixed(2) + "%";
+
+      const insightEl = document.getElementById("insightOut");
+      insightEl.innerText = insight;
+      insightEl.style.color = insightColor;
+
+      document.getElementById("resultBox").style.display = "block";
+
+      drawChart(avgWin, avgLoss, expectancyPerTrade);
+    }
+
+    function drawChart(avgWin, avgLoss, expectancyPerTrade){
+      const ctx = document.getElementById('myChart').getContext('2d');
+
+      if(chart){
+        chart.destroy();
+      }
+
+      chart = new Chart(ctx,{
+        type:'bar',
+        data:{
+          labels:['Average Win','Average Loss','Expectancy'],
+          datasets:[{
+            label:'Trading Edge',
+            data:[avgWin, avgLoss, expectancyPerTrade],
+            backgroundColor:['#22c55e','#ef4444','#3b82f6']
+          }]
+        },
+        options:{
+          responsive:true,
+          plugins:{
+            legend:{
+              labels:{ color:'white' }
+            }
+          },
+          scales:{
+            x:{
+              ticks:{ color:'white' },
+              grid:{ color:'rgba(255,255,255,0.08)' }
+            },
+            y:{
+              ticks:{ color:'white' },
+              grid:{ color:'rgba(255,255,255,0.08)' }
+            }
+          }
+        }
+      });
+    }
+
+    document.addEventListener("DOMContentLoaded", function(){
+      document.querySelectorAll(".faq-question").forEach(btn => {
+        btn.addEventListener("click", () => {
+          const item = btn.parentElement;
+
+          document.querySelectorAll(".faq-item").forEach(i => {
+            if(i !== item) i.classList.remove("active");
+          });
+
+          item.classList.toggle("active");
+        });
+      });
     });
-  });
-});
-</script>
-
+  </script>
 </body>
   </html>
