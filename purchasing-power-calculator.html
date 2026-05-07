@@ -671,11 +671,11 @@
       <h2>How it works</h2>
       <p>
         The tool uses inflation data for the selected country and compares the start month and end month.
-        It calculates the later-date amount needed to buy the same basket of goods and services as the original amount.
+        It compounds the monthly inflation rates from the source dataset to estimate the later-date value needed to buy the same basket of goods and services. StatBureau documents that its API exposes monthly data through `get-data-json` / `get-data-jsonp` and supports month-based date inputs. 2
       </p>
 
       <div class="formula">
-        Equivalent value = starting amount × inflation factor<br>
+        Equivalent value = starting amount × compounded monthly inflation factor<br>
         Price increase needed = equivalent value − starting amount<br>
         Purchasing power remaining = starting amount ÷ equivalent value × 100
       </div>
@@ -709,7 +709,7 @@
       </ul>
 
       <p class="source-note">
-        Data source: StatBureau monthly inflation API. Their terms state free use is for non-commercial projects and require attribution.
+        Data source: StatBureau monthly inflation API. Their terms state free use is for non-commercial projects and require attribution. 3
       </p>
     </div>
   </div>
@@ -761,7 +761,7 @@
         </button>
         <div class="faq-answer">
           <p>
-            Yes. The calculator supports the countries covered by the data source, including Turkey, the United States, Eurozone, and the United Kingdom.
+            Yes. The calculator supports the countries covered by the data source, including Turkey, the United States, Eurozone, and the United Kingdom. 4
           </p>
         </div>
       </div>
@@ -808,7 +808,7 @@
     <p>
       <strong>Disclaimer:</strong> The calculators on this website are provided for informational and educational purposes only.
       Results are estimates based on the values entered and on the selected inflation data source.
-      StatBureau’s free API is intended for non-commercial use and requires attribution. Always verify important financial decisions with authoritative sources.
+      StatBureau’s free API is intended for non-commercial use and requires attribution. Always verify important financial decisions with authoritative sources. 5
     </p>
   </div>
 
@@ -821,6 +821,7 @@
     let powerChart = null;
     let activeRequestId = 0;
     const countryDataCache = new Map();
+    const denominationCache = new Map();
 
     const calcBtn = document.getElementById("calcBtn");
     const resultCard = document.getElementById("resultCard");
@@ -1102,31 +1103,143 @@
       return parsed;
     }
 
-    async function loadEquivalentAmount(country, start, end, amount){
-      const raw = await jsonp("calculate-inflation-price-jsonp", {
-        country,
-        start: toApiMonth(start),
-        end: toApiMonth(end),
-        amount,
-        format: false
-      });
+    async function loadDenominations(country){
+      if (denominationCache.has(country)) return denominationCache.get(country);
 
-      const parsed = extractNumber(raw);
-      if (parsed !== null) return parsed;
-      throw new Error("Could not parse calculator response");
+      try{
+        const data = await jsonp("get-denominations-jsonp", { country, format: false });
+        denominationCache.set(country, data);
+        return data;
+      }catch{
+        denominationCache.set(country, null);
+        return null;
+      }
     }
 
-    async function loadPeriodInflation(country, start, end){
-      const raw = await jsonp("calculate-inflation-rate-jsonp", {
-        country,
-        start: toApiMonth(start),
-        end: toApiMonth(end),
-        format: false
-      });
+    function applyDenominationsIfNeeded(amount, startDate, endDate, denominations){
+      if (!denominations) return amount;
 
-      const parsed = extractNumber(raw);
-      if (parsed !== null) return parsed;
-      throw new Error("Could not parse inflation rate response");
+      let adjusted = amount;
+
+      const list = Array.isArray(denominations) ? denominations : (
+        Array.isArray(denominations.d) ? denominations.d :
+        Array.isArray(denominations.data) ? denominations.data :
+        []
+      );
+
+      for (const item of list){
+        if (!item || typeof item !== "object") continue;
+
+        const dateCandidate = item.date || item.valueDate || item.start || item.effectiveDate;
+        const date = parseAnyDate(dateCandidate);
+        if (!date) continue;
+
+        if (date > startDate && date <= endDate){
+          const factor = extractNumber(item.factor || item.value || item.rate || item.multiplier);
+          if (factor && factor > 0){
+            adjusted *= factor;
+          }
+        }
+      }
+
+      return adjusted;
+    }
+
+    async function calculateHistoricalValue(){
+      const requestId = ++activeRequestId;
+      const meta = getSelectedMeta();
+      const amount = Number(amountInput.value);
+      const start = parseMonthInput(startMonthInput.value);
+      const end = parseMonthInput(endMonthInput.value);
+
+      if (!Number.isFinite(amount) || amount <= 0){
+        alert("Enter a valid amount greater than zero.");
+        return;
+      }
+
+      if (!start || !end){
+        alert("Select both start month and end month.");
+        return;
+      }
+
+      if (end < start){
+        alert("End month must be the same as or later than the start month.");
+        return;
+      }
+
+      calcBtn.disabled = true;
+      calcBtn.textContent = "Calculating...";
+
+      try {
+        const [monthlyData, denominations] = await Promise.all([
+          loadCountryData(meta.code),
+          loadDenominations(meta.code)
+        ]);
+
+        if (requestId !== activeRequestId) return;
+
+        const series = buildSeries(monthlyData, start, end, amount);
+
+        if (series.length < 2){
+          throw new Error("Not enough monthly data for the selected period.");
+        }
+
+        let equivalent = series[series.length - 1].equivalent;
+        equivalent = applyDenominationsIfNeeded(equivalent, start, end, denominations);
+
+        const increaseNeeded = equivalent - amount;
+        const increasePct = amount > 0 ? ((equivalent / amount) - 1) * 100 : 0;
+        const remainingPct = equivalent > 0 ? (amount / equivalent) * 100 : 0;
+        const erosionPct = 100 - remainingPct;
+        const periodInflation = increasePct;
+
+        const startLabel = monthLabel(start);
+        const endLabel = monthLabel(end);
+
+        resultSentence.textContent =
+          `${formatMoney(amount, meta.symbol)} in ${startLabel} is equivalent to about ${formatMoney(equivalent, meta.symbol)} in ${endLabel}.`;
+
+        equivalentOut.textContent = formatMoney(equivalent, meta.symbol);
+        increaseOut.textContent = formatMoney(increaseNeeded, meta.symbol) + ` (${increasePct >= 0 ? "+" : ""}${increasePct.toFixed(2)}%)`;
+        inflationOut.textContent = formatPct(periodInflation);
+        remainingOut.textContent = `${remainingPct.toFixed(2)}% (erosion ${erosionPct.toFixed(2)}%)`;
+
+        let insight = "";
+        let insightClass = "";
+
+        if (increasePct >= 300){
+          insight = "Very strong erosion of purchasing power.";
+          insightClass = "insight-weak";
+        } else if (increasePct >= 100){
+          insight = "Noticeable inflation impact over this period.";
+          insightClass = "insight-medium";
+        } else if (increasePct > 0){
+          insight = "Purchasing power declined, but the change is more moderate.";
+          insightClass = "insight-good";
+        } else if (increasePct === 0){
+          insight = "No net change in purchasing power over the selected period.";
+          insightClass = "insight-medium";
+        } else {
+          insight = "The selected period shows deflation or a real value gain.";
+          insightClass = "insight-good";
+        }
+
+        insightOut.innerHTML = `<span class="${insightClass}">${insight}</span>`;
+        resultCard.style.display = "block";
+
+        renderTrendChart(series, meta.symbol);
+        renderPowerChart(series);
+
+        resultCard.scrollIntoView({ behavior: "smooth", block: "start" });
+      } catch (error) {
+        console.error(error);
+        alert("Could not load inflation data. Try another country or date range.");
+      } finally {
+        if (requestId === activeRequestId){
+          calcBtn.disabled = false;
+          calcBtn.textContent = "Calculate";
+        }
+      }
     }
 
     function renderTrendChart(series, symbol){
@@ -1239,95 +1352,6 @@
       });
     }
 
-    async function calculateHistoricalValue(){
-      const requestId = ++activeRequestId;
-      const meta = getSelectedMeta();
-      const amount = Number(amountInput.value);
-      const start = parseMonthInput(startMonthInput.value);
-      const end = parseMonthInput(endMonthInput.value);
-
-      if (!Number.isFinite(amount) || amount <= 0){
-        alert("Enter a valid amount greater than zero.");
-        return;
-      }
-
-      if (!start || !end){
-        alert("Select both start month and end month.");
-        return;
-      }
-
-      if (end < start){
-        alert("End month must be the same as or later than the start month.");
-        return;
-      }
-
-      calcBtn.disabled = true;
-      calcBtn.textContent = "Calculating...";
-
-      try {
-        const [equivalent, periodInflation, monthlyData] = await Promise.all([
-          loadEquivalentAmount(meta.code, start, end, amount),
-          loadPeriodInflation(meta.code, start, end),
-          loadCountryData(meta.code)
-        ]);
-
-        if (requestId !== activeRequestId) return;
-
-        const increaseNeeded = equivalent - amount;
-        const increasePct = amount > 0 ? ((equivalent / amount) - 1) * 100 : 0;
-        const remainingPct = equivalent > 0 ? (amount / equivalent) * 100 : 0;
-        const erosionPct = 100 - remainingPct;
-        const series = buildSeries(monthlyData, start, end, amount);
-
-        const startLabel = monthLabel(start);
-        const endLabel = monthLabel(end);
-
-        resultSentence.textContent =
-          `${formatMoney(amount, meta.symbol)} in ${startLabel} is equivalent to about ${formatMoney(equivalent, meta.symbol)} in ${endLabel}.`;
-
-        equivalentOut.textContent = formatMoney(equivalent, meta.symbol);
-        increaseOut.textContent = formatMoney(increaseNeeded, meta.symbol) + ` (${increasePct >= 0 ? "+" : ""}${increasePct.toFixed(2)}%)`;
-        inflationOut.textContent = formatPct(periodInflation);
-        remainingOut.textContent = `${remainingPct.toFixed(2)}% (erosion ${erosionPct.toFixed(2)}%)`;
-
-        let insight = "";
-        let insightClass = "";
-
-        if (increasePct >= 300){
-          insight = "Very strong erosion of purchasing power.";
-          insightClass = "insight-weak";
-        } else if (increasePct >= 100){
-          insight = "Noticeable inflation impact over this period.";
-          insightClass = "insight-medium";
-        } else if (increasePct > 0){
-          insight = "Purchasing power declined, but the change is more moderate.";
-          insightClass = "insight-good";
-        } else if (increasePct === 0){
-          insight = "No net change in purchasing power over the selected period.";
-          insightClass = "insight-medium";
-        } else {
-          insight = "The selected period shows deflation or a real value gain.";
-          insightClass = "insight-good";
-        }
-
-        insightOut.innerHTML = `<span class="${insightClass}">${insight}</span>`;
-        resultCard.style.display = "block";
-
-        renderTrendChart(series, meta.symbol);
-        renderPowerChart(series);
-
-        resultCard.scrollIntoView({ behavior: "smooth", block: "start" });
-      } catch (error) {
-        console.error(error);
-        alert("Could not load inflation data. Try another country or date range.");
-      } finally {
-        if (requestId === activeRequestId){
-          calcBtn.disabled = false;
-          calcBtn.textContent = "Calculate";
-        }
-      }
-    }
-
     document.addEventListener("DOMContentLoaded", function(){
       const now = new Date();
       const currentMonth = `${now.getUTCFullYear()}-${String(now.getUTCMonth() + 1).padStart(2, "0")}`;
@@ -1351,4 +1375,4 @@
     });
   </script>
 </body>
-    </html>
+        </html>
