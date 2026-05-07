@@ -705,307 +705,324 @@
       Always verify important financial decisions with authoritative sources.
     </p>
   </div>
+<script>
+  document.addEventListener("DOMContentLoaded", () => {
+    const amountInput = document.getElementById("amount");
+    const startMonthInput = document.getElementById("startMonth");
+    const endMonthInput = document.getElementById("endMonth");
+    const calcBtn = document.getElementById("calcBtn");
 
-  <script>
-    document.addEventListener("DOMContentLoaded", () => {
-      const amountInput = document.getElementById("amount");
-      const startMonthInput = document.getElementById("startMonth");
-      const endMonthInput = document.getElementById("endMonth");
-      const calcBtn = document.getElementById("calcBtn");
+    const resultCard = document.getElementById("resultCard");
+    const resultSentence = document.getElementById("resultSentence");
+    const equivalentOut = document.getElementById("equivalentOut");
+    const increaseOut = document.getElementById("increaseOut");
+    const inflationOut = document.getElementById("inflationOut");
+    const remainingOut = document.getElementById("remainingOut");
+    const dataStatus = document.getElementById("dataStatus");
 
-      const resultCard = document.getElementById("resultCard");
-      const resultSentence = document.getElementById("resultSentence");
-      const equivalentOut = document.getElementById("equivalentOut");
-      const increaseOut = document.getElementById("increaseOut");
-      const inflationOut = document.getElementById("inflationOut");
-      const remainingOut = document.getElementById("remainingOut");
-      const dataStatus = document.getElementById("dataStatus");
+    let trendChart = null;
+    let powerChart = null;
+    let cpiCache = null;
+    let cpiCachePromise = null;
 
-      let trendChart = null;
-      let powerChart = null;
-      let cpiCache = null;
-      let cpiCachePromise = null;
+    function setDefaultMonths() {
+      const now = new Date();
+      const currentMonth = `${now.getUTCFullYear()}-${String(now.getUTCMonth() + 1).padStart(2, "0")}`;
+      const fiveYearsAgo = new Date(Date.UTC(now.getUTCFullYear() - 5, now.getUTCMonth(), 1));
+      const fiveYearsAgoMonth = `${fiveYearsAgo.getUTCFullYear()}-${String(fiveYearsAgo.getUTCMonth() + 1).padStart(2, "0")}`;
 
-      function setDefaultMonths() {
-        const now = new Date();
-        const currentMonth = `${now.getUTCFullYear()}-${String(now.getUTCMonth() + 1).padStart(2, "0")}`;
-        const fiveYearsAgo = new Date(Date.UTC(now.getUTCFullYear() - 5, now.getUTCMonth(), 1));
-        const fiveYearsAgoMonth = `${fiveYearsAgo.getUTCFullYear()}-${String(fiveYearsAgo.getUTCMonth() + 1).padStart(2, "0")}`;
+      if (!startMonthInput.value) startMonthInput.value = fiveYearsAgoMonth;
+      if (!endMonthInput.value) endMonthInput.value = currentMonth;
+    }
 
-        if (!startMonthInput.value) startMonthInput.value = fiveYearsAgoMonth;
-        if (!endMonthInput.value) endMonthInput.value = currentMonth;
-      }
+    function formatMoney(value) {
+      return `$${Number(value).toLocaleString("en-US", {
+        minimumFractionDigits: 0,
+        maximumFractionDigits: 2
+      })}`;
+    }
 
-      function formatMoney(value) {
-        return `$${Number(value).toLocaleString("en-US", {
-          minimumFractionDigits: 0,
-          maximumFractionDigits: 2
-        })}`;
-      }
+    function formatPct(value) {
+      return `${Number(value).toLocaleString("en-US", {
+        minimumFractionDigits: 0,
+        maximumFractionDigits: 2
+      })}%`;
+    }
 
-      function formatPct(value) {
-        return `${Number(value).toLocaleString("en-US", {
-          minimumFractionDigits: 0,
-          maximumFractionDigits: 2
-        })}%`;
-      }
+    function monthLabel(dateStr) {
+      const [year, month] = String(dateStr).split("-");
+      const d = new Date(Date.UTC(Number(year), Number(month) - 1, 1));
+      return new Intl.DateTimeFormat("en-US", {
+        month: "short",
+        year: "numeric",
+        timeZone: "UTC"
+      }).format(d);
+    }
 
-      function monthLabel(dateStr) {
-        const [year, month] = String(dateStr).split("-");
-        const d = new Date(Date.UTC(Number(year), Number(month) - 1, 1));
-        return new Intl.DateTimeFormat("en-US", {
-          month: "short",
-          year: "numeric",
-          timeZone: "UTC"
-        }).format(d);
-      }
+    function normalizeMonthValue(value) {
+      if (!value) return "";
+      const [year, month] = value.split("-");
+      return `${year}-${String(month).padStart(2, "0")}`;
+    }
 
-      function normalizeMonthValue(value) {
-        if (!value) return "";
-        const [year, month] = value.split("-");
-        return `${year}-${String(month).padStart(2, "0")}`;
-      }
+    async function fetchCPI() {
+      if (cpiCache) return cpiCache;
+      if (cpiCachePromise) return cpiCachePromise;
 
-      async function fetchCPI() {
-        if (cpiCache) return cpiCache;
-        if (cpiCachePromise) return cpiCachePromise;
+      cpiCachePromise = fetch("./cpi-data.json", { cache: "no-store" })
+        .then(async (res) => {
+          if (!res.ok) {
+            throw new Error("Could not load local CPI data.");
+          }
 
-        cpiCachePromise = fetch("./cpi-data.json", { cache: "no-store" })
-          .then(async (res) => {
-            if (!res.ok) {
-              throw new Error("Could not load local CPI data.");
-            }
+          const data = await res.json();
 
-            const data = await res.json();
+          let series = [];
 
-            let series = [];
+          if (Array.isArray(data)) {
+            series = data
+              .map((d) => {
+                if (!d || typeof d !== "object") return null;
 
-            if (Array.isArray(data)) {
-              series = data
-                .filter((d) => d && d.date && Number.isFinite(Number(d.cpi)))
-                .map((d) => ({
-                  date: String(d.date).slice(0, 7),
-                  cpi: Number(d.cpi)
-                }));
-            } else if (data && typeof data === "object") {
-              series = Object.entries(data)
-                .filter(([, v]) => Number.isFinite(Number(v)))
-                .map(([date, cpi]) => ({
+                const rawDate = d.date ?? d.observation_date;
+                const rawCpi = d.cpi ?? d.CPIAUCSL;
+
+                if (!rawDate || rawCpi === undefined || rawCpi === null) return null;
+
+                const cpi = Number(rawCpi);
+                if (!Number.isFinite(cpi)) return null;
+
+                return {
+                  date: String(rawDate).slice(0, 7),
+                  cpi
+                };
+              })
+              .filter(Boolean);
+          } else if (data && typeof data === "object") {
+            series = Object.entries(data)
+              .map(([date, cpi]) => {
+                const value = Number(cpi);
+                if (!Number.isFinite(value)) return null;
+                return {
                   date: String(date).slice(0, 7),
-                  cpi: Number(cpi)
-                }));
+                  cpi: value
+                };
+              })
+              .filter(Boolean);
+          }
+
+          series = series
+            .filter((row) => row.date && Number.isFinite(row.cpi))
+            .sort((a, b) => a.date.localeCompare(b.date));
+
+          if (!series.length) {
+            throw new Error("Local CPI data is empty or invalid. Check the JSON field names and remove NaN values.");
+          }
+
+          cpiCache = series;
+          return series;
+        })
+        .finally(() => {
+          cpiCachePromise = null;
+        });
+
+      return cpiCachePromise;
+    }
+
+    function findClosestOnOrBefore(series, targetMonth) {
+      const exact = series.find((row) => row.date === targetMonth);
+      if (exact) return exact;
+
+      const filtered = series.filter((row) => row.date <= targetMonth);
+      return filtered.length ? filtered[filtered.length - 1] : null;
+    }
+
+    function buildChartPoints(series, amount, startCpi) {
+      return series.map((row) => ({
+        date: row.date,
+        equivalent: amount * (row.cpi / startCpi),
+        remainingPct: (startCpi / row.cpi) * 100
+      }));
+    }
+
+    function renderTrendChart(points) {
+      const ctx = document.getElementById("trendChart").getContext("2d");
+      if (trendChart) trendChart.destroy();
+
+      trendChart = new Chart(ctx, {
+        type: "line",
+        data: {
+          labels: points.map((p) => p.date),
+          datasets: [{
+            label: "Equivalent value",
+            data: points.map((p) => p.equivalent),
+            borderColor: "#3b82f6",
+            backgroundColor: "rgba(59,130,246,0.14)",
+            tension: 0.25,
+            fill: true,
+            pointRadius: 2,
+            pointHoverRadius: 4
+          }]
+        },
+        options: {
+          responsive: true,
+          plugins: {
+            legend: { labels: { color: "white" } },
+            tooltip: {
+              callbacks: {
+                label: (context) => ` Equivalent value: ${formatMoney(context.parsed.y)}`
+              }
             }
-
-            series = series
-              .filter((row) => row.date && Number.isFinite(row.cpi))
-              .sort((a, b) => a.date.localeCompare(b.date));
-
-            if (!series.length) {
-              throw new Error("Local CPI data is empty or invalid.");
-            }
-
-            cpiCache = series;
-            return series;
-          })
-          .finally(() => {
-            cpiCachePromise = null;
-          });
-
-        return cpiCachePromise;
-      }
-
-      function findClosestOnOrBefore(series, targetMonth) {
-        const exact = series.find((row) => row.date === targetMonth);
-        if (exact) return exact;
-
-        const filtered = series.filter((row) => row.date <= targetMonth);
-        return filtered.length ? filtered[filtered.length - 1] : null;
-      }
-
-      function buildChartPoints(series, amount, startCpi) {
-        return series.map((row) => ({
-          date: row.date,
-          equivalent: amount * (row.cpi / startCpi),
-          remainingPct: (startCpi / row.cpi) * 100
-        }));
-      }
-
-      function renderTrendChart(points) {
-        const ctx = document.getElementById("trendChart").getContext("2d");
-        if (trendChart) trendChart.destroy();
-
-        trendChart = new Chart(ctx, {
-          type: "line",
-          data: {
-            labels: points.map((p) => p.date),
-            datasets: [{
-              label: "Equivalent value",
-              data: points.map((p) => p.equivalent),
-              borderColor: "#3b82f6",
-              backgroundColor: "rgba(59,130,246,0.14)",
-              tension: 0.25,
-              fill: true,
-              pointRadius: 2,
-              pointHoverRadius: 4
-            }]
           },
-          options: {
-            responsive: true,
-            plugins: {
-              legend: { labels: { color: "white" } },
-              tooltip: {
-                callbacks: {
-                  label: (context) => ` Equivalent value: ${formatMoney(context.parsed.y)}`
-                }
-              }
+          scales: {
+            x: {
+              ticks: { color: "white", autoSkip: true, maxTicksLimit: 8 },
+              grid: { color: "rgba(255,255,255,0.08)" }
             },
-            scales: {
-              x: {
-                ticks: { color: "white", autoSkip: true, maxTicksLimit: 8 },
-                grid: { color: "rgba(255,255,255,0.08)" }
+            y: {
+              ticks: {
+                color: "white",
+                callback: (value) => `$${Number(value).toLocaleString("en-US")}`
               },
-              y: {
-                ticks: {
-                  color: "white",
-                  callback: (value) => `$${Number(value).toLocaleString("en-US")}`
-                },
-                grid: { color: "rgba(255,255,255,0.08)" }
-              }
+              grid: { color: "rgba(255,255,255,0.08)" }
             }
           }
-        });
-      }
-
-      function renderPowerChart(points) {
-        const ctx = document.getElementById("powerChart").getContext("2d");
-        if (powerChart) powerChart.destroy();
-
-        powerChart = new Chart(ctx, {
-          type: "line",
-          data: {
-            labels: points.map((p) => p.date),
-            datasets: [{
-              label: "Purchasing power remaining (%)",
-              data: points.map((p) => p.remainingPct),
-              borderColor: "#22c55e",
-              backgroundColor: "rgba(34,197,94,0.10)",
-              tension: 0.25,
-              fill: true,
-              pointRadius: 2,
-              pointHoverRadius: 4
-            }]
-          },
-          options: {
-            responsive: true,
-            plugins: {
-              legend: { labels: { color: "white" } },
-              tooltip: {
-                callbacks: {
-                  label: (context) => ` Purchasing power remaining: ${Number(context.parsed.y).toFixed(2)}%`
-                }
-              }
-            },
-            scales: {
-              x: {
-                ticks: { color: "white", autoSkip: true, maxTicksLimit: 8 },
-                grid: { color: "rgba(255,255,255,0.08)" }
-              },
-              y: {
-                ticks: {
-                  color: "white",
-                  callback: (value) => `${Number(value).toFixed(0)}%`
-                },
-                grid: { color: "rgba(255,255,255,0.08)" }
-              }
-            }
-          }
-        });
-      }
-
-      async function calculate() {
-        const amount = Number(amountInput.value);
-        const startMonth = normalizeMonthValue(startMonthInput.value);
-        const endMonth = normalizeMonthValue(endMonthInput.value);
-
-        if (!Number.isFinite(amount) || amount <= 0) {
-          alert("Enter a valid amount greater than zero.");
-          return;
         }
-
-        if (!startMonth || !endMonth) {
-          alert("Select both start month and end month.");
-          return;
-        }
-
-        if (endMonth < startMonth) {
-          alert("End month must be the same as or later than the start month.");
-          return;
-        }
-
-        calcBtn.disabled = true;
-        calcBtn.textContent = "Calculating...";
-        dataStatus.textContent = "Loading local CPI data...";
-
-        try {
-          const series = await fetchCPI();
-          const startData = findClosestOnOrBefore(series, startMonth);
-          const endData = findClosestOnOrBefore(series, endMonth);
-
-          if (!startData || !endData) {
-            throw new Error("Could not find CPI data for the selected months.");
-          }
-
-          const rangeSeries = series.filter((row) => row.date >= startData.date && row.date <= endData.date);
-
-          if (!rangeSeries.length) {
-            throw new Error("No data points available for the selected date range.");
-          }
-
-          const equivalent = amount * (endData.cpi / startData.cpi);
-          const inflation = ((endData.cpi / startData.cpi) - 1) * 100;
-          const increaseNeeded = equivalent - amount;
-          const remainingPct = (startData.cpi / endData.cpi) * 100;
-          const erosionPct = 100 - remainingPct;
-
-          resultSentence.textContent =
-            `${formatMoney(amount)} in ${monthLabel(startData.date)} is equivalent to about ${formatMoney(equivalent)} in ${monthLabel(endData.date)}.`;
-
-          equivalentOut.textContent = formatMoney(equivalent);
-          increaseOut.textContent = `${formatMoney(increaseNeeded)} (${inflation >= 0 ? "+" : ""}${inflation.toFixed(2)}%)`;
-          inflationOut.textContent = formatPct(inflation);
-          remainingOut.textContent = `${remainingPct.toFixed(2)}% (erosion ${erosionPct.toFixed(2)}%)`;
-
-          resultCard.style.display = "block";
-
-          const chartPoints = buildChartPoints(rangeSeries, amount, startData.cpi);
-          renderTrendChart(chartPoints);
-          renderPowerChart(chartPoints);
-
-          dataStatus.textContent = "Local CPI data loaded successfully";
-          resultCard.scrollIntoView({ behavior: "smooth", block: "start" });
-        } catch (error) {
-          console.error(error);
-          dataStatus.textContent = "CPI load failed";
-          alert(error.message || "Could not load local CPI data.");
-        } finally {
-          calcBtn.disabled = false;
-          calcBtn.textContent = "Calculate";
-        }
-      }
-
-      document.querySelectorAll(".faq-question").forEach((btn) => {
-        btn.addEventListener("click", () => {
-          const item = btn.parentElement;
-          document.querySelectorAll(".faq-item").forEach((i) => {
-            if (i !== item) i.classList.remove("active");
-          });
-          item.classList.toggle("active");
-        });
       });
+    }
 
-      calcBtn.addEventListener("click", calculate);
-      setDefaultMonths();
+    function renderPowerChart(points) {
+      const ctx = document.getElementById("powerChart").getContext("2d");
+      if (powerChart) powerChart.destroy();
+
+      powerChart = new Chart(ctx, {
+        type: "line",
+        data: {
+          labels: points.map((p) => p.date),
+          datasets: [{
+            label: "Purchasing power remaining (%)",
+            data: points.map((p) => p.remainingPct),
+            borderColor: "#22c55e",
+            backgroundColor: "rgba(34,197,94,0.10)",
+            tension: 0.25,
+            fill: true,
+            pointRadius: 2,
+            pointHoverRadius: 4
+          }]
+        },
+        options: {
+          responsive: true,
+          plugins: {
+            legend: { labels: { color: "white" } },
+            tooltip: {
+              callbacks: {
+                label: (context) => ` Purchasing power remaining: ${Number(context.parsed.y).toFixed(2)}%`
+              }
+            }
+          },
+          scales: {
+            x: {
+              ticks: { color: "white", autoSkip: true, maxTicksLimit: 8 },
+              grid: { color: "rgba(255,255,255,0.08)" }
+            },
+            y: {
+              ticks: {
+                color: "white",
+                callback: (value) => `${Number(value).toFixed(0)}%`
+              },
+              grid: { color: "rgba(255,255,255,0.08)" }
+            }
+          }
+        }
+      });
+    }
+
+    async function calculate() {
+      const amount = Number(amountInput.value);
+      const startMonth = normalizeMonthValue(startMonthInput.value);
+      const endMonth = normalizeMonthValue(endMonthInput.value);
+
+      if (!Number.isFinite(amount) || amount <= 0) {
+        alert("Enter a valid amount greater than zero.");
+        return;
+      }
+
+      if (!startMonth || !endMonth) {
+        alert("Select both start month and end month.");
+        return;
+      }
+
+      if (endMonth < startMonth) {
+        alert("End month must be the same as or later than the start month.");
+        return;
+      }
+
+      calcBtn.disabled = true;
+      calcBtn.textContent = "Calculating...";
+      dataStatus.textContent = "Loading local CPI data...";
+
+      try {
+        const series = await fetchCPI();
+        const startData = findClosestOnOrBefore(series, startMonth);
+        const endData = findClosestOnOrBefore(series, endMonth);
+
+        if (!startData || !endData) {
+          throw new Error("Could not find CPI data for the selected months.");
+        }
+
+        const rangeSeries = series.filter((row) => row.date >= startData.date && row.date <= endData.date);
+
+        if (!rangeSeries.length) {
+          throw new Error("No data points available for the selected date range.");
+        }
+
+        const equivalent = amount * (endData.cpi / startData.cpi);
+        const inflation = ((endData.cpi / startData.cpi) - 1) * 100;
+        const increaseNeeded = equivalent - amount;
+        const remainingPct = (startData.cpi / endData.cpi) * 100;
+        const erosionPct = 100 - remainingPct;
+
+        resultSentence.textContent =
+          `${formatMoney(amount)} in ${monthLabel(startData.date)} is equivalent to about ${formatMoney(equivalent)} in ${monthLabel(endData.date)}.`;
+
+        equivalentOut.textContent = formatMoney(equivalent);
+        increaseOut.textContent = `${formatMoney(increaseNeeded)} (${inflation >= 0 ? "+" : ""}${inflation.toFixed(2)}%)`;
+        inflationOut.textContent = formatPct(inflation);
+        remainingOut.textContent = `${remainingPct.toFixed(2)}% (erosion ${erosionPct.toFixed(2)}%)`;
+
+        resultCard.style.display = "block";
+
+        const chartPoints = buildChartPoints(rangeSeries, amount, startData.cpi);
+        renderTrendChart(chartPoints);
+        renderPowerChart(chartPoints);
+
+        dataStatus.textContent = "Local CPI data loaded successfully";
+        resultCard.scrollIntoView({ behavior: "smooth", block: "start" });
+      } catch (error) {
+        console.error(error);
+        dataStatus.textContent = "CPI load failed";
+        alert(error.message || "Could not load local CPI data.");
+      } finally {
+        calcBtn.disabled = false;
+        calcBtn.textContent = "Calculate";
+      }
+    }
+
+    document.querySelectorAll(".faq-question").forEach((btn) => {
+      btn.addEventListener("click", () => {
+        const item = btn.parentElement;
+        document.querySelectorAll(".faq-item").forEach((i) => {
+          if (i !== item) i.classList.remove("active");
+        });
+        item.classList.toggle("active");
+      });
     });
-  </script>
+
+    calcBtn.addEventListener("click", calculate);
+    setDefaultMonths();
+  });
+</script>
 </body>
 </html>
+
+                            
