@@ -3,15 +3,6 @@
 <head>
   <link rel="canonical" href="https://novainvesttools.com/purchasing-power-calculator.html">
 
-  <!-- Google tag (gtag.js) -->
-  <script async src="https://www.googletagmanager.com/gtag/js?id=G-ZPCXDVE8C5"></script>
-  <script>
-    window.dataLayer = window.dataLayer || [];
-    function gtag(){dataLayer.push(arguments);}
-    gtag('js', new Date());
-    gtag('config', 'G-ZPCXDVE8C5');
-  </script>
-
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
@@ -25,8 +16,8 @@
   <meta property="og:title" content="Historical Purchasing Power Calculator – Compare Money Across Dates">
   <meta property="og:description" content="Compare the same currency across two dates and see how inflation changed its purchasing power.">
 
-  <link rel="preconnect" href="https://www.statbureau.org">
-  <link rel="dns-prefetch" href="https://www.statbureau.org">
+  <link rel="preconnect" href="https://api.country.is">
+  <link rel="dns-prefetch" href="https://api.country.is">
   <link rel="preconnect" href="https://cdn.jsdelivr.net">
   <link rel="dns-prefetch" href="https://cdn.jsdelivr.net">
 
@@ -49,7 +40,7 @@
     "featureList": [
       "Historical purchasing power comparison",
       "Inflation-adjusted value estimate",
-      "Monthly trend chart",
+      "Equivalent value trend chart",
       "Purchasing power erosion chart"
     ],
     "offers": {
@@ -67,10 +58,10 @@
     "mainEntity": [
       {
         "@type": "Question",
-        "name": "What is a purchasing power calculator?",
+        "name": "What does a purchasing power calculator do?",
         "acceptedAnswer": {
           "@type": "Answer",
-          "text": "A purchasing power calculator shows how much money from one date is worth in another date after inflation."
+          "text": "It shows how much money from one date is worth in another date after inflation, so you can compare real value over time instead of just nominal value."
         }
       },
       {
@@ -78,7 +69,7 @@
         "name": "Why does money lose value over time?",
         "acceptedAnswer": {
           "@type": "Answer",
-          "text": "Money loses value because prices rise over time, so the same amount buys less in the future."
+          "text": "Prices rise over time. When prices rise, the same amount of money buys less, which is why older money needs to be adjusted for inflation."
         }
       },
       {
@@ -91,23 +82,7 @@
       },
       {
         "@type": "Question",
-        "name": "Does this work for Turkey, USD, EUR, and GBP?",
-        "acceptedAnswer": {
-          "@type": "Answer",
-          "text": "Yes. The calculator supports countries and currencies covered by the inflation data source."
-        }
-      },
-      {
-        "@type": "Question",
-        "name": "Is the result exact?",
-        "acceptedAnswer": {
-          "@type": "Answer",
-          "text": "It is an inflation-based estimate. Real prices may vary, and some older periods can be affected by redenominations or data-source methodology."
-        }
-      },
-      {
-        "@type": "Question",
-        "name": "Can I use this for salary or house price comparisons?",
+        "name": "Can I use this for salaries or house prices?",
         "acceptedAnswer": {
           "@type": "Answer",
           "text": "Yes. It is useful for salaries, rent, house prices, savings, and long-term money comparisons."
@@ -118,89 +93,84 @@
   </script>
 
   <style>
-    *{ box-sizing:border-box; }
-
-    html{
-      scroll-behavior:smooth;
-    }
+    *{box-sizing:border-box}
+    html{scroll-behavior:smooth}
 
     body{
-      font-family:Arial, sans-serif;
+      font-family:Arial,sans-serif;
       background:
         radial-gradient(circle at top, rgba(59,130,246,0.18), transparent 35%),
         radial-gradient(circle at bottom right, rgba(34,197,94,0.10), transparent 30%),
         #0b1a33;
       color:white;
+      margin:0;
+      min-height:100vh;
       display:flex;
       justify-content:center;
       align-items:center;
       flex-direction:column;
-      min-height:100vh;
-      margin:0;
       padding:24px 0;
     }
 
     .toptext{
       font-size:14px;
       color:#6b7a99;
-      margin-bottom:5px;
+      margin:0 0 6px;
     }
 
     .menu{
-      margin-bottom:25px;
+      margin-bottom:22px;
     }
 
     .menu a{
       color:#3b82f6;
-      margin:10px;
       text-decoration:none;
       font-weight:600;
     }
 
     .container{
+      width:min(620px, calc(100% - 22px));
       background:rgba(30,41,59,0.92);
-      padding:30px;
-      border-radius:18px;
-      width:90%;
-      max-width:620px;
-      box-shadow:0 18px 40px rgba(0,0,0,0.35);
       border:1px solid rgba(255,255,255,0.06);
+      box-shadow:0 18px 40px rgba(0,0,0,0.35);
+      border-radius:18px;
+      padding:30px;
     }
 
     h1{
-      margin-top:0;
-      margin-bottom:10px;
-      font-size:32px;
-      line-height:1.15;
+      margin:0 0 10px;
+      font-size:clamp(28px, 4vw, 36px);
+      line-height:1.12;
     }
 
     .quick-answer{
       background:rgba(59,130,246,0.12);
       border:1px solid rgba(59,130,246,0.25);
       padding:12px 14px;
-      border-radius:10px;
+      border-radius:12px;
       font-size:15px;
       line-height:1.6;
       color:#e2e8f0;
-      margin-bottom:18px;
+      margin:0 0 16px;
     }
 
     .subhead{
       color:#94a3b8;
       font-size:15px;
       line-height:1.6;
-      margin-bottom:18px;
+      margin:0 0 18px;
     }
 
     .badge-row{
       display:flex;
       gap:10px;
       flex-wrap:wrap;
-      margin:14px 0 6px;
+      margin:14px 0 8px;
     }
 
     .badge{
       display:inline-flex;
+      align-items:center;
       padding:5px 10px;
       border-radius:999px;
       font-size:12px;
@@ -229,14 +199,12 @@
       gap:12px;
     }
 
-    @media (max-width: 700px){
-      .grid{
-        grid-template-columns:1fr;
-      }
+    @media (max-width:700px){
+      .grid{grid-template-columns:1fr}
     }
 
     .field{
-      margin:12px 0;
+      margin:10px 0;
     }
 
     .field label{
@@ -256,7 +224,7 @@
       position:absolute;
       right:14px;
       top:50%;
-      transform:translateY(-52%);
+      transform:translateY(-54%);
       color:#64748b;
       pointer-events:none;
       font-size:18px;
@@ -267,13 +235,12 @@
     select{
       width:100%;
       padding:14px 16px;
-      margin:0;
       border-radius:12px;
       border:1px solid rgba(255,255,255,0.10);
       background:#e5e7eb;
+      color:#0f172a;
       font-size:16px;
       outline:none;
-      color:#0f172a;
       appearance:none;
       -webkit-appearance:none;
       -moz-appearance:none;
@@ -298,6 +265,24 @@
     select:focus{
       box-shadow:0 0 0 3px rgba(59,130,246,0.18);
       border-color:#3b82f6;
+    }
+
+    .meta-row{
+      display:flex;
+      gap:10px;
+      flex-wrap:wrap;
+      margin-top:10px;
+      color:#94a3b8;
+      font-size:13px;
+    }
+
+    .meta-pill{
+      display:inline-flex;
+      align-items:center;
+      padding:6px 10px;
+      border-radius:999px;
+      background:rgba(255,255,255,0.05);
+      border:1px solid rgba(255,255,255,0.08);
     }
 
     button{
@@ -325,17 +310,10 @@
       transform:none;
     }
 
-    .note{
-      margin-top:10px;
-      font-size:13px;
-      color:#94a3b8;
-      line-height:1.5;
-    }
-
     .result-card{
       margin-top:18px;
       padding:16px;
-      border-radius:14px;
+      border-radius:16px;
       background:rgba(255,255,255,0.05);
       border:1px solid rgba(255,255,255,0.08);
       display:none;
@@ -375,9 +353,9 @@
       color:#e5e7eb;
     }
 
-    .insight-good{ color:#22c55e; font-weight:700; }
-    .insight-medium{ color:#facc15; font-weight:700; }
-    .insight-weak{ color:#ef4444; font-weight:700; }
+    .insight-good{color:#22c55e;font-weight:700}
+    .insight-medium{color:#facc15;font-weight:700}
+    .insight-weak{color:#ef4444;font-weight:700}
 
     .chart-card{
       margin-top:18px;
@@ -394,13 +372,10 @@
       font-weight:700;
     }
 
-    canvas{
-      margin-top:8px;
-    }
+    canvas{margin-top:8px}
 
     .content-sections{
-      width:90%;
-      max-width:1100px;
+      width:min(1100px, calc(100% - 22px));
       margin-top:34px;
       display:grid;
       grid-template-columns:1.15fr 0.85fr;
@@ -408,9 +383,7 @@
     }
 
     @media (max-width:900px){
-      .content-sections{
-        grid-template-columns:1fr;
-      }
+      .content-sections{grid-template-columns:1fr}
     }
 
     .content-box{
@@ -466,8 +439,7 @@
     }
 
     .faq-wrap{
-      width:90%;
-      max-width:1100px;
+      width:min(1100px, calc(100% - 22px));
       margin-top:34px;
     }
 
@@ -483,9 +455,7 @@
       border-bottom:1px solid rgba(255,255,255,0.08);
     }
 
-    .faq-item:last-child{
-      border-bottom:none;
-    }
+    .faq-item:last-child{border-bottom:none}
 
     .faq-question{
       width:100%;
@@ -501,17 +471,11 @@
       cursor:pointer;
     }
 
-    .faq-question:hover{
-      color:#93c5fd;
-    }
+    .faq-question:hover{color:#93c5fd}
 
-    .arrow{
-      transition:0.25s;
-    }
+    .arrow{transition:0.25s}
 
-    .faq-item.active .arrow{
-      transform:rotate(180deg);
-    }
+    .faq-item.active .arrow{transform:rotate(180deg)}
 
     .faq-answer{
       max-height:0;
@@ -528,8 +492,7 @@
     }
 
     .related{
-      width:90%;
-      max-width:1100px;
+      width:min(1100px, calc(100% - 22px));
       margin-top:28px;
       background:rgba(30,41,59,0.62);
       border:1px solid rgba(255,255,255,0.08);
@@ -559,9 +522,7 @@
       text-decoration:none;
     }
 
-    .related a:hover{
-      text-decoration:underline;
-    }
+    .related a:hover{text-decoration:underline}
 
     .disclaimer{
       margin-top:24px;
@@ -572,21 +533,11 @@
       max-width:1100px;
       text-align:center;
       line-height:1.6;
-      width:90%;
+      width:min(1100px, calc(100% - 22px));
     }
 
     @media (max-width:700px){
-      .container{
-        padding:22px;
-      }
-
-      h1{
-        font-size:28px;
-      }
-
-      .content-box h2{
-        font-size:24px;
-      }
+      .container{padding:22px}
     }
   </style>
 </head>
@@ -603,7 +554,6 @@
     <p class="quick-answer">
       A historical purchasing power calculator shows how much money from one month is worth in another month after inflation — use it to compare the same currency across two dates instantly.
     </p>
-
     <p class="subhead">
       Enter a country, two dates, and an amount to see how inflation changed the money’s purchasing power over time.
     </p>
@@ -614,36 +564,25 @@
       <span class="badge soft">Historical value</span>
     </div>
 
+    <div class="meta-row">
+      <span class="meta-pill" id="detectedPill">Detecting your country...</span>
+      <span class="meta-pill" id="currencyPill">Currency: —</span>
+    </div>
+
     <div class="section-title">Your details</div>
     <div class="grid">
       <div class="field" style="grid-column:1 / -1;">
         <label for="country">Country / currency</label>
         <div class="input-shell">
-          <select id="country">
-            <option value="turkey" data-currency="TRY" data-symbol="₺">Turkey — TRY</option>
-            <option value="united-states" data-currency="USD" data-symbol="$">United States — USD</option>
-            <option value="eurozone" data-currency="EUR" data-symbol="€">Eurozone — EUR</option>
-            <option value="european-union" data-currency="EUR" data-symbol="€">European Union — EUR</option>
-            <option value="united-kingdom" data-currency="GBP" data-symbol="£">United Kingdom — GBP</option>
-            <option value="japan" data-currency="JPY" data-symbol="¥">Japan — JPY</option>
-            <option value="canada" data-currency="CAD" data-symbol="C$">Canada — CAD</option>
-            <option value="brazil" data-currency="BRL" data-symbol="R$">Brazil — BRL</option>
-            <option value="india" data-currency="INR" data-symbol="₹">India — INR</option>
-            <option value="mexico" data-currency="MXN" data-symbol="MX$">Mexico — MXN</option>
-            <option value="russia" data-currency="RUB" data-symbol="₽">Russia — RUB</option>
-            <option value="kazakhstan" data-currency="KZT" data-symbol="₸">Kazakhstan — KZT</option>
-            <option value="ukraine" data-currency="UAH" data-symbol="₴">Ukraine — UAH</option>
-            <option value="germany" data-currency="EUR" data-symbol="€">Germany — EUR</option>
-            <option value="france" data-currency="EUR" data-symbol="€">France — EUR</option>
-            <option value="spain" data-currency="EUR" data-symbol="€">Spain — EUR</option>
-            <option value="greece" data-currency="EUR" data-symbol="€">Greece — EUR</option>
-          </select>
+          <select id="country"></select>
         </div>
-        <div class="note">This tool uses country inflation data, so the country selection is the meaningful input behind the currency.</div>
+        <div class="meta-row" style="margin-top:8px;">
+          <span class="meta-pill" id="dataStatusPill">Data source: local CPI JSON</span>
+        </div>
       </div>
 
       <div class="field">
-        <label for="amount">Amount</label>
+        <label for="amount" id="amountLabel">Amount</label>
         <input id="amount" type="number" min="0" step="any" placeholder="e.g. 1000">
       </div>
 
@@ -658,7 +597,7 @@
       </div>
     </div>
 
-    <button id="calcBtn" onclick="calculateHistoricalValue()">Calculate</button>
+    <button id="calcBtn" type="button">Calculate</button>
 
     <div id="resultCard" class="result-card" aria-live="polite">
       <p id="resultSentence" class="result-sentence">—</p>
@@ -704,28 +643,26 @@
         This calculator shows how much an amount of money from one month is worth in another month after inflation.
         It is useful when you want to compare salaries, savings, rents, home prices, business costs, or any amount of money across time.
       </p>
-
       <p>
         The result is the later month’s equivalent value needed to preserve the same buying power.
-        That makes it much more practical than a plain inflation percentage.
       </p>
 
       <h2>How it works</h2>
       <p>
-        The tool uses inflation data for the selected country and compares the start month and end month.
-        It compounds the monthly inflation rates from the source dataset to estimate the later-date value needed to buy the same basket of goods and services.
-        StatBureau documents monthly data via `get-data-json/jsonp`, and its inflation calculators accept month-based start and end dates. 1
+        The tool loads monthly CPI values from your local inflation dataset for the selected country, then compares the start month and end month.
+        The equivalent value is calculated with CPI ratios, which is the cleanest way to compare purchasing power across dates.
       </p>
 
       <div class="formula">
-        Equivalent value = starting amount × compounded monthly inflation factor<br>
+        Equivalent value = starting amount × (end CPI ÷ start CPI)<br>
         Price increase needed = equivalent value − starting amount<br>
-        Purchasing power remaining = starting amount ÷ equivalent value × 100
+        Period inflation = (end CPI ÷ start CPI − 1) × 100<br>
+        Purchasing power remaining = (start CPI ÷ end CPI) × 100
       </div>
 
       <p>
         The line chart shows how the equivalent amount changes month by month.
-        The second chart shows how much purchasing power remains relative to the starting month.
+        The second chart shows how much purchasing power remains relative to the start month.
       </p>
     </div>
 
@@ -752,7 +689,7 @@
       </ul>
 
       <p class="source-note">
-        Data source: StatBureau monthly inflation API. Free use is intended for non-commercial projects and requires attribution. 2
+        This page is designed to work with a monthly CPI JSON export from your inflation dataset.
       </p>
     </div>
   </div>
@@ -792,31 +729,7 @@
         <div class="faq-answer">
           <p>
             Yes, as long as the selected country has monthly inflation data available for those dates.
-            Very old dates may need extra handling in countries with currency redenominations.
-          </p>
-        </div>
-      </div>
-
-      <div class="faq-item">
-        <button class="faq-question" type="button">
-          Does this work for Turkey, USD, EUR, and GBP?
-          <span class="arrow">▼</span>
-        </button>
-        <div class="faq-answer">
-          <p>
-            Yes. The calculator supports the countries covered by the data source, including Turkey, the United States, Eurozone, and the United Kingdom. 3
-          </p>
-        </div>
-      </div>
-
-      <div class="faq-item">
-        <button class="faq-question" type="button">
-          Is the result exact?
-          <span class="arrow">▼</span>
-        </button>
-        <div class="faq-answer">
-          <p>
-            It is an inflation-based estimate. Real prices can still vary by product, location, taxes, and timing.
+            If a month is missing, the calculator interpolates between nearby months.
           </p>
         </div>
       </div>
@@ -850,22 +763,68 @@
   <div class="disclaimer">
     <p>
       <strong>Disclaimer:</strong> The calculators on this website are provided for informational and educational purposes only.
-      Results are estimates based on the values entered and on the selected inflation data source.
-      StatBureau’s free API is intended for non-commercial use and requires attribution. Always verify important financial decisions with authoritative sources. 4
+      All results are estimates based on the values entered and on the selected inflation dataset.
+      Always verify important financial decisions with authoritative sources.
     </p>
   </div>
 
   <script src="footer.js"></script>
   <script>
-    const SB_BASE = "https://www.statbureau.org";
-    const API_TIMEOUT_MS = 15000;
+    const BROWSER_LOCALE = navigator.language || "en-US";
+    const DATA_BASE_URL = "/data/inflation";
+    const COUNTRY_API_URL = "https://api.country.is/";
+
+    const COUNTRY_OPTIONS = [
+      { code: "US", label: "United States — USD", currency: "USD", symbol: "$" },
+      { code: "TR", label: "Turkey — TRY", currency: "TRY", symbol: "₺" },
+      { code: "GB", label: "United Kingdom — GBP", currency: "GBP", symbol: "£" },
+      { code: "DE", label: "Germany — EUR", currency: "EUR", symbol: "€" },
+      { code: "FR", label: "France — EUR", currency: "EUR", symbol: "€" },
+      { code: "ES", label: "Spain — EUR", currency: "EUR", symbol: "€" },
+      { code: "IT", label: "Italy — EUR", currency: "EUR", symbol: "€" },
+      { code: "NL", label: "Netherlands — EUR", currency: "EUR", symbol: "€" },
+      { code: "BE", label: "Belgium — EUR", currency: "EUR", symbol: "€" },
+      { code: "GR", label: "Greece — EUR", currency: "EUR", symbol: "€" },
+      { code: "PT", label: "Portugal — EUR", currency: "EUR", symbol: "€" },
+      { code: "AT", label: "Austria — EUR", currency: "EUR", symbol: "€" },
+      { code: "IE", label: "Ireland — EUR", currency: "EUR", symbol: "€" },
+      { code: "FI", label: "Finland — EUR", currency: "EUR", symbol: "€" },
+      { code: "CA", label: "Canada — CAD", currency: "CAD", symbol: "C$" },
+      { code: "AU", label: "Australia — AUD", currency: "AUD", symbol: "A$" },
+      { code: "NZ", label: "New Zealand — NZD", currency: "NZD", symbol: "NZ$" },
+      { code: "JP", label: "Japan — JPY", currency: "JPY", symbol: "¥" },
+      { code: "CN", label: "China — CNY", currency: "CNY", symbol: "¥" },
+      { code: "IN", label: "India — INR", currency: "INR", symbol: "₹" },
+      { code: "BR", label: "Brazil — BRL", currency: "BRL", symbol: "R$" },
+      { code: "MX", label: "Mexico — MXN", currency: "MXN", symbol: "$" },
+      { code: "RU", label: "Russia — RUB", currency: "RUB", symbol: "₽" },
+      { code: "ZA", label: "South Africa — ZAR", currency: "ZAR", symbol: "R" },
+      { code: "SA", label: "Saudi Arabia — SAR", currency: "SAR", symbol: "﷼" },
+      { code: "AE", label: "United Arab Emirates — AED", currency: "AED", symbol: "د.إ" },
+      { code: "KR", label: "South Korea — KRW", currency: "KRW", symbol: "₩" },
+      { code: "SE", label: "Sweden — SEK", currency: "SEK", symbol: "kr" },
+      { code: "NO", label: "Norway — NOK", currency: "NOK", symbol: "kr" },
+      { code: "DK", label: "Denmark — DKK", currency: "DKK", symbol: "kr" },
+      { code: "PL", label: "Poland — PLN", currency: "PLN", symbol: "zł" },
+      { code: "CH", label: "Switzerland — CHF", currency: "CHF", symbol: "CHF" }
+    ];
+
+    const COUNTRY_BY_CODE = Object.fromEntries(
+      COUNTRY_OPTIONS.map(item => [item.code, item])
+    );
 
     let trendChart = null;
     let powerChart = null;
     let activeRequestId = 0;
+    let currentCountryCode = "US";
     const countryDataCache = new Map();
 
+    const countrySelect = document.getElementById("country");
+    const amountInput = document.getElementById("amount");
+    const startMonthInput = document.getElementById("startMonth");
+    const endMonthInput = document.getElementById("endMonth");
     const calcBtn = document.getElementById("calcBtn");
+
     const resultCard = document.getElementById("resultCard");
     const resultSentence = document.getElementById("resultSentence");
     const equivalentOut = document.getElementById("equivalentOut");
@@ -873,32 +832,28 @@
     const inflationOut = document.getElementById("inflationOut");
     const remainingOut = document.getElementById("remainingOut");
     const insightOut = document.getElementById("insightOut");
-    const countrySelect = document.getElementById("country");
-    const amountInput = document.getElementById("amount");
-    const startMonthInput = document.getElementById("startMonth");
-    const endMonthInput = document.getElementById("endMonth");
 
-    function getSelectedMeta(){
-      const opt = countrySelect.options[countrySelect.selectedIndex];
-      return {
-        code: opt.value,
-        currency: opt.dataset.currency || "USD",
-        symbol: opt.dataset.symbol || "$",
-        label: opt.textContent.trim()
-      };
+    const amountLabel = document.getElementById("amountLabel");
+    const detectedPill = document.getElementById("detectedPill");
+    const currencyPill = document.getElementById("currencyPill");
+
+    function buildCountrySelect(){
+      countrySelect.innerHTML = COUNTRY_OPTIONS
+        .map(item => `<option value="${item.code}">${item.label}</option>`)
+        .join("");
     }
 
     function formatMoney(value, symbol){
       const sign = value < 0 ? "-" : "";
       const abs = Math.abs(Number(value));
-      return `${sign}${symbol}${abs.toLocaleString(undefined, {
+      return `${sign}${symbol}${abs.toLocaleString(BROWSER_LOCALE, {
         minimumFractionDigits: 0,
         maximumFractionDigits: 2
       })}`;
     }
 
     function formatPct(value){
-      return `${Number(value).toLocaleString(undefined, {
+      return `${Number(value).toLocaleString(BROWSER_LOCALE, {
         minimumFractionDigits: 0,
         maximumFractionDigits: 2
       })}%`;
@@ -906,18 +861,19 @@
 
     function parseMonthInput(value){
       if (!value) return null;
-      const parts = value.split("-");
-      if (parts.length !== 2) return null;
-      const year = Number(parts[0]);
-      const month = Number(parts[1]);
+      const [yearStr, monthStr] = value.split("-");
+      const year = Number(yearStr);
+      const month = Number(monthStr);
       if (!Number.isFinite(year) || !Number.isFinite(month)) return null;
       return new Date(Date.UTC(year, month - 1, 1));
     }
 
     function monthKey(date){
-      const y = date.getUTCFullYear();
-      const m = String(date.getUTCMonth() + 1).padStart(2, "0");
-      return `${y}-${m}`;
+      return `${date.getUTCFullYear()}-${String(date.getUTCMonth() + 1).padStart(2, "0")}`;
+    }
+
+    function monthIndex(date){
+      return date.getUTCFullYear() * 12 + date.getUTCMonth();
     }
 
     function addMonths(date, count){
@@ -927,85 +883,11 @@
     }
 
     function monthLabel(date){
-      return new Intl.DateTimeFormat("en-US", {
+      return new Intl.DateTimeFormat(BROWSER_LOCALE, {
         month: "short",
         year: "numeric",
         timeZone: "UTC"
       }).format(date);
-    }
-
-    function toApiMonth(date){
-      const y = date.getUTCFullYear();
-      const m = date.getUTCMonth() + 1;
-      return `${y}/${m}/1`;
-    }
-
-    function extractNumber(value){
-      if (typeof value === "number" && Number.isFinite(value)) return value;
-      if (typeof value === "string"){
-        const cleaned = value.replace(/[^0-9.,-]/g, "").trim();
-        if (!cleaned) return null;
-
-        const commaCount = (cleaned.match(/,/g) || []).length;
-        const dotCount = (cleaned.match(/\./g) || []).length;
-
-        let normalized = cleaned;
-
-        if (commaCount > 0 && dotCount > 0){
-          if (cleaned.lastIndexOf(",") > cleaned.lastIndexOf(".")){
-            normalized = cleaned.replace(/\./g, "").replace(",", ".");
-          } else {
-            normalized = cleaned.replace(/,/g, "");
-          }
-        } else if (commaCount > 0){
-          normalized = commaCount === 1 ? cleaned.replace(",", ".") : cleaned.replace(/,/g, "");
-        }
-
-        const parsed = Number(normalized);
-        return Number.isFinite(parsed) ? parsed : null;
-      }
-      return null;
-    }
-
-    function normalizeMonthlyEntry(item){
-      if (!item) return null;
-
-      if (Array.isArray(item) && item.length >= 2){
-        const date = parseAnyDate(item[0]);
-        const rate = extractNumber(item[1]);
-        if (date && rate !== null) return { date, rate };
-        return null;
-      }
-
-      if (typeof item === "object"){
-        const dateCandidate = item.date || item.month || item.time || item.valueDate || item.start;
-        const date = parseAnyDate(dateCandidate);
-
-        const rateCandidates = [
-          item.rate,
-          item.value,
-          item.inflation,
-          item.mom,
-          item.monthlyInflation,
-          item.change,
-          item.percent,
-          item.yoy,
-          item.cpi
-        ];
-
-        let rate = null;
-        for (const candidate of rateCandidates){
-          const n = extractNumber(candidate);
-          if (n !== null){
-            rate = n;
-            break;
-          }
-        }
-
-        if (date && rate !== null) return { date, rate };
-      }
-
-      return null;
     }
 
     function parseAnyDate(value){
@@ -1023,10 +905,10 @@
 
       if (typeof value === "string"){
         const s = value.trim();
-        const match = s.match(/^(\d{4})[\/-](\d{1,2})(?:[\/-]\d{1,2})?/);
-        if (match){
-          const year = Number(match[1]);
-          const month = Number(match[2]);
+        const ym = s.match(/^(\d{4})[-/](\d{1,2})(?:[-/]\d{1,2})?/);
+        if (ym){
+          const year = Number(ym[1]);
+          const month = Number(ym[2]);
           if (Number.isFinite(year) && Number.isFinite(month)){
             return new Date(Date.UTC(year, month - 1, 1));
           }
@@ -1040,152 +922,227 @@
       return null;
     }
 
-    function flattenMonthlyData(raw){
-      const candidates = [];
+    function extractNumber(value){
+      if (typeof value === "number" && Number.isFinite(value)) return value;
+      if (typeof value !== "string") return null;
 
-      const pushIfArray = (v) => {
-        if (Array.isArray(v)) candidates.push(...v);
-      };
+      let cleaned = value.replace(/[^\d,.-]/g, "").trim();
+      if (!cleaned) return null;
+
+      const commaCount = (cleaned.match(/,/g) || []).length;
+      const dotCount = (cleaned.match(/\./g) || []).length;
+
+      if (commaCount > 0 && dotCount > 0){
+        if (cleaned.lastIndexOf(",") > cleaned.lastIndexOf(".")){
+          cleaned = cleaned.replace(/\./g, "").replace(",", ".");
+        } else {
+          cleaned = cleaned.replace(/,/g, "");
+        }
+      } else if (commaCount > 0){
+        cleaned = commaCount === 1 ? cleaned.replace(",", ".") : cleaned.replace(/,/g, "");
+      }
+
+      const parsed = Number(cleaned);
+      return Number.isFinite(parsed) ? parsed : null;
+    }
+
+    function normalizeSeries(raw){
+      const candidates = [];
 
       if (Array.isArray(raw)){
         candidates.push(...raw);
       } else if (raw && typeof raw === "object"){
-        pushIfArray(raw.data);
-        pushIfArray(raw.result);
-        pushIfArray(raw.items);
-        pushIfArray(raw.values);
-        pushIfArray(raw.monthlyInflation);
-        pushIfArray(raw.MonthlyInflation);
-        pushIfArray(raw.d);
-
+        for (const key of ["data", "values", "items", "result", "series"]){
+          if (Array.isArray(raw[key])) candidates.push(...raw[key]);
+        }
         if (!candidates.length){
-          for (const value of Object.values(raw)){
-            if (Array.isArray(value)){
-              candidates.push(...value);
-            }
+          for (const v of Object.values(raw)){
+            if (Array.isArray(v)) candidates.push(...v);
           }
         }
       }
 
-      const normalized = candidates
-        .map(normalizeMonthlyEntry)
-        .filter(Boolean)
-        .sort((a, b) => a.date - b.date);
+      const levelRows = [];
+      const rateRows = [];
 
-      return normalized;
-    }
-
-    function buildSeries(monthlyData, startDate, endDate, amount){
-      const rateMap = new Map();
-      for (const entry of monthlyData){
-        rateMap.set(monthKey(entry.date), entry.rate);
-      }
-
-      const points = [];
-      let currentDate = new Date(Date.UTC(startDate.getUTCFullYear(), startDate.getUTCMonth(), 1));
-      let equivalent = amount;
-      const startKey = monthKey(startDate);
-      const endKey = monthKey(endDate);
-
-      points.push({
-        date: new Date(currentDate),
-        equivalent,
-        remainingPct: 100
-      });
-
-      const missingMonths = [];
-
-      while (monthKey(currentDate) !== endKey){
-        currentDate = addMonths(currentDate, 1);
-        const key = monthKey(currentDate);
-        const rate = rateMap.get(key);
-
-        if (!Number.isFinite(rate)){
-          missingMonths.push(key);
-          points.push({
-            date: new Date(currentDate),
-            equivalent,
-            remainingPct: equivalent > 0 ? (amount / equivalent) * 100 : 0
-          });
+      for (const item of candidates){
+        if (Array.isArray(item) && item.length >= 2){
+          const date = parseAnyDate(item[0]);
+          const value = extractNumber(item[1]);
+          if (date && value !== null){
+            levelRows.push({ date, cpi: value });
+          }
           continue;
         }
 
-        equivalent *= (1 + rate / 100);
-        points.push({
-          date: new Date(currentDate),
-          equivalent,
-          remainingPct: equivalent > 0 ? (amount / equivalent) * 100 : 0
+        if (item && typeof item === "object"){
+          const date = parseAnyDate(
+            item.date ?? item.month ?? item.time ?? item.period ?? item.timestamp ?? item.valueDate
+          );
+
+          const levelCandidates = [
+            item.cpi,
+            item.index,
+            item.value,
+            item.level,
+            item.priceIndex
+          ];
+
+          let level = null;
+          for (const candidate of levelCandidates){
+            const n = extractNumber(candidate);
+            if (n !== null){
+              level = n;
+              break;
+            }
+          }
+
+          if (date && level !== null){
+            levelRows.push({ date, cpi: level });
+            continue;
+          }
+
+          const rateCandidates = [
+            item.rate_pct,
+            item.rate,
+            item.monthly_rate_pct,
+            item.inflation,
+            item.change,
+            item.percent
+          ];
+
+          let rate = null;
+          for (const candidate of rateCandidates){
+            const n = extractNumber(candidate);
+            if (n !== null){
+              rate = n;
+              break;
+            }
+          }
+
+          if (date && rate !== null){
+            rateRows.push({ date, ratePct: rate });
+          }
+        }
+      }
+
+      if (levelRows.length >= 2){
+        return levelRows.sort((a, b) => a.date - b.date);
+      }
+
+      if (rateRows.length >= 2){
+        rateRows.sort((a, b) => a.date - b.date);
+        let level = 100;
+        return rateRows.map(row => {
+          level *= (1 + row.ratePct / 100);
+          return { date: row.date, cpi: level };
         });
       }
 
-      if (missingMonths.length > 0){
-        const uniqueMissing = [...new Set(missingMonths)];
-        throw new Error(`Missing monthly inflation data for: ${uniqueMissing.join(", ")}`);
-      }
-
-      if (points.length === 1 && startKey !== endKey){
-        points.push({
-          date: new Date(endDate),
-          equivalent,
-          remainingPct: equivalent > 0 ? (amount / equivalent) * 100 : 0
-        });
-      }
-
-      return points;
+      return [];
     }
 
-    function jsonp(endpoint, params){
-      return new Promise((resolve, reject) => {
-        const callbackName = `sb_cb_${Date.now()}_${Math.random().toString(36).slice(2)}`;
-        const script = document.createElement("script");
-        const url = new URL(`${SB_BASE}/${endpoint}`);
+    async function loadCountryData(countryCode){
+      const key = countryCode.toUpperCase();
+      if (countryDataCache.has(key)) return countryDataCache.get(key);
 
-        Object.entries(params || {}).forEach(([key, value]) => {
-          if (value !== undefined && value !== null && value !== ""){
-            url.searchParams.set(key, String(value));
-          }
-        });
+      const url = `${DATA_BASE_URL}/${key.toLowerCase()}.json`;
+      const resp = await fetch(url, { cache: "no-store" });
+      if (!resp.ok){
+        throw new Error(`Missing inflation data file: ${url}`);
+      }
 
-        url.searchParams.set("jsoncallback", callbackName);
+      const raw = await resp.json();
+      const series = normalizeSeries(raw);
 
-        const timeout = setTimeout(() => {
-          cleanup();
-          reject(new Error("Request timed out"));
-        }, API_TIMEOUT_MS);
+      if (!series.length){
+        throw new Error(`No monthly CPI data returned for ${key}.`);
+      }
 
-        function cleanup(){
-          clearTimeout(timeout);
-          try { delete window[callbackName]; } catch {}
-          if (script.parentNode) script.parentNode.removeChild(script);
+      countryDataCache.set(key, series);
+      return series;
+    }
+
+    function getCountryMeta(code){
+      return COUNTRY_BY_CODE[code] || COUNTRY_BY_CODE.US;
+    }
+
+    function updateCurrencyUI(){
+      const meta = getCountryMeta(currentCountryCode);
+      amountLabel.textContent = `Amount (${meta.currency})`;
+      amountInput.placeholder = `e.g. 1000`;
+      currencyPill.textContent = `Currency: ${meta.currency}`;
+      detectedPill.textContent = `Country: ${meta.label.split(" — ")[0]}`;
+    }
+
+    function setCountry(code, silent = false){
+      const normalized = COUNTRY_BY_CODE[code] ? code : "US";
+      currentCountryCode = normalized;
+      countrySelect.value = normalized;
+      updateCurrencyUI();
+
+      if (!silent && amountInput.value && startMonthInput.value && endMonthInput.value){
+        calculateHistoricalValue();
+      }
+    }
+
+    function findNearestMonthValue(sortedSeries, targetDate){
+      const target = monthIndex(targetDate);
+      let previous = null;
+      let next = null;
+
+      for (const row of sortedSeries){
+        const idx = monthIndex(row.date);
+        if (idx === target){
+          return row.cpi;
+        }
+        if (idx < target){
+          previous = row;
+          continue;
+        }
+        if (idx > target){
+          next = row;
+          break;
+        }
+      }
+
+      if (!previous && !next) return null;
+      if (!previous) return next.cpi;
+      if (!next) return previous.cpi;
+
+      const prevIndex = monthIndex(previous.date);
+      const nextIndex = monthIndex(next.date);
+      const ratio = (target - prevIndex) / (nextIndex - prevIndex);
+      return previous.cpi + (next.cpi - previous.cpi) * ratio;
+    }
+
+    function buildSeries(sortedSeries, startDate, endDate, amount){
+      const points = [];
+      const startCPI = findNearestMonthValue(sortedSeries, startDate);
+      const endCPI = findNearestMonthValue(sortedSeries, endDate);
+
+      if (!Number.isFinite(startCPI) || !Number.isFinite(endCPI)){
+        throw new Error("Could not find inflation data for the selected months.");
+      }
+
+      for (let d = new Date(Date.UTC(startDate.getUTCFullYear(), startDate.getUTCMonth(), 1)); d <= endDate; d = addMonths(d, 1)){
+        const cpi = findNearestMonthValue(sortedSeries, d);
+        if (!Number.isFinite(cpi)){
+          throw new Error(`Missing CPI data near ${monthLabel(d)}.`);
         }
 
-        window[callbackName] = (data) => {
-          cleanup();
-          resolve(data);
-        };
+        const equivalent = amount * (cpi / startCPI);
+        const remainingPct = (startCPI / cpi) * 100;
 
-        script.onerror = () => {
-          cleanup();
-          reject(new Error("Request failed"));
-        };
-
-        script.src = url.toString();
-        document.body.appendChild(script);
-      });
-    }
-
-    async function loadCountryData(country){
-      if (countryDataCache.has(country)) return countryDataCache.get(country);
-
-      const data = await jsonp("get-data-jsonp", { country, format: false });
-      const parsed = flattenMonthlyData(data);
-
-      if (!parsed.length){
-        throw new Error("No monthly inflation data returned.");
+        points.push({
+          date: new Date(d),
+          cpi,
+          equivalent,
+          remainingPct
+        });
       }
 
-      countryDataCache.set(country, parsed);
-      return parsed;
+      return { points, startCPI, endCPI };
     }
 
     function renderTrendChart(series, symbol){
@@ -1214,27 +1171,19 @@
             legend: { labels: { color: "white" } },
             tooltip: {
               callbacks: {
-                label: function(context){
-                  return ` ${context.dataset.label}: ${formatMoney(context.parsed.y, symbol)}`;
-                }
+                label: context => ` ${context.dataset.label}: ${formatMoney(context.parsed.y, symbol)}`
               }
             }
           },
           scales: {
             x: {
-              ticks: {
-                color: "white",
-                autoSkip: true,
-                maxTicksLimit: 8
-              },
+              ticks: { color: "white", autoSkip: true, maxTicksLimit: 8 },
               grid: { color: "rgba(255,255,255,0.08)" }
             },
             y: {
               ticks: {
                 color: "white",
-                callback: function(value){
-                  return `${symbol}${Number(value).toLocaleString()}`;
-                }
+                callback: value => `${symbol}${Number(value).toLocaleString(BROWSER_LOCALE)}`
               },
               grid: { color: "rgba(255,255,255,0.08)" }
             }
@@ -1269,27 +1218,19 @@
             legend: { labels: { color: "white" } },
             tooltip: {
               callbacks: {
-                label: function(context){
-                  return ` ${context.dataset.label}: ${Number(context.parsed.y).toFixed(2)}%`;
-                }
+                label: context => ` ${context.dataset.label}: ${Number(context.parsed.y).toFixed(2)}%`
               }
             }
           },
           scales: {
             x: {
-              ticks: {
-                color: "white",
-                autoSkip: true,
-                maxTicksLimit: 8
-              },
+              ticks: { color: "white", autoSkip: true, maxTicksLimit: 8 },
               grid: { color: "rgba(255,255,255,0.08)" }
             },
             y: {
               ticks: {
                 color: "white",
-                callback: function(value){
-                  return `${Number(value).toFixed(0)}%`;
-                }
+                callback: value => `${Number(value).toFixed(0)}%`
               },
               grid: { color: "rgba(255,255,255,0.08)" }
             }
@@ -1300,10 +1241,10 @@
 
     async function calculateHistoricalValue(){
       const requestId = ++activeRequestId;
-      const meta = getSelectedMeta();
       const amount = Number(amountInput.value);
       const start = parseMonthInput(startMonthInput.value);
       const end = parseMonthInput(endMonthInput.value);
+      const meta = getCountryMeta(currentCountryCode);
 
       if (!Number.isFinite(amount) || amount <= 0){
         alert("Enter a valid amount greater than zero.");
@@ -1324,46 +1265,39 @@
       calcBtn.textContent = "Calculating...";
 
       try {
-        const monthlyData = await loadCountryData(meta.code);
+        const monthlyData = await loadCountryData(currentCountryCode);
 
         if (requestId !== activeRequestId) return;
 
-        const series = buildSeries(monthlyData, start, end, amount);
+        const { points, startCPI, endCPI } = buildSeries(monthlyData, start, end, amount);
 
-        if (!series || series.length < 1){
-          throw new Error("Could not build a chart series.");
-        }
-
-        const equivalent = series[series.length - 1].equivalent;
+        const equivalent = amount * (endCPI / startCPI);
         const increaseNeeded = equivalent - amount;
-        const increasePct = amount > 0 ? ((equivalent / amount) - 1) * 100 : 0;
-        const remainingPct = equivalent > 0 ? (amount / equivalent) * 100 : 0;
+        const periodInflation = ((endCPI / startCPI) - 1) * 100;
+        const remainingPct = (startCPI / endCPI) * 100;
         const erosionPct = 100 - remainingPct;
 
-        const startLabel = monthLabel(start);
-        const endLabel = monthLabel(end);
-
         resultSentence.textContent =
-          `${formatMoney(amount, meta.symbol)} in ${startLabel} is equivalent to about ${formatMoney(equivalent, meta.symbol)} in ${endLabel}.`;
+          `${formatMoney(amount, meta.symbol)} in ${monthLabel(start)} is equivalent to about ${formatMoney(equivalent, meta.symbol)} in ${monthLabel(end)}.`;
 
         equivalentOut.textContent = formatMoney(equivalent, meta.symbol);
-        increaseOut.textContent = formatMoney(increaseNeeded, meta.symbol) + ` (${increasePct >= 0 ? "+" : ""}${increasePct.toFixed(2)}%)`;
-        inflationOut.textContent = formatPct(increasePct);
+        increaseOut.textContent = `${formatMoney(increaseNeeded, meta.symbol)} (${periodInflation >= 0 ? "+" : ""}${periodInflation.toFixed(2)}%)`;
+        inflationOut.textContent = formatPct(periodInflation);
         remainingOut.textContent = `${remainingPct.toFixed(2)}% (erosion ${erosionPct.toFixed(2)}%)`;
 
         let insight = "";
         let insightClass = "";
 
-        if (Math.abs(increasePct) < 0.01){
+        if (Math.abs(periodInflation) < 0.01){
           insight = "No net change in purchasing power over the selected period.";
           insightClass = "insight-medium";
-        } else if (increasePct >= 300){
+        } else if (periodInflation >= 300){
           insight = "Very strong erosion of purchasing power.";
           insightClass = "insight-weak";
-        } else if (increasePct >= 100){
+        } else if (periodInflation >= 100){
           insight = "Noticeable inflation impact over this period.";
           insightClass = "insight-medium";
-        } else if (increasePct > 0){
+        } else if (periodInflation > 0){
           insight = "Purchasing power declined, but the change is more moderate.";
           insightClass = "insight-good";
         } else {
@@ -1374,13 +1308,13 @@
         insightOut.innerHTML = `<span class="${insightClass}">${insight}</span>`;
         resultCard.style.display = "block";
 
-        renderTrendChart(series, meta.symbol);
-        renderPowerChart(series);
+        renderTrendChart(points, meta.symbol);
+        renderPowerChart(points);
 
         resultCard.scrollIntoView({ behavior: "smooth", block: "start" });
       } catch (error) {
         console.error(error);
-        alert(error.message || "Could not load inflation data. Try another country or date range.");
+        alert(error.message || "Could not load inflation data for this country.");
       } finally {
         if (requestId === activeRequestId){
           calcBtn.disabled = false;
@@ -1389,7 +1323,28 @@
       }
     }
 
-    document.addEventListener("DOMContentLoaded", function(){
+    async function detectVisitorCountry(){
+      try {
+        const resp = await fetch(COUNTRY_API_URL, { cache: "no-store" });
+        if (!resp.ok) throw new Error("Country lookup failed");
+        const data = await resp.json();
+        const code = String(data.country_code || data.country || data.code || "").toUpperCase();
+        if (COUNTRY_BY_CODE[code]) return code;
+      } catch (err) {
+        // ignore and fall back
+      }
+
+      const localeCountry = (navigator.language || "").split("-")[1];
+      if (localeCountry && COUNTRY_BY_CODE[localeCountry.toUpperCase()]){
+        return localeCountry.toUpperCase();
+      }
+
+      return "US";
+    }
+
+    async function init(){
+      buildCountrySelect();
+
       const now = new Date();
       const currentMonth = `${now.getUTCFullYear()}-${String(now.getUTCMonth() + 1).padStart(2, "0")}`;
       const fiveYearsAgo = new Date(Date.UTC(now.getUTCFullYear() - 5, now.getUTCMonth(), 1));
@@ -1398,18 +1353,29 @@
       if (!startMonthInput.value) startMonthInput.value = fiveYearsAgoMonth;
       if (!endMonthInput.value) endMonthInput.value = currentMonth;
 
+      const detected = await detectVisitorCountry();
+      setCountry(detected, true);
+      detectedPill.textContent = `Detected country: ${getCountryMeta(currentCountryCode).label.split(" — ")[0]}`;
+      updateCurrencyUI();
+
+      countrySelect.addEventListener("change", () => {
+        setCountry(countrySelect.value, true);
+      });
+
+      calcBtn.addEventListener("click", calculateHistoricalValue);
+
       document.querySelectorAll(".faq-question").forEach(btn => {
         btn.addEventListener("click", () => {
           const item = btn.parentElement;
-
           document.querySelectorAll(".faq-item").forEach(i => {
-            if(i !== item) i.classList.remove("active");
+            if (i !== item) i.classList.remove("active");
           });
-
           item.classList.toggle("active");
         });
       });
-    });
+    }
+
+    init();
   </script>
 </body>
-  </html>
+        </html>
