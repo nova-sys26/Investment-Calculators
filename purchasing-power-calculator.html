@@ -16,11 +16,7 @@
   <meta property="og:title" content="Historical Purchasing Power Calculator – Compare Money Across Dates">
   <meta property="og:description" content="Compare the same currency across two dates and see how inflation changed its purchasing power.">
 
-  <link rel="preconnect" href="https://api.country.is">
-  <link rel="dns-prefetch" href="https://api.country.is">
-  <link rel="preconnect" href="https://cdn.jsdelivr.net">
-  <link rel="dns-prefetch" href="https://cdn.jsdelivr.net">
-
+   
   <link rel="stylesheet" href="style.css">
   <link rel="icon" href="favicon.png" type="image/png">
   <link rel="apple-touch-icon" href="favicon.png">
@@ -222,73 +218,16 @@
       <span class="badge soft">Historical value</span>
     </div>
 
-    <div class="meta-row">
-      <span class="meta-pill" id="detectedPill">Detecting your country...</span>
-      <span class="meta-pill" id="currencyPill">Currency: —</span>
-    </div>
+    <input id="amount" type="number" placeholder="Amount (e.g. 1000)">
 
-    <div class="section-title">Your details</div>
-    <div class="grid">
-      <div class="field" style="grid-column:1 / -1;">
-        <label for="country">Country / currency</label>
-        <div class="input-shell">
-          <select id="country"></select>
-        </div>
-      </div>
+    <input id="start" type="month">
+    <input id="end" type="month">
 
-      <div class="field">
-        <label for="amount" id="amountLabel">Amount</label>
-        <input id="amount" type="number" min="0" step="any" placeholder="e.g. 1000">
-      </div>
+    <button onclick="calculate()">Calculate</button>
 
-      <div class="field">
-        <label for="startMonth">Start Month</label>
-        <input id="startMonth" type="month">
-      </div>
+    <div class="result" id="result" style="display:none;"></div>
 
-      <div class="field">
-        <label for="endMonth">End Month</label>
-        <input id="endMonth" type="month">
-      </div>
-    </div>
-
-    <button id="calcBtn" type="button">Calculate</button>
-
-    <div id="resultCard" class="result-card" aria-live="polite">
-      <p id="resultSentence" class="result-sentence">—</p>
-      <div class="result-grid">
-        <div class="result-box">
-          <span class="result-label">Equivalent value in end month</span>
-          <span id="equivalentOut" class="result-value">—</span>
-        </div>
-        <div class="result-box">
-          <span class="result-label">Price increase needed</span>
-          <span id="increaseOut" class="result-value">—</span>
-        </div>
-        <div class="result-box">
-          <span class="result-label">Period inflation</span>
-          <span id="inflationOut" class="result-value">—</span>
-        </div>
-        <div class="result-box">
-          <span class="result-label">Purchasing power remaining</span>
-          <span id="remainingOut" class="result-value">—</span>
-        </div>
-        <div class="result-box">
-          <span class="result-label">Insight</span>
-          <span id="insightOut" class="result-value">—</span>
-        </div>
-      </div>
-    </div>
-
-    <div class="chart-card">
-      <h3 class="chart-title">Equivalent value over time</h3>
-      <canvas id="trendChart"></canvas>
-    </div>
-
-    <div class="chart-card">
-      <h3 class="chart-title">Purchasing power remaining</h3>
-      <canvas id="powerChart"></canvas>
-    </div>
+    <canvas id="chart"></canvas>
   </div>
 
   <div class="content-sections">
@@ -339,11 +278,6 @@
         <li>Budget planning across years</li>
         <li>Historical cost-of-living checks</li>
       </ul>
-
-      <p class="source-note">
-        The proxy layer is built for Cloudflare Pages Functions, which supports full-stack apps and request handlers at the edge. 1
-      </p>
-    </div>
   </div>
 
   <div class="faq-wrap">
@@ -421,327 +355,83 @@
 
   <script src="footer.js"></script>
   <script>
-    const BROWSER_LOCALE = navigator.language || "en-US";
-    const API_BASE = "/api/inflation";
-    const GEO_URL = "https://api.country.is/";
+    const API_KEY = "YOUR_FRED_API_KEY"; // burayı doldur
 
-    const COUNTRY_OPTIONS = [
-      { code: "US", label: "United States — USD", currency: "USD", symbol: "$" }
-    ];
+let chart;
 
-    const COUNTRY_BY_CODE = Object.fromEntries(COUNTRY_OPTIONS.map(item => [item.code, item]));
+async function fetchCPI() {
+  const url =
+    `https://api.stlouisfed.org/fred/series/observations` +
+    `?series_id=CPIAUCSL` +
+    `&api_key=${API_KEY}` +
+    `&file_type=json` +
+    `&observation_start=1947-01-01`;
 
-    let trendChart = null;
-    let powerChart = null;
-    let activeRequestId = 0;
-    let currentCountryCode = "US";
+  const res = await fetch(url);
+  const data = await res.json();
 
-    const countrySelect = document.getElementById("country");
-    const amountInput = document.getElementById("amount");
-    const startMonthInput = document.getElementById("startMonth");
-    const endMonthInput = document.getElementById("endMonth");
-    const calcBtn = document.getElementById("calcBtn");
+  return data.observations
+    .filter(d => d.value !== ".")
+    .map(d => ({
+      date: d.date.slice(0, 7),
+      cpi: Number(d.value)
+    }));
+}
 
-    const resultCard = document.getElementById("resultCard");
-    const resultSentence = document.getElementById("resultSentence");
-    const equivalentOut = document.getElementById("equivalentOut");
-    const increaseOut = document.getElementById("increaseOut");
-    const inflationOut = document.getElementById("inflationOut");
-    const remainingOut = document.getElementById("remainingOut");
-    const insightOut = document.getElementById("insightOut");
+function findClosest(series, target) {
+  return series.reduce((prev, curr) => {
+    return Math.abs(curr.date.localeCompare(target)) <
+           Math.abs(prev.date.localeCompare(target))
+      ? curr
+      : prev;
+  });
+}
 
-    const amountLabel = document.getElementById("amountLabel");
-    const detectedPill = document.getElementById("detectedPill");
-    const currencyPill = document.getElementById("currencyPill");
+async function calculate() {
+  const amount = Number(document.getElementById("amount").value);
+  const start = document.getElementById("start").value;
+  const end = document.getElementById("end").value;
 
-    function buildCountrySelect(){
-      countrySelect.innerHTML = COUNTRY_OPTIONS
-        .map(item => `<option value="${item.code}">${item.label}</option>`)
-        .join("");
+  const series = await fetchCPI();
+
+  const startData = findClosest(series, start);
+  const endData = findClosest(series, end);
+
+  const equivalent = amount * (endData.cpi / startData.cpi);
+  const inflation = ((endData.cpi / startData.cpi) - 1) * 100;
+
+  document.getElementById("result").style.display = "block";
+  document.getElementById("result").innerHTML = `
+    <b>Result</b><br><br>
+    ${amount} USD in ${start} ≈ <b>${equivalent.toFixed(2)} USD</b> in ${end}<br><br>
+    Inflation: <b>${inflation.toFixed(2)}%</b>
+  `;
+
+  const labels = series
+    .filter(x => x.date >= start && x.date <= end)
+    .map(x => x.date);
+
+  const values = series
+    .filter(x => x.date >= start && x.date <= end)
+    .map(x => amount * (x.cpi / startData.cpi));
+
+  if (chart) chart.destroy();
+
+  chart = new Chart(document.getElementById("chart"), {
+    type: "line",
+    data: {
+      labels,
+      datasets: [{
+        label: "Purchasing Power",
+        data: values,
+        borderColor: "#3b82f6",
+        fill: false
+      }]
+    }
+  });
     }
 
-    function getCountryMeta(code){
-      return COUNTRY_BY_CODE[code] || COUNTRY_BY_CODE.US;
-    }
-
-    function formatMoney(value, symbol){
-      const sign = value < 0 ? "-" : "";
-      const abs = Math.abs(Number(value));
-      return `${sign}${symbol}${abs.toLocaleString(BROWSER_LOCALE, {
-        minimumFractionDigits: 0,
-        maximumFractionDigits: 2
-      })}`;
-    }
-
-    function formatPct(value){
-      return `${Number(value).toLocaleString(BROWSER_LOCALE, {
-        minimumFractionDigits: 0,
-        maximumFractionDigits: 2
-      })}%`;
-    }
-
-    function parseMonthInput(value){
-      if (!value) return null;
-      const [yearStr, monthStr] = value.split("-");
-      const year = Number(yearStr);
-      const month = Number(monthStr);
-      if (!Number.isFinite(year) || !Number.isFinite(month)) return null;
-      return new Date(Date.UTC(year, month - 1, 1));
-    }
-
-    function monthLabel(date){
-      return new Intl.DateTimeFormat(BROWSER_LOCALE, {
-        month: "short",
-        year: "numeric",
-        timeZone: "UTC"
-      }).format(date);
-    }
-
-    function setCountry(code){
-      const normalized = COUNTRY_BY_CODE[code] ? code : "US";
-      currentCountryCode = normalized;
-      countrySelect.value = normalized;
-
-      const meta = getCountryMeta(normalized);
-      amountLabel.textContent = `Amount (${meta.currency})`;
-      currencyPill.textContent = `Currency: ${meta.currency}`;
-      detectedPill.textContent = `Country: ${meta.label.split(" — ")[0]}`;
-    }
-
-    async function loadSeries(country, start, end){
-      const url = `${API_BASE}?country=${encodeURIComponent(country)}&start=${encodeURIComponent(start)}&end=${encodeURIComponent(end)}`;
-      const resp = await fetch(url, { cache: "no-store" });
-      const data = await resp.json();
-
-      if (!resp.ok) {
-        throw new Error(data?.error || "Inflation proxy failed.");
-      }
-
-      return data.series || [];
-    }
-
-    function buildSeriesPoints(series, amount){
-      const startCPI = series[0].cpi;
-      const points = series.map(row => {
-        const equivalent = amount * (row.cpi / startCPI);
-        return {
-          date: row.date,
-          equivalent,
-          remainingPct: (startCPI / row.cpi) * 100
-        };
-      });
-
-      const endCPI = series[series.length - 1].cpi;
-      return { points, startCPI, endCPI };
-    }
-
-    function renderTrendChart(points, symbol){
-      const ctx = document.getElementById("trendChart").getContext("2d");
-      if (trendChart) trendChart.destroy();
-
-      trendChart = new Chart(ctx, {
-        type: "line",
-        data: {
-          labels: points.map(p => p.date),
-          datasets: [{
-            label: "Equivalent value",
-            data: points.map(p => p.equivalent),
-            borderColor: "#3b82f6",
-            backgroundColor: "rgba(59,130,246,0.14)",
-            tension: 0.25,
-            fill: true,
-            pointRadius: 2,
-            pointHoverRadius: 4
-          }]
-        },
-        options: {
-          responsive: true,
-          plugins: {
-            legend: { labels: { color: "white" } },
-            tooltip: {
-              callbacks: {
-                label: context => ` ${context.dataset.label}: ${formatMoney(context.parsed.y, symbol)}`
-              }
-            }
-          },
-          scales: {
-            x: {
-              ticks: { color: "white", autoSkip: true, maxTicksLimit: 8 },
-              grid: { color: "rgba(255,255,255,0.08)" }
-            },
-            y: {
-              ticks: {
-                color: "white",
-                callback: value => `${symbol}${Number(value).toLocaleString(BROWSER_LOCALE)}`
-              },
-              grid: { color: "rgba(255,255,255,0.08)" }
-            }
-          }
-        }
-      });
-    }
-
-    function renderPowerChart(points){
-      const ctx = document.getElementById("powerChart").getContext("2d");
-      if (powerChart) powerChart.destroy();
-
-      powerChart = new Chart(ctx, {
-        type: "line",
-        data: {
-          labels: points.map(p => p.date),
-          datasets: [{
-            label: "Purchasing power remaining (%)",
-            data: points.map(p => p.remainingPct),
-            borderColor: "#22c55e",
-            backgroundColor: "rgba(34,197,94,0.10)",
-            tension: 0.25,
-            fill: true,
-            pointRadius: 2,
-            pointHoverRadius: 4
-          }]
-        },
-        options: {
-          responsive: true,
-          plugins: {
-            legend: { labels: { color: "white" } },
-            tooltip: {
-              callbacks: {
-                label: context => ` ${context.dataset.label}: ${Number(context.parsed.y).toFixed(2)}%`
-              }
-            }
-          },
-          scales: {
-            x: {
-              ticks: { color: "white", autoSkip: true, maxTicksLimit: 8 },
-              grid: { color: "rgba(255,255,255,0.08)" }
-            },
-            y: {
-              ticks: {
-                color: "white",
-                callback: value => `${Number(value).toFixed(0)}%`
-              },
-              grid: { color: "rgba(255,255,255,0.08)" }
-            }
-          }
-        }
-      });
-    }
-
-    async function calculateHistoricalValue(){
-      const requestId = ++activeRequestId;
-      const amount = Number(amountInput.value);
-      const start = parseMonthInput(startMonthInput.value);
-      const end = parseMonthInput(endMonthInput.value);
-      const meta = getCountryMeta(currentCountryCode);
-
-      if (!Number.isFinite(amount) || amount <= 0){
-        alert("Enter a valid amount greater than zero.");
-        return;
-      }
-
-      if (!start || !end){
-        alert("Select both start month and end month.");
-        return;
-      }
-
-      if (end < start){
-        alert("End month must be the same as or later than the start month.");
-        return;
-      }
-
-      calcBtn.disabled = true;
-      calcBtn.textContent = "Calculating...";
-
-      try {
-        const series = await loadSeries(currentCountryCode, startMonthInput.value, endMonthInput.value);
-        if (requestId !== activeRequestId) return;
-
-        if (!series.length) {
-          throw new Error("No CPI points returned for this date range.");
-        }
-
-        const { points, startCPI, endCPI } = buildSeriesPoints(series, amount);
-        const equivalent = amount * (endCPI / startCPI);
-        const increaseNeeded = equivalent - amount;
-        const periodInflation = ((endCPI / startCPI) - 1) * 100;
-        const remainingPct = (startCPI / endCPI) * 100;
-        const erosionPct = 100 - remainingPct;
-
-        resultSentence.textContent =
-          `${formatMoney(amount, meta.symbol)} in ${monthLabel(start)} is equivalent to about ${formatMoney(equivalent, meta.symbol)} in ${monthLabel(end)}.`;
-
-        equivalentOut.textContent = formatMoney(equivalent, meta.symbol);
-        increaseOut.textContent = `${formatMoney(increaseNeeded, meta.symbol)} (${periodInflation >= 0 ? "+" : ""}${periodInflation.toFixed(2)}%)`;
-        inflationOut.textContent = formatPct(periodInflation);
-        remainingOut.textContent = `${remainingPct.toFixed(2)}% (erosion ${erosionPct.toFixed(2)}%)`;
-
-        let insight = "";
-        let insightClass = "";
-
-        if (Math.abs(periodInflation) < 0.01){
-          insight = "No net change in purchasing power over the selected period.";
-          insightClass = "insight-medium";
-        } else if (periodInflation >= 300){
-          insight = "Very strong erosion of purchasing power.";
-          insightClass = "insight-weak";
-        } else if (periodInflation >= 100){
-          insight = "Noticeable inflation impact over this period.";
-          insightClass = "insight-medium";
-        } else if (periodInflation > 0){
-          insight = "Purchasing power declined, but the change is more moderate.";
-          insightClass = "insight-good";
-        } else {
-          insight = "The selected period shows deflation or a real value gain.";
-          insightClass = "insight-good";
-        }
-
-        insightOut.innerHTML = `<span class="${insightClass}">${insight}</span>`;
-        resultCard.style.display = "block";
-
-        renderTrendChart(points, meta.symbol);
-        renderPowerChart(points);
-
-        resultCard.scrollIntoView({ behavior: "smooth", block: "start" });
-      } catch (error) {
-        console.error(error);
-        alert(error.message || "Could not load inflation data for this country.");
-      } finally {
-        if (requestId === activeRequestId){
-          calcBtn.disabled = false;
-          calcBtn.textContent = "Calculate";
-        }
-      }
-    }
-
-    async function detectVisitorCountry(){
-      try {
-        const response = await fetch(GEO_URL, { cache: "no-store" });
-        if (!response.ok) throw new Error("Geo lookup failed");
-        const data = await response.json();
-        const code = String(data.country_code || "").toUpperCase();
-        if (COUNTRY_BY_CODE[code]) return code;
-      } catch (error) {}
-
-      return "US";
-    }
-
-    async function init(){
-      buildCountrySelect();
-
-      const now = new Date();
-      const currentMonth = `${now.getUTCFullYear()}-${String(now.getUTCMonth() + 1).padStart(2, "0")}`;
-      const fiveYearsAgo = new Date(Date.UTC(now.getUTCFullYear() - 5, now.getUTCMonth(), 1));
-      const fiveYearsAgoMonth = `${fiveYearsAgo.getUTCFullYear()}-${String(fiveYearsAgo.getUTCMonth() + 1).padStart(2, "0")}`;
-
-      if (!startMonthInput.value) startMonthInput.value = fiveYearsAgoMonth;
-      if (!endMonthInput.value) endMonthInput.value = currentMonth;
-
-      const detected = await detectVisitorCountry();
-      setCountry(detected);
-
-      countrySelect.addEventListener("change", () => setCountry(countrySelect.value));
-      calcBtn.addEventListener("click", calculateHistoricalValue);
-
+                          
       document.querySelectorAll(".faq-question").forEach(btn => {
         btn.addEventListener("click", () => {
           const item = btn.parentElement;
@@ -752,8 +442,6 @@
         });
       });
     }
-
-    init();
   </script>
 </body>
           </html>
