@@ -1,420 +1,789 @@
 <!DOCTYPE html>
-<html>
-
+<html lang="en">
 <head>
-<link rel="canonical" href="https://novainvesttools.com/leverage-calculator.html">
-<!-- Google tag (gtag.js) -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-ZPCXDVE8C5"></script>
-<script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
+  <link rel="canonical" href="https://novainvesttools.com/leverage-calculator.html">
 
-  gtag('config', 'G-ZPCXDVE8C5');
-</script>
-<meta charset="UTF-8">
-<title>Leverage Calculator – Maximize Your Trading Power</title>
-<meta name="description" content="Calculate leveraged positions, profits, and risks easily. Ideal for crypto and forex traders.">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-ZPCXDVE8C5"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-ZPCXDVE8C5');
+  </script>
 
-<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-<link rel="stylesheet" href="style.css">
-<style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-body{
-font-family: Arial;
-background:#0b1a33;
-color:white;
-display:flex;
-justify-content:center;
-align-items:center;
-min-height:100vh;
-flex-direction:column;
-}
+  <title>Leverage Calculator – Maximize Your Trading Power</title>
+  <meta name="description" content="Calculate leveraged position size, profit or loss, and trading exposure instantly. Useful for forex, crypto, futures, and risk management planning.">
+  <meta name="theme-color" content="#0f172a">
+  <meta name="robots" content="index,follow,max-image-preview:large">
 
-.container{
-background:#1e293b;
-padding:30px;
-border-radius:12px;
-width:90%;
-max-width:500px;
-}
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://novainvesttools.com/leverage-calculator.html">
+  <meta property="og:title" content="Leverage Calculator – Maximize Your Trading Power">
+  <meta property="og:description" content="Calculate leveraged position size, profit or loss, and trading exposure instantly. Useful for forex, crypto, futures, and risk management planning.">
 
-input{
-width:100%;
-padding:12px;
-margin:10px 0;
-border-radius:6px;
-border:none;
-}
+  <link rel="preconnect" href="https://cdn.jsdelivr.net">
+  <link rel="dns-prefetch" href="https://cdn.jsdelivr.net">
 
-button{
-padding:12px 20px;
-background:#3b82f6;
-border:none;
-border-radius:8px;
-color:white;
-cursor:pointer;
-}
+  <link rel="stylesheet" href="style.css">
+  <link rel="icon" href="favicon.png" type="image/png">
+  <link rel="apple-touch-icon" href="favicon.png">
 
-canvas{
-margin-top:30px;
-}
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
-.menu{
-margin-bottom:25px;
-}
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "WebApplication",
+    "name": "Leverage Calculator",
+    "url": "https://novainvesttools.com/leverage-calculator.html",
+    "applicationCategory": "FinanceApplication",
+    "operatingSystem": "All",
+    "browserRequirements": "Requires JavaScript",
+    "description": "Calculate leveraged position size, profit or loss, and trading exposure.",
+    "featureList": [
+      "Position size calculation",
+      "Profit and loss estimation",
+      "Trading exposure analysis",
+      "Leverage risk visualization"
+    ],
+    "offers": {
+      "@type": "Offer",
+      "price": "0",
+      "priceCurrency": "USD"
+    }
+  }
+  </script>
 
-.menu a{
-color:#3b82f6;
-margin:10px;
-text-decoration:none;
-}
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": [
+      {
+        "@type": "Question",
+        "name": "What is leverage in trading?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Leverage lets you control a larger position with a smaller amount of capital, which increases both potential profits and potential losses."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "How does leverage affect profit and loss?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Leverage multiplies the impact of price movement on your position. Small moves can create large gains or losses."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "What is liquidation in leveraged trading?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Liquidation happens when losses use up your margin and the platform closes the position automatically to prevent further losses."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Is high leverage safe for beginners?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "High leverage is risky. Beginners usually benefit from lower leverage because it gives more room for price movement."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Can I lose more than my investment with leverage?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Most platforms liquidate positions before losses exceed margin, but extreme volatility or platform rules can still create additional risk."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "How can I manage risk when using leverage?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "You can manage leverage risk by using lower leverage, setting stop-loss levels, and risking only a small portion of your capital per trade."
+        }
+      }
+    ]
+  }
+  </script>
 
-.toptext{
-font-size:14px;
-color:#6b7a99;
-margin-bottom:5px;
-}
+  <style>
+    *{
+      box-sizing:border-box;
+    }
 
-.disclaimer{
-margin-top:40px;
-padding-top:20px;
-border-top:1px solid rgba(255,255,255,0.1);
-font-size:13px;
-color:#9ca3af;
-max-width:500px;
-text-align:center;
-line-height:1.6;
-}
+    body{
+      font-family:Arial, sans-serif;
+      background:#0b1a33;
+      color:white;
+      display:flex;
+      justify-content:center;
+      align-items:center;
+      flex-direction:column;
+      min-height:100vh;
+      margin:0;
+      padding:24px 0;
+    }
 
-</style>
+    .toptext{
+      font-size:14px;
+      color:#6b7a99;
+      margin-bottom:5px;
+    }
 
+    .menu{
+      margin-bottom:25px;
+    }
+
+    .menu a{
+      color:#3b82f6;
+      margin:10px;
+      text-decoration:none;
+      font-weight:600;
+    }
+
+    .container{
+      background:#1e293b;
+      padding:30px;
+      border-radius:16px;
+      width:90%;
+      max-width:560px;
+      box-shadow:0 10px 25px rgba(0,0,0,0.35);
+    }
+
+    h1{
+      margin-top:0;
+      margin-bottom:10px;
+      font-size:32px;
+      line-height:1.15;
+    }
+
+    .quick-answer{
+      background:rgba(59,130,246,0.12);
+      border:1px solid rgba(59,130,246,0.25);
+      padding:12px 14px;
+      border-radius:10px;
+      font-size:15px;
+      line-height:1.6;
+      color:#e2e8f0;
+      margin-bottom:18px;
+    }
+
+    .subhead{
+      color:#94a3b8;
+      font-size:15px;
+      line-height:1.6;
+      margin-bottom:18px;
+    }
+
+    .badge-row{
+      display:flex;
+      gap:10px;
+      flex-wrap:wrap;
+      margin:14px 0 6px;
+    }
+
+    .badge{
+      display:inline-flex;
+      padding:5px 10px;
+      border-radius:999px;
+      font-size:12px;
+      font-weight:700;
+      background:rgba(59,130,246,0.12);
+      color:#bfdbfe;
+      border:1px solid rgba(59,130,246,0.22);
+    }
+
+    .badge.soft{
+      background:rgba(255,255,255,0.05);
+      border-color:rgba(255,255,255,0.08);
+      color:#dbeafe;
+    }
+
+    .grid{
+      display:grid;
+      grid-template-columns:1fr 1fr;
+      gap:12px;
+    }
+
+    @media (max-width:700px){
+      .grid{
+        grid-template-columns:1fr;
+      }
+    }
+
+    .field{
+      margin:12px 0;
+    }
+
+    .field label{
+      display:block;
+      font-size:13px;
+      color:#cbd5e1;
+      margin:0 0 6px;
+      font-weight:600;
+    }
+
+    input{
+      width:100%;
+      padding:14px;
+      margin:0;
+      border-radius:10px;
+      border:none;
+      background:#e5e7eb;
+      font-size:16px;
+      outline:none;
+    }
+
+    input:focus{
+      box-shadow:0 0 0 3px rgba(59,130,246,0.18);
+    }
+
+    button{
+      padding:14px;
+      background:#3b82f6;
+      border:none;
+      border-radius:10px;
+      color:white;
+      cursor:pointer;
+      margin-top:10px;
+      width:100%;
+      font-size:16px;
+      font-weight:700;
+      transition:0.2s;
+    }
+
+    button:hover{
+      background:#2563eb;
+      transform:translateY(-1px);
+    }
+
+    .result-card{
+      margin-top:18px;
+      padding:16px;
+      border-radius:14px;
+      background:rgba(255,255,255,0.05);
+      border:1px solid rgba(255,255,255,0.08);
+      display:none;
+    }
+
+    .result-line{
+      margin:10px 0;
+      font-size:16px;
+      line-height:1.5;
+      color:#e5e7eb;
+    }
+
+    .result-line strong{
+      color:#cbd5f5;
+    }
+
+    .insight-good{
+      color:#22c55e;
+      font-weight:700;
+    }
+
+    .insight-medium{
+      color:#facc15;
+      font-weight:700;
+    }
+
+    .insight-weak{
+      color:#ef4444;
+      font-weight:700;
+    }
+
+    canvas{
+      margin-top:26px;
+    }
+
+    .content{
+      width:90%;
+      max-width:900px;
+      margin-top:34px;
+    }
+
+    .content h2{
+      margin-top:34px;
+      margin-bottom:10px;
+      font-size:28px;
+    }
+
+    .content p,
+    .content li{
+      color:#cbd5e1;
+      line-height:1.7;
+      font-size:15px;
+    }
+
+    .content ul{
+      padding-left:20px;
+    }
+
+    .formula{
+      background:rgba(255,255,255,0.05);
+      border:1px solid rgba(255,255,255,0.08);
+      padding:14px 16px;
+      border-radius:12px;
+      margin:12px 0;
+      color:#e2e8f0;
+      overflow:auto;
+      line-height:1.7;
+    }
+
+    .faq{
+      margin-top:14px;
+    }
+
+    .faq-item{
+      border-bottom:1px solid rgba(255,255,255,0.08);
+    }
+
+    .faq-question{
+      width:100%;
+      background:none;
+      border:none;
+      color:white;
+      text-align:left;
+      padding:14px 8px;
+      font-size:15px;
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      cursor:pointer;
+    }
+
+    .faq-question:hover{
+      color:#93c5fd;
+    }
+
+    .arrow{
+      transition:0.25s;
+    }
+
+    .faq-item.active .arrow{
+      transform:rotate(180deg);
+    }
+
+    .faq-answer{
+      max-height:0;
+      overflow:hidden;
+      transition:max-height 0.3s ease;
+      color:#cbd5e1;
+      font-size:14px;
+      padding:0 8px;
+    }
+
+    .faq-item.active .faq-answer{
+      max-height:260px;
+      padding-bottom:12px;
+    }
+
+    .related{
+      width:90%;
+      max-width:560px;
+      margin-top:26px;
+      background:rgba(30,41,59,0.62);
+      border:1px solid rgba(255,255,255,0.08);
+      border-radius:16px;
+      padding:22px;
+    }
+
+    .related h3{
+      margin-top:0;
+      margin-bottom:10px;
+    }
+
+    .related p,
+    .related li{
+      color:#cbd5e1;
+      line-height:1.7;
+      font-size:15px;
+    }
+
+    .related ul{
+      padding-left:18px;
+      margin-bottom:0;
+    }
+
+    .related a{
+      color:#93c5fd;
+      text-decoration:none;
+    }
+
+    .related a:hover{
+      text-decoration:underline;
+    }
+
+    .disclaimer{
+      margin-top:24px;
+      padding-top:20px;
+      border-top:1px solid rgba(255,255,255,0.1);
+      font-size:13px;
+      color:#9ca3af;
+      max-width:900px;
+      text-align:center;
+      line-height:1.6;
+      width:90%;
+    }
+
+    @media (max-width:700px){
+      .container{
+        padding:22px;
+      }
+
+      h1{
+        font-size:28px;
+      }
+
+      .content h2{
+        font-size:24px;
+      }
+    }
+  </style>
 </head>
 
 <body>
+  <p class="toptext">Explore more calculators</p>
 
-<p class="toptext">Explore more calculators</p> 
+  <div class="menu">
+    <a href="index.html">Home</a>
+  </div>
 
-<div class="menu">
-<a href="index.html">Home</a>
-</div>
+  <div class="container">
+    <h1>Leverage Calculator</h1>
+    <p class="quick-answer">
+      A $100 margin with 10x leverage controls a $1,000 position — use this leverage calculator to estimate position size, profit or loss, and trading exposure before you enter a trade.
+    </p>
 
-<h1>Leverage Calculator</h1>
+    <p class="subhead">
+      Calculate leveraged position size, potential profit or loss, and market exposure for forex, crypto, futures, and other leveraged trades.
+    </p>
 
-<div class="container">
+    <div class="badge-row">
+      <span class="badge">Trading exposure</span>
+      <span class="badge soft">Position sizing</span>
+      <span class="badge soft">Risk planning</span>
+    </div>
 
-<input id="margin" placeholder="Margin ($)">
-<input id="leverage" placeholder="Leverage (e.g. 10x)">
-<input id="entry" placeholder="Entry price">
-<input id="exit" placeholder="Exit price">
+    <div class="grid">
+      <div class="field">
+        <label for="margin">Margin ($)</label>
+        <input id="margin" type="number" min="0" step="any" placeholder="e.g. 100">
+      </div>
 
-<button onclick="calculate()">Calculate</button>
+      <div class="field">
+        <label for="leverage">Leverage (e.g. 10x)</label>
+        <input id="leverage" type="number" min="0" step="any" placeholder="e.g. 10">
+      </div>
 
-<h3 id="result"></h3>
+      <div class="field">
+        <label for="entry">Entry Price</label>
+        <input id="entry" type="number" min="0" step="any" placeholder="e.g. 25000">
+      </div>
 
-<canvas id="myChart"></canvas>
+      <div class="field">
+        <label for="exit">Exit Price</label>
+        <input id="exit" type="number" min="0" step="any" placeholder="e.g. 26000">
+      </div>
+    </div>
 
-</div>
+    <button onclick="calculate()">Calculate</button>
 
-<h2>What is Leverage?</h2>
+    <div id="resultCard" class="result-card">
+      <div class="result-line"><strong>Position size:</strong> <span id="positionOut">—</span></div>
+      <div class="result-line"><strong>Profit / Loss:</strong> <span id="pnlOut">—</span></div>
+      <div class="result-line"><strong>Insight:</strong> <span id="insightOut">—</span></div>
+    </div>
 
-<p>
-Leverage allows you to control a larger position in the market with a smaller amount of capital. It is widely used in crypto, forex, and futures trading to amplify both potential profits and losses.
-</p>
+    <canvas id="myChart"></canvas>
+  </div>
 
-<p>
-For example, using 10x leverage means that with $100, you can open a $1,000 position. While this increases your profit potential, it also increases your risk significantly.
-</p>
+  <div class="content">
+    <h2>What is Leverage?</h2>
+    <p>
+      Leverage allows you to control a larger position in the market with a smaller amount of capital.
+      It is widely used in crypto, forex, and futures trading to amplify both potential profits and losses.
+    </p>
 
-<h2>How This Leverage Calculator Works</h2>
+    <p>
+      For example, using 10x leverage means that with $100, you can open a $1,000 position.
+      While this increases profit potential, it also increases risk significantly.
+    </p>
 
-<p>
-This leverage calculator helps you understand how leverage affects your trade outcomes. By entering your investment, leverage level, and price movement, you can instantly see your potential profit or loss.
-</p>
+    <h2>How This Leverage Calculator Works</h2>
+    <p>
+      This leverage calculator helps you understand how leverage affects your trade outcomes.
+      By entering your margin, leverage level, and price movement, you can instantly see your potential position size and profit or loss.
+    </p>
 
-<ul>
-<li><strong>Position Size</strong> = Investment × Leverage</li>
-<li><strong>Profit / Loss</strong> depends on how much the price moves</li>
-<li>Even small price changes can lead to large gains or losses</li>
-</ul>
+    <div class="formula">
+      Position Size = Margin × Leverage
+      <br>
+      Price Change % = (Exit Price − Entry Price) ÷ Entry Price
+      <br>
+      Profit / Loss = Position Size × Price Change %
+    </div>
 
-<h2>Why Leverage is Powerful (and Dangerous)</h2>
+    <p>
+      Even small price changes can lead to large gains or losses when leverage is high.
+      That is why leverage should be treated as a risk tool, not just a profit tool.
+    </p>
 
-<p>
-Leverage can multiply your gains, but it can also wipe out your entire position quickly. A small unfavorable move in price can result in liquidation, meaning your position is automatically closed to prevent further losses.
-</p>
+    <h2>Why Leverage is Powerful and Dangerous</h2>
+    <p>
+      Leverage can multiply gains, but it can also wipe out your capital quickly.
+      A small unfavorable move in price can result in liquidation, meaning your position is automatically closed to prevent further losses.
+    </p>
 
-<p>
-For example, with high leverage like 20x or 50x, even a 2–5% move against you can lead to significant losses or liquidation.
-</p>
+    <p>
+      For example, with high leverage like 20x or 50x, even a small move against you can lead to significant losses or liquidation.
+    </p>
 
-<h2>Understanding Risk Before You Trade</h2>
+    <ul>
+      <li>Higher leverage = higher risk</li>
+      <li>Smaller margin for error</li>
+      <li>Faster liquidation risk</li>
+      <li>Greater emotional pressure</li>
+    </ul>
 
-<p>
-Many traders focus only on potential profits and ignore risk. This is one of the biggest mistakes in leveraged trading.
-</p>
+    <h2>How to Use This Calculator</h2>
+    <ul>
+      <li>Enter your margin</li>
+      <li>Enter your leverage level</li>
+      <li>Enter your entry price</li>
+      <li>Enter your exit price</li>
+      <li>Click calculate to see your position size and estimated profit or loss</li>
+    </ul>
 
-<ul>
-<li>Higher leverage = higher risk</li>
-<li>Smaller margin for error</li>
-<li>Faster liquidation</li>
-</ul>
+    <h2>Why Risk Control Matters</h2>
+    <p>
+      Many traders focus only on potential profits and ignore risk. This is one of the biggest mistakes in leveraged trading.
+      Lower leverage gives you more room for price fluctuations, while higher leverage increases the chance of liquidation.
+    </p>
 
-<p>
-This calculator helps you visualize that risk before entering a trade.
-</p>
+    <p>
+      Professional traders often use lower leverage and focus on consistency rather than chasing large gains.
+    </p>
 
-<h2>Leverage vs Risk: What You Should Know</h2>
+    <h2>Frequently Asked Questions</h2>
 
-<p>
-Using lower leverage gives you more room for price fluctuations, while higher leverage increases the chance of liquidation.
-</p>
+    <div class="faq">
+      <div class="faq-item">
+        <button class="faq-question" type="button">
+          What is leverage in trading?
+          <span class="arrow">▼</span>
+        </button>
+        <div class="faq-answer">
+          <p>
+            Leverage allows you to open a larger position than your actual capital.
+            For example, with 10x leverage, a $100 investment becomes a $1,000 position.
+          </p>
+        </div>
+      </div>
 
-<p>
-Professional traders often use lower leverage and focus on consistency rather than chasing large gains.
-</p>
-<h2>Leverage Risk Warning</h2>
+      <div class="faq-item">
+        <button class="faq-question" type="button">
+          How does leverage affect profit and loss?
+          <span class="arrow">▼</span>
+        </button>
+        <div class="faq-answer">
+          <p>
+            Leverage multiplies your results.
+            A 5% price increase with 10x leverage can result in roughly a 50% gain, but a 5% loss can also lead to a 50% loss.
+          </p>
+        </div>
+      </div>
 
-<p>
-Leverage is a double-edged sword. While it can amplify profits, it can also destroy your capital much faster than you expect.
-</p>
+      <div class="faq-item">
+        <button class="faq-question" type="button">
+          What is liquidation in leveraged trading?
+          <span class="arrow">▼</span>
+        </button>
+        <div class="faq-answer">
+          <p>
+            Liquidation occurs when your losses exceed your margin, causing your position to be automatically closed.
+            Higher leverage brings your liquidation price closer to your entry.
+          </p>
+        </div>
+      </div>
 
-<p>
-Many traders underestimate how quickly losses grow when using high leverage. A small price move against your position can result in significant losses or even full liquidation.
-</p>
+      <div class="faq-item">
+        <button class="faq-question" type="button">
+          Is high leverage safe for beginners?
+          <span class="arrow">▼</span>
+        </button>
+        <div class="faq-answer">
+          <p>
+            High leverage is risky. Beginners usually do better with lower leverage because it gives more room for price movement and lowers liquidation risk.
+          </p>
+        </div>
+      </div>
 
-<ul>
-<li>Higher leverage reduces your margin for error</li>
-<li>Small market moves have large impact</li>
-<li>Liquidation can happen faster than expected</li>
-</ul>
+      <div class="faq-item">
+        <button class="faq-question" type="button">
+          Can I lose more than my investment with leverage?
+          <span class="arrow">▼</span>
+        </button>
+        <div class="faq-answer">
+          <p>
+            Most platforms liquidate positions before losses exceed margin, but extreme volatility or platform rules can still create additional risk.
+          </p>
+        </div>
+      </div>
 
-<p>
-Always understand your risk before entering a leveraged trade.
-</p>
-
-
-<h2>The Psychology of Leverage</h2>
-
-<p>
-Leverage doesn’t just affect your balance — it affects your decisions.
-</p>
-
-<p>
-When using high leverage, emotions become stronger. Fear increases during losses, and greed increases during profits. This often leads to poor decisions such as closing trades too early or holding losing positions too long.
-</p>
-
-<h2>Common Psychological Mistakes</h2>
-
-<ul>
-<li>Overtrading after a loss</li>
-<li>Using higher leverage to “recover” losses</li>
-<li>Ignoring stop-loss levels</li>
-<li>Holding losing positions out of hope</li>
-</ul>
-
-<h2>The Right Mindset</h2>
-
-<ul>
-<li>Focus on risk, not just profit</li>
-<li>Use leverage as a tool, not a gamble</li>
-<li>Stick to a plan and avoid emotional decisions</li>
-<li>Accept losses as part of trading</li>
-</ul>
-
-<p>
-The best traders don’t aim for big wins — they aim for long-term survival and consistency.
-</p>
-<h3>Frequently Asked Questions</h3>
-
-<div class="faq">
-
-  <div class="faq-item">
-    <button class="faq-question">
-      What is leverage in trading?
-      <span class="arrow">▼</span>
-    </button>
-    <div class="faq-answer">
-      <p>
-        Leverage allows you to open a larger position than your actual capital. For example, with 10x leverage, a $100 investment becomes a $1,000 position. This increases both potential profits and potential losses.
-      </p>
+      <div class="faq-item">
+        <button class="faq-question" type="button">
+          How can I manage risk when using leverage?
+          <span class="arrow">▼</span>
+        </button>
+        <div class="faq-answer">
+          <p>
+            You can manage risk by using lower leverage, setting stop-loss levels, risking only a small percentage of capital, and avoiding emotional decisions.
+          </p>
+        </div>
+      </div>
     </div>
   </div>
 
-  <div class="faq-item">
-    <button class="faq-question">
-      How does leverage affect profit and loss?
-      <span class="arrow">▼</span>
-    </button>
-    <div class="faq-answer">
-      <p>
-        Leverage multiplies your results. A 5% price increase with 10x leverage results in roughly a 50% gain. However, a 5% loss also leads to a 50% loss, making risk management critical.
-      </p>
-    </div>
+  <div class="related">
+    <h3>Related Calculators</h3>
+    <p>You may also find these tools useful:</p>
+    <ul>
+      <li><a href="risk-reward-calculator.html">Risk Reward Calculator</a></li>
+      <li><a href="liquidation-price-calculator.html">Liquidation Price Calculator</a></li>
+      <li><a href="position-size-calculator.html">Position Size Calculator</a></li>
+      <li><a href="margin-calculator.html">Margin Calculator</a></li>
+      <li><a href="profit-loss-calculator.html">Profit Loss Calculator</a></li>
+    </ul>
   </div>
 
-  <div class="faq-item">
-    <button class="faq-question">
-      What is liquidation in leveraged trading?
-      <span class="arrow">▼</span>
-    </button>
-    <div class="faq-answer">
-      <p>
-        Liquidation occurs when your losses exceed your margin, causing your position to be automatically closed. Higher leverage brings your liquidation price closer to your entry price.
-      </p>
-    </div>
+  <div class="disclaimer">
+    <p>
+      <strong>Disclaimer:</strong> The calculators on this website are provided for informational and educational purposes only.
+      All results are estimates based on the values entered and do not constitute financial, investment, or trading advice.
+      Always conduct your own research before making financial decisions.
+    </p>
   </div>
 
-  <div class="faq-item">
-    <button class="faq-question">
-      Is high leverage (10x, 20x, 50x) safe?
-      <span class="arrow">▼</span>
-    </button>
-    <div class="faq-answer">
-      <p>
-        High leverage is risky. While it can generate large profits, even small price movements can lead to significant losses or liquidation. Most experienced traders use lower leverage to reduce risk.
-      </p>
-    </div>
-  </div>
+  <script src="footer.js"></script>
+  <script>
+    let chart;
 
-  <div class="faq-item">
-    <button class="faq-question">
-      What leverage should beginners use?
-      <span class="arrow">▼</span>
-    </button>
-    <div class="faq-answer">
-      <p>
-        Beginners should use low leverage such as 2x–5x. This provides more room for price fluctuations and reduces the risk of liquidation while learning how the market behaves.
-      </p>
-    </div>
-  </div>
+    function calculate(){
+      const margin = parseFloat(document.getElementById("margin").value);
+      const leverage = parseFloat(document.getElementById("leverage").value);
+      const entry = parseFloat(document.getElementById("entry").value);
+      const exit = parseFloat(document.getElementById("exit").value);
 
-  <div class="faq-item">
-    <button class="faq-question">
-      Can I lose more than my investment with leverage?
-      <span class="arrow">▼</span>
-    </button>
-    <div class="faq-answer">
-      <p>
-        On most platforms, liquidation prevents you from losing more than your initial margin. However, in extreme volatility or certain trading conditions, losses can exceed your initial investment.
-      </p>
-    </div>
-  </div>
+      if (isNaN(margin) || isNaN(leverage) || isNaN(entry) || isNaN(exit)) {
+        alert("Fill all fields");
+        return;
+      }
 
-  <div class="faq-item">
-    <button class="faq-question">
-      Why do professional traders use lower leverage?
-      <span class="arrow">▼</span>
-    </button>
-    <div class="faq-answer">
-      <p>
-        Professional traders focus on consistency and risk control. Lower leverage reduces the chance of liquidation and allows them to stay in trades longer without being forced out by small price movements.
-      </p>
-    </div>
-  </div>
+      if (margin <= 0 || leverage <= 0 || entry <= 0 || exit <= 0) {
+        alert("All values must be greater than zero.");
+        return;
+      }
 
-  <div class="faq-item">
-    <button class="faq-question">
-      How can I manage risk when using leverage?
-      <span class="arrow">▼</span>
-    </button>
-    <div class="faq-answer">
-      <p>
-        You can manage risk by using lower leverage, setting stop-loss levels, risking only a small percentage of your capital per trade, and avoiding emotional decisions.
-      </p>
-    </div>
-  </div>
+      const positionSize = margin * leverage;
+      const priceChange = (exit - entry) / entry;
+      const pnl = positionSize * priceChange;
 
-</div>
-<div class="related">
-<h3>Related Calculators</h3>
-<p>You may also find these tools useful:</p>
-<ul>
-<li><a href="risk-reward-calculator.html">Risk Reward Calculator</a></li>
-<li><a href="liquidation-price-calculator.html">Liquidation Price Calculator</a></li>
-<li><a href="position-size-calculator.html">Position Size Calculator</a></li>
-<li><a href="margin-calculator.html">Margin Calculator</a></li>
-<li><a href="profit-loss-calculator.html">Profit Loss Calculator</a></li>
-</ul>
-</div>
-  
-<div class="disclaimer">
-<p>
-<strong>Disclaimer:</strong> The calculators on this website are provided for informational and educational purposes only. All results are estimates based on the values entered and do not constitute financial, investment, or trading advice. Always conduct your own research before making financial decisions.
-</p>
-</div>
-<script src="footer.js"></script>
-<script>
+      document.getElementById("resultCard").style.display = "block";
+      document.getElementById("positionOut").innerHTML = "$" + positionSize.toFixed(2);
+      document.getElementById("pnlOut").innerHTML = "$" + pnl.toFixed(2);
 
-let chart;
+      let insight = "";
+      let insightClass = "";
 
-function calculate(){
+      if (pnl > 0) {
+        insight = "Leverage magnified your gain, but the same setup would also magnify a loss.";
+        insightClass = "insight-good";
+      } else if (pnl === 0) {
+        insight = "The trade ended flat. Leverage did not change the outcome because price did not move.";
+        insightClass = "insight-medium";
+      } else {
+        insight = "The loss is magnified by leverage. Higher leverage would make the downside even more severe.";
+        insightClass = "insight-weak";
+      }
 
-let margin = parseFloat(document.getElementById("margin").value)
-let leverage = parseFloat(document.getElementById("leverage").value)
-let entry = parseFloat(document.getElementById("entry").value)
-let exit = parseFloat(document.getElementById("exit").value)
+      document.getElementById("insightOut").innerHTML = `<span class="${insightClass}">${insight}</span>`;
 
-if(!margin || !leverage || !entry || !exit){
-alert("Fill all fields")
-return
-}
+      drawChart(margin, positionSize);
+    }
 
-let positionSize = margin * leverage
+    function drawChart(margin, positionSize){
+      const ctx = document.getElementById('myChart').getContext('2d');
 
-let priceChange = (exit - entry) / entry
+      if(chart){
+        chart.destroy();
+      }
 
-let pnl = positionSize * priceChange
-
-document.getElementById("result").innerHTML =
-`Position Size: $${positionSize.toFixed(2)}
-<br>Profit / Loss: $${pnl.toFixed(2)}`
-
-drawChart(margin, positionSize)
-
-}
-
-function drawChart(margin, positionSize){
-
-let ctx = document.getElementById('myChart')
-
-if(chart){
-chart.destroy()
-}
-
-chart = new Chart(ctx,{
-type:'bar',
-data:{
-labels:['Your Money','Leveraged Position'],
-datasets:[{
-label:'Trading Overview',
-data:[margin, positionSize],
-backgroundColor:['#3b82f6','#3b82f6']
-}]
-}
-})
-
-}
-document.addEventListener("DOMContentLoaded", function(){
-
-  document.querySelectorAll(".faq-question").forEach(btn => {
-    btn.addEventListener("click", () => {
-
-      const item = btn.parentElement;
-
-      document.querySelectorAll(".faq-item").forEach(i => {
-        if(i !== item) i.classList.remove("active");
+      chart = new Chart(ctx,{
+        type:'bar',
+        data:{
+          labels:['Your Money','Leveraged Position'],
+          datasets:[{
+            label:'Trading Overview',
+            data:[margin, positionSize],
+            backgroundColor:['#3b82f6','#22c55e']
+          }]
+        },
+        options:{
+          responsive:true,
+          plugins:{
+            legend:{
+              labels:{ color:'white' }
+            },
+            tooltip:{
+              callbacks:{
+                label: function(context){
+                  return `$${Number(context.parsed.y).toFixed(2)}`;
+                }
+              }
+            }
+          },
+          scales:{
+            x:{
+              ticks:{ color:'white' },
+              grid:{ color:'rgba(255,255,255,0.08)' }
+            },
+            y:{
+              ticks:{
+                color:'white',
+                callback: function(value){
+                  return "$" + Number(value).toLocaleString();
+                }
+              },
+              grid:{ color:'rgba(255,255,255,0.08)' }
+            }
+          }
+        }
       });
+    }
 
-      item.classList.toggle("active");
+    document.addEventListener("DOMContentLoaded", function(){
+      document.querySelectorAll(".faq-question").forEach(btn => {
+        btn.addEventListener("click", () => {
+          const item = btn.parentElement;
 
+          document.querySelectorAll(".faq-item").forEach(i => {
+            if(i !== item) i.classList.remove("active");
+          });
+
+          item.classList.toggle("active");
+        });
+      });
     });
-  });
-
-});
-</script>
-
+  </script>
 </body>
-
 </html>
