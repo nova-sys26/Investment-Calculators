@@ -7,14 +7,14 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
   <title>Historical Purchasing Power Calculator – Compare Money Across Dates</title>
-  <meta name="description" content="Compare the same currency across two dates and see how inflation changed its purchasing power. Enter an amount, start month, and end month to get an instant estimate.">
+  <meta name="description" content="Compare the same USD amount across two dates and see how inflation changed its purchasing power. Enter an amount, start month, and end month to get an instant estimate.">
   <meta name="theme-color" content="#0b1a33">
   <meta name="robots" content="index,follow,max-image-preview:large">
 
   <meta property="og:type" content="website">
   <meta property="og:url" content="https://novainvesttools.com/purchasing-power-calculator.html">
   <meta property="og:title" content="Historical Purchasing Power Calculator – Compare Money Across Dates">
-  <meta property="og:description" content="Compare the same currency across two dates and see how inflation changed its purchasing power.">
+  <meta property="og:description" content="Compare the same USD amount across two dates and see how inflation changed its purchasing power.">
 
   <link rel="stylesheet" href="style.css">
   <link rel="icon" href="favicon.png" type="image/png">
@@ -31,7 +31,7 @@
     "applicationCategory": "FinanceApplication",
     "operatingSystem": "All",
     "browserRequirements": "Requires JavaScript",
-    "description": "Compare the same currency across two dates and estimate how inflation changed its purchasing power.",
+    "description": "Compare USD across two dates and estimate how inflation changed its purchasing power.",
     "featureList": [
       "Historical purchasing power comparison",
       "Inflation-adjusted value estimate",
@@ -48,7 +48,6 @@
 
   <style>
     * { box-sizing: border-box; }
-
     html { scroll-behavior: smooth; }
 
     body {
@@ -178,9 +177,7 @@
     }
 
     @media (max-width: 700px) {
-      .grid {
-        grid-template-columns: 1fr;
-      }
+      .grid { grid-template-columns: 1fr; }
     }
 
     .field {
@@ -437,6 +434,7 @@
       cursor: pointer;
       margin-top: 0;
       border-radius: 0;
+      transform: none;
     }
 
     .faq-question:hover {
@@ -738,331 +736,332 @@
     </p>
   </div>
 
-  <script src="footer.js"></script>
   <script>
-    const API_KEY = 528cb65504834e44d0b9a6f4e9ba3a6c;
-    const SERIES_ID = "CPIAUCSL";
-    const FRED_URL = "https://api.stlouisfed.org/fred/series/observations";
+    document.addEventListener("DOMContentLoaded", () => {
+      const API_KEY = 528cb65504834e44d0b9a6f4e9ba3a6c;
+      const SERIES_ID = "CPIAUCSL";
+      const FRED_URL = "https://api.stlouisfed.org/fred/series/observations";
 
-    const amountInput = document.getElementById("amount");
-    const startMonthInput = document.getElementById("startMonth");
-    const endMonthInput = document.getElementById("endMonth");
-    const calcBtn = document.getElementById("calcBtn");
+      const amountInput = document.getElementById("amount");
+      const startMonthInput = document.getElementById("startMonth");
+      const endMonthInput = document.getElementById("endMonth");
+      const calcBtn = document.getElementById("calcBtn");
 
-    const resultCard = document.getElementById("resultCard");
-    const resultSentence = document.getElementById("resultSentence");
-    const equivalentOut = document.getElementById("equivalentOut");
-    const increaseOut = document.getElementById("increaseOut");
-    const inflationOut = document.getElementById("inflationOut");
-    const remainingOut = document.getElementById("remainingOut");
-    const insightOut = document.getElementById("insightOut");
+      const resultCard = document.getElementById("resultCard");
+      const resultSentence = document.getElementById("resultSentence");
+      const equivalentOut = document.getElementById("equivalentOut");
+      const increaseOut = document.getElementById("increaseOut");
+      const inflationOut = document.getElementById("inflationOut");
+      const remainingOut = document.getElementById("remainingOut");
+      const insightOut = document.getElementById("insightOut");
 
-    const dataStatus = document.getElementById("dataStatus");
-    const seriesStatus = document.getElementById("seriesStatus");
+      const dataStatus = document.getElementById("dataStatus");
 
-    let trendChart = null;
-    let powerChart = null;
+      let trendChart = null;
+      let powerChart = null;
+      let cpiCache = null;
+      let cpiCachePromise = null;
 
-    let cpiCache = null;
-    let cpiCachePromise = null;
+      function setDefaultMonths() {
+        const now = new Date();
+        const currentMonth = `${now.getUTCFullYear()}-${String(now.getUTCMonth() + 1).padStart(2, "0")}`;
+        const fiveYearsAgo = new Date(Date.UTC(now.getUTCFullYear() - 5, now.getUTCMonth(), 1));
+        const fiveYearsAgoMonth = `${fiveYearsAgo.getUTCFullYear()}-${String(fiveYearsAgo.getUTCMonth() + 1).padStart(2, "0")}`;
 
-    function setDefaultMonths() {
-      const now = new Date();
-      const currentMonth = `${now.getUTCFullYear()}-${String(now.getUTCMonth() + 1).padStart(2, "0")}`;
+        if (!startMonthInput.value) startMonthInput.value = fiveYearsAgoMonth;
+        if (!endMonthInput.value) endMonthInput.value = currentMonth;
+      }
 
-      const fiveYearsAgo = new Date(Date.UTC(now.getUTCFullYear() - 5, now.getUTCMonth(), 1));
-      const fiveYearsAgoMonth = `${fiveYearsAgo.getUTCFullYear()}-${String(fiveYearsAgo.getUTCMonth() + 1).padStart(2, "0")}`;
+      function formatMoney(value) {
+        return `$${Number(value).toLocaleString("en-US", {
+          minimumFractionDigits: 0,
+          maximumFractionDigits: 2
+        })}`;
+      }
 
-      if (!startMonthInput.value) startMonthInput.value = fiveYearsAgoMonth;
-      if (!endMonthInput.value) endMonthInput.value = currentMonth;
-    }
+      function formatPct(value) {
+        return `${Number(value).toLocaleString("en-US", {
+          minimumFractionDigits: 0,
+          maximumFractionDigits: 2
+        })}%`;
+      }
 
-    function formatMoney(value) {
-      return `$${Number(value).toLocaleString("en-US", {
-        minimumFractionDigits: 0,
-        maximumFractionDigits: 2
-      })}`;
-    }
+      function monthLabel(dateStr) {
+        const [year, month] = dateStr.split("-");
+        const d = new Date(Date.UTC(Number(year), Number(month) - 1, 1));
+        return new Intl.DateTimeFormat("en-US", {
+          month: "short",
+          year: "numeric",
+          timeZone: "UTC"
+        }).format(d);
+      }
 
-    function formatPct(value) {
-      return `${Number(value).toLocaleString("en-US", {
-        minimumFractionDigits: 0,
-        maximumFractionDigits: 2
-      })}%`;
-    }
+      function normalizeMonthValue(value) {
+        if (!value) return "";
+        const [year, month] = value.split("-");
+        return `${year}-${String(month).padStart(2, "0")}`;
+      }
 
-    function monthLabel(dateStr) {
-      const [year, month] = dateStr.split("-");
-      const d = new Date(Date.UTC(Number(year), Number(month) - 1, 1));
-      return new Intl.DateTimeFormat("en-US", {
-        month: "short",
-        year: "numeric",
-        timeZone: "UTC"
-      }).format(d);
-    }
+      async function fetchCPI() {
+        if (cpiCache) return cpiCache;
+        if (cpiCachePromise) return cpiCachePromise;
 
-    function normalizeMonthValue(value) {
-      if (!value) return "";
-      const [year, month] = value.split("-");
-      return `${year}-${String(month).padStart(2, "0")}`;
-    }
+        if (!API_KEY || API_KEY === "PASTE_YOUR_FRED_API_KEY_HERE") {
+          throw new Error("Insert your FRED API key in the code first.");
+        }
 
-    async function fetchCPI() {
-      if (cpiCache) return cpiCache;
-      if (cpiCachePromise) return cpiCachePromise;
+        const url =
+          `${FRED_URL}?series_id=${encodeURIComponent(SERIES_ID)}` +
+          `&api_key=${encodeURIComponent(API_KEY)}` +
+          `&file_type=json` +
+          `&observation_start=1947-01-01`;
 
-      const url =
-        `${FRED_URL}?series_id=${encodeURIComponent(SERIES_ID)}` +
-        `&api_key=${encodeURIComponent(API_KEY)}` +
-        `&file_type=json` +
-        `&observation_start=1947-01-01`;
+        cpiCachePromise = fetch(url, { cache: "no-store" })
+          .then(async (res) => {
+            const data = await res.json();
 
-      cpiCachePromise = fetch(url, { cache: "no-store" })
-        .then(async (res) => {
-          const data = await res.json();
+            if (!res.ok) {
+              throw new Error(data?.error_message || data?.error || "Failed to load CPI data from FRED.");
+            }
 
-          if (!res.ok) {
-            throw new Error(data?.error_message || data?.error || "Failed to load CPI data from FRED.");
-          }
+            const observations = Array.isArray(data?.observations) ? data.observations : [];
+            const series = observations
+              .filter((d) => d && d.value !== ".")
+              .map((d) => ({
+                date: String(d.date || "").slice(0, 7),
+                cpi: Number(d.value)
+              }))
+              .filter((row) => row.date && Number.isFinite(row.cpi))
+              .sort((a, b) => a.date.localeCompare(b.date));
 
-          const observations = Array.isArray(data?.observations) ? data.observations : [];
+            if (!series.length) {
+              throw new Error("No CPI data returned from FRED.");
+            }
 
-          const series = observations
-            .filter((d) => d && d.value !== ".")
-            .map((d) => ({
-              date: String(d.date || "").slice(0, 7),
-              cpi: Number(d.value)
-            }))
-            .filter((row) => row.date && Number.isFinite(row.cpi))
-            .sort((a, b) => a.date.localeCompare(b.date));
+            cpiCache = series;
+            return series;
+          })
+          .finally(() => {
+            cpiCachePromise = null;
+          });
 
-          if (!series.length) {
-            throw new Error("No CPI data returned from FRED.");
-          }
+        return cpiCachePromise;
+      }
 
-          cpiCache = series;
-          return series;
-        })
-        .finally(() => {
-          cpiCachePromise = null;
-        });
+      function findClosestOnOrBefore(series, targetMonth) {
+        const exact = series.find((row) => row.date === targetMonth);
+        if (exact) return exact;
 
-      return cpiCachePromise;
-    }
+        const filtered = series.filter((row) => row.date <= targetMonth);
+        return filtered.length ? filtered[filtered.length - 1] : null;
+      }
 
-    function findClosestOnOrBefore(series, targetMonth) {
-      const exact = series.find((row) => row.date === targetMonth);
-      if (exact) return exact;
+      function buildChartPoints(series, amount, startCpi) {
+        return series.map((row) => ({
+          date: row.date,
+          equivalent: amount * (row.cpi / startCpi),
+          remainingPct: (startCpi / row.cpi) * 100
+        }));
+      }
 
-      const filtered = series.filter((row) => row.date <= targetMonth);
-      return filtered.length ? filtered[filtered.length - 1] : null;
-    }
+      function renderTrendChart(points) {
+        const ctx = document.getElementById("trendChart").getContext("2d");
+        if (trendChart) trendChart.destroy();
 
-    function buildChartPoints(series, amount, startCpi) {
-      return series.map((row) => ({
-        date: row.date,
-        equivalent: amount * (row.cpi / startCpi),
-        remainingPct: (startCpi / row.cpi) * 100
-      }));
-    }
-
-    function renderTrendChart(points) {
-      const ctx = document.getElementById("trendChart").getContext("2d");
-      if (trendChart) trendChart.destroy();
-
-      trendChart = new Chart(ctx, {
-        type: "line",
-        data: {
-          labels: points.map((p) => p.date),
-          datasets: [{
-            label: "Equivalent value",
-            data: points.map((p) => p.equivalent),
-            borderColor: "#3b82f6",
-            backgroundColor: "rgba(59,130,246,0.14)",
-            tension: 0.25,
-            fill: true,
-            pointRadius: 2,
-            pointHoverRadius: 4
-          }]
-        },
-        options: {
-          responsive: true,
-          plugins: {
-            legend: { labels: { color: "white" } },
-            tooltip: {
-              callbacks: {
-                label: (context) => ` Equivalent value: ${formatMoney(context.parsed.y)}`
+        trendChart = new Chart(ctx, {
+          type: "line",
+          data: {
+            labels: points.map((p) => p.date),
+            datasets: [{
+              label: "Equivalent value",
+              data: points.map((p) => p.equivalent),
+              borderColor: "#3b82f6",
+              backgroundColor: "rgba(59,130,246,0.14)",
+              tension: 0.25,
+              fill: true,
+              pointRadius: 2,
+              pointHoverRadius: 4
+            }]
+          },
+          options: {
+            responsive: true,
+            plugins: {
+              legend: { labels: { color: "white" } },
+              tooltip: {
+                callbacks: {
+                  label: (context) => ` Equivalent value: ${formatMoney(context.parsed.y)}`
+                }
+              }
+            },
+            scales: {
+              x: {
+                ticks: { color: "white", autoSkip: true, maxTicksLimit: 8 },
+                grid: { color: "rgba(255,255,255,0.08)" }
+              },
+              y: {
+                ticks: {
+                  color: "white",
+                  callback: (value) => `$${Number(value).toLocaleString("en-US")}`
+                },
+                grid: { color: "rgba(255,255,255,0.08)" }
               }
             }
-          },
-          scales: {
-            x: {
-              ticks: { color: "white", autoSkip: true, maxTicksLimit: 8 },
-              grid: { color: "rgba(255,255,255,0.08)" }
-            },
-            y: {
-              ticks: {
-                color: "white",
-                callback: (value) => `$${Number(value).toLocaleString("en-US")}`
-              },
-              grid: { color: "rgba(255,255,255,0.08)" }
-            }
           }
-        }
-      });
-    }
+        });
+      }
 
-    function renderPowerChart(points) {
-      const ctx = document.getElementById("powerChart").getContext("2d");
-      if (powerChart) powerChart.destroy();
+      function renderPowerChart(points) {
+        const ctx = document.getElementById("powerChart").getContext("2d");
+        if (powerChart) powerChart.destroy();
 
-      powerChart = new Chart(ctx, {
-        type: "line",
-        data: {
-          labels: points.map((p) => p.date),
-          datasets: [{
-            label: "Purchasing power remaining (%)",
-            data: points.map((p) => p.remainingPct),
-            borderColor: "#22c55e",
-            backgroundColor: "rgba(34,197,94,0.10)",
-            tension: 0.25,
-            fill: true,
-            pointRadius: 2,
-            pointHoverRadius: 4
-          }]
-        },
-        options: {
-          responsive: true,
-          plugins: {
-            legend: { labels: { color: "white" } },
-            tooltip: {
-              callbacks: {
-                label: (context) => ` Purchasing power remaining: ${Number(context.parsed.y).toFixed(2)}%`
+        powerChart = new Chart(ctx, {
+          type: "line",
+          data: {
+            labels: points.map((p) => p.date),
+            datasets: [{
+              label: "Purchasing power remaining (%)",
+              data: points.map((p) => p.remainingPct),
+              borderColor: "#22c55e",
+              backgroundColor: "rgba(34,197,94,0.10)",
+              tension: 0.25,
+              fill: true,
+              pointRadius: 2,
+              pointHoverRadius: 4
+            }]
+          },
+          options: {
+            responsive: true,
+            plugins: {
+              legend: { labels: { color: "white" } },
+              tooltip: {
+                callbacks: {
+                  label: (context) => ` Purchasing power remaining: ${Number(context.parsed.y).toFixed(2)}%`
+                }
+              }
+            },
+            scales: {
+              x: {
+                ticks: { color: "white", autoSkip: true, maxTicksLimit: 8 },
+                grid: { color: "rgba(255,255,255,0.08)" }
+              },
+              y: {
+                ticks: {
+                  color: "white",
+                  callback: (value) => `${Number(value).toFixed(0)}%`
+                },
+                grid: { color: "rgba(255,255,255,0.08)" }
               }
             }
-          },
-          scales: {
-            x: {
-              ticks: { color: "white", autoSkip: true, maxTicksLimit: 8 },
-              grid: { color: "rgba(255,255,255,0.08)" }
-            },
-            y: {
-              ticks: {
-                color: "white",
-                callback: (value) => `${Number(value).toFixed(0)}%`
-              },
-              grid: { color: "rgba(255,255,255,0.08)" }
-            }
           }
-        }
-      });
-    }
-
-    async function calculate() {
-      const amount = Number(amountInput.value);
-      const startMonth = normalizeMonthValue(startMonthInput.value);
-      const endMonth = normalizeMonthValue(endMonthInput.value);
-
-      if (!Number.isFinite(amount) || amount <= 0) {
-        alert("Enter a valid amount greater than zero.");
-        return;
-      }
-
-      if (!startMonth || !endMonth) {
-        alert("Select both start month and end month.");
-        return;
-      }
-
-      if (endMonth < startMonth) {
-        alert("End month must be the same as or later than the start month.");
-        return;
-      }
-
-      calcBtn.disabled = true;
-      calcBtn.textContent = "Calculating...";
-      dataStatus.textContent = "Loading FRED CPI data...";
-
-      try {
-        const series = await fetchCPI();
-
-        const startData = findClosestOnOrBefore(series, startMonth);
-        const endData = findClosestOnOrBefore(series, endMonth);
-
-        if (!startData || !endData) {
-          throw new Error("Could not find CPI data for the selected months.");
-        }
-
-        const rangeSeries = series.filter((row) => row.date >= startData.date && row.date <= endData.date);
-
-        if (!rangeSeries.length) {
-          throw new Error("No data points available for the selected date range.");
-        }
-
-        const equivalent = amount * (endData.cpi / startData.cpi);
-        const inflation = ((endData.cpi / startData.cpi) - 1) * 100;
-        const increaseNeeded = equivalent - amount;
-        const remainingPct = (startData.cpi / endData.cpi) * 100;
-        const erosionPct = 100 - remainingPct;
-
-        resultSentence.textContent =
-          `${formatMoney(amount)} in ${monthLabel(startData.date)} is equivalent to about ${formatMoney(equivalent)} in ${monthLabel(endData.date)}.`;
-
-        equivalentOut.textContent = formatMoney(equivalent);
-        increaseOut.textContent = `${formatMoney(increaseNeeded)} (${inflation >= 0 ? "+" : ""}${inflation.toFixed(2)}%)`;
-        inflationOut.textContent = formatPct(inflation);
-        remainingOut.textContent = `${remainingPct.toFixed(2)}% (erosion ${erosionPct.toFixed(2)}%)`;
-
-        let insight = "";
-        let insightClass = "";
-
-        if (Math.abs(inflation) < 0.01) {
-          insight = "No net change in purchasing power over the selected period.";
-          insightClass = "insight-medium";
-        } else if (inflation >= 300) {
-          insight = "Very strong erosion of purchasing power.";
-          insightClass = "insight-weak";
-        } else if (inflation >= 100) {
-          insight = "Noticeable inflation impact over this period.";
-          insightClass = "insight-medium";
-        } else if (inflation > 0) {
-          insight = "Purchasing power declined, but the change is more moderate.";
-          insightClass = "insight-good";
-        } else {
-          insight = "The selected period shows deflation or a real value gain.";
-          insightClass = "insight-good";
-        }
-
-        insightOut.innerHTML = `<span class="${insightClass}">${insight}</span>`;
-        resultCard.style.display = "block";
-
-        const chartPoints = buildChartPoints(rangeSeries, amount, startData.cpi);
-        renderTrendChart(chartPoints);
-        renderPowerChart(chartPoints);
-
-        dataStatus.textContent = "FRED CPI loaded successfully";
-      } catch (error) {
-        console.error(error);
-        dataStatus.textContent = "CPI load failed";
-        alert(error.message || "Could not load CPI data from FRED.");
-      } finally {
-        calcBtn.disabled = false;
-        calcBtn.textContent = "Calculate";
-      }
-    }
-
-    document.querySelectorAll(".faq-question").forEach((btn) => {
-      btn.addEventListener("click", () => {
-        const item = btn.parentElement;
-        document.querySelectorAll(".faq-item").forEach((i) => {
-          if (i !== item) i.classList.remove("active");
         });
-        item.classList.toggle("active");
+      }
+
+      async function calculate() {
+        const amount = Number(amountInput.value);
+        const startMonth = normalizeMonthValue(startMonthInput.value);
+        const endMonth = normalizeMonthValue(endMonthInput.value);
+
+        if (!Number.isFinite(amount) || amount <= 0) {
+          alert("Enter a valid amount greater than zero.");
+          return;
+        }
+
+        if (!startMonth || !endMonth) {
+          alert("Select both start month and end month.");
+          return;
+        }
+
+        if (endMonth < startMonth) {
+          alert("End month must be the same as or later than the start month.");
+          return;
+        }
+
+        calcBtn.disabled = true;
+        calcBtn.textContent = "Calculating...";
+        dataStatus.textContent = "Loading FRED CPI data...";
+
+        try {
+          const series = await fetchCPI();
+          const startData = findClosestOnOrBefore(series, startMonth);
+          const endData = findClosestOnOrBefore(series, endMonth);
+
+          if (!startData || !endData) {
+            throw new Error("Could not find CPI data for the selected months.");
+          }
+
+          const rangeSeries = series.filter((row) => row.date >= startData.date && row.date <= endData.date);
+
+          if (!rangeSeries.length) {
+            throw new Error("No data points available for the selected date range.");
+          }
+
+          const equivalent = amount * (endData.cpi / startData.cpi);
+          const inflation = ((endData.cpi / startData.cpi) - 1) * 100;
+          const increaseNeeded = equivalent - amount;
+          const remainingPct = (startData.cpi / endData.cpi) * 100;
+          const erosionPct = 100 - remainingPct;
+
+          resultSentence.textContent =
+            `${formatMoney(amount)} in ${monthLabel(startData.date)} is equivalent to about ${formatMoney(equivalent)} in ${monthLabel(endData.date)}.`;
+
+          equivalentOut.textContent = formatMoney(equivalent);
+          increaseOut.textContent = `${formatMoney(increaseNeeded)} (${inflation >= 0 ? "+" : ""}${inflation.toFixed(2)}%)`;
+          inflationOut.textContent = formatPct(inflation);
+          remainingOut.textContent = `${remainingPct.toFixed(2)}% (erosion ${erosionPct.toFixed(2)}%)`;
+
+          let insight = "";
+          let insightClass = "";
+
+          if (Math.abs(inflation) < 0.01) {
+            insight = "No net change in purchasing power over the selected period.";
+            insightClass = "insight-medium";
+          } else if (inflation >= 300) {
+            insight = "Very strong erosion of purchasing power.";
+            insightClass = "insight-weak";
+          } else if (inflation >= 100) {
+            insight = "Noticeable inflation impact over this period.";
+            insightClass = "insight-medium";
+          } else if (inflation > 0) {
+            insight = "Purchasing power declined, but the change is more moderate.";
+            insightClass = "insight-good";
+          } else {
+            insight = "The selected period shows deflation or a real value gain.";
+            insightClass = "insight-good";
+          }
+
+          insightOut.innerHTML = `<span class="${insightClass}">${insight}</span>`;
+          resultCard.style.display = "block";
+
+          const chartPoints = buildChartPoints(rangeSeries, amount, startData.cpi);
+          renderTrendChart(chartPoints);
+          renderPowerChart(chartPoints);
+
+          dataStatus.textContent = "FRED CPI loaded successfully";
+          resultCard.scrollIntoView({ behavior: "smooth", block: "start" });
+        } catch (error) {
+          console.error(error);
+          dataStatus.textContent = "CPI load failed";
+          alert(error.message || "Could not load CPI data from FRED.");
+        } finally {
+          calcBtn.disabled = false;
+          calcBtn.textContent = "Calculate";
+        }
+      }
+
+      document.querySelectorAll(".faq-question").forEach((btn) => {
+        btn.addEventListener("click", () => {
+          const item = btn.parentElement;
+          document.querySelectorAll(".faq-item").forEach((i) => {
+            if (i !== item) i.classList.remove("active");
+          });
+          item.classList.toggle("active");
+        });
       });
+
+      calcBtn.addEventListener("click", calculate);
+
+      setDefaultMonths();
     });
-
-    calcBtn.addEventListener("click", calculate);
-
-    setDefaultMonths();
   </script>
 </body>
   </html>
