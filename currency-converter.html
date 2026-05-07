@@ -15,7 +15,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Currency Converter – Multi-Currency Live Rate Dashboard</title>
-  <meta name="description" content="Multi-currency converter with the latest exchange rates. Edit one currency and instantly update all others in one clean dashboard.">
+  <meta name="description" content="Multi-currency converter with the latest exchange rates. Edit one currency and instantly update all others in one clean dashboard. Explore more finance tools from one hub page.">
   <meta name="theme-color" content="#0f172a">
   <meta name="robots" content="index,follow,max-image-preview:large">
 
@@ -188,6 +188,64 @@
       color: #dbeafe;
     }
 
+    .hub-strip {
+      margin-top: 16px;
+      padding: 14px 16px;
+      border-radius: 14px;
+      background: rgba(15,23,42,0.72);
+      border: 1px solid rgba(255,255,255,0.08);
+      color: #cbd5e1;
+      line-height: 1.6;
+      font-size: 14px;
+    }
+
+    .hub-strip strong {
+      color: #fff;
+    }
+
+    .hub-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
+      gap: 12px;
+      margin-top: 18px;
+    }
+
+    .hub-card {
+      background: rgba(15,23,42,0.78);
+      border: 1px solid rgba(255,255,255,0.06);
+      border-radius: 16px;
+      padding: 14px;
+      transition: 0.2s;
+    }
+
+    .hub-card:hover {
+      transform: translateY(-2px);
+      border-color: rgba(59,130,246,0.35);
+    }
+
+    .hub-card h3 {
+      margin: 0 0 8px;
+      font-size: 16px;
+    }
+
+    .hub-card p {
+      margin: 0 0 10px;
+      color: #94a3b8;
+      font-size: 13px;
+      line-height: 1.55;
+    }
+
+    .hub-card a {
+      color: #93c5fd;
+      text-decoration: none;
+      font-weight: 700;
+      font-size: 14px;
+    }
+
+    .hub-card a:hover {
+      text-decoration: underline;
+    }
+
     .status {
       display: flex;
       gap: 12px;
@@ -306,6 +364,67 @@
       line-height: 1.5;
     }
 
+    .content-sections {
+      width: 90%;
+      max-width: 1100px;
+      margin-top: 30px;
+      display: grid;
+      grid-template-columns: 1.2fr 0.8fr;
+      gap: 18px;
+    }
+
+    @media (max-width: 900px) {
+      .content-sections {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .content-box {
+      background: rgba(30,41,59,0.62);
+      border: 1px solid rgba(255,255,255,0.08);
+      border-radius: 16px;
+      padding: 20px;
+    }
+
+    .content-box h2 {
+      margin: 0 0 10px;
+      font-size: 22px;
+    }
+
+    .content-box p,
+    .content-box li {
+      color: #cbd5e1;
+      line-height: 1.7;
+      font-size: 15px;
+    }
+
+    .content-box ul {
+      padding-left: 18px;
+      margin-bottom: 0;
+    }
+
+    .content-links {
+      display: grid;
+      gap: 10px;
+      margin-top: 14px;
+    }
+
+    .content-link {
+      display: block;
+      padding: 12px 14px;
+      border-radius: 12px;
+      background: rgba(15,23,42,0.72);
+      border: 1px solid rgba(255,255,255,0.06);
+      color: #e2e8f0;
+      text-decoration: none;
+      font-weight: 700;
+    }
+
+    .content-link:hover {
+      border-color: rgba(59,130,246,0.35);
+      color: #bfdbfe;
+    }
+
     .related {
       margin: 28px auto 0;
       width: 90%;
@@ -348,7 +467,7 @@
       <a href="index.html">Home</a>
     </div>
 
-    <div class="container" data-search="currency converter live exchange rates usd eur gbp try multi currency dashboard">
+    <div class="container" data-search="currency converter live exchange rates usd eur gbp try multi currency dashboard travel budgeting forex calculator">
       <div class="hero">
         <div>
           <h1>Currency Converter</h1>
@@ -362,6 +481,48 @@
             <span class="badge soft">Latest reference rates</span>
             <span class="badge soft">One edit updates all</span>
           </div>
+
+          <div class="hub-strip">
+            <strong>Calculator hub:</strong> this page is designed to send users deeper into the site with related finance, trading, and investment tools.
+          </div>
+        </div>
+      </div>
+
+      <div class="hub-grid" aria-label="Popular calculators hub">
+        <div class="hub-card">
+          <h3>Trading tools</h3>
+          <p>Fast tools for sizing trades, managing risk, and checking recovery levels.</p>
+          <a href="position-size-calculator.html">Position Size Calculator</a><br>
+          <a href="risk-reward-calculator.html">Risk Reward Calculator</a><br>
+          <a href="stop-loss-calculator.html">Stop Loss Calculator</a><br>
+          <a href="drawdown-calculator.html">Drawdown Calculator</a>
+        </div>
+
+        <div class="hub-card">
+          <h3>Investment tools</h3>
+          <p>Long-term calculators for returns, compounding, and strategy comparison.</p>
+          <a href="compound-interest-calculator.html">Compound Interest Calculator</a><br>
+          <a href="dca-calculator.html">DCA Calculator</a><br>
+          <a href="roi-calculator.html">ROI Calculator</a><br>
+          <a href="dca-vs-lump-sum-calculator.html">DCA vs Lump Sum Calculator</a>
+        </div>
+
+        <div class="hub-card">
+          <h3>Loan tools</h3>
+          <p>Useful for borrowing, payments, and interest planning.</p>
+          <a href="loan-calculator.html">Loan Calculator</a><br>
+          <a href="mortgage-calculator.html">Mortgage Calculator</a><br>
+          <a href="apr-calculator.html">APR Calculator</a><br>
+          <a href="amortization-calculator.html">Amortization Calculator</a>
+        </div>
+
+        <div class="hub-card">
+          <h3>Crypto tools</h3>
+          <p>Track profit, average price, and fees across volatile markets.</p>
+          <a href="crypto-profit-calculator.html">Crypto Profit Calculator</a><br>
+          <a href="average-price-calculator.html">Average Price Calculator</a><br>
+          <a href="profit-loss-calculator.html">Profit Loss Calculator</a><br>
+          <a href="leverage-calculator.html">Leverage Calculator</a>
         </div>
       </div>
 
@@ -400,16 +561,51 @@
       </div>
     </div>
 
-    <div class="related">
-      <h2>What is a Currency Converter?</h2>
-      <p>
-        A currency converter shows how much one currency is worth in another using an exchange rate snapshot. It is useful for travel, shopping, budgeting, forex planning, and comparing prices across countries.
-      </p>
+    <div class="content-sections">
+      <div class="content-box">
+        <h2>What is a Currency Converter?</h2>
+        <p>
+          A currency converter shows how much one currency is worth in another using an exchange rate snapshot. It is useful for travel, shopping, budgeting, forex planning, and comparing prices across countries.
+        </p>
 
-      <h2>How This Converter Works</h2>
+        <h2>How This Converter Works</h2>
+        <p>
+          The page fetches the latest available rate set for the currency you edit, then recalculates every other visible currency from that same base. That keeps the whole dashboard synchronized.
+        </p>
+
+        <h2>Why this page helps the rest of the site</h2>
+        <p>
+          This converter is a traffic hub. People land here for a quick answer, then move into related calculators for trading, loans, investing, and crypto analysis.
+        </p>
+      </div>
+
+      <div class="content-box">
+        <h2>Popular calculators</h2>
+        <div class="content-links">
+          <a class="content-link" href="break-even-calculator.html">Break Even Calculator</a>
+          <a class="content-link" href="expectancy-calculator.html">Expectancy Calculator</a>
+          <a class="content-link" href="position-size-calculator.html">Position Size Calculator</a>
+          <a class="content-link" href="risk-reward-calculator.html">Risk Reward Calculator</a>
+          <a class="content-link" href="drawdown-calculator.html">Drawdown Calculator</a>
+          <a class="content-link" href="compound-interest-calculator.html">Compound Interest Calculator</a>
+          <a class="content-link" href="dca-vs-lump-sum-calculator.html">DCA vs Lump Sum Calculator</a>
+          <a class="content-link" href="loan-calculator.html">Loan Calculator</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="related">
+      <h2>Related Calculators</h2>
       <p>
-        The page fetches the latest available rate set for the currency you edit, then recalculates every other visible currency from that same base. That way, all values stay synchronized.
+        Use the converter as a starting point, then jump into the tools below for deeper finance, trading, and investing work.
       </p>
+      <ul>
+        <li><a href="roi-calculator.html">ROI Calculator</a></li>
+        <li><a href="crypto-profit-calculator.html">Crypto Profit Calculator</a></li>
+        <li><a href="average-price-calculator.html">Average Price Calculator</a></li>
+        <li><a href="mortgage-calculator.html">Mortgage Calculator</a></li>
+        <li><a href="amortization-calculator.html">Amortization Calculator</a></li>
+      </ul>
     </div>
 
     <div class="disclaimer">
