@@ -1,388 +1,798 @@
 <!DOCTYPE html>
-<html>
-
+<html lang="en">
 <head>
-<link rel="canonical" href="https://novainvesttools.com/liquidation-price-calculator.html">
-<!-- Google tag (gtag.js) -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-ZPCXDVE8C5"></script>
-<script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
+  <link rel="canonical" href="https://novainvesttools.com/liquidation-price-calculator.html">
 
-  gtag('config', 'G-ZPCXDVE8C5');
-</script>
-<meta charset="UTF-8">
-<title>Liquidation Price Calculator – Avoid Getting Liquidated</title>
-<meta name="description" content="Estimate your liquidation price in leveraged trading. Manage risk and protect your capital.">
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-ZPCXDVE8C5"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-ZPCXDVE8C5');
+  </script>
 
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-<link rel="stylesheet" href="style.css">
+  <title>Liquidation Price Calculator – Estimate Leverage Risk</title>
+  <meta name="description" content="Estimate your liquidation price in leveraged trading. See how leverage affects risk, liquidation distance, and capital protection before entering a trade.">
+  <meta name="theme-color" content="#0b1a33">
+  <meta name="robots" content="index,follow,max-image-preview:large">
 
-<style>
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://novainvesttools.com/liquidation-price-calculator.html">
+  <meta property="og:title" content="Liquidation Price Calculator – Estimate Leverage Risk">
+  <meta property="og:description" content="Estimate your liquidation price in leveraged trading. See how leverage affects risk and liquidation distance before entering a trade.">
 
-body{
-font-family: Arial;
-background:#0b1a33;
-color:white;
-display:flex;
-justify-content:center;
-align-items:center;
-min-height:100vh;
-flex-direction:column;
-}
+  <link rel="preconnect" href="https://cdn.jsdelivr.net">
+  <link rel="dns-prefetch" href="https://cdn.jsdelivr.net">
 
-.container{
-background:#1e293b;
-padding:30px;
-border-radius:12px;
-width:90%;
-max-width:500px;
-}
+  <link rel="stylesheet" href="style.css">
+  <link rel="icon" href="favicon.png" type="image/png">
+  <link rel="apple-touch-icon" href="favicon.png">
 
-input{
-width:100%;
-padding:12px;
-margin:10px 0;
-border-radius:6px;
-border:none;
-}
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
-button{
-padding:12px 20px;
-background:#3b82f6;
-border:none;
-border-radius:8px;
-color:white;
-cursor:pointer;
-}
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "WebApplication",
+    "name": "Liquidation Price Calculator",
+    "url": "https://novainvesttools.com/liquidation-price-calculator.html",
+    "applicationCategory": "FinanceApplication",
+    "operatingSystem": "All",
+    "browserRequirements": "Requires JavaScript",
+    "description": "Estimate liquidation price and leverage risk for a simplified long position.",
+    "featureList": [
+      "Liquidation price estimate",
+      "Leverage risk estimation",
+      "Price distance analysis",
+      "Trading risk planning"
+    ],
+    "offers": {
+      "@type": "Offer",
+      "price": "0",
+      "priceCurrency": "USD"
+    }
+  }
+  </script>
 
-canvas{
-margin-top:30px;
-}
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": [
+      {
+        "@type": "Question",
+        "name": "What is liquidation price?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Liquidation price is the level where a leveraged position is automatically closed because margin is no longer enough to support the trade."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Why does liquidation happen so quickly with leverage?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Leverage amplifies small price movements, so a small move against the position can reduce margin very quickly."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Does higher leverage move liquidation price closer to entry?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Yes. Higher leverage reduces your safety buffer and brings liquidation closer to the entry price."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Is this calculator accurate for every exchange?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "No. This tool provides a simplified estimate. Real liquidation prices vary by exchange, fees, and position settings."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Can a good strategy still be liquidated?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Yes. Even a good strategy can be liquidated if leverage is too high or position sizing is too aggressive."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Should beginners use high leverage?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Beginners usually do better with lower leverage because it gives more room for price movement and lowers liquidation risk."
+        }
+      }
+    ]
+  }
+  </script>
 
-.menu{
-margin-bottom:25px;
-}
+  <style>
+    *{
+      box-sizing:border-box;
+    }
 
-.menu a{
-color:#3b82f6;
-margin:10px;
-text-decoration:none;
-}
+    body{
+      font-family: Arial, sans-serif;
+      background:#0b1a33;
+      color:white;
+      display:flex;
+      justify-content:center;
+      align-items:center;
+      min-height:100vh;
+      flex-direction:column;
+      margin:0;
+      padding:24px 0;
+    }
 
-.toptext{
-font-size:14px;
-color:#6b7a99;
-margin-bottom:5px;
-}
+    .toptext{
+      font-size:14px;
+      color:#6b7a99;
+      margin-bottom:5px;
+    }
 
-.disclaimer{
-margin-top:40px;
-padding-top:20px;
-border-top:1px solid rgba(255,255,255,0.1);
-font-size:13px;
-color:#9ca3af;
-max-width:500px;
-text-align:center;
-line-height:1.6;
-}
+    .menu{
+      margin-bottom:25px;
+    }
 
-</style>
+    .menu a{
+      color:#3b82f6;
+      margin:10px;
+      text-decoration:none;
+      font-weight:600;
+    }
 
+    .container{
+      background:#1e293b;
+      padding:30px;
+      border-radius:16px;
+      width:90%;
+      max-width:560px;
+      box-shadow:0 10px 25px rgba(0,0,0,0.35);
+    }
+
+    h1{
+      margin-top:0;
+      margin-bottom:10px;
+      font-size:32px;
+      line-height:1.15;
+    }
+
+    .quick-answer{
+      background: rgba(59,130,246,0.12);
+      border: 1px solid rgba(59,130,246,0.25);
+      padding: 12px 14px;
+      border-radius: 10px;
+      font-size: 15px;
+      line-height: 1.6;
+      color: #e2e8f0;
+      margin-bottom: 18px;
+    }
+
+    .subhead{
+      color:#94a3b8;
+      font-size:15px;
+      line-height:1.6;
+      margin-bottom:18px;
+    }
+
+    .badge-row{
+      display:flex;
+      gap:10px;
+      flex-wrap:wrap;
+      margin:14px 0 6px;
+    }
+
+    .badge{
+      display:inline-flex;
+      padding:5px 10px;
+      border-radius:999px;
+      font-size:12px;
+      font-weight:700;
+      background:rgba(59,130,246,0.12);
+      color:#bfdbfe;
+      border:1px solid rgba(59,130,246,0.22);
+    }
+
+    .badge.soft{
+      background:rgba(255,255,255,0.05);
+      border-color:rgba(255,255,255,0.08);
+      color:#dbeafe;
+    }
+
+    .section-title{
+      margin:18px 0 8px;
+      font-size:16px;
+      color:#e2e8f0;
+      font-weight:700;
+    }
+
+    .grid{
+      display:grid;
+      grid-template-columns:1fr 1fr;
+      gap:12px;
+    }
+
+    @media (max-width:700px){
+      .grid{
+        grid-template-columns:1fr;
+      }
+    }
+
+    .field{
+      margin:12px 0;
+    }
+
+    .field label{
+      display:block;
+      font-size:13px;
+      color:#cbd5e1;
+      margin:0 0 6px;
+      font-weight:600;
+    }
+
+    input{
+      width:100%;
+      padding:14px;
+      margin:0;
+      border-radius:10px;
+      border:none;
+      background:#e5e7eb;
+      font-size:16px;
+      outline:none;
+    }
+
+    input:focus{
+      box-shadow:0 0 0 3px rgba(59,130,246,0.18);
+    }
+
+    button{
+      padding:14px;
+      background:#3b82f6;
+      border:none;
+      border-radius:10px;
+      color:white;
+      cursor:pointer;
+      margin-top:10px;
+      width:100%;
+      font-size:16px;
+      font-weight:700;
+      transition:0.2s;
+    }
+
+    button:hover{
+      background:#2563eb;
+      transform:translateY(-1px);
+    }
+
+    .result-card{
+      margin-top:18px;
+      padding:16px;
+      border-radius:14px;
+      background:rgba(255,255,255,0.05);
+      border:1px solid rgba(255,255,255,0.08);
+      display:none;
+    }
+
+    .result-line{
+      margin:10px 0;
+      font-size:16px;
+      line-height:1.5;
+      color:#e5e7eb;
+    }
+
+    .result-line strong{
+      color:#cbd5f5;
+    }
+
+    .insight-good{
+      color:#22c55e;
+      font-weight:700;
+    }
+
+    .insight-medium{
+      color:#facc15;
+      font-weight:700;
+    }
+
+    .insight-weak{
+      color:#ef4444;
+      font-weight:700;
+    }
+
+    canvas{
+      margin-top:26px;
+    }
+
+    .content{
+      width:90%;
+      max-width:900px;
+      margin-top:34px;
+    }
+
+    .content h2{
+      margin-top:34px;
+      margin-bottom:10px;
+      font-size:28px;
+    }
+
+    .content p,
+    .content li{
+      color:#cbd5e1;
+      line-height:1.7;
+      font-size:15px;
+    }
+
+    .content ul{
+      padding-left:20px;
+    }
+
+    .formula{
+      background:rgba(255,255,255,0.05);
+      border:1px solid rgba(255,255,255,0.08);
+      padding:14px 16px;
+      border-radius:12px;
+      margin:12px 0;
+      color:#e2e8f0;
+      overflow:auto;
+      line-height:1.7;
+    }
+
+    .faq{
+      margin-top:14px;
+    }
+
+    .faq-item{
+      border-bottom:1px solid rgba(255,255,255,0.08);
+    }
+
+    .faq-question{
+      width:100%;
+      background:none;
+      border:none;
+      color:white;
+      text-align:left;
+      padding:14px 8px;
+      font-size:15px;
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      cursor:pointer;
+    }
+
+    .faq-question:hover{
+      color:#93c5fd;
+    }
+
+    .arrow{
+      transition:0.25s;
+    }
+
+    .faq-item.active .arrow{
+      transform:rotate(180deg);
+    }
+
+    .faq-answer{
+      max-height:0;
+      overflow:hidden;
+      transition:max-height 0.3s ease;
+      color:#cbd5e1;
+      font-size:14px;
+      padding:0 8px;
+    }
+
+    .faq-item.active .faq-answer{
+      max-height:260px;
+      padding-bottom:12px;
+    }
+
+    .related{
+      width:90%;
+      max-width:560px;
+      margin-top:26px;
+      background:rgba(30,41,59,0.62);
+      border:1px solid rgba(255,255,255,0.08);
+      border-radius:16px;
+      padding:22px;
+    }
+
+    .related h3{
+      margin-top:0;
+      margin-bottom:10px;
+    }
+
+    .related p,
+    .related li{
+      color:#cbd5e1;
+      line-height:1.7;
+      font-size:15px;
+    }
+
+    .related ul{
+      padding-left:18px;
+      margin-bottom:0;
+    }
+
+    .related a{
+      color:#93c5fd;
+      text-decoration:none;
+    }
+
+    .related a:hover{
+      text-decoration:underline;
+    }
+
+    .disclaimer{
+      margin-top:24px;
+      padding-top:20px;
+      border-top:1px solid rgba(255,255,255,0.1);
+      font-size:13px;
+      color:#9ca3af;
+      max-width:900px;
+      text-align:center;
+      line-height:1.6;
+      width:90%;
+    }
+
+    @media (max-width:700px){
+      .container{
+        padding:22px;
+      }
+
+      h1{
+        font-size:28px;
+      }
+
+      .content h2{
+        font-size:24px;
+      }
+    }
+  </style>
 </head>
 
 <body>
+  <p class="toptext">Explore more calculators</p>
 
-<p class="toptext">Explore more calculators</p> 
-
-<div class="menu">
-<a href="index.html">Home</a>
-</div>
-
-<h1>Liquidation Price Calculator</h1>
-
-<div class="container">
-
-<input id="entry" placeholder="Entry price">
-<input id="leverage" placeholder="Leverage (e.g. 10x)">
-
-<button onclick="calculate()">Calculate</button>
-
-<h3 id="result"></h3>
-
-<canvas id="myChart"></canvas>
-
-</div>
-
-<h2>What is Liquidation Price?</h2>
-
-<p>
-Liquidation price is the level at which your leveraged position is automatically closed by the exchange to prevent further losses. 
-It occurs when your margin is no longer sufficient to support your open position.
-</p>
-
-<p>
-In simple terms, it is the price where you lose most or all of your collateral. 
-Understanding your liquidation price is critical when trading with leverage because even small price movements can trigger liquidation.
-</p>
-
-<h2>How Liquidation Works</h2>
-
-<p>
-When you open a leveraged position, you are effectively borrowing funds to increase your exposure. 
-This amplifies both potential profits and losses.
-</p>
-
-<ul>
-<li><strong>Higher leverage</strong> → liquidation price moves closer to entry</li>
-<li><strong>Lower leverage</strong> → more room before liquidation</li>
-<li><strong>More margin</strong> → increases your safety buffer</li>
-</ul>
-
-<p>
-If the market moves against your position and your losses approach your margin, the exchange will automatically close your trade to prevent negative balance.
-</p>
-
-<h2>Why Liquidation Price Matters</h2>
-
-<p>
-Many traders focus on profit targets but ignore liquidation levels. 
-This is a critical mistake.
-</p>
-
-<ul>
-<li>Liquidation happens faster than expected</li>
-<li>High leverage reduces your margin for error</li>
-<li>One bad trade can wipe out your account</li>
-</ul>
-
-<p>
-Professional traders always know their liquidation price before entering a trade.
-</p>
-
-<h2>Key Factors That Affect Liquidation</h2>
-
-<ul>
-<li><strong>Leverage</strong> – the most important factor</li>
-<li><strong>Entry price</strong> – your starting position</li>
-<li><strong>Position size</strong> – how large your trade is</li>
-<li><strong>Margin (collateral)</strong> – how much capital you commit</li>
-</ul>
-
-<p>
-Even small changes in these variables can significantly shift your liquidation level.
-</p>
-
-<h2>The Hidden Risk of Leverage</h2>
-
-<p>
-Leverage creates the illusion of opportunity, but it dramatically increases risk. 
-A 1–2% move in the market can liquidate a highly leveraged position.
-</p>
-
-<p>
-For example:
-</p>
-
-<ul>
-<li>10x leverage → ~10% move to liquidation</li>
-<li>20x leverage → ~5% move</li>
-<li>50x leverage → ~2% move</li>
-</ul>
-
-<p>
-This is why most inexperienced traders lose money when using high leverage.
-</p>
-
-<h2>How to Use This Calculator</h2>
-
-<p>
-This tool helps you estimate your liquidation price based on your trade parameters. 
-Before entering any leveraged position, you should:
-</p>
-
-<ul>
-<li>Calculate your liquidation level</li>
-<li>Compare it with your stop-loss</li>
-<li>Ensure you have enough buffer</li>
-</ul>
-
-<p>
-If your stop-loss is too close to your liquidation price, your position is extremely risky.
-</p>
-
-<h2>Professional Insight</h2>
-
-<p>
-Liquidation is not just a technical level — it is a risk management boundary.
-</p>
-
-<p>
-Successful traders do not ask:
-</p>
-
-<p><strong>“How much can I make?”</strong></p>
-
-<p>They ask:</p>
-
-<p><strong>“How close am I to liquidation?”</strong></p>
-
-<p>
-Controlling this distance is one of the most important skills in leveraged trading.
-</p> 
-
-<h3>Frequently Asked Questions</h3>
-
-<div class="faq">
-
-  <div class="faq-item">
-    <button class="faq-question">
-      Why does liquidation happen so suddenly?
-      <span class="arrow">▼</span>
-    </button>
-    <div class="faq-answer">
-      <p>
-        Because leverage amplifies small price movements. A minor move against your position can rapidly reduce your margin, 
-        triggering liquidation faster than most traders expect.
-      </p>
-    </div>
+  <div class="menu">
+    <a href="index.html">Home</a>
   </div>
 
-  <div class="faq-item">
-    <button class="faq-question">
-      Why do traders underestimate liquidation risk?
-      <span class="arrow">▼</span>
-    </button>
-    <div class="faq-answer">
-      <p>
-        Many traders focus on potential profit and ignore downside risk. 
-        They assume the market will reverse before reaching liquidation, which often leads to overleveraged positions.
-      </p>
+  <div class="container">
+    <h1>Liquidation Price Calculator</h1>
+    <p class="quick-answer">
+      A $100 margin with 10x leverage can be liquidated after roughly a 10% move against you — use this liquidation price calculator to estimate risk before entering a leveraged trade.
+    </p>
+
+    <p class="subhead">
+      Estimate your liquidation price in leveraged trading and understand how leverage affects your safety buffer, capital risk, and price distance to liquidation.
+    </p>
+
+    <div class="badge-row">
+      <span class="badge">Leverage risk</span>
+      <span class="badge soft">Liquidation level</span>
+      <span class="badge soft">Capital protection</span>
     </div>
+
+    <div class="section-title">Your details</div>
+    <div class="grid">
+      <div class="field">
+        <label for="entry">Entry Price</label>
+        <input id="entry" type="number" min="0" step="any" placeholder="e.g. 25000">
+      </div>
+
+      <div class="field">
+        <label for="leverage">Leverage (e.g. 10x)</label>
+        <input id="leverage" type="number" min="0" step="any" placeholder="e.g. 10">
+      </div>
+    </div>
+
+    <button onclick="calculate()">Calculate</button>
+
+    <div id="resultCard" class="result-card">
+      <div class="result-line"><strong>Liquidation price:</strong> <span id="result">—</span></div>
+      <div class="result-line"><strong>Estimated move to liquidation:</strong> <span id="moveOut">—</span></div>
+      <div class="result-line"><strong>Insight:</strong> <span id="insightOut">—</span></div>
+    </div>
+
+    <canvas id="myChart"></canvas>
   </div>
 
-  <div class="faq-item">
-    <button class="faq-question">
-      How does leverage change my liquidation price?
-      <span class="arrow">▼</span>
-    </button>
-    <div class="faq-answer">
-      <p>
-        Higher leverage brings your liquidation price closer to your entry. 
-        This means you have less room for price fluctuations, increasing the probability of being liquidated.
-      </p>
+  <div class="content">
+    <h2>What is Liquidation Price?</h2>
+    <p>
+      Liquidation price is the level at which your leveraged position is automatically closed by the exchange to prevent further losses.
+      It happens when your margin is no longer sufficient to support your open position.
+    </p>
+
+    <p>
+      In simple terms, it is the price where you lose most or all of your collateral.
+      Understanding your liquidation price is critical when trading with leverage because even small price movements can trigger liquidation.
+    </p>
+
+    <h2>How Liquidation Works</h2>
+    <p>
+      When you open a leveraged position, you are effectively borrowing funds to increase your exposure.
+      This amplifies both potential profits and losses.
+    </p>
+
+    <div class="formula">
+      Liquidation Price = Entry Price × (1 − 1 / Leverage)
+      <br>
+      Estimated Move to Liquidation = 1 / Leverage × 100
+    </div>
+
+    <p>
+      Higher leverage moves your liquidation price closer to entry.
+      Lower leverage gives you more room before liquidation.
+    </p>
+
+    <ul>
+      <li><strong>Higher leverage</strong> → liquidation price moves closer to entry</li>
+      <li><strong>Lower leverage</strong> → more room before liquidation</li>
+      <li><strong>More margin</strong> → increases your safety buffer</li>
+    </ul>
+
+    <h2>Why Liquidation Price Matters</h2>
+    <p>
+      Many traders focus on profit targets but ignore liquidation levels.
+      That is a critical mistake.
+    </p>
+
+    <ul>
+      <li>Liquidation can happen faster than expected</li>
+      <li>High leverage reduces your margin for error</li>
+      <li>One bad trade can wipe out a large part of your capital</li>
+    </ul>
+
+    <p>
+      Professional traders always know their liquidation price before entering a trade.
+    </p>
+
+    <h2>How to Use This Calculator</h2>
+    <p>
+      This tool helps you estimate your liquidation price based on your trade parameters.
+      Before entering any leveraged position, you should:
+    </p>
+
+    <ul>
+      <li>Calculate your liquidation level</li>
+      <li>Compare it with your stop-loss</li>
+      <li>Ensure you have enough buffer</li>
+    </ul>
+
+    <p>
+      If your stop-loss is too close to your liquidation price, your position is extremely risky.
+    </p>
+
+    <h2>Professional Insight</h2>
+    <p>
+      Liquidation is not just a technical level — it is a risk management boundary.
+    </p>
+
+    <p>
+      Successful traders do not ask:
+    </p>
+
+    <p><strong>“How much can I make?”</strong></p>
+
+    <p>They ask:</p>
+
+    <p><strong>“How close am I to liquidation?”</strong></p>
+
+    <p>
+      Controlling this distance is one of the most important skills in leveraged trading.
+    </p>
+
+    <h2>Frequently Asked Questions</h2>
+
+    <div class="faq">
+      <div class="faq-item">
+        <button class="faq-question" type="button">
+          Why does liquidation happen so suddenly?
+          <span class="arrow">▼</span>
+        </button>
+        <div class="faq-answer">
+          <p>
+            Because leverage amplifies small price movements. A minor move against your position can rapidly reduce your margin and trigger liquidation faster than most traders expect.
+          </p>
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <button class="faq-question" type="button">
+          Why do traders underestimate liquidation risk?
+          <span class="arrow">▼</span>
+        </button>
+        <div class="faq-answer">
+          <p>
+            Many traders focus on potential profit and ignore downside risk. They assume the market will reverse before reaching liquidation, which often leads to overleveraged positions.
+          </p>
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <button class="faq-question" type="button">
+          How does leverage change my liquidation price?
+          <span class="arrow">▼</span>
+        </button>
+        <div class="faq-answer">
+          <p>
+            Higher leverage brings your liquidation price closer to your entry. This means you have less room for price fluctuations, increasing the probability of being liquidated.
+          </p>
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <button class="faq-question" type="button">
+          Why is liquidation worse than a normal loss?
+          <span class="arrow">▼</span>
+        </button>
+        <div class="faq-answer">
+          <p>
+            Liquidation is a forced exit where you lose control of the trade. Unlike a controlled loss with a stop-loss, liquidation often results in maximum loss of your margin.
+          </p>
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <button class="faq-question" type="button">
+          Can a good strategy still lead to liquidation?
+          <span class="arrow">▼</span>
+        </button>
+        <div class="faq-answer">
+          <p>
+            Yes. Even profitable strategies can fail if position sizing and risk management are poor. A single losing streak with high leverage can wipe out your account.
+          </p>
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <button class="faq-question" type="button">
+          What separates professional traders from beginners regarding liquidation?
+          <span class="arrow">▼</span>
+        </button>
+        <div class="faq-answer">
+          <p>
+            Professionals think in terms of survival first. They use lower leverage, plan exits in advance, and avoid situations where liquidation is even possible.
+          </p>
+        </div>
+      </div>
     </div>
   </div>
-
-  <div class="faq-item">
-    <button class="faq-question">
-      Why is liquidation worse than a normal loss?
-      <span class="arrow">▼</span>
-    </button>
-    <div class="faq-answer">
-      <p>
-        Liquidation is a forced exit where you lose control of the trade. 
-        Unlike a controlled loss with a stop-loss, liquidation often results in maximum loss of your margin.
-      </p>
-    </div>
-  </div>
-
-  <div class="faq-item">
-    <button class="faq-question">
-      Can a “good strategy” still lead to liquidation?
-      <span class="arrow">▼</span>
-    </button>
-    <div class="faq-answer">
-      <p>
-        Yes. Even profitable strategies can fail if position sizing and risk management are poor. 
-        A single losing streak with high leverage can wipe out your account.
-      </p>
-    </div>
-  </div>
-
-  <div class="faq-item">
-    <button class="faq-question">
-      What separates professional traders from beginners regarding liquidation?
-      <span class="arrow">▼</span>
-    </button>
-    <div class="faq-answer">
-      <p>
-        Professionals think in terms of survival first. They use lower leverage, plan exits in advance, 
-        and avoid situations where liquidation is even possible.
-      </p>
-    </div>
-  </div>
-
-</div>
 
   <div class="related">
-<h3>Related Calculators</h3>
-<p>You may also find these tools useful:</p>
-<ul>
-<li><a href="leverage-calculator.html">Leverage Calculator</a></li>
-<li><a href="position-size-calculator.html">Position Size Calculator</a></li>
-<li><a href="risk-reward-calculator.html">Risk Reward Calculator</a></li>
-<li><a href="margin-calculator.html">Margin Calculator</a></li>
-<li><a href="stop-loss-calculator.html">Stop Loss Calculator</a></li>
-</ul>
+    <h3>Related Calculators</h3>
+    <p>You may also find these tools useful:</p>
+    <ul>
+      <li><a href="leverage-calculator.html">Leverage Calculator</a></li>
+      <li><a href="position-size-calculator.html">Position Size Calculator</a></li>
+      <li><a href="risk-reward-calculator.html">Risk Reward Calculator</a></li>
+      <li><a href="margin-calculator.html">Margin Calculator</a></li>
+      <li><a href="stop-loss-calculator.html">Stop Loss Calculator</a></li>
+    </ul>
   </div>
-  
-<div class="disclaimer">
-<p>
-<strong>Disclaimer:</strong> This is a simplified estimation. Real liquidation prices vary by exchange and fees.
-</p>
-</div>
-<script src="footer.js"></script>
-<script>
 
-let chart;
+  <div class="disclaimer">
+    <p>
+      <strong>Disclaimer:</strong> This is a simplified estimation. Real liquidation prices vary by exchange, fees, maintenance margin, and position settings.
+    </p>
+  </div>
 
-function calculate(){
+  <script src="footer.js"></script>
+  <script>
+    let chart;
 
-let entry = parseFloat(document.getElementById("entry").value)
-let leverage = parseFloat(document.getElementById("leverage").value)
+    function calculate(){
+      const entry = parseFloat(document.getElementById("entry").value);
+      const leverage = parseFloat(document.getElementById("leverage").value);
 
-if(!entry || !leverage){
-alert("Fill all fields")
-return
-}
+      if (isNaN(entry) || isNaN(leverage)) {
+        alert("Fill all fields");
+        return;
+      }
 
-let liquidation = entry * (1 - (1 / leverage))
+      if (entry <= 0 || leverage <= 1) {
+        alert("Entry must be greater than zero and leverage must be above 1.");
+        return;
+      }
 
-document.getElementById("result").innerHTML =
-`Liquidation Price: $${liquidation.toFixed(2)}`
+      const liquidation = entry * (1 - (1 / leverage));
+      const movePct = (1 / leverage) * 100;
 
-drawChart(entry, liquidation)
+      document.getElementById("resultCard").style.display = "block";
+      document.getElementById("result").innerHTML = `$${liquidation.toFixed(2)}`;
+      document.getElementById("moveOut").innerHTML = `${movePct.toFixed(2)}%`;
 
-}
+      let insight = "";
+      let insightClass = "";
 
-function drawChart(entry, liquidation){
+      if (leverage >= 20) {
+        insight = "Very tight buffer. Small market moves can force liquidation quickly.";
+        insightClass = "insight-weak";
+      } else if (leverage >= 10) {
+        insight = "Moderate risk, but you still need a clear stop-loss and position plan.";
+        insightClass = "insight-medium";
+      } else {
+        insight = "More room before liquidation, but risk control still matters.";
+        insightClass = "insight-good";
+      }
 
-let ctx = document.getElementById('myChart')
+      document.getElementById("insightOut").innerHTML = `<span class="${insightClass}">${insight}</span>`;
 
-if(chart){
-chart.destroy()
-}
+      drawChart(entry, liquidation);
+    }
 
-chart = new Chart(ctx,{
-type:'bar',
-data:{
-labels:['Entry Price','Liquidation Price'],
-datasets:[{
-label:'Price Comparison',
-data:[entry, liquidation],
-backgroundColor:['#22c55e','#147bdf']
-}]
-}
-})
+    function drawChart(entry, liquidation){
+      const ctx = document.getElementById('myChart').getContext('2d');
 
-}
+      if(chart){
+        chart.destroy();
+      }
 
-</script>
+      chart = new Chart(ctx,{
+        type:'bar',
+        data:{
+          labels:['Entry Price','Liquidation Price'],
+          datasets:[{
+            label:'Price Comparison',
+            data:[entry, liquidation],
+            backgroundColor:['#22c55e','#ef4444']
+          }]
+        },
+        options:{
+          responsive:true,
+          plugins:{
+            legend:{
+              labels:{ color:'white' }
+            },
+            tooltip:{
+              callbacks:{
+                label: function(context){
+                  return `$${Number(context.parsed.y).toFixed(2)}`;
+                }
+              }
+            }
+          },
+          scales:{
+            x:{
+              ticks:{ color:'white' },
+              grid:{ color:'rgba(255,255,255,0.08)' }
+            },
+            y:{
+              ticks:{
+                color:'white',
+                callback: function(value){
+                  return "$" + Number(value).toLocaleString();
+                }
+              },
+              grid:{ color:'rgba(255,255,255,0.08)' }
+            }
+          }
+        }
+      });
+    }
 
+    document.addEventListener("DOMContentLoaded", function(){
+      document.querySelectorAll(".faq-question").forEach(btn => {
+        btn.addEventListener("click", () => {
+          const item = btn.parentElement;
+
+          document.querySelectorAll(".faq-item").forEach(i => {
+            if(i !== item) i.classList.remove("active");
+          });
+
+          item.classList.toggle("active");
+        });
+      });
+    });
+  </script>
 </body>
-
-</html>
+  </html>
