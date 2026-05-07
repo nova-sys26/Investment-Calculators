@@ -1,397 +1,796 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-<link rel="canonical" href="https://novainvesttools.com/inflation-calculator.html">
-<!-- Google tag (gtag.js) -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-ZPCXDVE8C5"></script>
-<script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
+  <link rel="canonical" href="https://novainvesttools.com/inflation-calculator.html">
 
-  gtag('config', 'G-ZPCXDVE8C5');
-</script>
-<meta charset="UTF-8">
-<title>Inflation Calculator – Future Value of Money</title>
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-ZPCXDVE8C5"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-ZPCXDVE8C5');
+  </script>
 
-<meta name="description" content="Calculate how inflation affects the value of your money over time. See future purchasing power instantly.">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-<link rel="stylesheet" href="style.css">
+  <title>Inflation Calculator – Estimate Future Purchasing Power</title>
+  <meta name="description" content="Calculate how inflation affects the value of your money over time. See future purchasing power instantly with a simple inflation calculator.">
+  <meta name="theme-color" content="#0f172a">
+  <meta name="robots" content="index,follow,max-image-preview:large">
 
-<style>
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://novainvesttools.com/inflation-calculator.html">
+  <meta property="og:title" content="Inflation Calculator – Estimate Future Purchasing Power">
+  <meta property="og:description" content="Calculate how inflation affects the value of your money over time. See future purchasing power instantly.">
 
-body{
-font-family:Arial;
-background:#0f172a;
-color:white;
-display:flex;
-justify-content:center;
-align-items:center;
-flex-direction:column;
-min-height:100vh;
-}
+  <link rel="preconnect" href="https://cdn.jsdelivr.net">
+  <link rel="dns-prefetch" href="https://cdn.jsdelivr.net">
 
-.container{
-background:#1e293b;
-padding:30px;
-border-radius:16px;
-width:90%;
-max-width:500px;
-box-shadow:0 10px 25px rgba(0,0,0,0.35);
-}
+  <link rel="stylesheet" href="style.css">
+  <link rel="icon" href="favicon.png" type="image/png">
+  <link rel="apple-touch-icon" href="favicon.png">
 
-input{
-width:100%;
-padding:14px;
-margin:12px 0;
-border-radius:10px;
-border:none;
-background:#e5e7eb;
-font-size:16px;
-}
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
-button{
-padding:14px;
-background:#3b82f6;
-border:none;
-border-radius:10px;
-color:white;
-cursor:pointer;
-margin-top:10px;
-width:100%;
-}
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "WebApplication",
+    "name": "Inflation Calculator",
+    "url": "https://novainvesttools.com/inflation-calculator.html",
+    "applicationCategory": "FinanceApplication",
+    "operatingSystem": "All",
+    "browserRequirements": "Requires JavaScript",
+    "description": "Estimate how inflation affects the future value and purchasing power of money.",
+    "featureList": [
+      "Future purchasing power calculation",
+      "Inflation impact projection",
+      "Simple inflation formula",
+      "Value comparison chart"
+    ],
+    "offers": {
+      "@type": "Offer",
+      "price": "0",
+      "priceCurrency": "USD"
+    }
+  }
+  </script>
 
-button:hover{
-background:#2563eb;
-}
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": [
+      {
+        "@type": "Question",
+        "name": "What does an inflation calculator do?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "An inflation calculator shows how the buying power of money changes over time when prices rise."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Why does inflation reduce purchasing power?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Inflation means prices rise over time, so the same amount of money buys less in the future."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Is inflation always constant?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "No. Inflation changes over time, but calculators often use a constant rate to create a simple estimate."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Does inflation affect savings?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Yes. If your savings do not grow faster than inflation, their real value can decline over time."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "What is the Rule of 72 for inflation?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "A rough estimate is to divide 72 by the inflation rate to see how long it takes prices to double."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Does this calculator predict exact future prices?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "No. It gives an estimate based on the inflation rate you enter, not a guaranteed prediction."
+        }
+      }
+    ]
+  }
+  </script>
 
-canvas{
-margin-top:30px;
-}
+  <style>
+    *{
+      box-sizing:border-box;
+    }
 
-.menu{
-margin-bottom:25px;
-}
+    body{
+      font-family:Arial, sans-serif;
+      background:#0b1a33;
+      color:white;
+      display:flex;
+      justify-content:center;
+      align-items:center;
+      flex-direction:column;
+      min-height:100vh;
+      margin:0;
+      padding:24px 0;
+    }
 
-.menu a{
-color:#3b82f6;
-margin:10px;
-text-decoration:none;
-}
+    .toptext{
+      font-size:14px;
+      color:#6b7a99;
+      margin-bottom:5px;
+    }
 
-.toptext{
-font-size:14px;
-color:#6b7a99;
-margin-bottom:5px;
-}
+    .menu{
+      margin-bottom:25px;
+    }
 
-.disclaimer{
-margin-top:40px;
-padding-top:20px;
-border-top:1px solid rgba(255,255,255,0.1);
-font-size:13px;
-color:#9ca3af;
-max-width:500px;
-text-align:center;
-line-height:1.6;
-}
+    .menu a{
+      color:#3b82f6;
+      margin:10px;
+      text-decoration:none;
+      font-weight:600;
+    }
 
-</style>
+    .container{
+      background:#1e293b;
+      padding:30px;
+      border-radius:16px;
+      width:90%;
+      max-width:560px;
+      box-shadow:0 10px 25px rgba(0,0,0,0.35);
+    }
 
+    h1{
+      margin-top:0;
+      margin-bottom:10px;
+      font-size:32px;
+      line-height:1.15;
+    }
+
+    .subhead{
+      color:#94a3b8;
+      font-size:15px;
+      line-height:1.6;
+      margin-bottom:18px;
+    }
+
+    .quick-answer{
+      background: rgba(59,130,246,0.12);
+      border: 1px solid rgba(59,130,246,0.25);
+      padding: 12px 14px;
+      border-radius: 10px;
+      font-size: 15px;
+      line-height: 1.6;
+      color: #e2e8f0;
+      margin-bottom: 18px;
+    }
+
+    .badge-row{
+      display:flex;
+      gap:10px;
+      flex-wrap:wrap;
+      margin:14px 0 6px;
+    }
+
+    .badge{
+      display:inline-flex;
+      padding:5px 10px;
+      border-radius:999px;
+      font-size:12px;
+      font-weight:700;
+      background:rgba(59,130,246,0.12);
+      color:#bfdbfe;
+      border:1px solid rgba(59,130,246,0.22);
+    }
+
+    .badge.soft{
+      background:rgba(255,255,255,0.05);
+      border-color:rgba(255,255,255,0.08);
+      color:#dbeafe;
+    }
+
+    .grid{
+      display:grid;
+      grid-template-columns:1fr 1fr;
+      gap:12px;
+    }
+
+    @media (max-width:700px){
+      .grid{
+        grid-template-columns:1fr;
+      }
+    }
+
+    .field{
+      margin:12px 0;
+    }
+
+    .field label{
+      display:block;
+      font-size:13px;
+      color:#cbd5e1;
+      margin:0 0 6px;
+      font-weight:600;
+    }
+
+    input{
+      width:100%;
+      padding:14px;
+      margin:0;
+      border-radius:10px;
+      border:none;
+      background:#e5e7eb;
+      font-size:16px;
+      outline:none;
+    }
+
+    input:focus{
+      box-shadow:0 0 0 3px rgba(59,130,246,0.18);
+    }
+
+    button{
+      padding:14px;
+      background:#3b82f6;
+      border:none;
+      border-radius:10px;
+      color:white;
+      cursor:pointer;
+      margin-top:10px;
+      width:100%;
+      font-size:16px;
+      font-weight:700;
+      transition:0.2s;
+    }
+
+    button:hover{
+      background:#2563eb;
+      transform:translateY(-1px);
+    }
+
+    .result-card{
+      margin-top:18px;
+      padding:16px;
+      border-radius:14px;
+      background:rgba(255,255,255,0.05);
+      border:1px solid rgba(255,255,255,0.08);
+      display:none;
+    }
+
+    .result-line{
+      margin:10px 0;
+      font-size:16px;
+      line-height:1.5;
+      color:#e5e7eb;
+    }
+
+    .result-line strong{
+      color:#cbd5f5;
+    }
+
+    .insight-good{
+      color:#22c55e;
+      font-weight:700;
+    }
+
+    .insight-medium{
+      color:#facc15;
+      font-weight:700;
+    }
+
+    .insight-weak{
+      color:#ef4444;
+      font-weight:700;
+    }
+
+    canvas{
+      margin-top:26px;
+    }
+
+    .content{
+      width:90%;
+      max-width:900px;
+      margin-top:34px;
+    }
+
+    .content h2{
+      margin-top:34px;
+      margin-bottom:10px;
+      font-size:28px;
+    }
+
+    .content p,
+    .content li{
+      color:#cbd5e1;
+      line-height:1.7;
+      font-size:15px;
+    }
+
+    .content ul{
+      padding-left:20px;
+    }
+
+    .formula{
+      background:rgba(255,255,255,0.05);
+      border:1px solid rgba(255,255,255,0.08);
+      padding:14px 16px;
+      border-radius:12px;
+      margin:12px 0;
+      color:#e2e8f0;
+      overflow:auto;
+      line-height:1.7;
+    }
+
+    .faq{
+      margin-top:14px;
+    }
+
+    .faq-item{
+      border-bottom:1px solid rgba(255,255,255,0.08);
+    }
+
+    .faq-question{
+      width:100%;
+      background:none;
+      border:none;
+      color:white;
+      text-align:left;
+      padding:14px 8px;
+      font-size:15px;
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      cursor:pointer;
+    }
+
+    .faq-question:hover{
+      color:#93c5fd;
+    }
+
+    .arrow{
+      transition:0.25s;
+    }
+
+    .faq-item.active .arrow{
+      transform:rotate(180deg);
+    }
+
+    .faq-answer{
+      max-height:0;
+      overflow:hidden;
+      transition:max-height 0.3s ease;
+      color:#cbd5e1;
+      font-size:14px;
+      padding:0 8px;
+    }
+
+    .faq-item.active .faq-answer{
+      max-height:240px;
+      padding-bottom:12px;
+    }
+
+    .related{
+      width:90%;
+      max-width:560px;
+      margin-top:26px;
+      background:rgba(30,41,59,0.62);
+      border:1px solid rgba(255,255,255,0.08);
+      border-radius:16px;
+      padding:22px;
+    }
+
+    .related h3{
+      margin-top:0;
+      margin-bottom:10px;
+    }
+
+    .related p,
+    .related li{
+      color:#cbd5e1;
+      line-height:1.7;
+      font-size:15px;
+    }
+
+    .related ul{
+      padding-left:18px;
+      margin-bottom:0;
+    }
+
+    .related a{
+      color:#93c5fd;
+      text-decoration:none;
+    }
+
+    .related a:hover{
+      text-decoration:underline;
+    }
+
+    .disclaimer{
+      margin-top:24px;
+      padding-top:20px;
+      border-top:1px solid rgba(255,255,255,0.1);
+      font-size:13px;
+      color:#9ca3af;
+      max-width:900px;
+      text-align:center;
+      line-height:1.6;
+      width:90%;
+    }
+
+    @media (max-width:700px){
+      .container{
+        padding:22px;
+      }
+
+      h1{
+        font-size:28px;
+      }
+
+      .content h2{
+        font-size:24px;
+      }
+    }
+  </style>
 </head>
 
-<p class="toptext">Explore more calculators</p>
-
 <body>
+  <p class="toptext">Explore more calculators</p>
 
-<div class="menu">
-<a href="index.html">Home</a>
-</div>
+  <div class="menu">
+    <a href="index.html">Home</a>
+  </div>
 
-<div class="container">
+  <div class="container">
+    <h1>Inflation Calculator</h1>
+    <p class="quick-answer">
+      An inflation calculator shows how much today’s money may be worth in the future as prices rise over time.
+    </p>
 
-<h1>Inflation Calculator</h1>
+    <p class="subhead">
+      Calculate how inflation affects the value of your money over time and see future purchasing power instantly.
+    </p>
 
-<input id="amount" placeholder="Initial Amount ($)">
-<input id="inflation" placeholder="Annual Inflation Rate (%)">
-<input id="years" placeholder="Number of Years">
+    <div class="badge-row">
+      <span class="badge">Purchasing power</span>
+      <span class="badge soft">Inflation impact</span>
+      <span class="badge soft">Future value</span>
+    </div>
 
-<button onclick="calculateInflation()">Calculate</button>
+    <div class="grid">
+      <div class="field">
+        <label for="amount">Initial Amount ($)</label>
+        <input id="amount" type="number" min="0" step="any" placeholder="e.g. 1000">
+      </div>
 
-<h3 id="result"></h3>
+      <div class="field">
+        <label for="inflation">Annual Inflation Rate (%)</label>
+        <input id="inflation" type="number" step="any" placeholder="e.g. 3">
+      </div>
 
-<canvas id="myChart"></canvas>
+      <div class="field">
+        <label for="years">Number of Years</label>
+        <input id="years" type="number" min="1" step="1" placeholder="e.g. 10">
+      </div>
+    </div>
 
-</div>
-<h2>What is an Inflation Calculator?</h2>
+    <button onclick="calculateInflation()">Calculate</button>
 
-<p>
-An inflation calculator helps you understand how the value of money changes over time due to inflation. 
-Inflation represents the rate at which the general level of prices for goods and services increases, 
-causing purchasing power to decline.
-</p>
+    <div id="resultCard" class="result-card">
+      <div class="result-line"><strong>Future value:</strong> <span id="result">—</span></div>
+      <div class="result-line"><strong>Insight:</strong> <span id="insightOut">—</span></div>
+    </div>
 
-<p>
-In simple terms, money today is worth more than the same amount in the future. 
-This means that if inflation exists, your savings lose value unless they grow at a rate higher than inflation.
-</p>
+    <canvas id="myChart"></canvas>
+  </div>
 
-<h2>The Core Inflation Formula</h2>
+  <div class="content">
+    <h2>What is an Inflation Calculator?</h2>
+    <p>
+      An inflation calculator helps you understand how the value of money changes over time due to inflation.
+      Inflation is the rate at which prices rise, which causes purchasing power to decline.
+    </p>
 
-<p>
-This calculator uses a compound growth formula to estimate the future value of money under a constant inflation rate:
-</p>
+    <p>
+      In simple terms, money today is worth more than the same amount in the future.
+      If inflation exists, your savings lose value unless they grow at a rate higher than inflation.
+    </p>
 
-<p style="font-weight:bold;">
-Future Value = Present Value × (1 + Inflation Rate)<sup>Years</sup>
-</p>
+    <h2>The Core Inflation Formula</h2>
+    <p>
+      This calculator uses a compound growth formula to estimate the future value of money under a constant inflation rate:
+    </p>
 
-<p>
-Where:
-</p>
+    <div class="formula">
+      Future Value = Present Value × (1 + Inflation Rate)<sup>Years</sup>
+    </div>
 
-<ul>
-<li><strong>Present Value</strong> – the amount of money today</li>
-<li><strong>Inflation Rate</strong> – annual inflation percentage (e.g., 0.03 for 3%)</li>
-<li><strong>Years</strong> – the time period</li>
-</ul>
+    <p>
+      Where:
+    </p>
 
-<p>
-This formula works similarly to compound interest, but instead of growing your money, it measures how inflation reduces its real value over time.
-</p>
+    <ul>
+      <li><strong>Present Value</strong> – the amount of money today</li>
+      <li><strong>Inflation Rate</strong> – annual inflation percentage (e.g. 0.03 for 3%)</li>
+      <li><strong>Years</strong> – the time period</li>
+    </ul>
 
-<h2>Understanding Purchasing Power</h2>
+    <p>
+      This formula works similarly to compound interest, but instead of growing your money, it measures how inflation reduces its real value over time.
+    </p>
 
-<p>
-Inflation does not reduce the number of dollars you have — it reduces what those dollars can buy.
-</p>
+    <h2>Understanding Purchasing Power</h2>
+    <p>
+      Inflation does not reduce the number of dollars you have — it reduces what those dollars can buy.
+    </p>
 
-<p>
-For example, if inflation averages 3% per year:
-</p>
+    <p>
+      For example, if inflation averages 3% per year:
+    </p>
 
-<ul>
-<li>$1,000 today will feel like ~$744 in 10 years</li>
-<li>$1,000 today will feel like ~$553 in 20 years</li>
-</ul>
+    <ul>
+      <li>$1,000 today will feel like about $744 in 10 years</li>
+      <li>$1,000 today will feel like about $553 in 20 years</li>
+    </ul>
 
-<p>
-This is why simply saving money without investing can lead to a silent loss of wealth.
-</p>
+    <p>
+      This is why simply saving money without investing can lead to a silent loss of wealth.
+    </p>
 
-<h2>Why Inflation Matters for Investors</h2>
+    <h2>Why Inflation Matters for Investors</h2>
+    <p>
+      Inflation is one of the most important hidden forces in finance.
+      Many people focus only on returns, but ignore whether those returns beat inflation.
+    </p>
 
-<p>
-Inflation is one of the most important hidden forces in finance. 
-Many people focus only on returns, but ignore whether those returns beat inflation.
-</p>
+    <ul>
+      <li>If your investment returns 8% and inflation is 6% → real gain is only 2%</li>
+      <li>If your returns are below inflation → you are losing money in real terms</li>
+    </ul>
 
-<ul>
-<li>If your investment returns 8% and inflation is 6% → real gain is only 2%</li>
-<li>If your returns are below inflation → you are losing money in real terms</li>
-</ul>
+    <p>
+      This is the difference between <strong>nominal return</strong> and <strong>real return</strong>.
+    </p>
 
-<p>
-This is the difference between <strong>nominal return</strong> and <strong>real return</strong>.
-</p>
+    <h2>How to Use This Calculator</h2>
+    <ul>
+      <li>Enter your starting amount</li>
+      <li>Enter the expected inflation rate</li>
+      <li>Enter the number of years</li>
+      <li>Calculate to see future value and purchasing power</li>
+    </ul>
 
-<h2>How to Use This Calculator</h2>
+    <p>
+      This allows you to plan long-term financial decisions with a realistic understanding of money value.
+    </p>
 
-<ul>
-<li>Enter your starting amount</li>
-<li>Enter the expected inflation rate</li>
-<li>Enter the number of years</li>
-<li>Calculate to see future value and purchasing power</li>
-</ul>
+    <h2>Real-World Insight</h2>
+    <p>
+      Inflation is often underestimated because its impact is gradual.
+      However, over long periods, it compounds just like interest.
+    </p>
 
-<p>
-This allows you to plan long-term financial decisions with a realistic understanding of money value.
-</p>
+    <p>
+      Even moderate inflation can significantly erode wealth over decades.
+    </p>
 
-<h2>Real-World Insight</h2>
+    <p style="font-weight:bold; color:#facc15;">
+      ⚠️ If your money is not growing faster than inflation, you are effectively getting poorer over time.
+    </p>
 
-<p>
-Inflation is often underestimated because its impact is gradual. 
-However, over long periods, it compounds just like interest.
-</p>
+    <h2>Frequently Asked Questions</h2>
 
-<p>
-Even moderate inflation can significantly erode wealth over decades.
-</p>
+    <div class="faq">
+      <div class="faq-item">
+        <button class="faq-question" type="button">
+          Why does inflation compound over time?
+          <span class="arrow">▼</span>
+        </button>
+        <div class="faq-answer">
+          <p>
+            Inflation compounds because each year’s price increase builds on the previous one.
+            This creates an exponential effect, meaning small inflation rates can significantly reduce purchasing power over long periods.
+          </p>
+        </div>
+      </div>
 
-<p style="font-weight:bold; color:#facc15;">
-⚠️ If your money is not growing faster than inflation, you are effectively getting poorer over time.
-</p>
+      <div class="faq-item">
+        <button class="faq-question" type="button">
+          How long does it take for money to lose half its value?
+          <span class="arrow">▼</span>
+        </button>
+        <div class="faq-answer">
+          <p>
+            A simple rule is the “Rule of 72”. Divide 72 by the inflation rate.
+            For example, at 3% inflation, money loses about half its value in 24 years.
+          </p>
+        </div>
+      </div>
 
-  <h3>Frequently Asked Questions</h3>
+      <div class="faq-item">
+        <button class="faq-question" type="button">
+          Why do people underestimate inflation?
+          <span class="arrow">▼</span>
+        </button>
+        <div class="faq-answer">
+          <p>
+            Because its effects are gradual. Unlike sudden losses, inflation slowly reduces value over time,
+            making it less noticeable but equally dangerous in the long run.
+          </p>
+        </div>
+      </div>
 
-<div class="faq">
+      <div class="faq-item">
+        <button class="faq-question" type="button">
+          Is inflation always constant?
+          <span class="arrow">▼</span>
+        </button>
+        <div class="faq-answer">
+          <p>
+            No. Inflation changes over time based on economic conditions, interest rates, and government policies.
+            This calculator assumes a constant rate for simplicity, but real-world inflation fluctuates.
+          </p>
+        </div>
+      </div>
 
-  <div class="faq-item">
-    <button class="faq-question">
-      Why does inflation compound over time?
-      <span class="arrow">▼</span>
-    </button>
-    <div class="faq-answer">
-      <p>
-        Inflation compounds because each year’s price increase builds on the previous one. 
-        This creates an exponential effect, meaning small inflation rates can significantly reduce purchasing power over long periods.
-      </p>
+      <div class="faq-item">
+        <button class="faq-question" type="button">
+          Does inflation affect debt as well?
+          <span class="arrow">▼</span>
+        </button>
+        <div class="faq-answer">
+          <p>
+            Yes. Inflation can reduce the real value of fixed debt over time, which can benefit borrowers.
+            However, it also increases costs and interest rates in the broader economy.
+          </p>
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <button class="faq-question" type="button">
+          What is the biggest mistake people make regarding inflation?
+          <span class="arrow">▼</span>
+        </button>
+        <div class="faq-answer">
+          <p>
+            Ignoring it completely. Many people focus on saving money but fail to account for how inflation erodes its value,
+            leading to a false sense of financial security.
+          </p>
+        </div>
+      </div>
     </div>
   </div>
 
-  <div class="faq-item">
-    <button class="faq-question">
-      How long does it take for money to lose half its value?
-      <span class="arrow">▼</span>
-    </button>
-    <div class="faq-answer">
-      <p>
-        A simple rule is the “Rule of 72”. Divide 72 by the inflation rate. 
-        For example, at 3% inflation, money loses about half its value in 24 years (72 ÷ 3).
-      </p>
-    </div>
+  <div class="related">
+    <h3>Related Calculators</h3>
+    <p>You may also find these tools useful:</p>
+    <ul>
+      <li><a href="future-value-calculator.html">Future Value Calculator</a></li>
+      <li><a href="compound-interest-calculator.html">Compound Interest Calculator</a></li>
+      <li><a href="retirement-calculator.html">Retirement Calculator</a></li>
+      <li><a href="savings-calculator.html">Savings Calculator</a></li>
+      <li><a href="cagr-loss-calculator.html">CAGR Calculator</a></li>
+    </ul>
   </div>
 
-  <div class="faq-item">
-    <button class="faq-question">
-      Why do people underestimate inflation?
-      <span class="arrow">▼</span>
-    </button>
-    <div class="faq-answer">
-      <p>
-        Because its effects are gradual. Unlike sudden losses, inflation slowly reduces value over time, 
-        making it less noticeable but equally dangerous in the long run.
-      </p>
-    </div>
+  <div class="disclaimer">
+    <p>
+      <strong>Disclaimer:</strong> The calculators on this website are for informational purposes only.
+      They do not provide financial advice.
+    </p>
   </div>
 
-  <div class="faq-item">
-    <button class="faq-question">
-      Is inflation always constant?
-      <span class="arrow">▼</span>
-    </button>
-    <div class="faq-answer">
-      <p>
-        No. Inflation changes over time based on economic conditions, interest rates, and government policies. 
-        This calculator assumes a constant rate for simplicity, but real-world inflation fluctuates.
-      </p>
-    </div>
-  </div>
+  <script src="footer.js"></script>
 
-  <div class="faq-item">
-    <button class="faq-question">
-      Does inflation affect debt as well?
-      <span class="arrow">▼</span>
-    </button>
-    <div class="faq-answer">
-      <p>
-        Yes. Inflation can reduce the real value of fixed debt over time, which can benefit borrowers. 
-        However, it also increases costs and interest rates in the broader economy.
-      </p>
-    </div>
-  </div>
+  <script>
+    let chart;
 
-  <div class="faq-item">
-    <button class="faq-question">
-      What is the biggest mistake people make regarding inflation?
-      <span class="arrow">▼</span>
-    </button>
-    <div class="faq-answer">
-      <p>
-        Ignoring it completely. Many people focus on saving money but fail to account for how inflation erodes its value, 
-        leading to a false sense of financial security.
-      </p>
-    </div>
-  </div>
+    function calculateInflation(){
+      const amount = parseFloat(document.getElementById("amount").value);
+      const inflation = parseFloat(document.getElementById("inflation").value);
+      const years = parseFloat(document.getElementById("years").value);
 
-</div>
+      if (isNaN(amount) || isNaN(inflation) || isNaN(years)){
+        alert("Please fill in all fields.");
+        return;
+      }
 
+      if (amount < 0){
+        alert("Amount must be greater than or equal to zero.");
+        return;
+      }
 
-<div class="related">
-<h3>Related Calculators</h3>
-<p>You may also find these tools useful:</p>
-<ul>
-<li><a href="future-value-calculator.html">Future Value Calculator</a></li>
-<li><a href="compound-interest-calculator.html">Compound Interest Calculator</a></li>
-<li><a href="retirement-calculator.html">Retirement Calculator</a></li>
-<li><a href="savings-calculator.html">Savings Calculator</a></li>
-<li><a href="cagr-loss-calculator.html">CAGR Calculator</a></li>
-</ul>
-</div>
-  
-<div class="disclaimer">
-<p>
-<strong>Disclaimer:</strong> The calculators on this website are for informational purposes only.
-They do not provide financial advice.
-</p>
-</div>
+      if (years <= 0){
+        alert("Years must be greater than zero.");
+        return;
+      }
 
-<script src="footer.js"></script>
+      if (inflation <= -100){
+        alert("Inflation must be greater than -100%.");
+        return;
+      }
 
-<script>
+      const futureValue = amount / Math.pow(1 + inflation / 100, years);
 
-let chart;
+      document.getElementById("result").innerHTML = "$" + futureValue.toFixed(2);
+      document.getElementById("insightOut").innerHTML =
+        futureValue < amount
+          ? '<span class="insight-weak">Purchasing power is falling over time.</span>'
+          : '<span class="insight-good">Value is holding up against inflation.</span>';
 
-function calculateInflation(){
+      document.getElementById("resultCard").style.display = "block";
 
-let amount = parseFloat(document.getElementById("amount").value);
-let inflation = parseFloat(document.getElementById("inflation").value);
-let years = parseFloat(document.getElementById("years").value);
+      drawChart(amount, futureValue);
+    }
 
-let futureValue = amount / Math.pow(1 + inflation/100, years);
+    function drawChart(amount, futureValue){
+      const ctx = document.getElementById('myChart').getContext('2d');
 
-document.getElementById("result").innerHTML =
-"Future Value: " + futureValue.toFixed(2) + " $";
+      if(chart){
+        chart.destroy();
+      }
 
-drawChart(amount, futureValue);
-
-}
-
-function drawChart(amount, futureValue){
-
-let ctx = document.getElementById('myChart');
-
-if(chart){
-chart.destroy();
-}
-
-chart = new Chart(ctx,{
-type:'bar',
-data:{
-labels:['Today Value','Future Value'],
-datasets:[{
-label:'Value',
-data:[amount, futureValue],
-backgroundColor:[
-'#3b82f6',
-'#ef4444'
-]
-}]
-}
-});
-
-}
-document.addEventListener("DOMContentLoaded", function(){
-
-  document.querySelectorAll(".faq-question").forEach(btn => {
-    btn.addEventListener("click", () => {
-
-      const item = btn.parentElement;
-
-      document.querySelectorAll(".faq-item").forEach(i => {
-        if(i !== item) i.classList.remove("active");
+      chart = new Chart(ctx,{
+        type:'bar',
+        data:{
+          labels:['Today Value','Future Value'],
+          datasets:[{
+            label:'Value',
+            data:[amount, futureValue],
+            backgroundColor:['#3b82f6','#ef4444']
+          }]
+        },
+        options:{
+          responsive:true,
+          plugins:{
+            legend:{
+              labels:{ color:'white' }
+            }
+          },
+          scales:{
+            x:{
+              ticks:{ color:'white' },
+              grid:{ color:'rgba(255,255,255,0.08)' }
+            },
+            y:{
+              ticks:{ color:'white' },
+              grid:{ color:'rgba(255,255,255,0.08)' }
+            }
+          }
+        }
       });
+    }
 
-      item.classList.toggle("active");
+    document.addEventListener("DOMContentLoaded", function(){
+      document.querySelectorAll(".faq-question").forEach(btn => {
+        btn.addEventListener("click", () => {
+          const item = btn.parentElement;
 
+          document.querySelectorAll(".faq-item").forEach(i => {
+            if(i !== item) i.classList.remove("active");
+          });
+
+          item.classList.toggle("active");
+        });
+      });
     });
-  });
-
-});
-</script>
-
+  </script>
 </body>
-</html>
+    </html>
