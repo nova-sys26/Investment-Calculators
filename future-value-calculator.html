@@ -1,7 +1,8 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<link rel="canonical" href="https://novainvesttools.com/future-value-calculator.html">
+  <link rel="canonical" href="https://novainvesttools.com/future-value-calculator.html">
+
   <!-- Google tag (gtag.js) -->
   <script async src="https://www.googletagmanager.com/gtag/js?id=G-ZPCXDVE8C5"></script>
   <script>
@@ -15,43 +16,105 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
   <title>Future Value Calculator – Project Investment Growth Over Time</title>
-  <meta name="description" content="Free future value calculator to project investment growth with compound returns, monthly contributions, and inflation-adjusted value over time.">
+  <meta name="description" content="Project future value with compound returns, monthly contributions, and inflation-adjusted growth. See how your money can grow over time.">
   <meta name="theme-color" content="#0f172a">
-
-  <link rel="canonical" href="https://novainvesttools.com/future-value-calculator.html">
-  <link rel="icon" href="favicon.png" type="image/png">
-  <link rel="apple-touch-icon" href="favicon.png">
+  <meta name="robots" content="index,follow,max-image-preview:large">
 
   <meta property="og:type" content="website">
   <meta property="og:url" content="https://novainvesttools.com/future-value-calculator.html">
   <meta property="og:title" content="Future Value Calculator – Project Investment Growth Over Time">
   <meta property="og:description" content="Project future value with compound growth, monthly contributions, and inflation-adjusted results.">
 
-  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <link rel="preconnect" href="https://cdn.jsdelivr.net">
+  <link rel="dns-prefetch" href="https://cdn.jsdelivr.net">
+
   <link rel="stylesheet" href="style.css">
+  <link rel="icon" href="favicon.png" type="image/png">
+  <link rel="apple-touch-icon" href="favicon.png">
+
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
   <script type="application/ld+json">
-{
-  "@context": "https://schema.org",
-  "@type": "WebApplication",
-  "name": "Future Value Calculator",
-  "url": "https://novainvesttools.com/future-value-calculator.html",
-  "applicationCategory": "FinanceApplication",
-  "operatingSystem": "All",
-  "browserRequirements": "Requires JavaScript",
-"description": "Calculate the future value of investments over time.",
-"featureList": [
-  "Future value",
-  "Time growth",
-  "Investment projection",
-  "Compound returns"
-],    
-    offers": {
-    "@type": "Offer",
-    "price": "0",
-    "priceCurrency": "USD"
+  {
+    "@context": "https://schema.org",
+    "@type": "WebApplication",
+    "name": "Future Value Calculator",
+    "url": "https://novainvesttools.com/future-value-calculator.html",
+    "applicationCategory": "FinanceApplication",
+    "operatingSystem": "All",
+    "browserRequirements": "Requires JavaScript",
+    "description": "Calculate the future value of investments over time with compound returns and recurring contributions.",
+    "featureList": [
+      "Future value projection",
+      "Monthly contribution growth",
+      "Inflation-adjusted value",
+      "Compound returns chart"
+    ],
+    "offers": {
+      "@type": "Offer",
+      "price": "0",
+      "priceCurrency": "USD"
+    }
   }
-}
   </script>
+
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": [
+      {
+        "@type": "Question",
+        "name": "What does future value mean?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Future value is the estimated amount your money may grow to after a certain period based on your starting value, contributions, and expected return."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Is future value the same as compound interest?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Not exactly. Compound interest is the growth mechanism, while future value is the final result. This calculator uses compound growth to estimate the future value."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Why include inflation?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Inflation lowers purchasing power over time. Including it helps you see what the future balance may be worth in today's money."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Can I use this for savings goals?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Yes. It works well for savings goals, retirement planning, and any long-term target where you want to estimate how money can grow over time."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "What return rate should I use?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Use a realistic long-term assumption. A conservative return rate is usually better than an aggressive one because it gives you a more reliable planning estimate."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Can this calculator predict the exact future?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "No. It is a projection, not a guarantee. Real-world returns, contribution amounts, and inflation can change, so use the result as a planning estimate."
+        }
+      }
+    ]
+  }
+  </script>
+
   <style>
     *{
       box-sizing:border-box;
@@ -59,7 +122,7 @@
 
     body{
       font-family:Arial, sans-serif;
-      background:#0f172a;
+      background:#0b1a33;
       color:white;
       display:flex;
       justify-content:center;
@@ -101,6 +164,17 @@
       margin-bottom:10px;
       font-size:32px;
       line-height:1.15;
+    }
+
+    .quick-answer{
+      background: rgba(59,130,246,0.12);
+      border: 1px solid rgba(59,130,246,0.25);
+      padding: 12px 14px;
+      border-radius: 10px;
+      font-size: 15px;
+      line-height: 1.6;
+      color: #e2e8f0;
+      margin-bottom: 18px;
     }
 
     .subhead{
@@ -386,8 +460,12 @@
 
   <div class="container">
     <h1>Future Value Calculator</h1>
+    <p class="quick-answer">
+      A future value calculator shows how much your money may grow over time with compounding and regular contributions.
+    </p>
+
     <p class="subhead">
-      Project how your investment or savings can grow over time with compound returns, recurring contributions, and inflation-adjusted value.
+      Project how your investment or savings can grow over time with compound returns, monthly contributions, and inflation-adjusted value.
       A useful tool for investors, savers, and retirement planners.
     </p>
 
@@ -470,7 +548,7 @@
     </div>
 
     <p>
-      This gives you a more useful answer than a plain “final amount” because it shows both the projected account value and the value in today’s money.
+      This gives you a more useful answer than a plain final amount because it shows both the projected account value and the value in today’s money.
     </p>
 
     <h2>Why Future Value Matters</h2>
@@ -500,7 +578,7 @@
 
     <div class="faq">
       <div class="faq-item">
-        <button class="faq-question">
+        <button class="faq-question" type="button">
           What does future value mean?
           <span class="arrow">▼</span>
         </button>
@@ -512,7 +590,7 @@
       </div>
 
       <div class="faq-item">
-        <button class="faq-question">
+        <button class="faq-question" type="button">
           Is future value the same as compound interest?
           <span class="arrow">▼</span>
         </button>
@@ -524,7 +602,7 @@
       </div>
 
       <div class="faq-item">
-        <button class="faq-question">
+        <button class="faq-question" type="button">
           Why include inflation?
           <span class="arrow">▼</span>
         </button>
@@ -536,7 +614,7 @@
       </div>
 
       <div class="faq-item">
-        <button class="faq-question">
+        <button class="faq-question" type="button">
           Can I use this for savings goals?
           <span class="arrow">▼</span>
         </button>
@@ -548,7 +626,7 @@
       </div>
 
       <div class="faq-item">
-        <button class="faq-question">
+        <button class="faq-question" type="button">
           What return rate should I use?
           <span class="arrow">▼</span>
         </button>
@@ -560,7 +638,7 @@
       </div>
 
       <div class="faq-item">
-        <button class="faq-question">
+        <button class="faq-question" type="button">
           Can this calculator predict the exact future?
           <span class="arrow">▼</span>
         </button>
@@ -633,7 +711,6 @@
 
       const totalMonths = Math.round(years * 12);
       const monthlyReturn = Math.pow(1 + annualReturnPct / 100, 1 / 12) - 1;
-      const monthlyInflation = Math.pow(1 + inflationPct / 100, 1 / 12) - 1;
 
       let balance = initialValue;
       let totalContributions = 0;
