@@ -1,440 +1,733 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-<link rel="canonical" href="https://novainvesttools.com/mortgage-calculator.html">
-<!-- Google tag (gtag.js) -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-ZPCXDVE8C5"></script>
-<script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
+  <link rel="canonical" href="https://novainvesttools.com/mortgage-calculator.html">
 
-  gtag('config', 'G-ZPCXDVE8C5');
-</script>
-<meta charset="UTF-8">
-<title>Mortgage Calculator – Calculate Monthly Payments & Interest</title>
-<meta name="description" content="Calculate your monthly mortgage payment, total interest, and loan cost easily. Plan your home financing easily.">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-ZPCXDVE8C5"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-ZPCXDVE8C5');
+  </script>
 
-<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-<link rel="stylesheet" href="style.css">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Mortgage Calculator – Calculate Monthly Payments & Interest</title>
+  <meta name="description" content="Calculate your monthly mortgage payment, total interest, payoff time with extra payments, and total loan cost easily.">
+  <meta name="theme-color" content="#0f172a">
+  <meta name="robots" content="index,follow,max-image-preview:large">
 
-<style>
-body{
-font-family:Arial;
-background:#0f172a;
-color:white;
-display:flex;
-justify-content:center;
-align-items:center;
-flex-direction:column;
-min-height:100vh;
-}
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://novainvesttools.com/mortgage-calculator.html">
+  <meta property="og:title" content="Mortgage Calculator – Calculate Monthly Payments & Interest">
+  <meta property="og:description" content="Calculate your monthly mortgage payment, total interest, payoff time with extra payments, and total loan cost easily.">
 
-.container{
-background:#1e293b;
-padding:30px;
-border-radius:16px;
-width:90%;
-max-width:500px;
-box-shadow:0 10px 25px rgba(0,0,0,0.35);
-}
+  <link rel="preconnect" href="https://cdn.jsdelivr.net">
+  <link rel="dns-prefetch" href="https://cdn.jsdelivr.net">
 
-input{
-width:100%;
-padding:14px;
-margin:12px 0;
-border-radius:10px;
-border:none;
-background:#e5e7eb;
-font-size:16px;
-}
+  <link rel="stylesheet" href="style.css">
+  <link rel="icon" href="favicon.png" type="image/png">
+  <link rel="apple-touch-icon" href="favicon.png">
 
-button{
-padding:14px;
-background:#3b82f6;
-border:none;
-border-radius:10px;
-color:white;
-cursor:pointer;
-margin-top:10px;
-width:100%;
-}
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
-button:hover{
-background:#2563eb;
-}
-
-canvas{
-margin-top:30px;
-}
-
-.menu{
-margin-bottom:25px;
-}
-
-.menu a{
-color:#3b82f6;
-margin:10px;
-text-decoration:none;
-}
-
-.disclaimer{
-margin-top:40px;
-padding-top:20px;
-border-top:1px solid rgba(255,255,255,0.1);
-font-size:13px;
-color:#9ca3af;
-max-width:500px;
-text-align:center;
-line-height:1.6;
-}
-
-.toptext{
-font-size:14px;
-color:#6b7a99;
-margin-bottom:5px;
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "WebApplication",
+    "name": "Mortgage Calculator",
+    "url": "https://novainvesttools.com/mortgage-calculator.html",
+    "applicationCategory": "FinanceApplication",
+    "operatingSystem": "All",
+    "browserRequirements": "Requires JavaScript",
+    "description": "Calculate monthly mortgage payments, total interest, and payoff time with extra monthly payments.",
+    "featureList": [
+      "Monthly mortgage payment calculation",
+      "Total interest estimate",
+      "Extra payment payoff projection",
+      "Loan cost overview"
+    ],
+    "offers": {
+      "@type": "Offer",
+      "price": "0",
+      "priceCurrency": "USD"
+    }
   }
-</style>
+  </script>
 
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": [
+      {
+        "@type": "Question",
+        "name": "What is a mortgage calculator?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "A mortgage calculator estimates your monthly payment, total interest, and total loan cost based on the loan amount, interest rate, and term."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Do extra monthly payments really help?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Yes. Extra monthly payments reduce the remaining balance faster, which can shorten the loan term and reduce total interest paid."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Why does a longer loan term cost more?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "A longer loan term lowers the monthly payment, but interest has more time to accumulate, so the total cost is usually higher."
+        }
+      }
+    ]
+  }
+  </script>
+
+  <style>
+    *{
+      box-sizing:border-box;
+    }
+
+    body{
+      font-family: Arial, sans-serif;
+      background:#0b1a33;
+      color:white;
+      display:flex;
+      justify-content:center;
+      align-items:center;
+      flex-direction:column;
+      min-height:100vh;
+      margin:0;
+      padding:24px 0;
+    }
+
+    .toptext{
+      font-size:14px;
+      color:#6b7a99;
+      margin-bottom:5px;
+    }
+
+    .menu{
+      margin-bottom:25px;
+    }
+
+    .menu a{
+      color:#3b82f6;
+      margin:10px;
+      text-decoration:none;
+      font-weight:600;
+    }
+
+    .container{
+      background:#1e293b;
+      padding:30px;
+      border-radius:16px;
+      width:90%;
+      max-width:520px;
+      box-shadow:0 10px 25px rgba(0,0,0,0.35);
+    }
+
+    h1{
+      margin-top:0;
+      margin-bottom:10px;
+      font-size:32px;
+      line-height:1.15;
+    }
+
+    .subhead{
+      color:#94a3b8;
+      font-size:15px;
+      line-height:1.6;
+      margin-bottom:18px;
+    }
+
+    .quick-answer{
+      background: rgba(59,130,246,0.12);
+      border: 1px solid rgba(59,130,246,0.25);
+      padding: 12px 14px;
+      border-radius: 10px;
+      font-size: 15px;
+      line-height: 1.6;
+      color: #e2e8f0;
+      margin-bottom: 18px;
+    }
+
+    input{
+      width:100%;
+      padding:14px;
+      margin:12px 0;
+      border-radius:10px;
+      border:none;
+      background:#e5e7eb;
+      font-size:16px;
+      outline:none;
+    }
+
+    input:focus{
+      box-shadow:0 0 0 3px rgba(59,130,246,0.18);
+    }
+
+    button{
+      padding:14px;
+      background:#3b82f6;
+      border:none;
+      border-radius:10px;
+      color:white;
+      cursor:pointer;
+      margin-top:10px;
+      width:100%;
+      font-size:16px;
+      font-weight:700;
+      transition:0.2s;
+    }
+
+    button:hover{
+      background:#2563eb;
+      transform:translateY(-1px);
+    }
+
+    .result-card{
+      margin-top:18px;
+      padding:16px;
+      border-radius:14px;
+      background:rgba(255,255,255,0.05);
+      border:1px solid rgba(255,255,255,0.08);
+      display:none;
+    }
+
+    .result-line{
+      margin:10px 0;
+      font-size:16px;
+      line-height:1.5;
+      color:#e5e7eb;
+    }
+
+    .result-line strong{
+      color:#cbd5f5;
+    }
+
+    .insight-good{
+      color:#22c55e;
+      font-weight:700;
+    }
+
+    .insight-medium{
+      color:#facc15;
+      font-weight:700;
+    }
+
+    .insight-weak{
+      color:#ef4444;
+      font-weight:700;
+    }
+
+    canvas{
+      margin-top:26px;
+    }
+
+    .content{
+      width:90%;
+      max-width:900px;
+      margin-top:34px;
+    }
+
+    .content h2{
+      margin-top:34px;
+      margin-bottom:10px;
+      font-size:28px;
+    }
+
+    .content p,
+    .content li{
+      color:#cbd5e1;
+      line-height:1.7;
+      font-size:15px;
+    }
+
+    .content ul{
+      padding-left:20px;
+    }
+
+    .formula{
+      background:rgba(255,255,255,0.05);
+      border:1px solid rgba(255,255,255,0.08);
+      padding:14px 16px;
+      border-radius:12px;
+      margin:12px 0;
+      color:#e2e8f0;
+      overflow:auto;
+      line-height:1.7;
+    }
+
+    .faq{
+      margin-top:14px;
+    }
+
+    .faq-item{
+      border-bottom:1px solid rgba(255,255,255,0.08);
+    }
+
+    .faq-question{
+      width:100%;
+      background:none;
+      border:none;
+      color:white;
+      text-align:left;
+      padding:14px 8px;
+      font-size:15px;
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      cursor:pointer;
+    }
+
+    .faq-question:hover{
+      color:#93c5fd;
+    }
+
+    .arrow{
+      transition:0.25s;
+    }
+
+    .faq-item.active .arrow{
+      transform:rotate(180deg);
+    }
+
+    .faq-answer{
+      max-height:0;
+      overflow:hidden;
+      transition:max-height 0.3s ease;
+      color:#cbd5e1;
+      font-size:14px;
+      padding:0 8px;
+    }
+
+    .faq-item.active .faq-answer{
+      max-height:260px;
+      padding-bottom:12px;
+    }
+
+    .related{
+      width:90%;
+      max-width:900px;
+      margin-top:34px;
+    }
+
+    .related a{
+      color:#93c5fd;
+      text-decoration:none;
+    }
+
+    .related a:hover{
+      text-decoration:underline;
+    }
+
+    .disclaimer{
+      margin-top:40px;
+      padding-top:20px;
+      border-top:1px solid rgba(255,255,255,0.1);
+      font-size:13px;
+      color:#9ca3af;
+      max-width:900px;
+      text-align:center;
+      line-height:1.6;
+      width:90%;
+    }
+
+    @media (max-width: 700px){
+      .container{
+        padding:22px;
+      }
+
+      h1{
+        font-size:28px;
+      }
+
+      .content h2{
+        font-size:24px;
+      }
+    }
+  </style>
 </head>
 
 <body>
+  <p class="toptext">Explore more calculators</p>
 
-<p class="toptext">Explore more calculators</p>
-<div class="menu">
-<a href="index.html">Home</a>
-</div>
-
-<div class="container">
-
-<h1>Mortgage Calculator</h1>
-
-<input id="loan" placeholder="Loan Amount ($)">
-<input id="rate" placeholder="Interest Rate (% per year)">
-<input id="years" placeholder="Loan Term (years)">
-<input id="extra" placeholder="Extra Monthly Payment ($) (optional)">
-
-<button onclick="calculateMortgage()">Calculate</button>
-
-<h3 id="result"></h3>
-
-<canvas id="myChart"></canvas>
-
-</div>
-
-<h2>What is a Mortgage Calculator?</h2>
-
-<p>
-A mortgage calculator helps you estimate how much a home loan will cost over time and how long it will take to pay off. It shows the relationship between your loan amount, interest rate, loan term, and extra monthly payments, so you can understand the real cost of borrowing before making a long-term commitment.
-</p>
-
-<p>
-Buying a home is usually the largest financial decision most people make. A mortgage is not just about the amount you borrow — it is also about how much interest you pay, how long the loan lasts, and whether making extra payments can save you money over the life of the loan.
-</p>
-
-<h2>How This Mortgage Calculator Works</h2>
-
-<p>
-This calculator uses your <strong>loan amount</strong>, <strong>interest rate</strong>, and <strong>loan term in years</strong> to estimate your monthly mortgage payment and total repayment cost. If you enter <strong>extra monthly payments</strong>, the calculator also shows how much faster you can pay off the loan and how much interest you may save.
-</p>
-
-<ul>
-  <li><strong>Loan Amount</strong> = the total amount borrowed</li>
-  <li><strong>Interest Rate</strong> = the annual percentage charged by the lender</li>
-  <li><strong>Loan Term (Years)</strong> = the length of the mortgage</li>
-  <li><strong>Extra Monthly Payments</strong> = additional money paid toward principal each month</li>
-</ul>
-
-<p>
-Even small extra payments can make a big difference because they reduce the principal faster, which lowers the amount of interest charged over time.
-</p>
-
-<h2>The Mortgage Payment Formula</h2>
-
-<p>
-The core monthly mortgage payment formula is:
-</p>
-
-<p>
-<strong>
-Monthly Payment = P × [r(1 + r)<sup>n</sup>] ÷ [(1 + r)<sup>n</sup> − 1]
-</strong>
-</p>
-
-<p>
-Where:
-</p>
-
-<ul>
-  <li><strong>P</strong> = Loan Amount</li>
-  <li><strong>r</strong> = Monthly Interest Rate (Annual Interest Rate ÷ 12)</li>
-  <li><strong>n</strong> = Total Number of Payments (Loan Term in Years × 12)</li>
-</ul>
-
-<p>
-If you add extra monthly payments, the calculator applies those additional amounts to the loan principal. This shortens the payoff time and reduces the total interest paid.
-</p>
-
-<h2>Why Extra Monthly Payments Matter</h2>
-
-<p>
-Extra monthly payments are one of the most powerful ways to reduce mortgage cost. Since mortgage interest is based on the remaining balance, every extra dollar you pay toward principal lowers the amount of interest that accrues in the future.
-</p>
-
-<ul>
-  <li>They reduce your remaining balance faster</li>
-  <li>They shorten your loan term</li>
-  <li>They can save thousands in interest over time</li>
-</ul>
-
-<p>
-In many cases, even a modest extra payment each month can shave years off a mortgage.
-</p>
-
-<h2>Why Mortgage Planning Matters</h2>
-
-<p>
-A mortgage is a long-term debt, which means small changes in interest rate or payment strategy can have a huge impact over time. Two loans with the same amount can end up costing very different totals depending on term length and extra payments.
-</p>
-
-<ul>
-  <li>A longer term lowers monthly payments but increases total interest</li>
-  <li>A shorter term increases monthly payments but reduces interest</li>
-  <li>Extra payments can create a balance between affordability and savings</li>
-</ul>
-
-<p>
-This is why mortgage calculators are essential for homebuyers, refinancers, and anyone comparing loan offers.
-</p>
-
-<h2>How to Use This Calculator</h2>
-
-<ul>
-  <li>Enter your loan amount</li>
-  <li>Enter the annual interest rate</li>
-  <li>Enter the loan term in years</li>
-  <li>Enter any extra monthly payment you plan to make</li>
-  <li>Click calculate to see your mortgage details</li>
-</ul>
-
-<p>
-This tool helps you estimate your monthly payment, total interest, and how extra payments may speed up your payoff timeline.
-</p>
-
-<h2>The Real Insight</h2>
-
-<p>
-Mortgages are not only about borrowing money — they are about controlling the cost of debt over time. The sooner you reduce the principal, the less interest you pay overall.
-</p>
-
-<p>
-That is why homeowners who understand amortization and make extra payments strategically can often save a large amount of money compared to borrowers who only make the minimum payment.
-</p>
-
-<p style="font-weight:bold; color:#f87171;">
-⚠️ A small extra payment each month can turn into a major long-term savings advantage.
-</p>
-
-<h3>Frequently Asked Questions</h3>
-
-<div class="faq">
-
-  <div class="faq-item">
-    <button class="faq-question">
-      What is the difference between loan amount and total mortgage cost?
-      <span class="arrow">▼</span>
-    </button>
-    <div class="faq-answer">
-      <p>
-        The loan amount is the money you borrow at the start. The total mortgage cost includes the loan amount plus all the interest paid over the life of the loan.
-      </p>
-    </div>
+  <div class="menu">
+    <a href="index.html">Home</a>
   </div>
 
-  <div class="faq-item">
-    <button class="faq-question">
-      Why does a longer loan term cost more?
-      <span class="arrow">▼</span>
-    </button>
-    <div class="faq-answer">
-      <p>
-        A longer term lowers the monthly payment, but interest has more time to accumulate. That usually means you pay much more in total interest.
-      </p>
+  <div class="container" data-search="mortgage calculator monthly payment interest total cost extra payment amortization home loan">
+    <h1>Mortgage Calculator</h1>
+    <p class="quick-answer">
+      A $300,000 mortgage at 6% for 30 years costs about $1,799 per month before extra payments — use this calculator to see your payment, interest, and payoff time.
+    </p>
+    <p class="subhead">
+      Estimate your monthly mortgage payment, total interest, and how extra monthly payments can shorten your loan term.
+    </p>
+
+    <input id="loan" placeholder="Loan Amount ($)">
+    <input id="rate" placeholder="Interest Rate (% per year)">
+    <input id="years" placeholder="Loan Term (years)">
+    <input id="extra" placeholder="Extra Monthly Payment ($) (optional)">
+
+    <button onclick="calculateMortgage()">Calculate</button>
+
+    <div id="resultCard" class="result-card">
+      <div class="result-line"><strong>Base monthly payment:</strong> <span id="basePaymentOut">—</span></div>
+      <div class="result-line"><strong>Total monthly payment:</strong> <span id="monthlyPaymentOut">—</span></div>
+      <div class="result-line"><strong>Loan duration:</strong> <span id="durationOut">—</span></div>
+      <div class="result-line"><strong>Total interest:</strong> <span id="interestOut">—</span></div>
+      <div class="result-line"><strong>Total repayment:</strong> <span id="totalOut">—</span></div>
+      <div class="result-line"><strong>Insight:</strong> <span id="insightOut">—</span></div>
     </div>
+
+    <canvas id="myChart"></canvas>
   </div>
 
-  <div class="faq-item">
-    <button class="faq-question">
-      Do extra monthly payments really save money?
-      <span class="arrow">▼</span>
-    </button>
-    <div class="faq-answer">
-      <p>
-        Yes. Extra payments reduce your principal faster, which lowers future interest charges and can shorten the length of the mortgage significantly.
-      </p>
+  <div class="content">
+    <h2>What is a Mortgage Calculator?</h2>
+    <p>
+      A mortgage calculator helps you estimate how much a home loan will cost over time and how long it will take to pay off.
+      It shows the relationship between your loan amount, interest rate, loan term, and extra monthly payments.
+    </p>
+
+    <p>
+      Buying a home is usually the largest financial decision most people make.
+      A mortgage is not just about the amount you borrow. It is also about how much interest you pay and how long the loan lasts.
+    </p>
+
+    <h2>How This Mortgage Calculator Works</h2>
+    <p>
+      This calculator uses your loan amount, interest rate, and loan term in years to estimate your monthly mortgage payment and total repayment cost.
+      If you enter extra monthly payments, it also shows how much faster you can pay off the loan.
+    </p>
+
+    <div class="formula">
+      Monthly Payment = P × [r(1 + r)<sup>n</sup>] ÷ [(1 + r)<sup>n</sup> − 1]
+      <br>
+      Where:
+      <br>
+      P = Loan Amount
+      <br>
+      r = Monthly Interest Rate
+      <br>
+      n = Total Number of Payments
+    </div>
+
+    <p>
+      Extra monthly payments are applied directly to principal, which reduces the balance faster and lowers total interest.
+    </p>
+
+    <h2>Why Extra Monthly Payments Matter</h2>
+    <p>
+      Even small extra payments can make a big difference because they reduce the principal faster, which lowers the amount of interest charged over time.
+    </p>
+
+    <ul>
+      <li>They reduce your remaining balance faster</li>
+      <li>They shorten your loan term</li>
+      <li>They can save thousands in interest over time</li>
+    </ul>
+
+    <h2>Why Mortgage Planning Matters</h2>
+    <p>
+      A mortgage is a long-term debt, which means small changes in interest rate or payment strategy can have a huge impact over time.
+      Two loans with the same amount can end up costing very different totals depending on term length and extra payments.
+    </p>
+
+    <ul>
+      <li>A longer term lowers monthly payments but increases total interest</li>
+      <li>A shorter term increases monthly payments but reduces interest</li>
+      <li>Extra payments can create a balance between affordability and savings</li>
+    </ul>
+
+    <h2>How to Use This Calculator</h2>
+    <ul>
+      <li>Enter your loan amount</li>
+      <li>Enter the annual interest rate</li>
+      <li>Enter the loan term in years</li>
+      <li>Enter any extra monthly payment you plan to make</li>
+      <li>Click calculate to see your mortgage details</li>
+    </ul>
+
+    <h3>Frequently Asked Questions</h3>
+
+    <div class="faq">
+      <div class="faq-item">
+        <button class="faq-question">
+          What is the difference between loan amount and total mortgage cost?
+          <span class="arrow">▼</span>
+        </button>
+        <div class="faq-answer">
+          <p>
+            The loan amount is the money you borrow at the start. The total mortgage cost includes the loan amount plus all the interest paid over the life of the loan.
+          </p>
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <button class="faq-question">
+          Why does a longer loan term cost more?
+          <span class="arrow">▼</span>
+        </button>
+        <div class="faq-answer">
+          <p>
+            A longer term lowers the monthly payment, but interest has more time to accumulate. That usually means you pay much more in total interest.
+          </p>
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <button class="faq-question">
+          Do extra monthly payments really save money?
+          <span class="arrow">▼</span>
+        </button>
+        <div class="faq-answer">
+          <p>
+            Yes. Extra payments reduce your principal faster, which lowers future interest charges and can shorten the length of the mortgage significantly.
+          </p>
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <button class="faq-question">
+          Is it better to pay extra every month or make one large payment?
+          <span class="arrow">▼</span>
+        </button>
+        <div class="faq-answer">
+          <p>
+            Both can help, but making extra payments earlier usually saves more interest because the principal balance is reduced sooner.
+          </p>
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <button class="faq-question">
+          How does interest rate affect my mortgage payment?
+          <span class="arrow">▼</span>
+        </button>
+        <div class="faq-answer">
+          <p>
+            A higher interest rate increases your monthly payment and total interest cost. Even a small rate difference can have a big effect over a long mortgage term.
+          </p>
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <button class="faq-question">
+          Can extra payments change my payoff date?
+          <span class="arrow">▼</span>
+        </button>
+        <div class="faq-answer">
+          <p>
+            Yes. Extra payments reduce the remaining balance faster, which can move your payoff date much earlier than the original loan term.
+          </p>
+        </div>
+      </div>
     </div>
   </div>
-
-  <div class="faq-item">
-    <button class="faq-question">
-      Is it better to pay extra every month or make one large payment?
-      <span class="arrow">▼</span>
-    </button>
-    <div class="faq-answer">
-      <p>
-        Both can help, but making extra payments earlier usually saves more interest because the principal balance is reduced sooner.
-      </p>
-    </div>
-  </div>
-
-  <div class="faq-item">
-    <button class="faq-question">
-      How does interest rate affect my mortgage payment?
-      <span class="arrow">▼</span>
-    </button>
-    <div class="faq-answer">
-      <p>
-        A higher interest rate increases your monthly payment and total interest cost. Even a small rate difference can have a big effect over a long mortgage term.
-      </p>
-    </div>
-  </div>
-
-  <div class="faq-item">
-    <button class="faq-question">
-      Can extra payments change my payoff date?
-      <span class="arrow">▼</span>
-    </button>
-    <div class="faq-answer">
-      <p>
-        Yes. Extra payments reduce the remaining balance faster, which can move your payoff date much earlier than the original loan term.
-      </p>
-    </div>
-  </div>
-
-</div>
 
   <div class="related">
-<h3>Related Calculators</h3>
-<p>You may also find these tools useful:</p>
-<ul>
-<li><a href="loan-calculator.html">Loan Calculator</a></li>
-<li><a href="apr-interest-rate-calculator.html">APR Interest Rate Calculator</a></li>
-<li><a href="amortization-calculator.html">Amortization Calculator</a></li>
-<li><a href="savings-calculator.html">Savings Calculator</a></li>
-<li><a href="inflation-calculator.html">Inflation Calculator</a></li>
-</ul>
+    <h3>Related Calculators</h3>
+    <p>You may also find these tools useful:</p>
+    <ul>
+      <li><a href="loan-calculator.html">Loan Calculator</a></li>
+      <li><a href="apr-interest-rate-calculator.html">APR Interest Rate Calculator</a></li>
+      <li><a href="amortization-calculator.html">Amortization Calculator</a></li>
+      <li><a href="savings-calculator.html">Savings Calculator</a></li>
+      <li><a href="inflation-calculator.html">Inflation Calculator</a></li>
+    </ul>
   </div>
-  
-<div class="disclaimer">
-<p><strong>Disclaimer:</strong> The calculators on this website are provided for informational and educational purposes only. All results are estimates based on the values entered and do not constitute financial, investment, or trading advice. Always conduct your own research before making financial decisions.</p>
-</div>
-<script src="footer.js"></script>
-<script>
 
-let chart;
+  <div class="disclaimer">
+    <p>
+      <strong>Disclaimer:</strong> The calculators on this website are provided for informational and educational purposes only.
+      All results are estimates based on the values entered and do not constitute financial, investment, or trading advice.
+      Always conduct your own research before making financial decisions.
+    </p>
+  </div>
 
-function calculateMortgage(){
+  <script src="footer.js"></script>
+  <script>
+    let chart;
 
-let loan = parseFloat(document.getElementById("loan").value);
-let annualRate = parseFloat(document.getElementById("rate").value);
-let years = parseFloat(document.getElementById("years").value);
-let extra = parseFloat(document.getElementById("extra").value) || 0;
-  
-if(!loan || !years){
-alert("Fill all fields");
-return;
-}
-
-// aylık faiz
-let monthlyRate = (annualRate / 100) / 12;
-
-// toplam ödeme sayısı
-let payments = years * 12;
-
-// mortgage formülü
-let basePayment;
-
-if(monthlyRate === 0){
-  // faiz yoksa düz bölme
-  basePayment = loan / payments;
-} else {
-  basePayment = loan * (monthlyRate * Math.pow(1 + monthlyRate, payments)) /
-  (Math.pow(1 + monthlyRate, payments) - 1);
-  }
-
-let monthlyPayment = basePayment + extra;
-
-let balance = loan;
-let totalInterest = 0;
-let months = 0;
-
-while(balance > 0){
-
-  let interest = balance * monthlyRate;
-  let payment = basePayment + extra;
-
-  let principal = payment - interest;
-
-  if(principal > balance){
-    principal = balance;
-    payment = interest + principal;
-  }
-
-  balance -= principal;
-  totalInterest += interest;
-  months++;
-
-  if(months > 1000) break;
-}
-let totalPayment = loan + totalInterest;
-document.getElementById("result").innerHTML =
-"Monthly Payment: $" + (basePayment + extra).toFixed(2) + "<br>" +
-"Loan Duration: " + months + " months<br>" +
-"Total Interest: $" + totalInterest.toFixed(2);
-
-drawChart(loan, totalInterest);
-
-}
-
-function drawChart(principal, interest){
-
-let ctx = document.getElementById('myChart');
-
-if(chart){
-chart.destroy();
-}
-
-chart = new Chart(ctx,{
-type:'pie',
-data:{
-labels:['Principal','Interest Rate'],
-datasets:[{
-data:[principal, interest],
-backgroundColor:['#3b82f6','#ef4444']
-}]
-}
-});
-
-}
-document.addEventListener("DOMContentLoaded", function(){
-
-  document.querySelectorAll(".faq-question").forEach(btn => {
-    btn.addEventListener("click", () => {
-
-      const item = btn.parentElement;
-
-      document.querySelectorAll(".faq-item").forEach(i => {
-        if(i !== item) i.classList.remove("active");
+    function formatMoney(value){
+      return "$" + Number(value).toLocaleString(undefined, {
+        minimumFractionDigits: 2,
+        maximumFractionDigits: 2
       });
+    }
 
-      item.classList.toggle("active");
+    function formatMonths(months){
+      if (!Number.isFinite(months)) return "—";
+      const years = Math.floor(months / 12);
+      const remMonths = months % 12;
 
+      if (years > 0 && remMonths > 0) return `${years} years, ${remMonths} months`;
+      if (years > 0) return `${years} years`;
+      return `${remMonths} months`;
+    }
+
+    function calculateMortgage(){
+      const loan = parseFloat(document.getElementById("loan").value);
+      const annualRate = parseFloat(document.getElementById("rate").value);
+      const years = parseFloat(document.getElementById("years").value);
+      const extra = parseFloat(document.getElementById("extra").value) || 0;
+
+      const resultCard = document.getElementById("resultCard");
+      const basePaymentOut = document.getElementById("basePaymentOut");
+      const monthlyPaymentOut = document.getElementById("monthlyPaymentOut");
+      const durationOut = document.getElementById("durationOut");
+      const interestOut = document.getElementById("interestOut");
+      const totalOut = document.getElementById("totalOut");
+      const insightOut = document.getElementById("insightOut");
+
+      if (isNaN(loan) || isNaN(annualRate) || isNaN(years)) {
+        alert("Fill all fields");
+        return;
+      }
+
+      if (loan <= 0 || years <= 0) {
+        alert("Loan amount and term must be greater than zero");
+        return;
+      }
+
+      if (annualRate < 0) {
+        alert("Interest rate cannot be negative");
+        return;
+      }
+
+      if (extra < 0) {
+        alert("Extra monthly payment cannot be negative");
+        return;
+      }
+
+      const monthlyRate = (annualRate / 100) / 12;
+      const payments = Math.round(years * 12);
+
+      let basePayment;
+
+      if (monthlyRate === 0) {
+        basePayment = loan / payments;
+      } else {
+        basePayment = loan * (monthlyRate * Math.pow(1 + monthlyRate, payments)) /
+          (Math.pow(1 + monthlyRate, payments) - 1);
+      }
+
+      const monthlyPayment = basePayment + extra;
+
+      let balance = loan;
+      let totalInterest = 0;
+      let months = 0;
+
+      while (balance > 0 && months < 1000) {
+        const interest = balance * monthlyRate;
+        let principal = monthlyPayment - interest;
+
+        if (principal <= 0) {
+          alert("Your monthly payment is too low to reduce the balance.");
+          return;
+        }
+
+        if (principal > balance) {
+          principal = balance;
+        }
+
+        const actualPayment = principal + interest;
+        balance -= principal;
+        totalInterest += interest;
+        months++;
+
+        if (actualPayment <= 0) break;
+      }
+
+      const totalPayment = loan + totalInterest;
+      const interestSaved = (basePayment * payments) - totalPayment;
+
+      basePaymentOut.innerHTML = formatMoney(basePayment);
+      monthlyPaymentOut.innerHTML = formatMoney(monthlyPayment);
+      durationOut.innerHTML = formatMonths(months);
+      interestOut.innerHTML = formatMoney(totalInterest);
+      totalOut.innerHTML = formatMoney(totalPayment);
+
+      let insight = "";
+      let insightClass = "";
+
+      if (extra <= 0) {
+        insight = "Standard repayment schedule.";
+        insightClass = "insight-medium";
+      } else if (months < payments * 0.75) {
+        insight = "Extra payments materially reduce your payoff time.";
+        insightClass = "insight-good";
+      } else if (interestSaved > 0) {
+        insight = "Extra payments save interest and shorten the loan.";
+        insightClass = "insight-good";
+      } else {
+        insight = "Payment setup may be too aggressive or too close to base schedule.";
+        insightClass = "insight-medium";
+      }
+
+      insightOut.innerHTML = `<span class="${insightClass}">${insight}</span>`;
+      resultCard.style.display = "block";
+
+      drawChart(loan, totalInterest);
+    }
+
+    function drawChart(principal, interest){
+      const ctx = document.getElementById("myChart").getContext("2d");
+
+      if(chart){
+        chart.destroy();
+      }
+
+      chart = new Chart(ctx,{
+        type:'pie',
+        data:{
+          labels:['Principal','Interest'],
+          datasets:[{
+            data:[principal, interest],
+            backgroundColor:['#3b82f6','#ef4444']
+          }]
+        },
+        options:{
+          responsive:true,
+          plugins:{
+            legend:{
+              labels:{ color:'white' }
+            },
+            tooltip:{
+              callbacks:{
+                label: function(context){
+                  return `${context.label}: ${formatMoney(context.parsed)}`;
+                }
+              }
+            }
+          }
+        }
+      });
+    }
+
+    document.addEventListener("DOMContentLoaded", function(){
+      document.querySelectorAll(".faq-question").forEach(btn => {
+        btn.addEventListener("click", () => {
+          const item = btn.parentElement;
+
+          document.querySelectorAll(".faq-item").forEach(i => {
+            if(i !== item) i.classList.remove("active");
+          });
+
+          item.classList.toggle("active");
+        });
+      });
     });
-  });
-
-});
-</script>
-
+  </script>
 </body>
-  </html>
+    </html>
