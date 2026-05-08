@@ -1,442 +1,688 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-<link rel="canonical" href="https://novainvesttools.com/roi-calculator.html">
-<!-- Google tag (gtag.js) -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-ZPCXDVE8C5"></script>
-<script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
+  <link rel="canonical" href="https://novainvesttools.com/roi-calculator.html">
 
-  gtag('config', 'G-ZPCXDVE8C5');
-</script>
-<meta charset="UTF-8">
-<title>ROI Calculator – Measure Your Investment Returns</title>
-<meta name="description" content="Calculate return on investment (ROI) and annual returns easily. Compare performance across different investments.">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-ZPCXDVE8C5"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-ZPCXDVE8C5');
+  </script>
 
-<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ROI Calculator – Measure Your Investment Returns</title>
+  <meta name="description" content="Calculate return on investment (ROI), profit, fees, and annual returns easily with this clean ROI calculator for investments, crypto, stocks, and business performance.">
+  <meta name="theme-color" content="#0f172a">
+  <meta name="robots" content="index,follow,max-image-preview:large">
 
-<link rel="stylesheet" href="style.css">
-<script type="application/ld+json">
-{
-  "@context": "https://schema.org",
-  "@type": "WebApplication",
-  "name": "ROI Calculator",
-  "url": "https://novainvesttools.com/roi-calculator.html",
-  "applicationCategory": "FinanceApplication",
-  "operatingSystem": "All",
-  "browserRequirements": "Requires JavaScript",
-  "description": "Calculate return on investment (ROI), profit, and annual returns.",
-  "featureList": [
-    "ROI calculation",
-    "Annual return calculation",
-    "Fee adjustment",
-    "Investment performance comparison"
-  ],
-  "offers": {
-    "@type": "Offer",
-    "price": "0",
-    "priceCurrency": "USD"
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://novainvesttools.com/roi-calculator.html">
+  <meta property="og:title" content="ROI Calculator – Measure Your Investment Returns">
+  <meta property="og:description" content="Calculate return on investment (ROI), profit, fees, and annual returns easily.">
+
+  <link rel="preconnect" href="https://cdn.jsdelivr.net">
+  <link rel="dns-prefetch" href="https://cdn.jsdelivr.net">
+
+  <link rel="stylesheet" href="style.css">
+  <link rel="icon" href="favicon.png" type="image/png">
+  <link rel="apple-touch-icon" href="favicon.png">
+
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "WebApplication",
+    "name": "ROI Calculator",
+    "url": "https://novainvesttools.com/roi-calculator.html",
+    "applicationCategory": "FinanceApplication",
+    "operatingSystem": "All",
+    "browserRequirements": "Requires JavaScript",
+    "description": "Calculate return on investment, profit, fees, and annual returns.",
+    "featureList": [
+      "ROI calculation",
+      "Annual return calculation",
+      "Fee adjustment",
+      "Investment performance comparison"
+    ],
+    "offers": {
+      "@type": "Offer",
+      "price": "0",
+      "priceCurrency": "USD"
+    }
   }
-}
-</script>
-<style>
+  </script>
 
-body{
-font-family:Arial;
-background:#0f172a;
-color:white;
-display:flex;
-justify-content:center;
-align-items:center;
-flex-direction:column;
-min-height:100vh;
-}
-
-.container{
-background:#1e293b;
-padding:30px;
-border-radius:16px;
-width:90%;
-max-width:500px;
-box-shadow:0 10px 25px rgba(0,0,0,0.35);
-}
-
-input{
-width:100%;
-padding:14px;
-margin:12px 0;
-border-radius:10px;
-border:none;
-background:#e5e7eb;
-font-size:16px;
-}
-
-button{
-padding:14px;
-background:#3b82f6;
-border:none;
-border-radius:10px;
-color:white;
-cursor:pointer;
-margin-top:10px;
-width:100%;
-}
-
-button:hover{
-background:#2563eb;
-}
-
-canvas{
-margin-top:30px;
-}
-.menu{
-margin-bottom:25px;
-}
-
-.menu a{
-color:#3b82f6;
-margin:10px;
-text-decoration:none;
-}
-.toptext{
-font-size:14px;
-color:#6b7a99;
-margin-bottom:5px;
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": [
+      {
+        "@type": "Question",
+        "name": "Does ROI include fees?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Basic ROI calculations often ignore fees, but this calculator subtracts fees from your final value to give a more accurate result."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "What is a good ROI percentage?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "A good ROI depends on the investment type, the time period, and the level of risk involved."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Why does time matter in ROI?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "ROI alone does not consider how long an investment takes, so annual ROI gives a clearer view of performance over time."
+        }
+      }
+    ]
   }
+  </script>
 
-.disclaimer{
-margin-top:40px;
-padding-top:20px;
-border-top:1px solid rgba(255,255,255,0.1);
-font-size:13px;
-color:#9ca3af;
-max-width:500px;
-text-align:center;
-line-height:1.6;
-  }
-  
-</style>
+  <style>
+    *{
+      box-sizing:border-box;
+    }
 
+    body{
+      font-family: Arial, sans-serif;
+      background:#0f172a;
+      color:white;
+      display:flex;
+      justify-content:center;
+      align-items:center;
+      flex-direction:column;
+      min-height:100vh;
+      margin:0;
+      padding:24px 0;
+    }
+
+    .toptext{
+      font-size:14px;
+      color:#6b7a99;
+      margin-bottom:5px;
+    }
+
+    .menu{
+      margin-bottom:25px;
+    }
+
+    .menu a{
+      color:#3b82f6;
+      margin:10px;
+      text-decoration:none;
+      font-weight:600;
+    }
+
+    .container{
+      background:#1e293b;
+      padding:30px;
+      border-radius:16px;
+      width:90%;
+      max-width:520px;
+      box-shadow:0 10px 25px rgba(0,0,0,0.35);
+    }
+
+    h1{
+      margin-top:0;
+      margin-bottom:10px;
+      font-size:32px;
+      line-height:1.15;
+    }
+
+    .quick-answer{
+      background: rgba(59,130,246,0.12);
+      border: 1px solid rgba(59,130,246,0.25);
+      padding: 12px 14px;
+      border-radius: 10px;
+      font-size: 15px;
+      line-height: 1.6;
+      color: #e2e8f0;
+      margin-bottom: 18px;
+    }
+
+    .subhead{
+      color:#94a3b8;
+      font-size:15px;
+      line-height:1.6;
+      margin-bottom:18px;
+    }
+
+    .section-title{
+      font-size:13px;
+      color:#94a3b8;
+      margin:14px 0 6px;
+      text-transform:uppercase;
+      letter-spacing:0.08em;
+      font-weight:700;
+    }
+
+    input{
+      width:100%;
+      padding:14px;
+      margin:10px 0;
+      border-radius:10px;
+      border:none;
+      background:#e5e7eb;
+      font-size:16px;
+      outline:none;
+    }
+
+    input:focus{
+      box-shadow:0 0 0 3px rgba(59,130,246,0.18);
+    }
+
+    button{
+      padding:14px;
+      background:#3b82f6;
+      border:none;
+      border-radius:10px;
+      color:white;
+      cursor:pointer;
+      margin-top:10px;
+      width:100%;
+      font-size:16px;
+      font-weight:700;
+      transition:0.2s;
+    }
+
+    button:hover{
+      background:#2563eb;
+      transform:translateY(-1px);
+    }
+
+    .result-card{
+      background:#273449;
+      padding:20px 20px 20px 24px;
+      border-radius:14px;
+      margin-top:20px;
+      position:relative;
+      display:none;
+    }
+
+    .result-card::before{
+      content:"";
+      position:absolute;
+      left:12px;
+      top:20px;
+      bottom:20px;
+      width:4px;
+      background:#22c55e;
+      border-radius:2px;
+    }
+
+    .result-line{
+      padding-left:18px;
+      margin:15px 0;
+      font-size:18px;
+      color:#e5e7eb;
+      line-height:1.4;
+    }
+
+    .result-line strong{
+      color:#cbd5f5;
+    }
+
+    .result-value{
+      font-weight:700;
+    }
+
+    canvas{
+      margin-top:24px;
+      max-width:100%;
+    }
+
+    .content{
+      width:90%;
+      max-width:900px;
+      margin-top:34px;
+    }
+
+    .content h2{
+      margin-top:34px;
+      margin-bottom:10px;
+      font-size:28px;
+    }
+
+    .content p,
+    .content li{
+      color:#cbd5e1;
+      line-height:1.7;
+      font-size:15px;
+    }
+
+    .content ul{
+      padding-left:20px;
+    }
+
+    .formula{
+      background:rgba(255,255,255,0.05);
+      border:1px solid rgba(255,255,255,0.08);
+      padding:14px 16px;
+      border-radius:12px;
+      margin:12px 0;
+      color:#e2e8f0;
+      overflow:auto;
+      line-height:1.7;
+    }
+
+    .faq{
+      margin-top:24px;
+    }
+
+    .faq-item{
+      border-bottom:1px solid rgba(255,255,255,0.08);
+    }
+
+    .faq-question{
+      width:100%;
+      background:none;
+      border:none;
+      color:white;
+      text-align:left;
+      padding:14px 8px;
+      font-size:15px;
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      cursor:pointer;
+    }
+
+    .faq-question:hover{
+      color:#93c5fd;
+    }
+
+    .arrow{
+      transition:0.25s;
+    }
+
+    .faq-item.active .arrow{
+      transform:rotate(180deg);
+    }
+
+    .faq-answer{
+      max-height:0;
+      overflow:hidden;
+      transition:max-height 0.3s ease;
+      color:#cbd5e1;
+      font-size:14px;
+      padding:0 8px;
+    }
+
+    .faq-item.active .faq-answer{
+      max-height:240px;
+      padding-bottom:12px;
+    }
+
+    .related{
+      width:90%;
+      max-width:900px;
+      margin-top:34px;
+    }
+
+    .related a{
+      color:#93c5fd;
+      text-decoration:none;
+    }
+
+    .related a:hover{
+      text-decoration:underline;
+    }
+
+    .disclaimer{
+      margin-top:40px;
+      padding-top:20px;
+      border-top:1px solid rgba(255,255,255,0.1);
+      font-size:13px;
+      color:#9ca3af;
+      max-width:900px;
+      text-align:center;
+      line-height:1.6;
+      width:90%;
+    }
+
+    @media (max-width: 700px){
+      .container{
+        padding:22px;
+      }
+
+      h1{
+        font-size:28px;
+      }
+
+      .content h2{
+        font-size:24px;
+      }
+    }
+  </style>
 </head>
+
 <body>
-  
-<p class="toptext">Explore more calculators</p>
-<div class="menu">
-<a href="index.html">Home</a>
-</div>
-<div class="container">
+  <p class="toptext">Explore more calculators</p>
 
-<h1>ROI Calculator– Measure Your Investment Returns</h1>
+  <div class="menu">
+    <a href="index.html">Home</a>
+  </div>
 
-<input id="investment" placeholder="Initial Investment">
+  <div class="container">
+    <h1>ROI Calculator</h1>
 
-<input id="finalValue" placeholder="Final Value">
-<p style="margin-top:10px; font-size:13px; color:#94a3b8;">
-Optional (advanced)
-</p>
+    <p class="quick-answer">
+      ROI shows how much your investment grew relative to the amount you put in.
+    </p>
 
-<input id="fees" placeholder="Fees (%)">
-<input id="years" placeholder="Time (years)">
-<button onclick="calculateROI()">Calculate ROI</button>
+    <p class="subhead">
+      Measure return on investment, profit, fees, and annual returns for stocks, crypto, business, and more.
+    </p>
 
-<h3 id="result"></h3>
+    <div class="section-title">Investment inputs</div>
+    <input id="investment" type="number" min="0" step="any" placeholder="Initial Investment">
+    <input id="finalValue" type="number" min="0" step="any" placeholder="Final Value">
 
-<canvas id="myChart"></canvas>
+    <div class="section-title">Optional advanced inputs</div>
+    <input id="fees" type="number" min="0" step="any" placeholder="Fees (%)">
+    <input id="years" type="number" min="0" step="any" placeholder="Time (years)">
 
-</div>
-<h2>What is ROI?</h2>
-<p>
-Knowing your return on investment (ROI) is one of the most important skills in finance. 
-Whether you are trading crypto, investing in stocks, or running a business, ROI helps you understand if your money is actually working for you.
-</p>
+    <button onclick="calculateROI()" type="button">Calculate ROI</button>
 
-<p>
-This ROI calculator lets you quickly measure your profit and return percentage so you can make smarter financial decisions.
-</p>
-<h2>ROI Formula</h2>
-
-<p>
-The formula for ROI is:
-</p>
-
-<p>
-<strong>ROI = (Profit / Investment) × 100</strong>
-</p>
-<p>
-This simple formula gives you a quick way to measure how much you earned relative to your initial capital.
-</p>
-<h2>ROI with Fees</h2>
-
-<p>
-In real-world investing, fees reduce your actual return. This calculator subtracts fees from your final value before calculating ROI.
-</p>
-
-<p><strong>Net Final Value = Final Value − Fees</strong></p>
-
-<p><strong>ROI = (Net Final Value − Investment) / Investment × 100</strong></p>
-
-<p>
-This gives a more accurate result compared to basic ROI calculations.
-</p>
-
-<h2>Annual ROI (Yearly Return)</h2>
-
-<p>
-ROI alone does not account for time. Annual ROI shows how much your investment grows per year.
-</p>
-
-<p><strong>Annual ROI = ((Net Final Value / Investment)^(1 / Years) − 1) × 100</strong></p>
-
-<p>
-This is especially useful when comparing investments held for different time periods.
-</p>
-<h2>Example Calculation</h2>
-
-<p>
-Let’s say you invest $1,000 and later sell your investment for $1,200.
-</p>
-
-<ul>
-<li>Profit = $200</li>
-<li>ROI = (200 / 1000) × 100 = 20%</li>
-</ul>
-
-<p>
-This means you earned a 20% return on your investment.
-</p>
-
-<p>
-And if you want to calculate your <strong>annual ROI</strong>, time becomes important.
-For example, earning 20% in 1 year is very different from earning 20% over 5 years.
-</p>
-
-<p>
-Let’s say you invest $1,000 and it grows to $1,200 in 2 years:
-</p>
-
-<ul>
-<li>Annual ROI = ((1200 / 1000)^(1 / 2) − 1) × 100</li>
-<li>Annual ROI ≈ 9.54%</li>
-</ul>
-
-<p>
-So instead of a simple 20% return, your yearly return is about <strong>9.54% per year</strong>.
-This gives you a more accurate picture of your investment performance over time.
-</p>
-
-<ul>
-<li><strong>Profit</strong> = Final Value − Initial Investment</li>
-<li><strong>Investment</strong> = Amount you started with</li>
-</ul>
-
-<h2>Why ROI Matters</h2>
-
-<p>
-ROI helps you compare different investments and choose the most profitable option.
-</p>
-
-<ul>
-<li>Compare crypto vs stocks</li>
-<li>Evaluate trading strategies</li>
-<li>Measure business performance</li>
-<li>Avoid low-return investments</li>
-</ul>
-
-<p>
-Without ROI, you are basically investing blindly.
-</p>
-  
-<h2>Frequently Asked Questions</h2>
-
-<div class="faq">
-
-  <div class="faq-item">
-    <button class="faq-question">
-      Does ROI include fees?
-      <span class="arrow">▼</span>
-    </button>
-    <div class="faq-answer">
-      <p>
-        Basic ROI calculations often ignore fees, but in real investing, fees reduce your actual profit. This calculator subtracts fees from your final value to give a more accurate result.
+    <div id="resultCard" class="result-card">
+      <p class="result-line">
+        <strong>Profit:</strong>
+        <span id="profitOut" class="result-value">—</span>
       </p>
+
+      <p class="result-line">
+        <strong>ROI:</strong>
+        <span id="roiOut" class="result-value">—</span>
+      </p>
+
+      <p class="result-line">
+        <strong>Fees Paid:</strong>
+        <span id="feesOut" class="result-value">—</span>
+      </p>
+
+      <p class="result-line">
+        <strong>Annual ROI:</strong>
+        <span id="annualROIOut" class="result-value">—</span>
+      </p>
+    </div>
+
+    <canvas id="myChart"></canvas>
+  </div>
+
+  <div class="content">
+    <h2>What is ROI?</h2>
+    <p>
+      Return on investment, or ROI, is a simple way to measure how much money you made compared with how much you started with.
+      It is useful for investments, trading, business projects, and any situation where you want to compare profit against capital.
+    </p>
+
+    <p>
+      ROI matters because it helps you compare opportunities on the same basis.
+      A larger profit is not always a better result if it required much more capital or took much longer to achieve.
+    </p>
+
+    <h2>ROI Formula</h2>
+    <p>The base formula is:</p>
+
+    <div class="formula">
+      ROI = (Profit / Investment) × 100
+    </div>
+
+    <p>
+      Profit is simply final value minus initial investment.
+    </p>
+
+    <h2>ROI with Fees</h2>
+    <p>
+      Real-world investing usually has fees.
+      This calculator subtracts fees from the final value before calculating profit and ROI.
+    </p>
+
+    <div class="formula">
+      Net Final Value = Final Value − Fees<br>
+      Profit = Net Final Value − Investment<br>
+      ROI = (Profit / Investment) × 100
+    </div>
+
+    <h2>Annual ROI</h2>
+    <p>
+      ROI alone does not account for time.
+      Annual ROI helps compare investments held for different periods.
+    </p>
+
+    <div class="formula">
+      Annual ROI = ((Final Value / Investment)<sup>1 / Years</sup> − 1) × 100
+    </div>
+
+    <h2>Why ROI Matters</h2>
+    <p>
+      ROI helps you compare different investment choices, evaluate performance, and avoid low-return decisions.
+    </p>
+
+    <ul>
+      <li>Compare crypto vs stocks</li>
+      <li>Evaluate trading strategies</li>
+      <li>Measure business performance</li>
+      <li>Avoid low-return investments</li>
+    </ul>
+
+    <h3>Frequently Asked Questions</h3>
+
+    <div class="faq">
+      <div class="faq-item">
+        <button class="faq-question" type="button">
+          Does ROI include fees?
+          <span class="arrow">▼</span>
+        </button>
+        <div class="faq-answer">
+          <p>
+            Basic ROI calculations often ignore fees, but in real investing fees reduce your actual profit. This calculator subtracts fees from your final value.
+          </p>
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <button class="faq-question" type="button">
+          What is a good ROI percentage?
+          <span class="arrow">▼</span>
+        </button>
+        <div class="faq-answer">
+          <p>
+            A good ROI depends on the investment type, the time period, and the level of risk involved.
+          </p>
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <button class="faq-question" type="button">
+          Why does time matter in ROI?
+          <span class="arrow">▼</span>
+        </button>
+        <div class="faq-answer">
+          <p>
+            ROI alone does not consider how long an investment takes, so annual ROI gives a clearer view of performance over time.
+          </p>
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <button class="faq-question" type="button">
+          Can ROI be negative?
+          <span class="arrow">▼</span>
+        </button>
+        <div class="faq-answer">
+          <p>
+            Yes. If your final value is lower than your initial investment, your ROI will be negative, meaning you made a loss.
+          </p>
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <button class="faq-question" type="button">
+          Is ROI enough to evaluate an investment?
+          <span class="arrow">▼</span>
+        </button>
+        <div class="faq-answer">
+          <p>
+            ROI is useful, but it should not be used alone. Risk, time, fees, and market conditions also matter.
+          </p>
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <button class="faq-question" type="button">
+          How can I improve my ROI?
+          <span class="arrow">▼</span>
+        </button>
+        <div class="faq-answer">
+          <p>
+            You can improve ROI by reducing fees, choosing better entry and exit points, holding investments longer, and managing risk effectively.
+          </p>
+        </div>
+      </div>
     </div>
   </div>
 
-  <div class="faq-item">
-    <button class="faq-question">
-      What is a good ROI percentage?
-      <span class="arrow">▼</span>
-    </button>
-    <div class="faq-answer">
-      <p>
-        A “good” ROI depends on the investment type. For example, stock market returns average around 7–10% annually, while higher-risk investments may aim for higher returns.
-      </p>
-    </div>
+  <div class="related">
+    <h3>Related Calculators</h3>
+    <p>You may also find these tools useful:</p>
+    <ul>
+      <li><a href="cagr-calculator.html">CAGR Calculator</a></li>
+      <li><a href="compound-interest-calculator.html">Compound Interest Calculator</a></li>
+      <li><a href="future-value-calculator.html">Future Value Calculator</a></li>
+      <li><a href="profit-loss-calculator.html">Profit Loss Calculator</a></li>
+      <li><a href="dca-calculator.html">DCA Calculator</a></li>
+    </ul>
   </div>
 
-  <div class="faq-item">
-    <button class="faq-question">
-      Why does time matter in ROI?
-      <span class="arrow">▼</span>
-    </button>
-    <div class="faq-answer">
-      <p>
-        ROI alone does not consider how long an investment takes. Earning 20% in one year is very different from earning 20% over five years. That’s why annual ROI gives a clearer picture.
-      </p>
-    </div>
+  <div class="disclaimer">
+    <p>
+      <strong>Disclaimer:</strong> The calculators on this website are provided for informational and educational purposes only.
+      All results are estimates based on the values entered and do not constitute financial, investment, or trading advice.
+      Always conduct your own research before making financial decisions.
+    </p>
   </div>
 
-  <div class="faq-item">
-    <button class="faq-question">
-      Can ROI be negative?
-      <span class="arrow">▼</span>
-    </button>
-    <div class="faq-answer">
-      <p>
-        Yes. If your final value is lower than your initial investment, your ROI will be negative, meaning you made a loss.
-      </p>
-    </div>
-  </div>
+  <script src="footer.js"></script>
 
-  <div class="faq-item">
-    <button class="faq-question">
-      Is ROI enough to evaluate an investment?
-      <span class="arrow">▼</span>
-    </button>
-    <div class="faq-answer">
-      <p>
-        ROI is useful, but it should not be used alone. You should also consider risk, time, fees, and market conditions when evaluating an investment.
-      </p>
-    </div>
-  </div>
+  <script>
+    let chart;
 
-  <div class="faq-item">
-    <button class="faq-question">
-      How can I improve my ROI?
-      <span class="arrow">▼</span>
-    </button>
-    <div class="faq-answer">
-      <p>
-        You can improve ROI by reducing fees, choosing better entry and exit points, holding investments longer, and managing risk effectively.
-      </p>
-    </div>
-  </div>
-
-</div>
-  
-<div class= "related">
-  
-<h3>Related Calculators</h3>
-<p>You may also find these tools useful:</p>
-<ul>
-<li><a href="cagr-calculator.html">CAGR Calculator</a></li>
-<li><a href="compound-interest-calculator.html">Compound Interest Calculator</a></li>
-<li><a href="future-value-calculator.html">Future Value Calculator</a></li>
-<li><a href="profit-loss-calculator.html">Profit Loss Calculator</a></li>
-<li><a href="dca-calculator.html">DCA Calculator</a></li>
-</ul>
-</div> 
-  
-<div class="disclaimer">
-<p>
-<strong>Disclaimer:</strong> The calculators on this website are provided for informational and educational purposes only. 
-All results are estimates based on the values entered and do not constitute financial, investment, or trading advice. 
-Always conduct your own research before making financial decisions.
-</p>
-</div>
-<script src="footer.js"></script>
-<script>
-let chart;
-
-function drawChart(investment, netFinal){
-
-let ctx = document.getElementById('myChart').getContext('2d');
-
-if(chart){
-chart.destroy();
-}
-
-let profit = netFinal - investment;
-
-let finalColor = profit >= 0 ? '#22c55e' : '#ef4444';
-
-chart = new Chart(ctx,{
-type:'bar',
-data:{
-labels:['Investment','Final Value'],
-datasets:[{
-label:'Value',
-data:[investment, netFinal],
-backgroundColor:[
-'#3b82f6',
-finalColor
-]
-}]
-}
-});
-}
-function calculateROI(){
-
-let investment = parseFloat(document.getElementById("investment").value);
-let finalValue = parseFloat(document.getElementById("finalValue").value);
-
-let fees = parseFloat(document.getElementById("fees").value) || 0;
-let years = parseFloat(document.getElementById("years").value) || 0;
-
-if(isNaN(investment) || isNaN(finalValue)){
-  alert("Fill required fields");
-  return;
-}
-
-// PROFIT
-let profit = finalValue - investment;
-
-// FEES düş
-let feeCost = (fees / 100) * finalValue;
-profit -= feeCost;
-let netFinal = finalValue - feeCost;
-// ROI
-let roi = (profit / investment) * 100;
-
-// ANNUAL ROI (opsiyonel)
-let annualROI = null;
-
-if(years > 0){
-  annualROI = (Math.pow(finalValue / investment, 1 / years) - 1) * 100;
-}
-let resultHTML =
-"Profit: " + profit.toFixed(2) + "<br>" +
-"ROI: " + roi.toFixed(2) + "%";
-resultHTML += "<br>Fees Paid: $" + feeCost.toFixed(2);
-if(annualROI !== null){
-  resultHTML += "<br>Annual ROI: " + annualROI.toFixed(2) + "%";
-}
-document.getElementById("result").innerHTML = resultHTML;
-
-drawChart(investment, netFinal);
-
-}
-document.addEventListener("DOMContentLoaded", function(){
-
-  document.querySelectorAll(".faq-question").forEach(btn => {
-    btn.addEventListener("click", () => {
-
-      const item = btn.parentElement;
-
-      document.querySelectorAll(".faq-item").forEach(i => {
-        if(i !== item) i.classList.remove("active");
+    function formatMoney(value){
+      return "$" + Number(value).toLocaleString(undefined, {
+        minimumFractionDigits: 2,
+        maximumFractionDigits: 2
       });
+    }
 
-      item.classList.toggle("active");
+    function calculateROI(){
+      const investment = parseFloat(document.getElementById("investment").value);
+      const finalValue = parseFloat(document.getElementById("finalValue").value);
+      const feesPercent = parseFloat(document.getElementById("fees").value) || 0;
+      const years = parseFloat(document.getElementById("years").value) || 0;
 
+      if (isNaN(investment) || isNaN(finalValue) || investment <= 0 || finalValue < 0) {
+        alert("Fill required fields");
+        return;
+      }
+
+      const feeCost = (feesPercent / 100) * finalValue;
+      const netFinal = finalValue - feeCost;
+      const profit = netFinal - investment;
+      const roi = (profit / investment) * 100;
+
+      let annualROI = null;
+      if (years > 0) {
+        annualROI = (Math.pow(finalValue / investment, 1 / years) - 1) * 100;
+      }
+
+      document.getElementById("profitOut").innerText = formatMoney(profit);
+      document.getElementById("roiOut").innerText = roi.toFixed(2) + "%";
+      document.getElementById("feesOut").innerText = formatMoney(feeCost);
+      document.getElementById("annualROIOut").innerText = annualROI !== null ? annualROI.toFixed(2) + "%" : "—";
+
+      document.getElementById("profitOut").style.color = profit >= 0 ? "#22c55e" : "#f87171";
+      document.getElementById("roiOut").style.color = roi >= 0 ? "#22c55e" : "#f87171";
+      document.getElementById("feesOut").style.color = "#cbd5e1";
+      document.getElementById("annualROIOut").style.color = annualROI !== null && annualROI >= 0 ? "#22c55e" : "#cbd5e1";
+
+      document.getElementById("resultCard").style.display = "block";
+      drawChart(investment, netFinal);
+    }
+
+    function drawChart(investment, netFinal){
+      const ctx = document.getElementById('myChart').getContext('2d');
+
+      if(chart){
+        chart.destroy();
+      }
+
+      const profit = netFinal - investment;
+      const finalColor = profit >= 0 ? '#22c55e' : '#ef4444';
+
+      chart = new Chart(ctx,{
+        type:'bar',
+        data:{
+          labels:['Investment','Final Value'],
+          datasets:[{
+            label:'Value',
+            data:[investment, netFinal],
+            backgroundColor:['#3b82f6', finalColor]
+          }]
+        },
+        options:{
+          responsive:true,
+          plugins:{
+            legend:{
+              labels:{ color:'white' }
+            },
+            tooltip:{
+              callbacks:{
+                label: function(context){
+                  return "$" + Number(context.parsed.y).toFixed(2);
+                }
+              }
+            }
+          },
+          scales:{
+            x:{
+              ticks:{ color:'white' },
+              grid:{ color:'rgba(255,255,255,0.08)' }
+            },
+            y:{
+              ticks:{ color:'white' },
+              grid:{ color:'rgba(255,255,255,0.08)' }
+            }
+          }
+        }
+      });
+    }
+
+    document.addEventListener("DOMContentLoaded", function(){
+      document.querySelectorAll(".faq-question").forEach(btn => {
+        btn.addEventListener("click", () => {
+          const item = btn.parentElement;
+
+          document.querySelectorAll(".faq-item").forEach(i => {
+            if(i !== item) i.classList.remove("active");
+          });
+
+          item.classList.toggle("active");
+        });
+      });
     });
-  });
-
-});
-</script>
-
+  </script>
 </body>
-</html>
+  </html>
