@@ -1,469 +1,730 @@
 <!DOCTYPE html>
-<html>
-
+<html lang="en">
 <head>
-<link rel="canonical" href="https://novainvesttools.com/lot-size-calculator-forex.html">
-<!-- Google tag (gtag.js) -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-ZPCXDVE8C5"></script>
-<script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
+  <link rel="canonical" href="https://novainvesttools.com/lot-size-calculator-forex.html">
 
-  gtag('config', 'G-ZPCXDVE8C5');
-</script>
-<meta charset="UTF-8">
-<title>Lot Size Calculator – Forex Position Size Tool</title>
-<meta name="description" content="Calculate the perfect lot size based on risk and stop loss. Essential forex trading tool.">
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-ZPCXDVE8C5"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-ZPCXDVE8C5');
+  </script>
 
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Lot Size Calculator – Forex Position Size Tool</title>
+  <meta name="description" content="Calculate the correct forex lot size based on account balance, risk percentage, stop loss, and pip value. Estimate standard, mini, and micro lots instantly.">
+  <meta name="theme-color" content="#0f172a">
+  <meta name="robots" content="index,follow,max-image-preview:large">
 
-<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-<link rel="stylesheet" href="style.css">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://novainvesttools.com/lot-size-calculator-forex.html">
+  <meta property="og:title" content="Lot Size Calculator – Forex Position Size Tool">
+  <meta property="og:description" content="Calculate the correct forex lot size based on account balance, risk percentage, stop loss, and pip value.">
 
-<style>
+  <link rel="preconnect" href="https://cdn.jsdelivr.net">
+  <link rel="dns-prefetch" href="https://cdn.jsdelivr.net">
 
-body{
-font-family:Arial;
-background:#0f172a;
-color:white;
-display:flex;
-justify-content:center;
-align-items:center;
-flex-direction:column;
-min-height:100vh;
-}
-  
-.container{
-background:#1e293b;
-padding:30px;
-border-radius:10px;
-width:320px;
-margin:auto;
-}
+  <link rel="stylesheet" href="style.css">
+  <link rel="icon" href="favicon.png" type="image/png">
+  <link rel="apple-touch-icon" href="favicon.png">
 
-input{
-width:90%;
-padding:10px;
-margin:8px;
-border-radius:5px;
-border:none;
-}
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
-button{
-padding:10px 20px;
-background:#3b82f6;
-border:none;
-border-radius:6px;
-color:white;
-cursor:pointer;
-}
-
-button:hover{
-background:#2563eb;
-}
-
-.menu{
-margin-bottom:25px;
-}
-
-.menu a{
-color:#3b82f6;
-margin:10px;
-text-decoration:none;
-}
-.toptext{
-font-size:14px;
-color:#6b7a99;
-margin-bottom:5px;
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "WebApplication",
+    "name": "Lot Size Calculator (Forex)",
+    "url": "https://novainvesttools.com/lot-size-calculator-forex.html",
+    "applicationCategory": "FinanceApplication",
+    "operatingSystem": "All",
+    "browserRequirements": "Requires JavaScript",
+    "description": "Calculate forex lot size based on account balance, risk percentage, stop loss, and pip value.",
+    "featureList": [
+      "Forex lot size calculation",
+      "Risk-based position sizing",
+      "Mini and micro lot conversion",
+      "Trade risk planning"
+    ],
+    "offers": {
+      "@type": "Offer",
+      "price": "0",
+      "priceCurrency": "USD"
+    }
   }
-.disclaimer{
-margin-top:40px;
-padding-top:20px;
-border-top:1px solid rgba(255,255,255,0.1);
-font-size:13px;
-color:#9ca3af;
-max-width:500px;
-text-align:center;
-line-height:1.6;
-  }
-</style>
+  </script>
 
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": [
+      {
+        "@type": "Question",
+        "name": "What is lot size in forex?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Lot size is the trade volume in forex. It determines how much each pip move is worth and how much risk you take."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Why does lot size change with stop loss?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "A wider stop loss increases the possible loss per trade, so the lot size must be smaller to keep risk constant."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "What is the safest risk per trade?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Many traders aim for 1% to 2% risk per trade to keep losses manageable and protect account survival."
+        }
+      }
+    ]
+  }
+  </script>
+
+  <style>
+    *{
+      box-sizing:border-box;
+    }
+
+    body{
+      font-family: Arial, sans-serif;
+      background:#0b1a33;
+      color:white;
+      display:flex;
+      justify-content:center;
+      align-items:center;
+      flex-direction:column;
+      min-height:100vh;
+      margin:0;
+      padding:24px 0;
+    }
+
+    .toptext{
+      font-size:14px;
+      color:#6b7a99;
+      margin-bottom:5px;
+    }
+
+    .menu{
+      margin-bottom:25px;
+    }
+
+    .menu a{
+      color:#3b82f6;
+      margin:10px;
+      text-decoration:none;
+      font-weight:600;
+    }
+
+    .container{
+      background:#1e293b;
+      padding:30px;
+      border-radius:16px;
+      width:90%;
+      max-width:520px;
+      box-shadow:0 10px 25px rgba(0,0,0,0.35);
+    }
+
+    h1{
+      margin-top:0;
+      margin-bottom:10px;
+      font-size:32px;
+      line-height:1.15;
+    }
+
+    .subhead{
+      color:#94a3b8;
+      font-size:15px;
+      line-height:1.6;
+      margin-bottom:18px;
+    }
+
+    .quick-answer{
+      background: rgba(59,130,246,0.12);
+      border: 1px solid rgba(59,130,246,0.25);
+      padding: 12px 14px;
+      border-radius: 10px;
+      font-size: 15px;
+      line-height: 1.6;
+      color: #e2e8f0;
+      margin-bottom: 18px;
+    }
+
+    input{
+      width:100%;
+      padding:14px;
+      margin:12px 0;
+      border-radius:10px;
+      border:none;
+      background:#e5e7eb;
+      font-size:16px;
+      outline:none;
+    }
+
+    input:focus{
+      box-shadow:0 0 0 3px rgba(59,130,246,0.18);
+    }
+
+    button{
+      padding:14px;
+      background:#3b82f6;
+      border:none;
+      border-radius:10px;
+      color:white;
+      cursor:pointer;
+      margin-top:10px;
+      width:100%;
+      font-size:16px;
+      font-weight:700;
+      transition:0.2s;
+    }
+
+    button:hover{
+      background:#2563eb;
+      transform:translateY(-1px);
+    }
+
+    .result-card{
+      margin-top:18px;
+      padding:16px;
+      border-radius:14px;
+      background:rgba(255,255,255,0.05);
+      border:1px solid rgba(255,255,255,0.08);
+      display:none;
+    }
+
+    .result-line{
+      margin:10px 0;
+      font-size:16px;
+      line-height:1.5;
+      color:#e5e7eb;
+    }
+
+    .result-line strong{
+      color:#cbd5f5;
+    }
+
+    .insight-good{
+      color:#22c55e;
+      font-weight:700;
+    }
+
+    .insight-medium{
+      color:#facc15;
+      font-weight:700;
+    }
+
+    .insight-weak{
+      color:#ef4444;
+      font-weight:700;
+    }
+
+    canvas{
+      margin-top:26px;
+    }
+
+    .content{
+      width:90%;
+      max-width:900px;
+      margin-top:34px;
+    }
+
+    .content h2{
+      margin-top:34px;
+      margin-bottom:10px;
+      font-size:28px;
+    }
+
+    .content p,
+    .content li{
+      color:#cbd5e1;
+      line-height:1.7;
+      font-size:15px;
+    }
+
+    .content ul{
+      padding-left:20px;
+    }
+
+    .formula{
+      background:rgba(255,255,255,0.05);
+      border:1px solid rgba(255,255,255,0.08);
+      padding:14px 16px;
+      border-radius:12px;
+      margin:12px 0;
+      color:#e2e8f0;
+      overflow:auto;
+      line-height:1.7;
+    }
+
+    .faq{
+      margin-top:14px;
+    }
+
+    .faq-item{
+      border-bottom:1px solid rgba(255,255,255,0.08);
+    }
+
+    .faq-question{
+      width:100%;
+      background:none;
+      border:none;
+      color:white;
+      text-align:left;
+      padding:14px 8px;
+      font-size:15px;
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      cursor:pointer;
+    }
+
+    .faq-question:hover{
+      color:#93c5fd;
+    }
+
+    .arrow{
+      transition:0.25s;
+    }
+
+    .faq-item.active .arrow{
+      transform:rotate(180deg);
+    }
+
+    .faq-answer{
+      max-height:0;
+      overflow:hidden;
+      transition:max-height 0.3s ease;
+      color:#cbd5e1;
+      font-size:14px;
+      padding:0 8px;
+    }
+
+    .faq-item.active .faq-answer{
+      max-height:260px;
+      padding-bottom:12px;
+    }
+
+    .related{
+      width:90%;
+      max-width:900px;
+      margin-top:34px;
+    }
+
+    .related a{
+      color:#93c5fd;
+      text-decoration:none;
+    }
+
+    .related a:hover{
+      text-decoration:underline;
+    }
+
+    .disclaimer{
+      margin-top:40px;
+      padding-top:20px;
+      border-top:1px solid rgba(255,255,255,0.1);
+      font-size:13px;
+      color:#9ca3af;
+      max-width:900px;
+      text-align:center;
+      line-height:1.6;
+      width:90%;
+    }
+
+    @media (max-width: 700px){
+      .container{
+        padding:22px;
+      }
+
+      h1{
+        font-size:28px;
+      }
+
+      .content h2{
+        font-size:24px;
+      }
+    }
+  </style>
 </head>
 
 <body>
+  <p class="toptext">Explore more calculators</p>
 
-<p class="toptext">Explore more calculators</p> 
+  <div class="menu">
+    <a href="index.html">Home</a>
+  </div>
 
-<div class="menu">
-<a href="index.html">Home</a>
-</div>
+  <div class="container" data-search="lot size calculator forex position size risk stop loss pip value standard lot mini lot micro lot">
+    <h1>Lot Size Calculator (Forex)</h1>
+    <p class="quick-answer">
+      A 1% risk on a $10,000 account is $100 — use this calculator to turn that risk and your stop loss into a forex lot size.
+    </p>
+    <p class="subhead">
+      Calculate the correct position size based on your account balance, risk percentage, stop-loss distance, and pip value per standard lot.
+    </p>
 
-<h1>Lot Size Calculator (Forex)</h1>
+    <input id="balance" placeholder="Account balance ($)">
+    <input id="risk" placeholder="Risk % (e.g. 2)">
+    <input id="stoploss" placeholder="Stop loss (pips)">
+    <input id="pipValue" placeholder="Pip value per standard lot ($) (default 10)">
 
-<div class="container">
+    <button onclick="calculate()">Calculate</button>
 
-<input id="balance" placeholder="Account balance ($)">
-<input id="risk" placeholder="Risk % (e.g. 2)">
-<input id="stoploss" placeholder="Stop loss (pips)">
+    <div id="resultCard" class="result-card">
+      <div class="result-line"><strong>Risk amount:</strong> <span id="riskOut">—</span></div>
+      <div class="result-line"><strong>Lot size:</strong> <span id="lotOut">—</span></div>
+      <div class="result-line"><strong>Mini lots:</strong> <span id="miniOut">—</span></div>
+      <div class="result-line"><strong>Micro lots:</strong> <span id="microOut">—</span></div>
+      <div class="result-line"><strong>Estimated loss at stop:</strong> <span id="lossOut">—</span></div>
+      <div class="result-line"><strong>Insight:</strong> <span id="insightOut">—</span></div>
+    </div>
 
-<button onclick="calculate()">Calculate</button>
+    <canvas id="myChart"></canvas>
+  </div>
 
-<h3 id="result"></h3>
+  <div class="content">
+    <h2>What is Lot Size in Forex Trading?</h2>
+    <p>
+      Lot size refers to the volume of your trade in the forex market. It determines how much of a currency pair you are buying or selling and how much each pip move is worth.
+    </p>
 
-<canvas id="myChart"></canvas>
+    <p>
+      In forex trading, lot sizes are standardized:
+    </p>
 
-</div>
+    <ul>
+      <li><strong>Standard Lot</strong> = 100,000 units</li>
+      <li><strong>Mini Lot</strong> = 10,000 units</li>
+      <li><strong>Micro Lot</strong> = 1,000 units</li>
+    </ul>
 
-<h2>What is Lot Size in Forex Trading?</h2>
+    <p>
+      Choosing the correct lot size is one of the most important decisions a trader makes because it defines risk.
+    </p>
 
-<p>
-Lot size refers to the volume of your trade in the forex market. It determines how much of a currency pair you are buying or selling, and it directly impacts how much you gain or lose per price movement.
-</p>
+    <h2>How This Lot Size Calculator Works</h2>
+    <p>
+      This calculator helps you determine the correct position size based on your account balance, risk percentage, stop-loss distance, and pip value.
+    </p>
 
-<p>
-In forex trading, lot sizes are standardized:
-</p>
+    <div class="formula">
+      Risk amount = Account balance × Risk %<br>
+      Lot size = Risk amount ÷ (Stop loss × Pip value per standard lot)<br>
+      Mini lots = Standard lots × 10<br>
+      Micro lots = Standard lots × 100
+    </div>
 
-<ul>
-<li><strong>Standard Lot</strong> = 100,000 units</li>
-<li><strong>Mini Lot</strong> = 10,000 units</li>
-<li><strong>Micro Lot</strong> = 1,000 units</li>
-</ul>
+    <p>
+      The goal is simple: control how much money you risk, regardless of the trade setup.
+    </p>
 
-<p>
-Choosing the correct lot size is one of the most important decisions a trader makes because it defines risk.
-</p>
+    <h2>Why Lot Size Matters More Than Entry</h2>
+    <p>
+      Many beginners focus only on finding the “perfect entry,” but experienced traders focus on risk control.
+    </p>
 
-<h2>How This Lot Size Calculator Works</h2>
+    <ul>
+      <li>A great entry with bad sizing can still lead to large losses</li>
+      <li>A mediocre entry with proper sizing can be profitable long-term</li>
+      <li>Consistency comes from risk management, not prediction</li>
+    </ul>
 
-<p>
-This calculator helps you determine the correct position size based on your account balance, risk percentage, and stop-loss distance.
-</p>
+    <p>
+      Lot size is what keeps you in the game.
+    </p>
 
-<ul>
-<li><strong>Account Balance</strong> – your total trading capital</li>
-<li><strong>Risk (%)</strong> – how much you are willing to lose per trade</li>
-<li><strong>Stop Loss (pips)</strong> – distance to your exit level</li>
-<li><strong>Lot Size</strong> – calculated position size based on risk</li>
-</ul>
+    <h2>Why Most Traders Fail at Position Sizing</h2>
+    <p>
+      The biggest mistake traders make is adjusting their lot size based on emotions instead of rules.
+    </p>
 
-<p>
-The goal is simple: control how much money you risk, regardless of trade setup.
-</p>
+    <ul>
+      <li>Increasing size after a loss to recover</li>
+      <li>Overconfidence after a win</li>
+      <li>Ignoring stop-loss distances</li>
+    </ul>
 
-<h2>The Core Risk Formula</h2>
+    <p>
+      This leads to inconsistent risk and long-term failure.
+    </p>
 
-<p>
-Professional traders calculate position size using this principle:
-</p>
+    <h2>The Professional Approach</h2>
+    <p>
+      Successful traders treat lot size as a fixed rule, not a flexible choice.
+    </p>
 
-<p style="font-weight:bold;">
-Position Size = (Account Balance × Risk %) ÷ Stop Loss (in pips × pip value)
-</p>
+    <ul>
+      <li>Risk stays consistent across all trades</li>
+      <li>Lot size adjusts automatically based on stop-loss</li>
+      <li>Emotions do not influence position size</li>
+    </ul>
 
-<p>
-This ensures that every trade carries a consistent and controlled level of risk.
-</p>
+    <p>
+      This approach ensures survival and steady growth over time.
+    </p>
 
-<h2>Why Lot Size Matters More Than Entry</h2>
+    <h2>Risk Warning</h2>
+    <p>
+      Incorrect position sizing is one of the fastest ways to lose money in forex trading.
+    </p>
 
-<p>
-Many beginners focus only on finding the “perfect entry,” but experienced traders focus on risk control.
-</p>
+    <p>
+      Even a strong strategy cannot survive poor risk management. Without proper lot size control, a few losing trades can wipe out your account.
+    </p>
 
-<ul>
-<li>A great entry with bad sizing can still lead to large losses</li>
-<li>A mediocre entry with proper sizing can be profitable long-term</li>
-<li>Consistency comes from risk management, not prediction</li>
-</ul>
+    <ul>
+      <li>Always calculate your risk before entering a trade</li>
+      <li>Never trade without a stop-loss</li>
+      <li>Do not increase size to recover losses</li>
+    </ul>
 
-<p>
-Lot size is what keeps you in the game.
-</p>
+    <p style="font-weight:bold; color:#f87171;">
+      ⚠️ Most trading accounts are lost not because of bad strategies, but because of poor position sizing.
+    </p>
 
-<h2>The Hidden Danger of Over-Sizing</h2>
+    <h3>Frequently Asked Questions</h3>
 
-<p>
-Using a lot size that is too large can quickly destroy your account. Even a small losing streak becomes dangerous when your risk per trade is too high.
-</p>
+    <div class="faq">
+      <div class="faq-item">
+        <button class="faq-question">
+          Why do professional traders use small lot sizes?
+          <span class="arrow">▼</span>
+        </button>
+        <div class="faq-answer">
+          <p>
+            Because survival matters more than profit. Smaller lot sizes reduce volatility in your account balance and allow traders to stay consistent over hundreds of trades instead of blowing up after a few losses.
+          </p>
+        </div>
+      </div>
 
-<p>
-For example:
-</p>
+      <div class="faq-item">
+        <button class="faq-question">
+          Why does my lot size change with stop-loss distance?
+          <span class="arrow">▼</span>
+        </button>
+        <div class="faq-answer">
+          <p>
+            Because risk must stay constant. A wider stop-loss means more pips at risk, so your lot size must decrease to keep the same percentage risk on your account.
+          </p>
+        </div>
+      </div>
 
-<ul>
-<li>Risking 1% per trade → sustainable</li>
-<li>Risking 5% per trade → aggressive</li>
-<li>Risking 10%+ → extremely high risk</li>
-</ul>
+      <div class="faq-item">
+        <button class="faq-question">
+          Can I be profitable with very small lot sizes?
+          <span class="arrow">▼</span>
+        </button>
+        <div class="faq-answer">
+          <p>
+            Yes. Profitability comes from consistency and risk management, not position size. Many professional traders grow accounts slowly but steadily using controlled risk.
+          </p>
+        </div>
+      </div>
 
-<p>
-This is why professional traders rarely risk more than 1–2% per trade.
-</p>
+      <div class="faq-item">
+        <button class="faq-question">
+          What is the safest way to choose lot size?
+          <span class="arrow">▼</span>
+        </button>
+        <div class="faq-answer">
+          <p>
+            The safest approach is to risk a fixed percentage of your account per trade, usually 1–2%. Your lot size should always be calculated from that rule, not from emotion.
+          </p>
+        </div>
+      </div>
 
-<h2>Understanding Pip Value and Volatility</h2>
-
-<p>
-Lot size also affects how much each pip movement is worth. Larger positions increase pip value, meaning each small price move has a bigger financial impact.
-</p>
-
-<p>
-In volatile markets, incorrect lot sizing can lead to unexpected losses even if your analysis is correct.
-</p>
-
-<h2>Why Most Traders Fail at Position Sizing</h2>
-
-<p>
-The biggest mistake traders make is adjusting their lot size based on emotions instead of rules.
-</p>
-
-<ul>
-<li>Increasing size after a loss to recover</li>
-<li>Overconfidence after a win</li>
-<li>Ignoring stop-loss distances</li>
-</ul>
-
-<p>
-This leads to inconsistent risk and long-term failure.
-</p>
-
-<h2>The Professional Approach</h2>
-
-<p>
-Successful traders treat lot size as a fixed rule, not a flexible choice.
-</p>
-
-<ul>
-<li>Risk stays consistent across all trades</li>
-<li>Lot size adjusts automatically based on stop-loss</li>
-<li>Emotions do not influence position size</li>
-</ul>
-
-<p>
-This approach ensures survival and steady growth over time.
-</p>
-
-<h2>Risk Warning</h2>
-
-<p>
-Incorrect position sizing is one of the fastest ways to lose money in forex trading.
-</p>
-
-<p>
-Even a strong strategy cannot survive poor risk management. Without proper lot size control, a few losing trades can wipe out your account.
-</p>
-
-<ul>
-<li>Always calculate your risk before entering a trade</li>
-<li>Never trade without a stop-loss</li>
-<li>Do not increase size to recover losses</li>
-</ul>
-
-<p style="font-weight:bold; color:#f87171;">
-⚠️ Most trading accounts are lost not because of bad strategies, but because of poor position sizing.
-</p>
-
-<h2>The Psychology of Lot Size</h2>
-
-<p>
-Lot size directly affects your emotions. The larger your position, the stronger your emotional reactions.
-</p>
-
-<p>
-When risk is too high:
-</p>
-
-<ul>
-<li>You panic during small losses</li>
-<li>You close trades too early</li>
-<li>You hesitate to follow your plan</li>
-</ul>
-
-<p>
-When risk is controlled:
-</p>
-
-<ul>
-<li>You stay calm during trades</li>
-<li>You follow your strategy consistently</li>
-<li>You think long-term instead of reacting short-term</li>
-</ul>
-
-<p>
-The right lot size doesn’t just protect your capital — it protects your mindset.
-</p>
-
-<h3>Frequently Asked Questions</h3>
-
-<div class="faq">
-
-  <div class="faq-item">
-    <button class="faq-question">
-      Why do professional traders use small lot sizes?
-      <span class="arrow">▼</span>
-    </button>
-    <div class="faq-answer">
-      <p>
-        Because survival matters more than profit. Smaller lot sizes reduce volatility in your account balance 
-        and allow traders to stay consistent over hundreds of trades instead of blowing up after a few losses.
-      </p>
+      <div class="faq-item">
+        <button class="faq-question">
+          Why is lot size more important than strategy?
+          <span class="arrow">▼</span>
+        </button>
+        <div class="faq-answer">
+          <p>
+            Because even a profitable strategy can fail with poor risk management. Lot size controls how much you lose when you're wrong, which ultimately determines long-term survival.
+          </p>
+        </div>
+      </div>
     </div>
   </div>
 
-  <div class="faq-item">
-    <button class="faq-question">
-      Why does my lot size change with stop-loss distance?
-      <span class="arrow">▼</span>
-    </button>
-    <div class="faq-answer">
-      <p>
-        Because risk must stay constant. A wider stop-loss means more pips at risk, so your lot size must decrease 
-        to keep the same percentage risk on your account.
-      </p>
-    </div>
+  <div class="related">
+    <h3>Related Calculators</h3>
+    <p>You may also find these tools useful:</p>
+    <ul>
+      <li><a href="pip-calculator-forex.html">Pip Calculator (Forex)</a></li>
+      <li><a href="position-size-calculator.html">Position Size Calculator</a></li>
+      <li><a href="risk-reward-calculator.html">Risk Reward Calculator</a></li>
+      <li><a href="stop-loss-calculator.html">Stop Loss Calculator</a></li>
+      <li><a href="profit-loss-calculator.html">Profit Loss Calculator</a></li>
+    </ul>
   </div>
 
-  <div class="faq-item">
-    <button class="faq-question">
-      Can I be profitable with very small lot sizes?
-      <span class="arrow">▼</span>
-    </button>
-    <div class="faq-answer">
-      <p>
-        Yes. Profitability comes from consistency and risk management, not position size. 
-        Many professional traders grow accounts slowly but steadily using controlled risk.
-      </p>
-    </div>
+  <div class="disclaimer">
+    <p>
+      <strong>Disclaimer:</strong> The calculators on this website are provided for informational and educational purposes only.
+      All results are estimates based on the values entered and do not constitute financial, investment, or trading advice.
+      Always conduct your own research before making financial decisions.
+    </p>
   </div>
 
-  <div class="faq-item">
-    <button class="faq-question">
-      Why do traders increase lot size after a loss?
-      <span class="arrow">▼</span>
-    </button>
-    <div class="faq-answer">
-      <p>
-        This is a psychological reaction known as revenge trading. Traders try to recover losses quickly, 
-        but increasing lot size usually leads to even larger losses and account instability.
-      </p>
-    </div>
-  </div>
+  <script src="footer.js"></script>
+  <script>
+    let chart;
 
-  <div class="faq-item">
-    <button class="faq-question">
-      What is the safest way to choose lot size?
-      <span class="arrow">▼</span>
-    </button>
-    <div class="faq-answer">
-      <p>
-        The safest approach is to risk a fixed percentage of your account per trade (typically 1–2%). 
-        Your lot size should always be calculated based on that rule, not on how confident you feel.
-      </p>
-    </div>
-  </div>
-
-  <div class="faq-item">
-    <button class="faq-question">
-      Why is lot size more important than strategy?
-      <span class="arrow">▼</span>
-    </button>
-    <div class="faq-answer">
-      <p>
-        Because even a profitable strategy can fail with poor risk management. 
-        Lot size controls how much you lose when you're wrong, which ultimately determines long-term survival.
-      </p>
-    </div>
-  </div>
-
-</div>
-
-<div class="related">
-<h3>Related Calculators</h3>
-<p>You may also find these tools useful:</p>
-<ul>
-<li><a href="pip-calculator-forex.html">Pip Calculator (Forex) </a></li>
-<li><a href="position-size-calculator.html">Position Size Calculator</a></li>
-<li><a href="risk-reward-calculator.html">Risk Reward Calculator</a></li>
-<li><a href="stop-loss-calculator.html">Stop Loss Calculator</a></li>
-<li><a href="profit-loss-calculator.html">Profit Loss Calculator</a></li>
-</ul>
-</div>
-  
-<div class="disclaimer">
-<p>
-<strong>Disclaimer:</strong> The calculators on this website are provided for informational and educational purposes only. 
-All results are estimates based on the values entered and do not constitute financial, investment, or trading advice. 
-Always conduct your own research before making financial decisions.
-</p>
-</div>
-<script src="footer.js"></script>
-<script>
-
-let chart;
-
-function calculate(){
-
-let balance = parseFloat(document.getElementById("balance").value)
-let risk = parseFloat(document.getElementById("risk").value)
-let stoploss = parseFloat(document.getElementById("stoploss").value)
-
-if(!balance || !risk || !stoploss){
-alert("Fill all fields")
-return
-}
-
-// Forex standart pip değeri (1 lot = $10 per pip)
-let riskAmount = balance * (risk / 100)
-let lotSize = riskAmount / (stoploss * 10)
-
-document.getElementById("result").innerHTML =
-`Lot Size: ${lotSize.toFixed(2)} lots`
-
-drawChart(riskAmount, lotSize)
-
-}
-
-function drawChart(riskAmount, lotSize){
-
-let ctx = document.getElementById('myChart')
-
-if(chart){
-chart.destroy()
-}
-
-chart = new Chart(ctx,{
-type:'bar',
-data:{
-labels:['Risk Amount ($)','Lot Size'],
-datasets:[{
-label:'Trade Data',
-data:[riskAmount, lotSize],
-backgroundColor:['#ef4444','#3b82f6']
-}]
-}
-})
-
-}
-
-document.addEventListener("DOMContentLoaded", function(){
-
-  document.querySelectorAll(".faq-question").forEach(btn => {
-    btn.addEventListener("click", () => {
-
-      const item = btn.parentElement;
-
-      document.querySelectorAll(".faq-item").forEach(i => {
-        if(i !== item) i.classList.remove("active");
+    function formatMoney(value){
+      return "$" + Number(value).toLocaleString("en-US", {
+        minimumFractionDigits: 0,
+        maximumFractionDigits: 2
       });
+    }
 
-      item.classList.toggle("active");
+    function calculate(){
+      const balance = parseFloat(document.getElementById("balance").value);
+      let risk = parseFloat(document.getElementById("risk").value);
+      const stoploss = parseFloat(document.getElementById("stoploss").value);
+      let pipValue = parseFloat(document.getElementById("pipValue").value);
 
+      const resultCard = document.getElementById("resultCard");
+      const riskOut = document.getElementById("riskOut");
+      const lotOut = document.getElementById("lotOut");
+      const miniOut = document.getElementById("miniOut");
+      const microOut = document.getElementById("microOut");
+      const lossOut = document.getElementById("lossOut");
+      const insightOut = document.getElementById("insightOut");
+
+      if (isNaN(balance) || isNaN(risk) || isNaN(stoploss)) {
+        alert("Fill all required fields");
+        return;
+      }
+
+      if (balance <= 0) {
+        alert("Account balance must be greater than zero");
+        return;
+      }
+
+      if (risk <= 0 || risk >= 100) {
+        alert("Risk % must be between 0 and 99.99");
+        return;
+      }
+
+      if (stoploss <= 0) {
+        alert("Stop loss must be greater than zero");
+        return;
+      }
+
+      if (isNaN(pipValue) || pipValue <= 0) {
+        pipValue = 10;
+      }
+
+      const riskAmount = balance * (risk / 100);
+      const lotSize = riskAmount / (stoploss * pipValue);
+
+      const miniLots = lotSize * 10;
+      const microLots = lotSize * 100;
+      const estimatedLoss = lotSize * stoploss * pipValue;
+
+      riskOut.innerHTML = formatMoney(riskAmount);
+      lotOut.innerHTML = `${lotSize.toFixed(2)} lots`;
+      miniOut.innerHTML = `${miniLots.toFixed(2)} mini lots`;
+      microOut.innerHTML = `${microLots.toFixed(2)} micro lots`;
+      lossOut.innerHTML = formatMoney(estimatedLoss);
+
+      let insight = "";
+      let insightClass = "";
+
+      if (risk <= 1) {
+        insight = "Very conservative risk. Strong for long-term survival.";
+        insightClass = "insight-good";
+      } else if (risk <= 2) {
+        insight = "Common professional risk range.";
+        insightClass = "insight-good";
+      } else if (risk <= 5) {
+        insight = "Aggressive risk. Manage carefully.";
+        insightClass = "insight-medium";
+      } else {
+        insight = "High risk per trade. This can damage account survival.";
+        insightClass = "insight-weak";
+      }
+
+      insightOut.innerHTML = `<span class="${insightClass}">${insight}</span>`;
+      resultCard.style.display = "block";
+
+      drawChart(lotSize, miniLots, microLots);
+    }
+
+    function drawChart(lotSize, miniLots, microLots){
+      const ctx = document.getElementById("myChart").getContext("2d");
+
+      if(chart){
+        chart.destroy();
+      }
+
+      chart = new Chart(ctx,{
+        type:'bar',
+        data:{
+          labels:['Standard Lots','Mini Lots','Micro Lots'],
+          datasets:[{
+            label:'Position Size',
+            data:[lotSize, miniLots, microLots],
+            backgroundColor:['#3b82f6','#22c55e','#facc15']
+          }]
+        },
+        options:{
+          responsive:true,
+          plugins:{
+            legend:{
+              labels:{ color:'white' }
+            },
+            tooltip:{
+              callbacks:{
+                label: function(context){
+                  return `${context.label}: ${Number(context.parsed.y).toFixed(2)}`;
+                }
+              }
+            }
+          },
+          scales:{
+            x:{
+              ticks:{ color:'white' },
+              grid:{ color:'rgba(255,255,255,0.08)' }
+            },
+            y:{
+              ticks:{
+                color:'white',
+                callback: function(value){
+                  return Number(value).toFixed(0);
+                }
+              },
+              grid:{ color:'rgba(255,255,255,0.08)' }
+            }
+          }
+        }
+      });
+    }
+
+    document.addEventListener("DOMContentLoaded", function(){
+      document.querySelectorAll(".faq-question").forEach(btn => {
+        btn.addEventListener("click", () => {
+          const item = btn.parentElement;
+
+          document.querySelectorAll(".faq-item").forEach(i => {
+            if(i !== item) i.classList.remove("active");
+          });
+
+          item.classList.toggle("active");
+        });
+      });
     });
-  });
-
-});
-</script>
-
+  </script>
 </body>
-  </html>
+    </html>
