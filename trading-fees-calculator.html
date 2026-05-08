@@ -1,438 +1,554 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<link rel="canonical" href="https://novainvesttools.com/trading-fees-calculator.html">
-<!-- Google tag (gtag.js) -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-ZPCXDVE8C5"></script>
-<script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
+  <link rel="canonical" href="https://novainvesttools.com/trading-fees-calculator.html">
 
-  gtag('config', 'G-ZPCXDVE8C5');
-</script>
-<meta charset="UTF-8">
-<title>Trading Fees Calculator – Estimate Exchange Fees, Round-Trip Costs & Fee Drag</title>
-<meta name="description" content="Calculate maker/taker trading fees, round-trip costs, and total fee drag before you trade. Fast trading fees calculator for crypto, forex, and stocks.">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-ZPCXDVE8C5"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-ZPCXDVE8C5');
+  </script>
 
-<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-<link rel="stylesheet" href="style.css">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Trading Fees Calculator – Estimate Exchange Fees, Round-Trip Costs & Fee Drag</title>
+  <meta name="description" content="Calculate maker/taker trading fees, round-trip costs, and total fee drag before you trade. Fast trading fees calculator for crypto, forex, and stocks.">
+  <meta name="theme-color" content="#0f172a">
+  <meta name="robots" content="index,follow,max-image-preview:large">
 
-<style>
-body{
-  font-family:Arial, sans-serif;
-  background:#0f172a;
-  color:white;
-  display:flex;
-  justify-content:center;
-  align-items:center;
-  flex-direction:column;
-  min-height:100vh;
-  margin:0;
-  padding:24px 0;
-}
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://novainvesttools.com/trading-fees-calculator.html">
+  <meta property="og:title" content="Trading Fees Calculator – Estimate Exchange Fees, Round-Trip Costs & Fee Drag">
+  <meta property="og:description" content="Calculate maker/taker trading fees, round-trip costs, and total fee drag before you trade.">
 
-.container{
-  background:#1e293b;
-  padding:30px;
-  border-radius:16px;
-  width:90%;
-  max-width:520px;
-  box-shadow:0 10px 25px rgba(0,0,0,0.35);
-  margin-bottom:22px;
-}
+  <link rel="preconnect" href="https://cdn.jsdelivr.net">
+  <link rel="dns-prefetch" href="https://cdn.jsdelivr.net">
 
-h1{
-  margin-top:0;
-  margin-bottom:8px;
-}
+  <link rel="stylesheet" href="style.css">
+  <link rel="icon" href="favicon.png" type="image/png">
+  <link rel="apple-touch-icon" href="favicon.png">
 
-.subhead{
-  color:#94a3b8;
-  font-size:14px;
-  line-height:1.5;
-  margin-bottom:18px;
-}
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
-.section-title{
-  font-size:13px;
-  color:#94a3b8;
-  margin:14px 0 6px;
-  text-transform:uppercase;
-  letter-spacing:0.08em;
-}
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "WebApplication",
+    "name": "Trading Fees Calculator",
+    "url": "https://novainvesttools.com/trading-fees-calculator.html",
+    "applicationCategory": "FinanceApplication",
+    "operatingSystem": "All",
+    "browserRequirements": "Requires JavaScript",
+    "description": "Calculate trading fees, round-trip costs, and fee drag before entering a trade.",
+    "featureList": [
+      "Fee per side calculation",
+      "Round-trip cost estimation",
+      "Total fee drag calculation",
+      "Break-even profit needed"
+    ],
+    "offers": {
+      "@type": "Offer",
+      "price": "0",
+      "priceCurrency": "USD"
+    }
+  }
+  </script>
 
-input{
-  width:100%;
-  padding:14px;
-  margin:10px 0;
-  border-radius:10px;
-  border:none;
-  background:#e5e7eb;
-  font-size:16px;
-  box-sizing:border-box;
-}
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": [
+      {
+        "@type": "Question",
+        "name": "Why do trading fees matter so much?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Fees are paid on every trade, so even small percentages add up quickly and can reduce or eliminate profits over time."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Do I pay fees on both entry and exit?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Yes. Most exchanges charge fees when you open and close a trade, so each round trip usually has two costs."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Can fees turn a profitable strategy into a losing one?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Yes. If your average profit per trade is small, fees can consume a large share of that profit and make the strategy unprofitable."
+        }
+      }
+    ]
+  }
+  </script>
 
-button{
-  padding:14px 18px;
-  background:#3b82f6;
-  border:none;
-  border-radius:10px;
-  color:white;
-  cursor:pointer;
-  margin-top:10px;
-  width:100%;
-  font-size:16px;
-  font-weight:600;
-}
+  <style>
+    *{
+      box-sizing:border-box;
+    }
 
-button:hover{
-  background:#2563eb;
-}
+    html{
+      scroll-behavior:smooth;
+    }
 
-.result-card{
-  margin-top:18px;
-  padding:16px;
-  border-radius:12px;
-  background:rgba(255,255,255,0.04);
-  border:1px solid rgba(255,255,255,0.08);
-  line-height:1.8;
-  display:none;
-}
+    body{
+      font-family: Arial, sans-serif;
+      background:#0b1a33;
+      color:white;
+      display:flex;
+      justify-content:center;
+      align-items:center;
+      flex-direction:column;
+      min-height:100vh;
+      margin:0;
+      padding:24px 0;
+    }
 
-.result-line{
-  margin:8px 0;
-}
+    .toptext{
+      font-size:14px;
+      color:#6b7a99;
+      margin-bottom:5px;
+    }
 
-.result-label{
-  color:#cbd5f5;
-  font-weight:600;
-}
+    .menu{
+      margin-bottom:25px;
+    }
 
-.result-value{
-  font-weight:700;
-}
+    .menu a{
+      color:#3b82f6;
+      margin:10px;
+      text-decoration:none;
+      font-weight:600;
+    }
 
-canvas{
-  margin-top:22px;
-}
+    .container{
+      background:#1e293b;
+      padding:30px;
+      border-radius:16px;
+      width:90%;
+      max-width:520px;
+      box-shadow:0 10px 25px rgba(0,0,0,0.35);
+    }
 
-.toptext{
-  font-size:14px;
-  color:#6b7a99;
-  margin-bottom:5px;
-}
+    h1{
+      margin-top:0;
+      margin-bottom:10px;
+      font-size:32px;
+      line-height:1.15;
+    }
 
-.menu{
-  margin-bottom:18px;
-}
+    .quick-answer{
+      background:rgba(59,130,246,0.12);
+      border:1px solid rgba(59,130,246,0.25);
+      padding:12px 14px;
+      border-radius:10px;
+      font-size:15px;
+      line-height:1.6;
+      color:#e2e8f0;
+      margin-bottom:18px;
+    }
 
-.menu a{
-  color:#3b82f6;
-  margin:10px;
-  text-decoration:none;
-}
+    .subhead{
+      color:#94a3b8;
+      font-size:15px;
+      line-height:1.6;
+      margin-bottom:18px;
+    }
 
-.related{
-  margin-top:28px;
-}
+    .section-title{
+      font-size:13px;
+      color:#94a3b8;
+      margin:14px 0 6px;
+      text-transform:uppercase;
+      letter-spacing:0.08em;
+    }
 
-.related a{
-  color:#93c5fd;
-  text-decoration:none;
-}
+    input{
+      width:100%;
+      padding:14px;
+      margin:12px 0;
+      border-radius:10px;
+      border:none;
+      background:#e5e7eb;
+      font-size:16px;
+      outline:none;
+    }
 
-.related a:hover{
-  text-decoration:underline;
-}
+    input:focus{
+      box-shadow:0 0 0 3px rgba(59,130,246,0.18);
+    }
 
-.disclaimer{
-  margin-top:40px;
-  padding-top:20px;
-  border-top:1px solid rgba(255,255,255,0.1);
-  font-size:13px;
-  color:#9ca3af;
-  max-width:520px;
-  text-align:center;
-  line-height:1.6;
-}
+    button{
+      padding:14px 18px;
+      background:#3b82f6;
+      border:none;
+      border-radius:10px;
+      color:white;
+      cursor:pointer;
+      margin-top:10px;
+      width:100%;
+      font-size:16px;
+      font-weight:600;
+      transition:0.2s;
+    }
 
-.faq{
-  margin-top:24px;
-}
+    button:hover{
+      background:#2563eb;
+      transform:translateY(-1px);
+    }
 
-.faq-item{
-  border-bottom:1px solid rgba(255,255,255,0.08);
-}
+    .result-card{
+      background:#273449;
+      padding:20px 20px 20px 24px;
+      border-radius:14px;
+      margin-top:20px;
+      position:relative;
+      display:none;
+    }
 
-.faq-question{
-  width:100%;
-  background:none;
-  border:none;
-  color:white;
-  text-align:left;
-  padding:14px 8px;
-  font-size:15px;
-  display:flex;
-  justify-content:space-between;
-  align-items:center;
-  cursor:pointer;
-}
+    .result-card::before{
+      content:"";
+      position:absolute;
+      left:12px;
+      top:20px;
+      bottom:20px;
+      width:4px;
+      background:#22c55e;
+      border-radius:2px;
+    }
 
-.faq-question:hover{
-  color:#93c5fd;
-}
+    .result-line{
+      padding-left:18px;
+      margin:15px 0;
+      font-size:18px;
+      color:#e5e7eb;
+      line-height:1.4;
+    }
 
-.arrow{
-  transition:0.25s;
-}
+    .result-line strong{
+      color:#cbd5f5;
+    }
 
-.faq-item.active .arrow{
-  transform:rotate(180deg);
-}
+    .insight-good{
+      color:#22c55e;
+    }
 
-.faq-answer{
-  max-height:0;
-  overflow:hidden;
-  transition:max-height 0.3s ease;
-  color:#cbd5e1;
-  font-size:14px;
-  padding:0 8px;
-}
+    .insight-below-average{
+      color:#facc15;
+    }
 
-.faq-item.active .faq-answer{
-  max-height:260px;
-  padding-bottom:12px;
-}
-</style>
+    .insight-weak{
+      color:#ef4444;
+    }
+
+    canvas{
+      margin-top:24px;
+      max-width:100%;
+    }
+
+    .content{
+      width:90%;
+      max-width:900px;
+      margin-top:34px;
+    }
+
+    .content h2{
+      margin-top:34px;
+      margin-bottom:10px;
+      font-size:28px;
+    }
+
+    .content p,
+    .content li{
+      color:#cbd5e1;
+      line-height:1.7;
+      font-size:15px;
+    }
+
+    .content ul{
+      padding-left:20px;
+    }
+
+    .formula{
+      background:rgba(255,255,255,0.05);
+      border:1px solid rgba(255,255,255,0.08);
+      padding:14px 16px;
+      border-radius:12px;
+      margin:12px 0;
+      color:#e2e8f0;
+      overflow:auto;
+      line-height:1.7;
+    }
+
+    .faq{
+      margin-top:14px;
+    }
+
+    .faq-item{
+      border-bottom:1px solid rgba(255,255,255,0.08);
+    }
+
+    .faq-question{
+      width:100%;
+      background:none;
+      border:none;
+      color:white;
+      text-align:left;
+      padding:14px 8px;
+      font-size:15px;
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      cursor:pointer;
+    }
+
+    .faq-question:hover{
+      color:#93c5fd;
+    }
+
+    .arrow{
+      transition:0.25s;
+    }
+
+    .faq-item.active .arrow{
+      transform:rotate(180deg);
+    }
+
+    .faq-answer{
+      max-height:0;
+      overflow:hidden;
+      transition:max-height 0.3s ease;
+      color:#cbd5e1;
+      font-size:14px;
+      padding:0 8px;
+    }
+
+    .faq-item.active .faq-answer{
+      max-height:260px;
+      padding-bottom:12px;
+    }
+
+    .related{
+      width:90%;
+      max-width:900px;
+      margin-top:34px;
+    }
+
+    .related a{
+      color:#93c5fd;
+      text-decoration:none;
+    }
+
+    .related a:hover{
+      text-decoration:underline;
+    }
+
+    .disclaimer{
+      margin-top:40px;
+      padding-top:20px;
+      border-top:1px solid rgba(255,255,255,0.1);
+      font-size:13px;
+      color:#9ca3af;
+      max-width:900px;
+      text-align:center;
+      line-height:1.6;
+      width:90%;
+    }
+
+    @media (max-width: 700px){
+      .container{
+        padding:22px;
+      }
+
+      h1{
+        font-size:28px;
+      }
+
+      .content h2{
+        font-size:24px;
+      }
+    }
+  </style>
 </head>
 
 <body>
+  <p class="toptext">Explore more calculators</p>
 
-<p class="toptext">Explore more calculators</p>
-
-<div class="menu">
-  <a href="index.html">Home</a>
-</div>
-
-<div class="container">
-  <h1>Trading Fees Calculator</h1>
-  <p class="subhead">
-    Estimate exchange fees, round-trip costs, and fee drag before you trade. Useful for crypto, forex, and stocks.
-  </p>
-
-  <div class="section-title">Trade inputs</div>
-  <input id="tradeValue" placeholder="Trade Value ($)">
-  <input id="feeRate" placeholder="Fee Rate (%) per side">
-  <input id="trades" placeholder="Number of Trades">
-
-  <div class="section-title">Optional costs</div>
-  <input id="fixedFee" placeholder="Fixed Fee per Trade ($) optional">
-  <p class="subhead" style="margin-top:-4px;">
-    Optional. Add a flat fee if your exchange charges one.
-  </p>
-
-  <button onclick="calculateFees()">Calculate Fees</button>
-
-  <div id="resultBox" class="result-card">
-    <p class="result-line">
-      <span class="result-label">Fee per side:</span>
-      <span id="sideFeeOut" class="result-value">—</span>
-    </p>
-    <p class="result-line">
-      <span class="result-label">Round-trip fee per trade:</span>
-      <span id="roundTripOut" class="result-value">—</span>
-    </p>
-    <p class="result-line">
-      <span class="result-label">Total fees:</span>
-      <span id="totalFeesOut" class="result-value">—</span>
-    </p>
-    <p class="result-line">
-      <span class="result-label">Fee drag:</span>
-      <span id="dragOut" class="result-value">—</span>
-    </p>
-    <p class="result-line">
-      <span class="result-label">Break-even profit needed:</span>
-      <span id="breakevenOut" class="result-value">—</span>
-    </p>
+  <div class="menu">
+    <a href="index.html">Home</a>
   </div>
 
-  <canvas id="feeChart"></canvas>
-</div>
+  <div class="container">
+    <h1>Trading Fees Calculator</h1>
 
-<h2>What is a Trading Fees Calculator?</h2>
+    <p class="quick-answer">
+      A $1,000 trade with a 0.20% fee per side costs $4 round-trip — use this calculator to see your fee drag before you trade.
+    </p>
 
-<p>
-A Trading Fees Calculator helps you understand how much you actually pay when entering and exiting a trade. 
-Many traders focus only on price movement and ignore fees, but even small percentages can significantly reduce your profits over time.
-</p>
+    <p class="subhead">
+      Estimate exchange fees, round-trip costs, and fee drag before you trade. Useful for crypto, forex, and stocks.
+    </p>
 
-<p>
-Every trade has a cost. Whether you are trading crypto, stocks, or forex, exchanges charge fees for execution. 
-If you are an active trader, these costs can silently eat into your performance without you realizing it.
-</p>
+    <div class="section-title">Trade inputs</div>
+    <input id="tradeValue" placeholder="Trade Value ($)">
+    <input id="feeRate" placeholder="Fee Rate (%) per side">
+    <input id="trades" placeholder="Number of Trades">
 
-<p>
-This calculator shows your total fees, including entry and exit costs, so you can see your <strong>real net profit</strong> instead of a misleading gross profit.
-</p>
+    <div class="section-title">Optional costs</div>
+    <input id="fixedFee" placeholder="Fixed Fee per Trade ($) optional">
+    <p class="subhead" style="margin-top:-4px;">
+      Optional. Add a flat fee if your exchange charges one.
+    </p>
 
-<h2>Why Trading Fees Matter More Than You Think</h2>
+    <button onclick="calculateFees()">Calculate Fees</button>
 
-<p>
-Most traders underestimate fees because they seem small per trade. But when you trade frequently, the impact compounds.
-</p>
+    <div id="resultBox" class="result-card">
+      <p class="result-line">
+        <strong>Fee per side:</strong> <span id="sideFeeOut" class="result-value">—</span>
+      </p>
+      <p class="result-line">
+        <strong>Round-trip fee per trade:</strong> <span id="roundTripOut" class="result-value">—</span>
+      </p>
+      <p class="result-line">
+        <strong>Total fees:</strong> <span id="totalFeesOut" class="result-value">—</span>
+      </p>
+      <p class="result-line">
+        <strong>Fee drag:</strong> <span id="dragOut" class="result-value">—</span>
+      </p>
+      <p class="result-line">
+        <strong>Break-even profit needed:</strong> <span id="breakevenOut" class="result-value">—</span>
+      </p>
+    </div>
 
-<ul>
-<li>Fees reduce your net profit on every trade</li>
-<li>High-frequency trading increases total costs dramatically</li>
-<li>Low-profit strategies can become unprofitable after fees</li>
-<li>Scalping strategies are especially sensitive to fees</li>
-</ul>
+    <canvas id="feeChart"></canvas>
+  </div>
 
-<p>
-Understanding your costs is essential if you want consistent profitability.
-</p>
+  <div class="content">
+    <h2>What is a Trading Fees Calculator?</h2>
+    <p>
+      A Trading Fees Calculator helps you understand how much you actually pay when entering and exiting a trade.
+      Many traders focus only on price movement and ignore fees, but even small percentages can significantly reduce profits over time.
+    </p>
 
-<h2>How This Calculator Works</h2>
+    <p>
+      Every trade has a cost. Whether you are trading crypto, stocks, or forex, exchanges charge fees for execution.
+      If you are an active trader, these costs can quietly eat into your performance without you realizing it.
+    </p>
 
-<p>
-The calculator takes your trade size and applies entry and exit fees to show the total cost of the trade.
-</p>
+    <h2>How This Calculator Works</h2>
+    <p>
+      The calculator takes your trade size and applies entry and exit fees to show the total cost of the trade.
+    </p>
 
-<ul>
-<li><strong>Trade Size</strong> – total value of your position</li>
-<li><strong>Fee (%)</strong> – exchange fee per trade</li>
-<li><strong>Entry Fee</strong> – cost when opening the trade</li>
-<li><strong>Exit Fee</strong> – cost when closing the trade</li>
-</ul>
+    <ul>
+      <li><strong>Trade Value</strong> = the size of your position</li>
+      <li><strong>Fee Rate</strong> = the exchange fee charged per side</li>
+      <li><strong>Fixed Fee</strong> = an optional flat fee per trade</li>
+      <li><strong>Trades</strong> = how many trades you want to estimate</li>
+    </ul>
 
-<p>
-Total Fees = Entry Fee + Exit Fee
-</p>
+    <div class="formula">
+      Fee per side = Trade Value × Fee Rate<br>
+      Round-trip fee = (Fee per side × 2) + Fixed Fee<br>
+      Total fees = Round-trip fee × Number of Trades<br>
+      Fee drag = (Round-trip fee ÷ Trade Value) × 100
+    </div>
 
-<p>
-This gives you a realistic picture of how much your trade actually costs.
-</p>
+    <h2>Why Trading Fees Matter</h2>
+    <p>
+      Most traders underestimate fees because they seem small per trade. But when you trade frequently, the impact compounds.
+    </p>
 
-<h2>The Hidden Problem: “Winning but Not Profitable”</h2>
+    <ul>
+      <li>Fees reduce your net profit on every trade</li>
+      <li>High-frequency trading increases total costs dramatically</li>
+      <li>Low-profit strategies can become unprofitable after fees</li>
+      <li>Scalping strategies are especially sensitive to fees</li>
+    </ul>
 
-<p>
-A common mistake is thinking a strategy is profitable just because trades are winning. 
-In reality, fees can turn a winning strategy into a losing one.
-</p>
+    <h2>How to Use This Calculator</h2>
+    <ul>
+      <li>Enter the trade value</li>
+      <li>Enter the fee rate per side</li>
+      <li>Enter the number of trades</li>
+      <li>Add a fixed fee if needed</li>
+      <li>Click calculate</li>
+    </ul>
 
-<p>
-For example, if your average profit per trade is 1% but you pay 0.2% per trade (entry + exit), 
-you are losing 20% of your profit to fees alone.
-</p>
+    <h2>Frequently Asked Questions</h2>
 
-<p>
-Over time, this destroys performance.
-</p>
+    <div class="faq">
+      <div class="faq-item">
+        <button class="faq-question">
+          Why do trading fees matter so much?
+          <span class="arrow">▼</span>
+        </button>
+        <div class="faq-answer">
+          <p>
+            Because fees are paid on every trade. Even small percentages add up quickly, especially for active traders.
+            Over time, fees can significantly reduce or completely eliminate profits.
+          </p>
+        </div>
+      </div>
 
-<h2>Who Should Use This?</h2>
+      <div class="faq-item">
+        <button class="faq-question">
+          Do I pay fees on both entry and exit?
+          <span class="arrow">▼</span>
+        </button>
+        <div class="faq-answer">
+          <p>
+            Yes. Most exchanges charge fees when you open a position and again when you close it. That means every trade has two costs, not one.
+          </p>
+        </div>
+      </div>
 
-<ul>
-<li>Crypto traders (Binance, Bybit, etc.)</li>
-<li>Scalpers and day traders</li>
-<li>High-frequency traders</li>
-<li>Anyone who wants accurate profit tracking</li>
-</ul>
+      <div class="faq-item">
+        <button class="faq-question">
+          Can fees turn a profitable strategy into a losing one?
+          <span class="arrow">▼</span>
+        </button>
+        <div class="faq-answer">
+          <p>
+            Yes. If your profit per trade is small, fees can consume a large portion of it. This is especially common in scalping strategies.
+          </p>
+        </div>
+      </div>
 
-<p>
-If you trade regularly, ignoring fees is not an option.
-</p>
-   </div>
-<h3>Frequently Asked Questions</h3>
+      <div class="faq-item">
+        <button class="faq-question">
+          How can I reduce trading fees?
+          <span class="arrow">▼</span>
+        </button>
+        <div class="faq-answer">
+          <p>
+            You can reduce fees by using limit orders, trading on exchanges with lower fees, increasing volume to get discounts, or using fee reductions where available.
+          </p>
+        </div>
+      </div>
 
-<div class="faq">
+      <div class="faq-item">
+        <button class="faq-question">
+          Is this calculator accurate for all markets?
+          <span class="arrow">▼</span>
+        </button>
+        <div class="faq-answer">
+          <p>
+            Yes. It works for crypto, stocks, and forex as long as you know the fee percentage charged by your broker or exchange.
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
 
-<div class="faq-item">
-<button class="faq-question">
-Why do trading fees matter so much?
-<span class="arrow">▼</span>
-</button>
-<div class="faq-answer">
-<p>
-Because fees are paid on every trade. Even small percentages add up quickly, especially for active traders. Over time, fees can significantly reduce or completely eliminate profits.
-</p>
-</div>
-</div>
-
-<div class="faq-item">
-<button class="faq-question">
-Do I pay fees on both entry and exit?
-<span class="arrow">▼</span>
-</button>
-<div class="faq-answer">
-<p>
-Yes. Most exchanges charge fees when you open a position and again when you close it. That means every trade has two costs, not one.
-</p>
-</div>
-</div>
-
-<div class="faq-item">
-<button class="faq-question">
-What is the difference between maker and taker fees?
-<span class="arrow">▼</span>
-</button>
-<div class="faq-answer">
-<p>
-Maker fees apply when you add liquidity to the market (limit orders). Taker fees apply when you remove liquidity (market orders). Taker fees are usually higher.
-</p>
-</div>
-</div>
-
-<div class="faq-item">
-<button class="faq-question">
-Can fees turn a profitable strategy into a losing one?
-<span class="arrow">▼</span>
-</button>
-<div class="faq-answer">
-<p>
-Yes. If your profit per trade is small, fees can consume a large portion of it. This is especially common in scalping strategies.
-</p>
-</div>
-</div>
-
-<div class="faq-item">
-<button class="faq-question">
-How can I reduce trading fees?
-<span class="arrow">▼</span>
-</button>
-<div class="faq-answer">
-<p>
-You can reduce fees by using limit orders, trading on exchanges with lower fees, increasing volume to get discounts, or holding exchange tokens that provide fee reductions.
-</p>
-</div>
-</div>
-
-<div class="faq-item">
-<button class="faq-question">
-Is this calculator accurate for all markets?
-<span class="arrow">▼</span>
-</button>
-<div class="faq-answer">
-<p>
-Yes. It works for crypto, stocks, and forex as long as you know the fee percentage charged by your broker or exchange.
-</p>
-</div>
-</div>
-
-<div class="faq-item">
-<button class="faq-question">
-Should I always include fees in my strategy?
-<span class="arrow">▼</span>
-</button>
-<div class="faq-answer">
-<p>
-Absolutely. Ignoring fees gives you a false sense of profitability. Real trading performance must always include costs.
-</p>
-</div>
-</div>
-
-</div>
   <div class="related">
     <h3>Related Calculators</h3>
     <p>You may also find these tools useful:</p>
@@ -444,107 +560,112 @@ Absolutely. Ignoring fees gives you a false sense of profitability. Real trading
       <li><a href="break-even-calculator.html">Break Even Calculator</a></li>
     </ul>
   </div>
-</div>
 
-<div class="disclaimer">
-  <p>
-    <strong>Disclaimer:</strong> The calculators on this website are provided for informational and educational purposes only.
-    All results are estimates based on the values entered and do not constitute financial, investment, or trading advice.
-    Always conduct your own research before making financial decisions.
-  </p>
-</div>
+  <div class="disclaimer">
+    <p>
+      <strong>Disclaimer:</strong> The calculators on this website are provided for informational and educational purposes only.
+      All results are estimates based on the values entered and do not constitute financial, investment, or trading advice.
+      Always conduct your own research before making financial decisions.
+    </p>
+  </div>
 
-<script src="footer.js"></script>
+  <script src="footer.js"></script>
 
-<script>
-let chart;
+  <script>
+    let chart;
 
-function formatMoney(value){
-  return "$" + value.toFixed(2);
-}
-
-function calculateFees(){
-  const tradeValue = parseFloat(document.getElementById("tradeValue").value);
-  const feeRate = parseFloat(document.getElementById("feeRate").value);
-  const trades = parseInt(document.getElementById("trades").value, 10);
-  const fixedFee = parseFloat(document.getElementById("fixedFee").value) || 0;
-
-  if (
-    isNaN(tradeValue) || isNaN(feeRate) || isNaN(trades) ||
-    tradeValue <= 0 || feeRate < 0 || trades <= 0
-  ) {
-    alert("Please enter valid values.");
-    return;
-  }
-
-  const feePerSide = tradeValue * (feeRate / 100);
-  const roundTripFee = (feePerSide * 2) + fixedFee;
-  const totalFees = roundTripFee * trades;
-  const feeDrag = (roundTripFee / tradeValue) * 100;
-  const breakevenProfit = roundTripFee;
-
-  document.getElementById("sideFeeOut").innerText = formatMoney(feePerSide);
-  document.getElementById("roundTripOut").innerText = formatMoney(roundTripFee);
-  document.getElementById("totalFeesOut").innerText = formatMoney(totalFees);
-  document.getElementById("dragOut").innerText = feeDrag.toFixed(2) + "%";
-  document.getElementById("breakevenOut").innerText = formatMoney(breakevenProfit);
-
-  document.getElementById("resultBox").style.display = "block";
-
-  drawChart(feePerSide, roundTripFee, fixedFee, totalFees);
-}
-
-function drawChart(feePerSide, roundTripFee, fixedFee, totalFees){
-  const ctx = document.getElementById("feeChart").getContext("2d");
-
-  if(chart){
-    chart.destroy();
-  }
-
-  chart = new Chart(ctx,{
-    type:'bar',
-    data:{
-      labels:['Fee per Side','Round-Trip Fee','Fixed Fee','Total Fees'],
-      datasets:[{
-        label:'Fees',
-        data:[feePerSide, roundTripFee, fixedFee, totalFees],
-        backgroundColor:['#3b82f6','#22c55e','#f59e0b','#ef4444']
-      }]
-    },
-    options:{
-      plugins:{
-        legend:{
-          labels:{ color:'white' }
-        }
-      },
-      scales:{
-        x:{
-          ticks:{ color:'white' },
-          grid:{ color:'rgba(255,255,255,0.08)' }
-        },
-        y:{
-          ticks:{ color:'white' },
-          grid:{ color:'rgba(255,255,255,0.08)' }
-        }
-      }
+    function formatMoney(value){
+      return "$" + Number(value).toFixed(2);
     }
-  });
-}
 
-document.addEventListener("DOMContentLoaded", function(){
-  document.querySelectorAll(".faq-question").forEach(btn => {
-    btn.addEventListener("click", () => {
-      const item = btn.parentElement;
+    function calculateFees(){
+      const tradeValue = parseFloat(document.getElementById("tradeValue").value);
+      const feeRate = parseFloat(document.getElementById("feeRate").value);
+      const trades = parseInt(document.getElementById("trades").value, 10);
+      const fixedFee = parseFloat(document.getElementById("fixedFee").value) || 0;
 
-      document.querySelectorAll(".faq-item").forEach(i => {
-        if(i !== item) i.classList.remove("active");
+      if (
+        isNaN(tradeValue) || isNaN(feeRate) || isNaN(trades) ||
+        tradeValue <= 0 || feeRate < 0 || trades <= 0
+      ) {
+        alert("Please enter valid values.");
+        return;
+      }
+
+      const feePerSide = tradeValue * (feeRate / 100);
+      const roundTripFee = (feePerSide * 2) + fixedFee;
+      const totalFees = roundTripFee * trades;
+      const feeDrag = (roundTripFee / tradeValue) * 100;
+      const breakevenProfit = roundTripFee;
+
+      document.getElementById("sideFeeOut").innerText = formatMoney(feePerSide);
+      document.getElementById("roundTripOut").innerText = formatMoney(roundTripFee);
+      document.getElementById("totalFeesOut").innerText = formatMoney(totalFees);
+      document.getElementById("dragOut").innerText = feeDrag.toFixed(2) + "%";
+      document.getElementById("breakevenOut").innerText = formatMoney(breakevenProfit);
+
+      document.getElementById("resultBox").style.display = "block";
+
+      drawChart(feePerSide, roundTripFee, fixedFee, totalFees);
+    }
+
+    function drawChart(feePerSide, roundTripFee, fixedFee, totalFees){
+      const ctx = document.getElementById("feeChart").getContext("2d");
+
+      if(chart){
+        chart.destroy();
+      }
+
+      chart = new Chart(ctx,{
+        type:'bar',
+        data:{
+          labels:['Fee per Side','Round-Trip Fee','Fixed Fee','Total Fees'],
+          datasets:[{
+            label:'Fees',
+            data:[feePerSide, roundTripFee, fixedFee, totalFees],
+            backgroundColor:['#3b82f6','#22c55e','#f59e0b','#ef4444']
+          }]
+        },
+        options:{
+          plugins:{
+            legend:{
+              labels:{ color:'white' }
+            },
+            tooltip:{
+              callbacks:{
+                label: function(context){
+                  return formatMoney(context.parsed.y);
+                }
+              }
+            }
+          },
+          scales:{
+            x:{
+              ticks:{ color:'white' },
+              grid:{ color:'rgba(255,255,255,0.08)' }
+            },
+            y:{
+              ticks:{ color:'white' },
+              grid:{ color:'rgba(255,255,255,0.08)' }
+            }
+          }
+        }
       });
+    }
 
-      item.classList.toggle("active");
+    document.addEventListener("DOMContentLoaded", function(){
+      document.querySelectorAll(".faq-question").forEach(btn => {
+        btn.addEventListener("click", () => {
+          const item = btn.parentElement;
+
+          document.querySelectorAll(".faq-item").forEach(i => {
+            if(i !== item) i.classList.remove("active");
+          });
+
+          item.classList.toggle("active");
+        });
+      });
     });
-  });
-});
-</script>
-
+  </script>
 </body>
   </html>
