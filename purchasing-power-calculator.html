@@ -192,6 +192,37 @@
       font-weight: 600;
     }
 
+    .month-shell {
+      position: relative;
+    }
+
+    .month-shell::after {
+      content: "⌄";
+      position: absolute;
+      right: 14px;
+      top: 50%;
+      transform: translateY(-52%);
+      color: #64748b;
+      pointer-events: none;
+      font-size: 18px;
+      line-height: 1;
+    }
+
+    .month-arrows {
+      position: absolute;
+      right: 34px;
+      top: 50%;
+      transform: translateY(-50%);
+      display: flex;
+      flex-direction: column;
+      gap: 1px;
+      color: #64748b;
+      pointer-events: none;
+      font-size: 10px;
+      line-height: 1;
+      opacity: 0.95;
+    }
+
     input, select {
       width: 100%;
       padding: 14px 16px;
@@ -208,6 +239,7 @@
 
     input[type="month"] {
       color-scheme: dark;
+      padding-right: 54px;
     }
 
     input::-webkit-calendar-picker-indicator {
@@ -485,6 +517,7 @@
 
     @media (max-width: 700px) {
       .container { padding: 22px; }
+      .month-arrows { right: 30px; }
     }
   </style>
 </head>
@@ -526,12 +559,24 @@
 
         <div class="field">
           <label for="startMonth">Start Month</label>
-          <input id="startMonth" type="month">
+          <div class="month-shell">
+            <input id="startMonth" type="month">
+            <div class="month-arrows" aria-hidden="true">
+              <span>▲</span>
+              <span>▼</span>
+            </div>
+          </div>
         </div>
 
         <div class="field">
           <label for="endMonth">End Month</label>
-          <input id="endMonth" type="month">
+          <div class="month-shell">
+            <input id="endMonth" type="month">
+            <div class="month-arrows" aria-hidden="true">
+              <span>▲</span>
+              <span>▼</span>
+            </div>
+          </div>
         </div>
       </div>
 
@@ -725,29 +770,6 @@
       let cpiCache = null;
       let cpiCachePromise = null;
 
-async function setDefaultMonths() {
-  const series = await fetchCPI();
-
-  const latest = series[series.length - 1];
-
-  const endMonth = latest.date;
-
-  const [year, month] = endMonth.split("-");
-
-  const startYear = Number(year) - 5;
-
-  startMonthInput.value =
-    `${startYear}-${String(month).padStart(2, "0")}`;
-
-  endMonthInput.value = endMonth;
-}
-        const fiveYearsAgo = new Date(Date.UTC(now.getUTCFullYear() - 5, now.getUTCMonth(), 1));
-        const fiveYearsAgoMonth = `${fiveYearsAgo.getUTCFullYear()}-${String(fiveYearsAgo.getUTCMonth() + 1).padStart(2, "0")}`;
-
-        if (!startMonthInput.value) startMonthInput.value = fiveYearsAgoMonth;
-        if (!endMonthInput.value) endMonthInput.value = currentMonth;
-      }
-
       function formatMoney(value) {
         return `$${Number(value).toLocaleString("en-US", {
           minimumFractionDigits: 0,
@@ -839,6 +861,18 @@ async function setDefaultMonths() {
           });
 
         return cpiCachePromise;
+      }
+
+      async function setDefaultMonths() {
+        const series = await fetchCPI();
+        const latest = series[series.length - 1];
+        const [year, month] = latest.date.split("-");
+
+        const startYear = Number(year) - 5;
+        startMonthInput.value = `${startYear}-${String(month).padStart(2, "0")}`;
+        endMonthInput.value = latest.date;
+
+        dataStatus.textContent = `Local CPI JSON: latest month ${monthLabel(latest.date)}`;
       }
 
       function findExact(series, targetMonth) {
@@ -1027,7 +1061,10 @@ async function setDefaultMonths() {
       });
 
       calcBtn.addEventListener("click", calculate);
-      setDefaultMonths();
+
+      (async () => {
+        await setDefaultMonths();
+      })();
     });
   </script>
 </body>
