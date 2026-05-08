@@ -1,436 +1,710 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<link rel="canonical" href="https://novainvesttools.com/savings-calculator.html">
-<!-- Google tag (gtag.js) -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-ZPCXDVE8C5"></script>
-<script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
-
-  gtag('config', 'G-ZPCXDVE8C5');
-</script>
-<meta charset="UTF-8">
-<title>Savings Calculator – Estimate Future Savings Growth</title>
-<meta name="description" content="Free savings calculator to estimate future savings, monthly contributions, and interest growth. Learn how to calculate savings growth with formula, examples, and tips to reach your goals.">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-
-<link rel="stylesheet" href="style.css">
-  
-<style>
-
-body{
-font-family:Arial;
-background:#0f172a;
-color:white;
-display:flex;
-justify-content:center;
-align-items:center;
-flex-direction:column;
-min-height:100vh;
-}
-
-.container{
-background:#1e293b;
-padding:30px;
-border-radius:16px;
-width:90%;
-max-width:500px;
-box-shadow:0 10px 25px rgba(0,0,0,0.35);
-}
-
-input{
-width:100%;
-padding:14px;
-margin:12px 0;
-border-radius:10px;
-border:none;
-background:#e5e7eb;
-font-size:16px;
-}
-
-button{
-padding:14px;
-background:#3b82f6;
-border:none;
-border-radius:10px;
-color:white;
-cursor:pointer;
-margin-top:10px;
-width:100%;
-}
-
-button:hover{
-background:#2563eb;
-}
-
-canvas{
-margin-top:30px;
-}
-
-.menu{
-margin-bottom:25px;
-}
-
-.menu a{
-color:#3b82f6;
-margin:10px;
-text-decoration:none;
-}
-
-.toptext{
-font-size:14px;
-color:#6b7a99;
-margin-bottom:5px;
-}
-
-.disclaimer{
-margin-top:40px;
-padding-top:20px;
-border-top:1px solid rgba(255,255,255,0.1);
-font-size:13px;
-color:#9ca3af;
-max-width:500px;
-text-align:center;
-line-height:1.6;
-}
-
-</style>
-
-</head>
-<body>
-  
-<p class="toptext">Explore more calculators</p>
-<div class="menu">
-<a href="index.html">Home</a>
-</div>
-
-<div class="container">
-
-<h1>Savings Calculator – Estimate Future Savings Growth</h1>
-
-<input id="currentSavings" placeholder="Current Savings">
-<input id="monthlyContribution" placeholder="Monthly Contribution">
-<input id="interestRate" placeholder="Annual Interest Rate (%)">
-<input id="years" placeholder="Time (years)">
-
-<button onclick="calculateSavings()">Calculate Savings</button>
-
-<h3 id="result"></h3>
-
-<canvas id="myChart"></canvas>
-</div>
-<h2>What is a Savings Calculator?</h2>
-
-<p>
-A Savings Calculator helps you estimate how much money you can accumulate over time by combining your current savings, regular contributions, and expected growth rate. It is one of the most practical financial planning tools because it turns an abstract goal into a clear number you can work toward.
-</p>
-
-<p>
-People save money for many different reasons: building an emergency fund, preparing for retirement, buying a car, saving for a house deposit, planning a vacation, covering education costs, or simply creating a stronger financial safety net. This calculator helps you see how those savings can grow over time instead of guessing whether your current plan is enough.
-</p>
-
-<p>
-Instead of saving blindly, you can test different scenarios and understand how much your balance could become if you stay consistent. That makes it easier to set realistic goals, adjust your monthly contribution, and stay motivated over the long term.
-</p>
-
-<h2>How This Calculator Works</h2>
-
-<p>
-The calculator starts with your current savings and adds your monthly contribution over the period you choose. If you enter an interest rate, it also applies compound growth so you can see how your money may increase with time.
-</p>
-
-<p>
-This means the calculator is useful whether your money is sitting in a savings account, growing in a fixed deposit, or simply being set aside every month toward a goal. It gives you a future estimate based on your own inputs, so you can compare different strategies and see which one gets you closer to your target.
-</p>
-
-<p>
-You can use it to answer questions like:
-</p>
-
-<ul>
-  <li>How much will I have in 3, 5, or 10 years?</li>
-  <li>How much should I save each month to reach my goal?</li>
-  <li>How much of my future balance comes from savings versus growth?</li>
-  <li>What happens if I increase my monthly contribution?</li>
-</ul>
-
-<h2>Savings Formula</h2>
-
-<p>
-The basic formula behind savings growth is:
-</p>
-
-<p>
-<strong>Future Value = Current Savings × (1 + r)^n + Monthly Contribution × [((1 + r)^n − 1) / r]</strong>
-</p>
-
-<p>
-Where <strong>r</strong> is the monthly interest rate and <strong>n</strong> is the total number of months.
-</p>
-
-<p>
-If the interest rate is zero, the calculator still works by simply adding your monthly contributions to your starting balance. That makes it useful even for simple savings plans with no growth rate involved.
-</p>
-
-<h2>Why Savings Planning Matters</h2>
-
-<p>
-Saving without a plan often leads to underestimating how much money you really need or how long it will take to reach your target. A proper savings projection helps you understand whether your current habits are enough or whether you need to save more aggressively.
-</p>
-
-<p>
-It also helps you stay consistent. Many people start saving with good intentions but stop because the goal feels too far away. Seeing a projected future balance makes the process more concrete and gives you a clearer reason to stay disciplined.
-</p>
-
-<ul>
-  <li>See how your savings may grow over time</li>
-  <li>Understand the effect of monthly contributions</li>
-  <li>Track progress toward short-term and long-term goals</li>
-  <li>Make better decisions with real numbers instead of guesses</li>
-  <li>Stay consistent with a plan that actually makes sense</li>
-</ul>
-
-<h2>How to Use This Calculator</h2>
-
-<ul>
-  <li>Enter your current savings</li>
-  <li>Enter your monthly contribution</li>
-  <li>Enter your expected annual interest rate</li>
-  <li>Enter the number of years you want to save for</li>
-  <li>Click calculate to see your projected future savings</li>
-</ul>
-
-<p>
-You can test multiple scenarios to compare outcomes. For example, you can see how much difference a slightly higher monthly contribution makes, or how long it may take to reach a specific savings goal.
-</p>
-
-<h2>Who Should Use It?</h2>
-
-<p>
-This calculator is useful for anyone who wants a clearer view of their financial future. It works well for beginners who are just starting to save, as well as for people who already have a plan and want to check whether they are on track.
-</p>
-
-<ul>
-  <li>People building an emergency fund</li>
-  <li>People saving for a house, car, or travel</li>
-  <li>Students planning future expenses</li>
-  <li>Workers preparing for retirement</li>
-  <li>Anyone who wants to understand compound growth better</li>
-</ul>
-
-<p>
-The earlier you start, the more time your money has to grow. Even small improvements in your monthly contribution or interest rate can create a much bigger difference over the long run.
-</p>
-
-<p style="font-weight:bold; color:#f87171;">
-⚠️ Saving regularly is often more powerful than trying to save a large amount later.
-</p>
-
-<h2>Frequently Asked Questions</h2>
-
-<div class="faq">
-
-  <div class="faq-item">
-    <button class="faq-question">
-      What is the difference between savings and investing?
-      <span class="arrow">▼</span>
-    </button>
-    <div class="faq-answer">
-      <p>
-        Savings usually refers to money set aside in a safer place for short-term goals or emergencies, while investing is about putting money into assets that may grow faster but also carry more risk.
-      </p>
-    </div>
-  </div>
-
-  <div class="faq-item">
-    <button class="faq-question">
-      Does this calculator include compound growth?
-      <span class="arrow">▼</span>
-    </button>
-    <div class="faq-answer">
-      <p>
-        Yes. If you enter an interest rate, the calculator applies compound growth so you can see how your savings may increase over time.
-      </p>
-    </div>
-  </div>
-
-  <div class="faq-item">
-    <button class="faq-question">
-      What happens if I increase my monthly contribution?
-      <span class="arrow">▼</span>
-    </button>
-    <div class="faq-answer">
-      <p>
-        A higher monthly contribution usually has a big impact on your future balance. Over time, even a small increase can lead to a much larger savings total.
-      </p>
-    </div>
-  </div>
-
-  <div class="faq-item">
-    <button class="faq-question">
-      Can I use this calculator for an emergency fund?
-      <span class="arrow">▼</span>
-    </button>
-    <div class="faq-answer">
-      <p>
-        Yes. It is very useful for emergency fund planning because it helps you estimate how long it may take to build a specific amount.
-      </p>
-    </div>
-  </div>
-
-  <div class="faq-item">
-    <button class="faq-question">
-      Is this calculator useful for retirement planning?
-      <span class="arrow">▼</span>
-    </button>
-    <div class="faq-answer">
-      <p>
-        Yes. You can use it to estimate how your savings may grow before retirement and test how different monthly contributions affect the final result.
-      </p>
-    </div>
-  </div>
-
-  <div class="faq-item">
-    <button class="faq-question">
-      Can savings be negative in this calculator?
-      <span class="arrow">▼</span>
-    </button>
-    <div class="faq-answer">
-      <p>
-        No. For realistic results, savings, contributions, interest rate, and time should all be entered as positive values.
-      </p>
-    </div>
-  </div>
-
-</div>
-  
-<div class="related">
-  
-<h3>Related Calculators</h3>
-<p>You may also find these tools useful:</p>
-<ul>
-<li><a href="future-value-calculator.html">Future Value Calculator</a></li>
-<li><a href="compound-interest-calculator.html">Compound Interest Calculator</a></li>
-<li><a href="inflation-calculator.html">Inflation Calculator</a></li>
-<li><a href="retirement-calculator.html">Retirement Calculator</a></li>
-<li><a href="loan-calculator.html">Loan Calculator</a></li>
-</ul>
-</div> 
-  
-<div class="disclaimer">
-<p>
-<strong>Disclaimer:</strong> The calculators on this website are provided for informational and educational purposes only. 
-All results are estimates based on the values entered and do not constitute financial, investment, or savings advice. 
-Always conduct your own research before making financial decisions.
-</p>
-</div>
-
-<script src="footer.js"></script>
-<script>
-let chart;
-
-function calculateSavings(){
-
-  let currentSavings = parseFloat(document.getElementById("currentSavings").value);
-  let monthlyContribution = parseFloat(document.getElementById("monthlyContribution").value);
-  let interestRate = parseFloat(document.getElementById("interestRate").value);
-  let years = parseFloat(document.getElementById("years").value);
-
-  if(isNaN(currentSavings) || isNaN(monthlyContribution) || isNaN(interestRate) || isNaN(years)){
-    alert("Fill required fields");
-    return;
-  }
-
-  if(currentSavings < 0 || monthlyContribution < 0 || interestRate < 0 || years <= 0){
-    alert("Please enter valid positive values.");
-    return;
-  }
-
-  let months = years * 12;
-  let monthlyRate = interestRate / 100 / 12;
-
-  let futureValue = 0;
-
-  if(monthlyRate === 0){
-    futureValue = currentSavings + (monthlyContribution * months);
-  } else {
-    futureValue =
-      currentSavings * Math.pow(1 + monthlyRate, months) +
-      monthlyContribution * ((Math.pow(1 + monthlyRate, months) - 1) / monthlyRate);
-  }
-
-  let totalContributions = currentSavings + (monthlyContribution * months);
-  let interestEarned = futureValue - totalContributions;
-  let growthMultiple = totalContributions > 0 ? futureValue / totalContributions : 0;
-
-  let annualGrowth = null;
-  if(currentSavings > 0){
-    annualGrowth = (Math.pow(futureValue / currentSavings, 1 / years) - 1) * 100;
-  }
-
-  let resultHTML =
-    "Future Savings: $" + futureValue.toFixed(2) + "<br>" +
-    "Total Contributions: $" + totalContributions.toFixed(2) + "<br>" +
-    "Interest Earned: $" + interestEarned.toFixed(2) + "<br>" +
-    "Growth Multiple: " + growthMultiple.toFixed(2) + "x";
-
-  if(annualGrowth !== null && isFinite(annualGrowth)){
-    resultHTML += "<br>Average Annual Growth: " + annualGrowth.toFixed(2) + "%";
-  }
-
-  document.getElementById("result").innerHTML = resultHTML;
-
-  drawChart(currentSavings, monthlyContribution * months, interestEarned);
-
-}
-
-function drawChart(currentSavings, contributions, interestEarned){
-
-  let ctx = document.getElementById('myChart').getContext('2d');
-
-  if(chart){
-    chart.destroy();
-  }
-
-  chart = new Chart(ctx,{
-    type:'bar',
-    data:{
-      labels:['Current Savings','Contributions','Interest Earned'],
-      datasets:[{
-        label:'Savings Breakdown',
-        data:[currentSavings, contributions, interestEarned],
-        backgroundColor:[
-          '#3b82f6',
-          '#22c55e',
-          '#f59e0b'
-        ]
-      }]
+  <link rel="canonical" href="https://novainvesttools.com/savings-calculator.html">
+
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-ZPCXDVE8C5"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-ZPCXDVE8C5');
+  </script>
+
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Savings Calculator – Estimate Future Savings Growth</title>
+  <meta name="description" content="Free savings calculator to estimate future savings, monthly contributions, and interest growth. Learn how savings can grow with compound interest over time.">
+  <meta name="theme-color" content="#0f172a">
+  <meta name="robots" content="index,follow,max-image-preview:large">
+
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://novainvesttools.com/savings-calculator.html">
+  <meta property="og:title" content="Savings Calculator – Estimate Future Savings Growth">
+  <meta property="og:description" content="Estimate future savings, monthly contributions, and interest growth with a clean savings calculator.">
+
+  <link rel="preconnect" href="https://cdn.jsdelivr.net">
+  <link rel="dns-prefetch" href="https://cdn.jsdelivr.net">
+
+  <link rel="stylesheet" href="style.css">
+  <link rel="icon" href="favicon.png" type="image/png">
+  <link rel="apple-touch-icon" href="favicon.png">
+
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "WebApplication",
+    "name": "Savings Calculator",
+    "url": "https://novainvesttools.com/savings-calculator.html",
+    "applicationCategory": "FinanceApplication",
+    "operatingSystem": "All",
+    "browserRequirements": "Requires JavaScript",
+    "description": "Estimate future savings growth with monthly contributions and compound interest.",
+    "featureList": [
+      "Future savings projection",
+      "Monthly contribution growth",
+      "Compound interest calculation",
+      "Savings breakdown chart"
+    ],
+    "offers": {
+      "@type": "Offer",
+      "price": "0",
+      "priceCurrency": "USD"
     }
-  });
-}
+  }
+  </script>
 
-document.addEventListener("DOMContentLoaded", function(){
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": [
+      {
+        "@type": "Question",
+        "name": "What is a savings calculator?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "A savings calculator estimates how much your money may grow over time based on starting savings, monthly contributions, and an interest rate."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Does this calculator include compound growth?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Yes. If you enter an interest rate, the calculator applies compound growth to estimate the future value of your savings."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Can I use this for an emergency fund?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Yes. It is useful for emergency fund planning, house deposits, travel goals, and any other savings target."
+        }
+      }
+    ]
+  }
+  </script>
 
-  document.querySelectorAll(".faq-question").forEach(btn => {
-    btn.addEventListener("click", () => {
+  <style>
+    *{
+      box-sizing:border-box;
+    }
 
-      const item = btn.parentElement;
+    body{
+      font-family: Arial, sans-serif;
+      background:#0b1a33;
+      color:white;
+      display:flex;
+      justify-content:center;
+      align-items:center;
+      flex-direction:column;
+      min-height:100vh;
+      margin:0;
+      padding:24px 0;
+    }
 
-      document.querySelectorAll(".faq-item").forEach(i => {
-        if(i !== item) i.classList.remove("active");
+    .toptext{
+      font-size:14px;
+      color:#6b7a99;
+      margin-bottom:5px;
+    }
+
+    .menu{
+      margin-bottom:25px;
+    }
+
+    .menu a{
+      color:#3b82f6;
+      margin:10px;
+      text-decoration:none;
+      font-weight:600;
+    }
+
+    .container{
+      background:#1e293b;
+      padding:30px;
+      border-radius:16px;
+      width:90%;
+      max-width:520px;
+      box-shadow:0 10px 25px rgba(0,0,0,0.35);
+    }
+
+    h1{
+      margin-top:0;
+      margin-bottom:10px;
+      font-size:32px;
+      line-height:1.15;
+    }
+
+    .quick-answer{
+      background: rgba(59,130,246,0.12);
+      border: 1px solid rgba(59,130,246,0.25);
+      padding: 12px 14px;
+      border-radius: 10px;
+      font-size: 15px;
+      line-height: 1.6;
+      color: #e2e8f0;
+      margin-bottom: 18px;
+    }
+
+    .subhead{
+      color:#94a3b8;
+      font-size:15px;
+      line-height:1.6;
+      margin-bottom:18px;
+    }
+
+    .section-title{
+      font-size:13px;
+      color:#94a3b8;
+      margin:14px 0 6px;
+      text-transform:uppercase;
+      letter-spacing:0.08em;
+      font-weight:700;
+    }
+
+    input{
+      width:100%;
+      padding:14px;
+      margin:10px 0;
+      border-radius:10px;
+      border:none;
+      background:#e5e7eb;
+      font-size:16px;
+      outline:none;
+    }
+
+    input:focus{
+      box-shadow:0 0 0 3px rgba(59,130,246,0.18);
+    }
+
+    button{
+      padding:14px 18px;
+      background:#3b82f6;
+      border:none;
+      border-radius:10px;
+      color:white;
+      cursor:pointer;
+      margin-top:10px;
+      width:100%;
+      font-size:16px;
+      font-weight:700;
+      transition:0.2s;
+    }
+
+    button:hover{
+      background:#2563eb;
+      transform:translateY(-1px);
+    }
+
+    .result-card{
+      background:#273449;
+      padding:20px 20px 20px 24px;
+      border-radius:14px;
+      margin-top:20px;
+      position:relative;
+      display:none;
+    }
+
+    .result-card::before{
+      content:"";
+      position:absolute;
+      left:12px;
+      top:20px;
+      bottom:20px;
+      width:4px;
+      background:#22c55e;
+      border-radius:2px;
+    }
+
+    .result-line{
+      padding-left:18px;
+      margin:15px 0;
+      font-size:18px;
+      color:#e5e7eb;
+      line-height:1.4;
+    }
+
+    .result-line strong{
+      color:#cbd5f5;
+    }
+
+    .result-value{
+      font-weight:700;
+    }
+
+    canvas{
+      margin-top:24px;
+      max-width:100%;
+    }
+
+    .content{
+      width:90%;
+      max-width:900px;
+      margin-top:34px;
+    }
+
+    .content h2{
+      margin-top:34px;
+      margin-bottom:10px;
+      font-size:28px;
+    }
+
+    .content p,
+    .content li{
+      color:#cbd5e1;
+      line-height:1.7;
+      font-size:15px;
+    }
+
+    .content ul{
+      padding-left:20px;
+    }
+
+    .formula{
+      background:rgba(255,255,255,0.05);
+      border:1px solid rgba(255,255,255,0.08);
+      padding:14px 16px;
+      border-radius:12px;
+      margin:12px 0;
+      color:#e2e8f0;
+      overflow:auto;
+      line-height:1.7;
+    }
+
+    .faq{
+      margin-top:24px;
+    }
+
+    .faq-item{
+      border-bottom:1px solid rgba(255,255,255,0.08);
+    }
+
+    .faq-question{
+      width:100%;
+      background:none;
+      border:none;
+      color:white;
+      text-align:left;
+      padding:14px 8px;
+      font-size:15px;
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      cursor:pointer;
+    }
+
+    .faq-question:hover{
+      color:#93c5fd;
+    }
+
+    .arrow{
+      transition:0.25s;
+    }
+
+    .faq-item.active .arrow{
+      transform:rotate(180deg);
+    }
+
+    .faq-answer{
+      max-height:0;
+      overflow:hidden;
+      transition:max-height 0.3s ease;
+      color:#cbd5e1;
+      font-size:14px;
+      padding:0 8px;
+    }
+
+    .faq-item.active .faq-answer{
+      max-height:240px;
+      padding-bottom:12px;
+    }
+
+    .related{
+      width:90%;
+      max-width:900px;
+      margin-top:34px;
+    }
+
+    .related a{
+      color:#93c5fd;
+      text-decoration:none;
+    }
+
+    .related a:hover{
+      text-decoration:underline;
+    }
+
+    .disclaimer{
+      margin-top:40px;
+      padding-top:20px;
+      border-top:1px solid rgba(255,255,255,0.1);
+      font-size:13px;
+      color:#9ca3af;
+      max-width:900px;
+      text-align:center;
+      line-height:1.6;
+      width:90%;
+    }
+
+    @media (max-width: 700px){
+      .container{
+        padding:22px;
+      }
+
+      h1{
+        font-size:28px;
+      }
+
+      .content h2{
+        font-size:24px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <p class="toptext">Explore more calculators</p>
+
+  <div class="menu">
+    <a href="index.html">Home</a>
+  </div>
+
+  <div class="container">
+    <h1>Savings Calculator</h1>
+
+    <p class="quick-answer">
+      A savings calculator shows how your money may grow over time with regular contributions and compound interest.
+    </p>
+
+    <p class="subhead">
+      Estimate your future savings, total contributions, interest earned, and growth multiple in seconds.
+    </p>
+
+    <div class="section-title">Savings inputs</div>
+    <input id="currentSavings" type="number" min="0" step="any" placeholder="Current Savings">
+    <input id="monthlyContribution" type="number" min="0" step="any" placeholder="Monthly Contribution">
+    <input id="interestRate" type="number" min="0" step="any" placeholder="Annual Interest Rate (%)">
+    <input id="years" type="number" min="0" step="any" placeholder="Time (years)">
+
+    <button onclick="calculateSavings()" type="button">Calculate Savings</button>
+
+    <div id="resultCard" class="result-card">
+      <p class="result-line">
+        <strong>Future Savings:</strong>
+        <span id="futureSavingsOut" class="result-value">—</span>
+      </p>
+
+      <p class="result-line">
+        <strong>Total Contributions:</strong>
+        <span id="totalContributionsOut" class="result-value">—</span>
+      </p>
+
+      <p class="result-line">
+        <strong>Interest Earned:</strong>
+        <span id="interestEarnedOut" class="result-value">—</span>
+      </p>
+
+      <p class="result-line">
+        <strong>Growth Multiple:</strong>
+        <span id="growthMultipleOut" class="result-value">—</span>
+      </p>
+
+      <p class="result-line">
+        <strong>Average Annual Growth:</strong>
+        <span id="annualGrowthOut" class="result-value">—</span>
+      </p>
+    </div>
+
+    <canvas id="myChart"></canvas>
+  </div>
+
+  <div class="content">
+    <h2>What is a Savings Calculator?</h2>
+    <p>
+      A savings calculator helps you estimate how much money you can accumulate over time by combining your current savings,
+      monthly contributions, and expected growth rate. It turns a vague goal into a clear projection.
+    </p>
+
+    <p>
+      This is useful for emergency funds, house deposits, travel goals, education costs, retirement prep, or any long-term savings plan.
+    </p>
+
+    <h2>How This Calculator Works</h2>
+    <p>
+      The calculator starts with your current savings and adds your monthly contribution over the period you choose.
+      If you enter an interest rate, it also applies compound growth to estimate a more realistic future balance.
+    </p>
+
+    <p>
+      The calculator can also help you compare different saving strategies and see how small changes in contributions can change the final result.
+    </p>
+
+    <h2>Savings Formula</h2>
+    <p>
+      The basic formula behind savings growth is:
+    </p>
+
+    <div class="formula">
+      Future Value = Current Savings × (1 + r)<sup>n</sup> + Monthly Contribution × [((1 + r)<sup>n</sup> − 1) / r]
+    </div>
+
+    <p>
+      Where <strong>r</strong> is the monthly interest rate and <strong>n</strong> is the total number of months.
+    </p>
+
+    <p>
+      If the interest rate is zero, the calculator still works by simply adding your monthly contributions to your starting balance.
+    </p>
+
+    <h2>Why Savings Planning Matters</h2>
+    <p>
+      Saving without a plan often leads to underestimating how much money you really need or how long it will take to reach your target.
+      A savings projection gives you a clearer picture of whether your current habits are enough.
+    </p>
+
+    <ul>
+      <li>See how your savings may grow over time</li>
+      <li>Understand the effect of monthly contributions</li>
+      <li>Track progress toward short-term and long-term goals</li>
+      <li>Make better decisions with real numbers instead of guesses</li>
+    </ul>
+
+    <h2>How to Use This Calculator</h2>
+    <ul>
+      <li>Enter your current savings</li>
+      <li>Enter your monthly contribution</li>
+      <li>Enter your expected annual interest rate</li>
+      <li>Enter the number of years you want to save for</li>
+      <li>Click calculate to see your projected future savings</li>
+    </ul>
+
+    <h3>Frequently Asked Questions</h3>
+
+    <div class="faq">
+      <div class="faq-item">
+        <button class="faq-question" type="button">
+          What is the difference between savings and investing?
+          <span class="arrow">▼</span>
+        </button>
+        <div class="faq-answer">
+          <p>
+            Savings usually means keeping money in a safer place for short-term goals or emergencies.
+            Investing is about putting money into assets that may grow faster but also carry more risk.
+          </p>
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <button class="faq-question" type="button">
+          Does this calculator include compound growth?
+          <span class="arrow">▼</span>
+        </button>
+        <div class="faq-answer">
+          <p>
+            Yes. If you enter an interest rate, the calculator applies compound growth so you can see how your savings may increase over time.
+          </p>
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <button class="faq-question" type="button">
+          What happens if I increase my monthly contribution?
+          <span class="arrow">▼</span>
+        </button>
+        <div class="faq-answer">
+          <p>
+            A higher monthly contribution usually has a big impact on your future balance. Over time, even a small increase can lead to a much larger savings total.
+          </p>
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <button class="faq-question" type="button">
+          Can I use this calculator for an emergency fund?
+          <span class="arrow">▼</span>
+        </button>
+        <div class="faq-answer">
+          <p>
+            Yes. It is very useful for emergency fund planning because it helps you estimate how long it may take to build a specific amount.
+          </p>
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <button class="faq-question" type="button">
+          Is this calculator useful for retirement planning?
+          <span class="arrow">▼</span>
+        </button>
+        <div class="faq-answer">
+          <p>
+            Yes. You can use it to estimate how your savings may grow before retirement and test how different monthly contributions affect the final result.
+          </p>
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <button class="faq-question" type="button">
+          Can savings be negative in this calculator?
+          <span class="arrow">▼</span>
+        </button>
+        <div class="faq-answer">
+          <p>
+            No. For realistic results, savings, contributions, interest rate, and time should all be entered as positive values.
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="related">
+    <h3>Related Calculators</h3>
+    <p>You may also find these tools useful:</p>
+    <ul>
+      <li><a href="future-value-calculator.html">Future Value Calculator</a></li>
+      <li><a href="compound-interest-calculator.html">Compound Interest Calculator</a></li>
+      <li><a href="inflation-calculator.html">Inflation Calculator</a></li>
+      <li><a href="retirement-calculator.html">Retirement Calculator</a></li>
+      <li><a href="loan-calculator.html">Loan Calculator</a></li>
+    </ul>
+  </div>
+
+  <div class="disclaimer">
+    <p>
+      <strong>Disclaimer:</strong> The calculators on this website are provided for informational and educational purposes only.
+      All results are estimates based on the values entered and do not constitute financial, investment, or savings advice.
+      Always conduct your own research before making financial decisions.
+    </p>
+  </div>
+
+  <script src="footer.js"></script>
+  <script>
+    let chart;
+
+    function formatMoney(value){
+      return "$" + Number(value).toLocaleString(undefined, {
+        minimumFractionDigits: 2,
+        maximumFractionDigits: 2
       });
+    }
 
-      item.classList.toggle("active");
+    function calculateSavings(){
+      const currentSavings = parseFloat(document.getElementById("currentSavings").value);
+      const monthlyContribution = parseFloat(document.getElementById("monthlyContribution").value);
+      const interestRate = parseFloat(document.getElementById("interestRate").value);
+      const years = parseFloat(document.getElementById("years").value);
 
+      if (isNaN(currentSavings) || isNaN(monthlyContribution) || isNaN(interestRate) || isNaN(years)) {
+        alert("Fill required fields");
+        return;
+      }
+
+      if (currentSavings < 0 || monthlyContribution < 0 || interestRate < 0 || years <= 0) {
+        alert("Please enter valid positive values.");
+        return;
+      }
+
+      const months = years * 12;
+      const monthlyRate = interestRate / 100 / 12;
+
+      let futureValue = 0;
+
+      if (monthlyRate === 0) {
+        futureValue = currentSavings + (monthlyContribution * months);
+      } else {
+        futureValue =
+          currentSavings * Math.pow(1 + monthlyRate, months) +
+          monthlyContribution * ((Math.pow(1 + monthlyRate, months) - 1) / monthlyRate);
+      }
+
+      const totalContributions = currentSavings + (monthlyContribution * months);
+      const interestEarned = futureValue - totalContributions;
+      const growthMultiple = totalContributions > 0 ? futureValue / totalContributions : 0;
+
+      let annualGrowth = null;
+      if (currentSavings > 0 && years > 0) {
+        annualGrowth = (Math.pow(futureValue / currentSavings, 1 / years) - 1) * 100;
+      }
+
+      document.getElementById("futureSavingsOut").innerText = formatMoney(futureValue);
+      document.getElementById("totalContributionsOut").innerText = formatMoney(totalContributions);
+      document.getElementById("interestEarnedOut").innerText = formatMoney(interestEarned);
+      document.getElementById("growthMultipleOut").innerText = growthMultiple.toFixed(2) + "x";
+      document.getElementById("annualGrowthOut").innerText = annualGrowth !== null && isFinite(annualGrowth)
+        ? annualGrowth.toFixed(2) + "%"
+        : "—";
+
+      document.getElementById("resultCard").style.display = "block";
+      drawChart(currentSavings, monthlyContribution * months, interestEarned);
+    }
+
+    function drawChart(currentSavings, contributions, interestEarned){
+      const ctx = document.getElementById('myChart').getContext('2d');
+
+      if(chart){
+        chart.destroy();
+      }
+
+      chart = new Chart(ctx,{
+        type:'bar',
+        data:{
+          labels:['Current Savings','Contributions','Interest Earned'],
+          datasets:[{
+            label:'Savings Breakdown',
+            data:[currentSavings, contributions, interestEarned],
+            backgroundColor:[
+              '#3b82f6',
+              '#22c55e',
+              '#f59e0b'
+            ]
+          }]
+        },
+        options:{
+          responsive:true,
+          plugins:{
+            legend:{
+              labels:{ color:'white' }
+            },
+            tooltip:{
+              callbacks:{
+                label: function(context){
+                  return "$" + Number(context.parsed.y).toFixed(2);
+                }
+              }
+            }
+          },
+          scales:{
+            x:{
+              ticks:{ color:'white' },
+              grid:{ color:'rgba(255,255,255,0.08)' }
+            },
+            y:{
+              ticks:{ color:'white' },
+              grid:{ color:'rgba(255,255,255,0.08)' }
+            }
+          }
+        }
+      });
+    }
+
+    document.addEventListener("DOMContentLoaded", function(){
+      document.querySelectorAll(".faq-question").forEach(btn => {
+        btn.addEventListener("click", () => {
+          const item = btn.parentElement;
+
+          document.querySelectorAll(".faq-item").forEach(i => {
+            if(i !== item) i.classList.remove("active");
+          });
+
+          item.classList.toggle("active");
+        });
+      });
     });
-  });
-
-});
-</script>
-
+  </script>
 </body>
 </html>
