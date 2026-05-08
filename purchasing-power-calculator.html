@@ -725,9 +725,22 @@
       let cpiCache = null;
       let cpiCachePromise = null;
 
-      function setDefaultMonths() {
-        const now = new Date();
-        const currentMonth = `${now.getUTCFullYear()}-${String(now.getUTCMonth() + 1).padStart(2, "0")}`;
+async function setDefaultMonths() {
+  const series = await fetchCPI();
+
+  const latest = series[series.length - 1];
+
+  const endMonth = latest.date;
+
+  const [year, month] = endMonth.split("-");
+
+  const startYear = Number(year) - 5;
+
+  startMonthInput.value =
+    `${startYear}-${String(month).padStart(2, "0")}`;
+
+  endMonthInput.value = endMonth;
+}
         const fiveYearsAgo = new Date(Date.UTC(now.getUTCFullYear() - 5, now.getUTCMonth(), 1));
         const fiveYearsAgoMonth = `${fiveYearsAgo.getUTCFullYear()}-${String(fiveYearsAgo.getUTCMonth() + 1).padStart(2, "0")}`;
 
