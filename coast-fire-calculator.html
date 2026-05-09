@@ -1,0 +1,1008 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <link rel="canonical" href="https://novainvesttools.com/coast-fire-calculator.html">
+
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-ZPCXDVE8C5"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-ZPCXDVE8C5');
+  </script>
+
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>Coast FIRE Calculator – Know When You Can Coast to Retirement</title>
+  <meta name="description" content="Estimate your Coast FIRE number, FIRE target, retirement balance, and monthly contribution gap using current investments, expected return, spending target, and inflation.">
+  <meta name="theme-color" content="#0f172a">
+  <meta name="robots" content="index,follow,max-image-preview:large">
+
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://novainvesttools.com/coast-fire-calculator.html">
+  <meta property="og:title" content="Coast FIRE Calculator – Know When You Can Coast to Retirement">
+  <meta property="og:description" content="Estimate your Coast FIRE number, FIRE target, retirement balance, and monthly contribution gap.">
+
+  <link rel="preconnect" href="https://cdn.jsdelivr.net">
+  <link rel="dns-prefetch" href="https://cdn.jsdelivr.net">
+
+  <link rel="stylesheet" href="style.css">
+  <link rel="icon" href="favicon.png" type="image/png">
+  <link rel="apple-touch-icon" href="favicon.png">
+
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "WebApplication",
+    "name": "Coast FIRE Calculator",
+    "url": "https://novainvesttools.com/coast-fire-calculator.html",
+    "applicationCategory": "FinanceApplication",
+    "operatingSystem": "All",
+    "browserRequirements": "Requires JavaScript",
+    "description": "Estimate Coast FIRE number, FIRE target, projected retirement balance, and monthly contribution gap.",
+    "featureList": [
+      "Coast FIRE number calculation",
+      "FIRE target projection",
+      "Projected retirement balance",
+      "Monthly contribution gap",
+      "Inflation-adjusted retirement estimate"
+    ],
+    "offers": {
+      "@type": "Offer",
+      "price": "0",
+      "priceCurrency": "USD"
+    }
+  }
+  </script>
+
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": [
+      {
+        "@type": "Question",
+        "name": "What is Coast FIRE?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Coast FIRE means your current invested assets are enough to grow to your retirement target without needing any more contributions, assuming the expected return actually happens."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "How is Coast FIRE different from FIRE?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "FIRE is the total amount you need to fund retirement. Coast FIRE is the amount you need today so that compound growth can carry you to that target."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Why does inflation matter?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Inflation changes the amount of future income you will need. A retirement goal stated in today's dollars should be inflated forward to compare it fairly with future portfolio values."
+        }
+      }
+    ]
+  }
+  </script>
+
+  <style>
+    *{
+      box-sizing:border-box;
+    }
+
+    html{
+      scroll-behavior:smooth;
+    }
+
+    body{
+      font-family:Arial, sans-serif;
+      background:#0b1a33;
+      color:white;
+      display:flex;
+      justify-content:center;
+      align-items:center;
+      flex-direction:column;
+      min-height:100vh;
+      margin:0;
+      padding:24px 0;
+    }
+
+    .toptext{
+      font-size:14px;
+      color:#6b7a99;
+      margin-bottom:5px;
+    }
+
+    .menu{
+      margin-bottom:25px;
+    }
+
+    .menu a{
+      color:#3b82f6;
+      margin:10px;
+      text-decoration:none;
+      font-weight:600;
+    }
+
+    .container{
+      background:#1e293b;
+      padding:30px;
+      border-radius:16px;
+      width:90%;
+      max-width:560px;
+      box-shadow:0 10px 25px rgba(0,0,0,0.35);
+    }
+
+    h1{
+      margin-top:0;
+      margin-bottom:10px;
+      font-size:32px;
+      line-height:1.15;
+    }
+
+    .quick-answer{
+      background: rgba(59,130,246,0.12);
+      border: 1px solid rgba(59,130,246,0.25);
+      padding: 12px 14px;
+      border-radius: 10px;
+      font-size: 15px;
+      line-height: 1.6;
+      color: #e2e8f0;
+      margin-bottom: 18px;
+    }
+
+    .subhead{
+      color:#94a3b8;
+      font-size:15px;
+      line-height:1.6;
+      margin-bottom:18px;
+    }
+
+    .badge-row{
+      display:flex;
+      gap:10px;
+      flex-wrap:wrap;
+      margin:14px 0 6px;
+    }
+
+    .badge{
+      display:inline-flex;
+      padding:5px 10px;
+      border-radius:999px;
+      font-size:12px;
+      font-weight:700;
+      background:rgba(59,130,246,0.12);
+      color:#bfdbfe;
+      border:1px solid rgba(59,130,246,0.22);
+    }
+
+    .badge.soft{
+      background:rgba(255,255,255,0.05);
+      border-color:rgba(255,255,255,0.08);
+      color:#dbeafe;
+    }
+
+    .section-title{
+      margin:18px 0 8px;
+      font-size:16px;
+      color:#e2e8f0;
+      font-weight:700;
+    }
+
+    .grid{
+      display:grid;
+      grid-template-columns:1fr 1fr;
+      gap:12px;
+    }
+
+    @media (max-width:700px){
+      .grid{
+        grid-template-columns:1fr;
+      }
+    }
+
+    .field{
+      margin:12px 0;
+    }
+
+    .field label{
+      display:block;
+      font-size:13px;
+      color:#cbd5e1;
+      margin:0 0 6px;
+      font-weight:600;
+    }
+
+    .helper{
+      margin-top:6px;
+      color:#94a3b8;
+      font-size:12px;
+      line-height:1.5;
+    }
+
+    input{
+      width:100%;
+      padding:14px;
+      margin:0;
+      border-radius:10px;
+      border:none;
+      background:#e5e7eb;
+      font-size:16px;
+      outline:none;
+    }
+
+    input:focus{
+      box-shadow:0 0 0 3px rgba(59,130,246,0.18);
+    }
+
+    button{
+      padding:14px;
+      background:#3b82f6;
+      border:none;
+      border-radius:10px;
+      color:white;
+      cursor:pointer;
+      margin-top:10px;
+      width:100%;
+      font-size:16px;
+      font-weight:700;
+      transition:0.2s;
+    }
+
+    button:hover{
+      background:#2563eb;
+      transform:translateY(-1px);
+    }
+
+    .result-card{
+      margin-top:18px;
+      padding:16px 18px 16px 22px;
+      border-radius:14px;
+      background:rgba(255,255,255,0.05);
+      border:1px solid rgba(255,255,255,0.08);
+      display:none;
+      position:relative;
+    }
+
+    .result-card::before{
+      content:"";
+      position:absolute;
+      left:12px;
+      top:16px;
+      bottom:16px;
+      width:4px;
+      background:#22c55e;
+      border-radius:2px;
+    }
+
+    .result-line{
+      margin:10px 0;
+      font-size:16px;
+      line-height:1.5;
+      color:#e5e7eb;
+      padding-left:12px;
+    }
+
+    .result-line strong{
+      color:#cbd5f5;
+    }
+
+    .insight-good{
+      color:#22c55e;
+      font-weight:700;
+    }
+
+    .insight-medium{
+      color:#facc15;
+      font-weight:700;
+    }
+
+    .insight-weak{
+      color:#ef4444;
+      font-weight:700;
+    }
+
+    canvas{
+      margin-top:26px;
+    }
+
+    .content{
+      width:90%;
+      max-width:900px;
+      margin-top:34px;
+    }
+
+    .content h2{
+      margin-top:34px;
+      margin-bottom:10px;
+      font-size:28px;
+    }
+
+    .content p,
+    .content li{
+      color:#cbd5e1;
+      line-height:1.7;
+      font-size:15px;
+    }
+
+    .content ul{
+      padding-left:20px;
+    }
+
+    .formula{
+      background:rgba(255,255,255,0.05);
+      border:1px solid rgba(255,255,255,0.08);
+      padding:14px 16px;
+      border-radius:12px;
+      margin:12px 0;
+      color:#e2e8f0;
+      overflow:auto;
+      line-height:1.7;
+    }
+
+    .faq{
+      margin-top:14px;
+    }
+
+    .faq-item{
+      border-bottom:1px solid rgba(255,255,255,0.08);
+    }
+
+    .faq-question{
+      width:100%;
+      background:none;
+      border:none;
+      color:white;
+      text-align:left;
+      padding:14px 8px;
+      font-size:15px;
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      cursor:pointer;
+    }
+
+    .faq-question:hover{
+      color:#93c5fd;
+    }
+
+    .arrow{
+      transition:0.25s;
+    }
+
+    .faq-item.active .arrow{
+      transform:rotate(180deg);
+    }
+
+    .faq-answer{
+      max-height:0;
+      overflow:hidden;
+      transition:max-height 0.3s ease;
+      color:#cbd5e1;
+      font-size:14px;
+      padding:0 8px;
+    }
+
+    .faq-item.active .faq-answer{
+      max-height:260px;
+      padding-bottom:12px;
+    }
+
+    .related{
+      width:90%;
+      max-width:560px;
+      margin-top:26px;
+      background:rgba(30,41,59,0.62);
+      border:1px solid rgba(255,255,255,0.08);
+      border-radius:16px;
+      padding:22px;
+    }
+
+    .related h3{
+      margin-top:0;
+      margin-bottom:10px;
+    }
+
+    .related p,
+    .related li{
+      color:#cbd5e1;
+      line-height:1.7;
+      font-size:15px;
+    }
+
+    .related ul{
+      padding-left:18px;
+      margin-bottom:0;
+    }
+
+    .related a{
+      color:#93c5fd;
+      text-decoration:none;
+    }
+
+    .related a:hover{
+      text-decoration:underline;
+    }
+
+    .disclaimer{
+      margin-top:24px;
+      padding-top:20px;
+      border-top:1px solid rgba(255,255,255,0.1);
+      font-size:13px;
+      color:#9ca3af;
+      max-width:900px;
+      text-align:center;
+      line-height:1.6;
+      width:90%;
+    }
+
+    @media (max-width:700px){
+      .container{
+        padding:22px;
+      }
+
+      h1{
+        font-size:28px;
+      }
+
+      .content h2{
+        font-size:24px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <p class="toptext">Explore more calculators</p>
+
+  <div class="menu">
+    <a href="index.html">Home</a>
+  </div>
+
+  <div class="container">
+    <h1>Coast FIRE Calculator</h1>
+
+    <p id="quickAnswer" class="quick-answer">
+      If you need $60,000 a year in retirement and use a 4% withdrawal rate, your FIRE target is $1.5 million — use this calculator to see whether your current investments can coast there.
+    </p>
+
+    <p id="subheadText" class="subhead">
+      See how much you need today to coast to retirement, how close you are to your FIRE target, and what your portfolio may be worth with or without future contributions.
+    </p>
+
+    <div class="badge-row">
+      <span id="modeBadge" class="badge">Coast FIRE</span>
+      <span class="badge soft">Retirement planning</span>
+      <span class="badge soft">Inflation-adjusted</span>
+    </div>
+
+    <div class="section-title">Your details</div>
+
+    <div class="grid">
+      <div class="field">
+        <label for="currentAge">Current Age</label>
+        <input id="currentAge" type="number" min="0" step="1" placeholder="e.g. 30">
+      </div>
+
+      <div class="field">
+        <label for="retirementAge">Retirement Age</label>
+        <input id="retirementAge" type="number" min="0" step="1" placeholder="e.g. 65">
+      </div>
+
+      <div class="field">
+        <label for="currentInvestments">Current Invested Assets ($)</label>
+        <input id="currentInvestments" type="number" min="0" step="any" placeholder="e.g. 25000">
+      </div>
+
+      <div class="field">
+        <label for="monthlyContribution">Monthly Contribution ($)</label>
+        <input id="monthlyContribution" type="number" min="0" step="any" placeholder="e.g. 1000">
+        <div class="helper">Used to compare your current plan against the minimum needed path.</div>
+      </div>
+
+      <div class="field">
+        <label for="annualSpendingToday">Target Annual Spending in Today's Dollars ($)</label>
+        <input id="annualSpendingToday" type="number" min="0" step="any" placeholder="e.g. 60000">
+      </div>
+
+      <div class="field">
+        <label for="safeWithdrawalRate">Safe Withdrawal Rate (%)</label>
+        <input id="safeWithdrawalRate" type="number" step="any" placeholder="e.g. 4">
+        <div class="helper">Typical planning range is around 3% to 4%.</div>
+      </div>
+
+      <div class="field">
+        <label for="expectedReturnPct">Expected Annual Return (%)</label>
+        <input id="expectedReturnPct" type="number" step="any" placeholder="e.g. 7">
+      </div>
+
+      <div class="field">
+        <label for="inflationPct">Inflation Rate (%)</label>
+        <input id="inflationPct" type="number" step="any" placeholder="e.g. 3">
+      </div>
+    </div>
+
+    <button id="calculateBtn" type="button" onclick="calculateCoastFire()">Calculate Coast FIRE</button>
+
+    <div id="resultCard" class="result-card">
+      <div class="result-line"><strong>Years to retirement:</strong> <span id="yearsOut">—</span></div>
+      <div class="result-line"><strong>FIRE target at retirement:</strong> <span id="fireTargetOut">—</span></div>
+      <div class="result-line"><strong>Coast FI amount needed today:</strong> <span id="coastTodayOut">—</span></div>
+      <div class="result-line"><strong>Projected balance at retirement:</strong> <span id="futureBalanceOut">—</span></div>
+      <div class="result-line"><strong>Inflation-adjusted value:</strong> <span id="realBalanceOut">—</span></div>
+      <div class="result-line"><strong>Monthly contribution needed to hit FIRE target:</strong> <span id="requiredContributionOut">—</span></div>
+      <div class="result-line"><strong>Contribution gap vs target:</strong> <span id="contributionGapOut">—</span></div>
+      <div class="result-line"><strong>Insight:</strong> <span id="insightOut">—</span></div>
+    </div>
+
+    <canvas id="coastChart"></canvas>
+  </div>
+
+  <div class="content">
+    <h2>What is Coast FIRE?</h2>
+    <p>
+      Coast FIRE means your current invested assets are already large enough to grow into your retirement target without needing more contributions. You keep the money invested, let compound growth do the heavy lifting, and focus on reaching retirement without having to keep saving aggressively forever.
+    </p>
+
+    <p>
+      This calculator estimates the amount you need today to coast to your target retirement balance, the retirement balance you are aiming for, and whether your current monthly contribution is above or below the minimum needed path.
+    </p>
+
+    <h2>How This Calculator Works</h2>
+    <p>
+      First, it converts your spending goal into a FIRE target using your safe withdrawal rate. Then it inflates that target forward to your retirement date, because retirement income needs usually rise with inflation. After that, it discounts the target back to today using your expected annual return to estimate the Coast FIRE amount.
+    </p>
+
+    <p>
+      The chart compares your projected balance with and without contributions against your inflation-adjusted FIRE target over time.
+    </p>
+
+    <div class="formula">
+      FIRE target today = annual spending ÷ safe withdrawal rate<br>
+      FIRE target at retirement = FIRE target today × (1 + inflation)^years<br>
+      Coast FI amount today = FIRE target at retirement ÷ (1 + return)^years<br>
+      Projected balance = current assets + future contributions + compound growth
+    </div>
+
+    <h2>Why Coast FIRE Matters</h2>
+    <p>
+      Coast FIRE gives you a clear milestone. It shows whether your savings rate has already done enough work to let compounding carry you the rest of the way. That can change how aggressively you need to save, how you plan your career, and how you think about retirement timing.
+    </p>
+
+    <ul>
+      <li>See how much you need today to coast</li>
+      <li>Understand the gap between current assets and your target</li>
+      <li>Compare projected balance with retirement spending needs</li>
+      <li>Test different return, spending, and inflation assumptions</li>
+      <li>Check whether your current monthly contribution is enough</li>
+    </ul>
+
+    <h2>How to Use This Calculator</h2>
+    <ul>
+      <li>Enter your current age and retirement age</li>
+      <li>Add your current invested assets</li>
+      <li>Enter your monthly contribution</li>
+      <li>Set your retirement spending target</li>
+      <li>Choose a safe withdrawal rate</li>
+      <li>Enter expected return and inflation</li>
+      <li>Click calculate to see your Coast FIRE numbers</li>
+    </ul>
+
+    <p style="font-weight:bold; color:#f87171;">
+      ⚠️ Coast FIRE depends heavily on the return assumption. Be conservative if you want a safer plan.
+    </p>
+
+    <h2>Frequently Asked Questions</h2>
+
+    <div class="faq">
+      <div class="faq-item">
+        <button class="faq-question" type="button">
+          What is the difference between Coast FIRE and FIRE?
+          <span class="arrow">▼</span>
+        </button>
+        <div class="faq-answer">
+          <p>
+            FIRE is the total amount you need to retire. Coast FIRE is the amount you need today so that your investments can reach that target later without extra contributions.
+          </p>
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <button class="faq-question" type="button">
+          Why does inflation matter here?
+          <span class="arrow">▼</span>
+        </button>
+        <div class="faq-answer">
+          <p>
+            Your retirement spending target is usually stated in today's dollars. Inflation pushes that target higher over time, so the calculator adjusts it before comparing it with your portfolio.
+          </p>
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <button class="faq-question" type="button">
+          What safe withdrawal rate should I use?
+          <span class="arrow">▼</span>
+        </button>
+        <div class="faq-answer">
+          <p>
+            Many people use 4% as a rough planning baseline, but a lower rate is often more conservative. The right number depends on your own risk tolerance and retirement plan.
+          </p>
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <button class="faq-question" type="button">
+          Can I still contribute after reaching Coast FIRE?
+          <span class="arrow">▼</span>
+        </button>
+        <div class="faq-answer">
+          <p>
+            Yes. Coast FIRE only means you do not need to keep contributing to hit the retirement target. Many people still contribute if they want a larger safety margin or earlier retirement.
+          </p>
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <button class="faq-question" type="button">
+          Why is the return assumption so important?
+          <span class="arrow">▼</span>
+        </button>
+        <div class="faq-answer">
+          <p>
+            Because Coast FIRE is a compounding problem. A small change in expected return can change the amount you need today by a lot, especially over long time horizons.
+          </p>
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <button class="faq-question" type="button">
+          Is this calculator exact?
+          <span class="arrow">▼</span>
+        </button>
+        <div class="faq-answer">
+          <p>
+            No. It is a planning model. Real returns, inflation, taxes, and spending needs can vary, so the result should be used as an estimate rather than a guarantee.
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="related">
+    <h3>Related Calculators</h3>
+    <p>You may also find these tools useful:</p>
+    <ul>
+      <li><a href="retirement-calculator.html">Retirement Calculator</a></li>
+      <li><a href="future-value-calculator.html">Future Value Calculator</a></li>
+      <li><a href="compound-interest-calculator.html">Compound Interest Calculator</a></li>
+      <li><a href="inflation-calculator.html">Inflation Calculator</a></li>
+      <li><a href="ira-calculator.html">IRA Calculator</a></li>
+    </ul>
+  </div>
+
+  <div class="disclaimer">
+    <p>
+      <strong>Disclaimer:</strong> The calculators on this website are provided for informational and educational purposes only.
+      All results are estimates based on the values entered and do not constitute financial, investment, or retirement advice.
+      Retirement outcomes depend on market returns, inflation, taxes, and personal circumstances.
+    </p>
+  </div>
+
+  <script src="footer.js"></script>
+  <script>
+    let chart = null;
+
+    function fmtMoney(value){
+      return Number(value).toLocaleString(undefined, {
+        minimumFractionDigits: 0,
+        maximumFractionDigits: 2
+      });
+    }
+
+    function formatCurrency(value){
+      return "$" + fmtMoney(value);
+    }
+
+    function futureValue(currentBalance, monthlyContribution, months, monthlyRate){
+      if (months <= 0){
+        return currentBalance;
+      }
+
+      if (Math.abs(monthlyRate) < 1e-12){
+        return currentBalance + (monthlyContribution * months);
+      }
+
+      const growthFactor = Math.pow(1 + monthlyRate, months);
+      return currentBalance * growthFactor + monthlyContribution * ((growthFactor - 1) / monthlyRate);
+    }
+
+    function requiredMonthlyContribution(targetFutureValue, currentBalance, months, monthlyRate){
+      if (months <= 0){
+        return 0;
+      }
+
+      if (Math.abs(monthlyRate) < 1e-12){
+        return Math.max(0, (targetFutureValue - currentBalance) / months);
+      }
+
+      const growthFactor = Math.pow(1 + monthlyRate, months);
+      const numerator = targetFutureValue - (currentBalance * growthFactor);
+      const denominator = (growthFactor - 1) / monthlyRate;
+
+      if (denominator <= 0){
+        return Infinity;
+      }
+
+      return Math.max(0, numerator / denominator);
+    }
+
+    function calculateCoastFire(){
+      const currentAge = parseFloat(document.getElementById("currentAge").value);
+      const retirementAge = parseFloat(document.getElementById("retirementAge").value);
+      const currentInvestments = parseFloat(document.getElementById("currentInvestments").value);
+      const monthlyContribution = parseFloat(document.getElementById("monthlyContribution").value) || 0;
+      const annualSpendingToday = parseFloat(document.getElementById("annualSpendingToday").value);
+      const safeWithdrawalRate = parseFloat(document.getElementById("safeWithdrawalRate").value);
+      const expectedReturnPct = parseFloat(document.getElementById("expectedReturnPct").value);
+      const inflationPct = parseFloat(document.getElementById("inflationPct").value) || 0;
+
+      const required = [
+        currentAge,
+        retirementAge,
+        currentInvestments,
+        annualSpendingToday,
+        safeWithdrawalRate,
+        expectedReturnPct
+      ];
+
+      if (required.some(v => Number.isNaN(v))){
+        alert("Please fill in all required fields.");
+        return;
+      }
+
+      if (currentAge < 0 || retirementAge < 0){
+        alert("Ages must be valid positive numbers.");
+        return;
+      }
+
+      if (retirementAge <= currentAge){
+        alert("Retirement age must be greater than current age.");
+        return;
+      }
+
+      if (currentInvestments < 0 || monthlyContribution < 0 || annualSpendingToday <= 0){
+        alert("Investment, contribution, and spending values must be valid positive numbers.");
+        return;
+      }
+
+      if (safeWithdrawalRate <= 0 || safeWithdrawalRate >= 100){
+        alert("Safe withdrawal rate must be between 0 and 100.");
+        return;
+      }
+
+      if (expectedReturnPct <= -100 || inflationPct <= -100){
+        alert("Return and inflation must be greater than -100%.");
+        return;
+      }
+
+      const years = retirementAge - currentAge;
+      const months = years * 12;
+      const annualReturn = expectedReturnPct / 100;
+      const monthlyReturn = Math.pow(1 + annualReturn, 1 / 12) - 1;
+      const inflationRate = inflationPct / 100;
+      const swr = safeWithdrawalRate / 100;
+
+      const fireTargetToday = annualSpendingToday / swr;
+      const fireTargetAtRetirement = annualSpendingToday * Math.pow(1 + inflationRate, years) / swr;
+      const coastFIAmountToday = fireTargetAtRetirement / Math.pow(1 + annualReturn, years);
+
+      const projectedNoContribution = futureValue(currentInvestments, 0, months, monthlyReturn);
+      const projectedWithContribution = futureValue(currentInvestments, monthlyContribution, months, monthlyReturn);
+      const projectedRealValue = projectedWithContribution / Math.pow(1 + inflationRate, years);
+
+      const monthlyNeeded = requiredMonthlyContribution(
+        fireTargetAtRetirement,
+        currentInvestments,
+        months,
+        monthlyReturn
+      );
+
+      const contributionGap = monthlyContribution - monthlyNeeded;
+      const coastGapToday = Math.max(0, coastFIAmountToday - currentInvestments);
+
+      const yearsText = `${years} years`;
+      document.getElementById("yearsOut").innerText = yearsText;
+      document.getElementById("fireTargetOut").innerText = formatCurrency(fireTargetAtRetirement);
+      document.getElementById("coastTodayOut").innerText = formatCurrency(coastFIAmountToday);
+      document.getElementById("futureBalanceOut").innerText = formatCurrency(projectedWithContribution);
+      document.getElementById("realBalanceOut").innerText = formatCurrency(projectedRealValue);
+
+      document.getElementById("requiredContributionOut").innerText =
+        Number.isFinite(monthlyNeeded) ? formatCurrency(monthlyNeeded) : "—";
+
+      if (Number.isFinite(contributionGap)){
+        if (contributionGap >= 0){
+          document.getElementById("contributionGapOut").innerText =
+            `${formatCurrency(contributionGap)} above the minimum needed`;
+        } else {
+          document.getElementById("contributionGapOut").innerText =
+            `${formatCurrency(Math.abs(contributionGap))} below the minimum needed`;
+        }
+      } else {
+        document.getElementById("contributionGapOut").innerText = "—";
+      }
+
+      let insight = "";
+      let insightClass = "";
+
+      if (currentInvestments >= coastFIAmountToday){
+        insight = "You are already Coast FIRE at this return assumption.";
+        insightClass = "insight-good";
+      } else if (projectedWithContribution >= fireTargetAtRetirement){
+        insight = "Your current contribution rate is enough to reach the FIRE target.";
+        insightClass = "insight-good";
+      } else if (projectedRealValue >= fireTargetToday){
+        insight = "Nominally strong, but inflation still matters.";
+        insightClass = "insight-medium";
+      } else if (projectedWithContribution >= currentInvestments * 1.5){
+        insight = "You are growing, but you are not on a coast path yet.";
+        insightClass = "insight-medium";
+      } else {
+        insight = "You are not on a coast path yet. Increase contributions or lower the spending target.";
+        insightClass = "insight-weak";
+      }
+
+      if (coastGapToday > 0 && currentInvestments < coastFIAmountToday){
+        insight += ` You are about ${formatCurrency(coastGapToday)} short of the Coast FIRE amount today.`;
+      }
+
+      document.getElementById("insightOut").innerHTML = `<span class="${insightClass}">${insight}</span>`;
+      document.getElementById("resultCard").style.display = "block";
+
+      drawChart(
+        currentInvestments,
+        monthlyContribution,
+        years,
+        monthlyReturn,
+        annualSpendingToday,
+        inflationRate,
+        swr,
+        fireTargetAtRetirement
+      );
+
+      document.getElementById("resultCard").scrollIntoView({ behavior: "smooth", block: "start" });
+    }
+
+    function drawChart(currentInvestments, monthlyContribution, years, monthlyReturn, annualSpendingToday, inflationRate, swr, fireTargetAtRetirement){
+      const ctx = document.getElementById("coastChart").getContext("2d");
+
+      if (chart){
+        chart.destroy();
+      }
+
+      const labels = [];
+      const withContrib = [];
+      const noContrib = [];
+      const fireTargets = [];
+
+      for (let year = 0; year <= years; year++){
+        const months = year * 12;
+        const projectedWith = futureValue(currentInvestments, monthlyContribution, months, monthlyReturn);
+        const projectedWithout = futureValue(currentInvestments, 0, months, monthlyReturn);
+        const fireTarget = annualSpendingToday * Math.pow(1 + inflationRate, year) / swr;
+
+        labels.push(year);
+        withContrib.push(projectedWith);
+        noContrib.push(projectedWithout);
+        fireTargets.push(fireTarget);
+      }
+
+      chart = new Chart(ctx, {
+        type: "line",
+        data: {
+          labels,
+          datasets: [
+            {
+              label: "Projected with contributions",
+              data: withContrib,
+              borderColor: "#3b82f6",
+              backgroundColor: "rgba(59,130,246,0.15)",
+              tension: 0.25,
+              fill: true,
+              pointRadius: 2,
+              pointHoverRadius: 4
+            },
+            {
+              label: "Projected if you stop now",
+              data: noContrib,
+              borderColor: "#22c55e",
+              backgroundColor: "rgba(34,197,94,0.08)",
+              tension: 0.25,
+              fill: false,
+              pointRadius: 2,
+              pointHoverRadius: 4
+            },
+            {
+              label: "FIRE target",
+              data: fireTargets,
+              borderColor: "#f59e0b",
+              backgroundColor: "rgba(245,158,11,0.08)",
+              borderDash: [8, 6],
+              tension: 0.15,
+              fill: false,
+              pointRadius: 0
+            }
+          ]
+        },
+        options: {
+          responsive: true,
+          plugins: {
+            legend: {
+              labels: { color: "white" }
+            },
+            tooltip: {
+              callbacks: {
+                label: function(context){
+                  return `${context.dataset.label}: $${fmtMoney(context.parsed.y)}`;
+                }
+              }
+            }
+          },
+          scales: {
+            x: {
+              ticks: {
+                color: "white",
+                callback: function(value){
+                  return value + "y";
+                }
+              },
+              grid: { color: "rgba(255,255,255,0.08)" },
+              title: {
+                display: true,
+                text: "Years from now",
+                color: "white"
+              }
+            },
+            y: {
+              ticks: {
+                color: "white",
+                callback: function(value){
+                  return "$" + Number(value).toLocaleString();
+                }
+              },
+              grid: { color: "rgba(255,255,255,0.08)" },
+              title: {
+                display: true,
+                text: "Portfolio value ($)",
+                color: "white"
+              }
+            }
+          }
+        }
+      });
+    }
+
+    document.addEventListener("DOMContentLoaded", function(){
+      document.querySelectorAll(".faq-question").forEach(btn => {
+        btn.addEventListener("click", () => {
+          const item = btn.parentElement;
+
+          document.querySelectorAll(".faq-item").forEach(i => {
+            if (i !== item) i.classList.remove("active");
+          });
+
+          item.classList.toggle("active");
+        });
+      });
+    });
+  </script>
+</body>
+    </html>
