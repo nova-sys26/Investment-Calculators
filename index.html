@@ -1515,6 +1515,14 @@ function closeDrawer(){
   drawerPanel.setAttribute("aria-hidden", "true");
 }
 
+function normalizeText(text){
+  return String(text)
+    .toLowerCase()
+    .replace(/[\(\)\.\,\-\/]/g, " ")
+    .replace(/\s+/g, " ")
+    .trim();
+}
+
 function setActiveCategory(category){
   currentCategory = category;
 
@@ -1537,7 +1545,6 @@ function resetFilters(){
 
 function sortVisibleCards(){
   const sortMode = sortSelect.value;
-
   const visibleCards = cards.filter(card => card.style.display !== "none");
 
   visibleCards.sort((a, b) => {
@@ -1546,19 +1553,13 @@ function sortVisibleCards(){
     const aFeatured = Number(a.dataset.featured || 0);
     const bFeatured = Number(b.dataset.featured || 0);
 
-    if(sortMode === "featured"){
-      if(bFeatured !== aFeatured) return bFeatured - aFeatured;
+    if (sortMode === "featured") {
+      if (bFeatured !== aFeatured) return bFeatured - aFeatured;
       return aTitle.localeCompare(bTitle);
     }
 
-    if(sortMode === "az"){
-      return aTitle.localeCompare(bTitle);
-    }
-
-    if(sortMode === "za"){
-      return bTitle.localeCompare(aTitle);
-    }
-
+    if (sortMode === "az") return aTitle.localeCompare(bTitle);
+    if (sortMode === "za") return bTitle.localeCompare(aTitle);
     return 0;
   });
 
@@ -1572,26 +1573,25 @@ function sortVisibleCards(){
 }
 
 function applyFilters(){
-  const query = searchInput.value.trim().toLowerCase();
+  const query = normalizeText(searchInput.value);
   let visibleCount = 0;
 
   cards.forEach(card => {
+    const title = normalizeText(card.dataset.title);
     const matchesCategory = currentCategory === "all" || card.dataset.category === currentCategory;
-    const matchesSearch = !query || card.dataset.search.includes(query) || card.dataset.title.toLowerCase().includes(query);
+    const matchesSearch = !query || title.includes(query);
 
     const show = matchesCategory && matchesSearch;
     card.style.display = show ? "flex" : "none";
 
-    if(show) visibleCount++;
+    if (show) visibleCount++;
   });
 
   sortVisibleCards();
 
-  if(visibleCount === 0){
+  if (visibleCount === 0) {
     noResult.style.display = "block";
-    noResult.firstChild.textContent = query
-      ? "No calculator found."
-      : "No calculators in this category.";
+    noResult.firstChild.textContent = query ? "No calculator found." : "No calculators in this category.";
   } else {
     noResult.style.display = "none";
   }
@@ -1600,19 +1600,17 @@ function applyFilters(){
 }
 
 function renderSuggestions(){
-  const query = searchInput.value.trim().toLowerCase();
+  const query = normalizeText(searchInput.value);
   suggestionsBox.innerHTML = "";
 
-  if(!query){
-    return;
-  }
+  if (!query) return;
 
   const visibleMatches = cards
-    .filter(card => (currentCategory === "all" || card.dataset.category === currentCategory))
-    .filter(card => card.dataset.title.toLowerCase().includes(query) || card.dataset.search.includes(query))
+    .filter(card => currentCategory === "all" || card.dataset.category === currentCategory)
+    .filter(card => normalizeText(card.dataset.title).includes(query))
     .slice(0, 8);
 
-  if(visibleMatches.length === 0){
+  if (visibleMatches.length === 0) {
     suggestionsBox.innerHTML = "<div class='suggestion-item'><span class='suggestion-name'>No result</span><span class='suggestion-cat'>Try another keyword</span></div>";
     return;
   }
@@ -1644,11 +1642,11 @@ filterButtons.forEach(btn => {
 });
 
 document.addEventListener("click", (e) => {
-  if(!e.target.closest(".search-wrap")){
+  if (!e.target.closest(".search-wrap")) {
     suggestionsBox.innerHTML = "";
   }
 
-  if(!e.target.closest(".drawer") && !e.target.closest("#menuBtn")){
+  if (!e.target.closest(".drawer") && !e.target.closest("#menuBtn")) {
     closeDrawer();
   }
 });
@@ -1662,7 +1660,7 @@ document.querySelectorAll(".drawer a").forEach(link => {
 });
 
 document.addEventListener("keydown", (e) => {
-  if(e.key === "Escape"){
+  if (e.key === "Escape") {
     closeDrawer();
   }
 });
@@ -1672,7 +1670,7 @@ document.querySelectorAll(".faq-question").forEach(btn => {
     const item = btn.parentElement;
 
     document.querySelectorAll(".faq-item").forEach(i => {
-      if(i !== item) i.classList.remove("active");
+      if (i !== item) i.classList.remove("active");
     });
 
     item.classList.toggle("active");
@@ -1680,7 +1678,7 @@ document.querySelectorAll(".faq-question").forEach(btn => {
 });
 
 applyFilters();
-</script>
-
+  </script>
+    
 </body>
   </html>
