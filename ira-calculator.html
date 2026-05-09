@@ -17,13 +17,13 @@
 
   <title>IRA Calculator – Roth & Traditional Retirement Growth</title>
   <meta name="description" content="Project Roth and Traditional IRA growth using current balance, annual contributions, expected return, contribution growth, tax assumptions, and inflation-adjusted value.">
-  <meta name="theme-color" content="#0b1a33">
+  <meta name="theme-color" content="#0f172a">
   <meta name="robots" content="index,follow,max-image-preview:large">
 
   <meta property="og:type" content="website">
   <meta property="og:url" content="https://novainvesttools.com/ira-calculator.html">
   <meta property="og:title" content="IRA Calculator – Roth & Traditional Retirement Growth">
-  <meta property="og:description" content="Project Roth and Traditional IRA growth using current balance, annual contributions, expected return, and inflation-adjusted value.">
+  <meta property="og:description" content="Project Roth and Traditional IRA growth using current balance, annual contributions, expected return, contribution growth, tax assumptions, and inflation-adjusted value.">
 
   <link rel="preconnect" href="https://cdn.jsdelivr.net">
   <link rel="dns-prefetch" href="https://cdn.jsdelivr.net">
@@ -86,30 +86,6 @@
         "acceptedAnswer": {
           "@type": "Answer",
           "text": "Inflation reduces purchasing power, so a future balance may buy less than expected. Inflation-adjusted projections help show real value."
-        }
-      },
-      {
-        "@type": "Question",
-        "name": "Can I use this calculator if my contributions change later?",
-        "acceptedAnswer": {
-          "@type": "Answer",
-          "text": "Yes. You can use the contribution growth input to model increasing contributions over time."
-        }
-      },
-      {
-        "@type": "Question",
-        "name": "What return rate should I enter?",
-        "acceptedAnswer": {
-          "@type": "Answer",
-          "text": "Use a realistic long-term assumption. Conservative projections are usually more useful for planning than aggressive ones."
-        }
-      },
-      {
-        "@type": "Question",
-        "name": "Can this calculator predict my exact retirement balance?",
-        "acceptedAnswer": {
-          "@type": "Answer",
-          "text": "No. It is a projection, not a guarantee. Real-world returns, contribution changes, taxes, and inflation can vary."
         }
       }
     ]
@@ -276,7 +252,7 @@
       font-weight:600;
     }
 
-    .field .helper{
+    .helper{
       margin-top:6px;
       color:#94a3b8;
       font-size:12px;
@@ -574,7 +550,7 @@
           <div class="field" style="margin:0;">
             <label for="currentTaxRate">Current Marginal Tax Rate (%)</label>
             <input id="currentTaxRate" type="number" step="any" placeholder="e.g. 22">
-            <div class="helper">Used to estimate current tax benefit if contributions are deductible.</div>
+            <div class="helper">Used to estimate the current tax deduction value.</div>
           </div>
 
           <div class="field" style="margin:0;">
@@ -609,13 +585,13 @@
     </p>
 
     <p>
-      This version includes a toggle for Roth IRA and Traditional IRA. Roth uses an after-tax contribution model and tax-free retirement value. Traditional uses tax-deferred growth and an estimated retirement withdrawal tax rate.
+      This version separates Roth IRA and Traditional IRA. Roth uses an after-tax contribution model and tax-free retirement value. Traditional uses tax-deferred growth and an estimated retirement withdrawal tax rate.
     </p>
 
     <h2>How This IRA Calculator Works</h2>
 
     <p>
-      This calculator projects your IRA balance year by year using compound growth. Your starting balance grows over time, your annual contributions are added regularly, and your expected return rate is applied to simulate long-term investment growth. You can also include contribution growth and inflation to make the projection more realistic.
+      The calculator projects your IRA balance year by year using compound growth. Your starting balance grows over time, your annual contributions are added regularly, and your expected return rate is applied to simulate long-term investment growth. You can also include contribution growth and inflation to make the projection more realistic.
     </p>
 
     <p>
@@ -778,13 +754,6 @@
       });
     }
 
-    function fmtPct(value){
-      return `${value.toLocaleString(undefined, {
-        minimumFractionDigits: 0,
-        maximumFractionDigits: 2
-      })}%`;
-    }
-
     function setMode(selectedMode){
       iraMode = selectedMode;
 
@@ -815,7 +784,6 @@
       const annualReturnPct = parseFloat(document.getElementById("annualReturnPct").value);
       const contributionGrowthPct = parseFloat(document.getElementById("contributionGrowthPct").value) || 0;
       const inflationPct = parseFloat(document.getElementById("inflationPct").value) || 0;
-
       const currentTaxRate = parseFloat(document.getElementById("currentTaxRate").value) || 0;
       const retirementTaxRate = parseFloat(document.getElementById("retirementTaxRate").value) || 0;
 
@@ -1039,4 +1007,4 @@
     });
   </script>
 </body>
-          </html>
+        </html>
