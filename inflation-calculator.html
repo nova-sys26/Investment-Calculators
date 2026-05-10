@@ -275,55 +275,52 @@
       display:none;
     }
 
-    .result-line{
-      margin:10px 0;
-      font-size:16px;
-      line-height:1.5;
-      color:#e5e7eb;
-    }
-
-    .result-line strong{
-      color:#cbd5f5;
-    }
-
-    .result-line-block{
-      display:block;
-    }
-
-    .insight-stack{
-      margin-top:8px;
+    .result-grid{
       display:grid;
-      gap:8px;
+      grid-template-columns:1fr 1fr;
+      gap:10px;
     }
 
-    .insight-row{
-      padding:10px 12px;
-      border-radius:12px;
+    @media (max-width:700px){
+      .result-grid{
+        grid-template-columns:1fr;
+      }
+    }
+
+    .result-box{
       background:rgba(255,255,255,0.04);
       border:1px solid rgba(255,255,255,0.06);
-      color:#e5e7eb;
-      font-size:14px;
-      line-height:1.6;
+      border-radius:12px;
+      padding:12px 14px;
     }
 
-    .insight-row strong{
+    .result-label{
       display:block;
-      margin-bottom:2px;
+      color:#cbd5f5;
+      font-size:13px;
+      font-weight:700;
+      margin-bottom:6px;
+      line-height:1.4;
     }
 
-    .insight-good{
-      color:#22c55e;
+    .result-value{
+      font-size:18px;
+      line-height:1.35;
+      color:#e5e7eb;
       font-weight:700;
     }
 
-    .insight-medium{
-      color:#facc15;
-      font-weight:700;
+    .result-sub{
+      display:block;
+      margin-top:4px;
+      font-size:12px;
+      color:#94a3b8;
+      line-height:1.4;
+      font-weight:500;
     }
 
-    .insight-weak{
-      color:#ef4444;
-      font-weight:700;
+    .result-wide{
+      grid-column:1 / -1;
     }
 
     canvas{
@@ -485,6 +482,7 @@
 
   <div class="container">
     <h1>Inflation Calculator</h1>
+
     <p class="quick-answer">
       A 3% inflation rate can cut purchasing power by nearly half in about 24 years — use this calculator to see how much today’s money will really be worth later.
     </p>
@@ -519,14 +517,36 @@
     <button onclick="calculateInflation()">Calculate</button>
 
     <div id="resultCard" class="result-card">
-      <div class="result-line"><strong>Future purchasing power:</strong> <span id="result">—</span></div>
-      <div class="result-line"><strong>Purchasing power lost:</strong> <span id="lossOut">—</span></div>
-      <div class="result-line"><strong>Future nominal amount needed to match today:</strong> <span id="nominalNeededOut">—</span></div>
-      <div class="result-line"><strong>Rule of 72 half-life:</strong> <span id="halfLifeOut">—</span></div>
+      <div class="result-grid">
+        <div class="result-box">
+          <span class="result-label">Future purchasing power</span>
+          <span id="result" class="result-value">—</span>
+          <span class="result-sub">What today’s money is worth after inflation.</span>
+        </div>
 
-      <div class="result-line result-line-block">
-        <strong>Insight:</strong>
-        <div id="insightOut" class="insight-stack">—</div>
+        <div class="result-box">
+          <span class="result-label">Purchasing power lost</span>
+          <span id="lossOut" class="result-value">—</span>
+          <span class="result-sub">How much buying power disappears.</span>
+        </div>
+
+        <div class="result-box">
+          <span class="result-label">Future nominal amount needed</span>
+          <span id="nominalNeededOut" class="result-value">—</span>
+          <span class="result-sub">What you would need later to match today.</span>
+        </div>
+
+        <div class="result-box">
+          <span class="result-label">Remaining purchasing power</span>
+          <span id="remainingOut" class="result-value">—</span>
+          <span class="result-sub">What percentage of today’s value remains.</span>
+        </div>
+
+        <div class="result-box result-wide">
+          <span class="result-label">Rule of 72 half-life</span>
+          <span id="halfLifeOut" class="result-value">—</span>
+          <span class="result-sub">A quick estimate of how long it takes purchasing power to halve.</span>
+        </div>
       </div>
     </div>
 
@@ -745,152 +765,13 @@
       return `${Number(value).toFixed(2)}%`;
     }
 
-    function buildInsight({ amount, inflation, years, futureValue, nominalNeeded, lossPct }) {
-      const halfLife = inflation > 0 ? 72 / inflation : null;
-      const halfLivesElapsed = inflation > 0 ? years / halfLife : 0;
-      const totalGain = amount - futureValue;
-      const longHorizon = years >= 20;
-      const veryLongHorizon = years >= 40;
-
-      const rows = [];
-
-      let overallText = "";
-      let overallClass = "insight-medium";
-
-      if (inflation <= 0) {
-        overallText = "No inflation erosion is being modeled here, so purchasing power stays flat. That makes the result useful as a baseline, but not a real-world erosion scenario.";
-        overallClass = "insight-good";
-      } else if (lossPct >= 75) {
-        overallText = "Purchasing power is being heavily eroded. The combination of inflation rate and time is powerful enough to cut the value of money by more than three quarters.";
-        overallClass = "insight-weak";
-      } else if (lossPct >= 50) {
-        overallText = "This is a major purchasing-power decline. Even if the nominal dollar amount looks unchanged, the real buying power is materially weaker.";
-        overallClass = "insight-weak";
-      } else if (lossPct >= 25) {
-        overallText = "Inflation is creating a meaningful loss in buying power. The effect is large enough that it should be considered in any long-term savings plan.";
-        overallClass = "insight-medium";
-      } else {
-        overallText = "Inflation erosion is relatively mild over this period, but it is still real. The longer the horizon gets, the more this gap tends to widen.";
-        overallClass = "insight-good";
+    function buildErosionLabels(years){
+      const labels = [];
+      const steps = Math.max(1, Math.ceil(years));
+      for(let i = 0; i <= steps; i++){
+        labels.push(i.toString());
       }
-
-      rows.push({
-        title: "Overall projection",
-        text: overallText,
-        cls: overallClass
-      });
-
-      let lossText = "";
-      let lossClass = "insight-medium";
-
-      if (inflation <= 0) {
-        lossText = "No inflation loss is modeled, so today’s purchasing power is preserved in the calculation.";
-        lossClass = "insight-good";
-      } else if (lossPct >= 75) {
-        lossText = `The money loses about ${pct(lossPct)} of its purchasing power, leaving only ${pct(100 - lossPct)} of today’s buying power.`;
-        lossClass = "insight-weak";
-      } else if (lossPct >= 50) {
-        lossText = `The money loses about ${pct(lossPct)} of its purchasing power. That is a very large real-value decline.`;
-        lossClass = "insight-weak";
-      } else if (lossPct >= 25) {
-        lossText = `The money loses about ${pct(lossPct)} of its purchasing power. That is a noticeable decline and should not be ignored.`;
-        lossClass = "insight-medium";
-      } else {
-        lossText = `The money loses about ${pct(lossPct)} of its purchasing power. The decline is smaller, but it still compounds over time.`;
-        lossClass = "insight-good";
-      }
-
-      rows.push({
-        title: "Value loss",
-        text: lossText,
-        cls: lossClass
-      });
-
-      let halfLifeText = "";
-      let halfLifeClass = "insight-medium";
-
-      if (inflation <= 0) {
-        halfLifeText = "With zero or negative inflation, the half-life concept is not applicable in the usual way.";
-        halfLifeClass = "insight-good";
-      } else if (halfLivesElapsed >= 2) {
-        halfLifeText = `This period covers about ${halfLivesElapsed.toFixed(2)} half-lives of purchasing power. That means the decline is no longer small — it is structural.`;
-        halfLifeClass = "insight-weak";
-      } else if (halfLivesElapsed >= 1) {
-        halfLifeText = `This period is longer than one half-life of purchasing power. In plain terms, more than half of the original buying power has already disappeared.`;
-        halfLifeClass = "insight-weak";
-      } else if (halfLife !== null && years >= halfLife * 0.6) {
-        halfLifeText = `You are approaching one half-life of purchasing power. At this pace, the decline becomes very hard to ignore.`;
-        halfLifeClass = "insight-medium";
-      } else {
-        halfLifeText = `The estimated half-life of purchasing power is about ${halfLife.toFixed(1)} years at this inflation rate.`;
-        halfLifeClass = "insight-good";
-      }
-
-      rows.push({
-        title: "Rule of 72 check",
-        text: halfLifeText,
-        cls: halfLifeClass
-      });
-
-      let realismText = "";
-      let realismClass = "insight-medium";
-
-      if (inflation < 1) {
-        realismText = `A ${inflation.toFixed(2)}% inflation rate is low. The erosion is slower, but over long horizons it still matters.`;
-        realismClass = "insight-good";
-      } else if (inflation < 3) {
-        realismText = `A ${inflation.toFixed(2)}% inflation rate is moderate. It may look harmless year by year, but compounding makes it meaningful over time.`;
-        realismClass = "insight-good";
-      } else if (inflation < 6) {
-        realismText = `A ${inflation.toFixed(2)}% inflation rate is material. Long-term purchasing power declines quickly if income and investments do not keep up.`;
-        realismClass = "insight-medium";
-      } else {
-        realismText = `A ${inflation.toFixed(2)}% inflation rate is high. In that environment, preserving real value becomes difficult without strong nominal growth.`;
-        realismClass = "insight-weak";
-      }
-
-      if (longHorizon) {
-        realismText += " Long horizons make this a compounding problem, not a one-year price issue.";
-      }
-      if (veryLongHorizon) {
-        realismText += " Over very long periods, a constant-rate model should be treated as illustrative rather than predictive.";
-      }
-
-      rows.push({
-        title: "Realism check",
-        text: realismText,
-        cls: realismClass
-      });
-
-      let planningText = "";
-      let planningClass = "insight-medium";
-
-      if (inflation <= 0) {
-        planningText = "This is best used as a baseline. To model real-world wealth preservation, compare this result with the return on cash, savings, or investments.";
-        planningClass = "insight-good";
-      } else if (futureValue <= amount * 0.5) {
-        planningText = "The result shows severe erosion. Any long-term plan using cash alone would need an earning rate far above inflation to keep up.";
-        planningClass = "insight-weak";
-      } else if (futureValue <= amount * 0.75) {
-        planningText = "The result shows a meaningful real-value decline. This is exactly the kind of erosion that catches savers off guard over time.";
-        planningClass = "insight-medium";
-      } else {
-        planningText = "The decline is still real, but the damage is less severe over this horizon. Shorter time periods are much easier to absorb than decades of inflation.";
-        planningClass = "insight-good";
-      }
-
-      rows.push({
-        title: "Planning takeaway",
-        text: planningText,
-        cls: planningClass
-      });
-
-      return rows.map(row => `
-        <div class="insight-row ${row.cls}">
-          <strong>${row.title}</strong>
-          <span>${row.text}</span>
-        </div>
-      `).join("");
+      return labels;
     }
 
     function calculateInflation(){
@@ -922,7 +803,8 @@
       const futureValue = amount / Math.pow(1 + rate, years);
       const nominalNeeded = amount * Math.pow(1 + rate, years);
       const loss = amount - futureValue;
-      const lossPct = ((loss / amount) * 100);
+      const lossPct = (loss / amount) * 100;
+      const remainingPct = 100 - lossPct;
 
       const halfLife = inflation > 0 ? 72 / inflation : null;
       const roundedHalfLife = halfLife !== null ? halfLife.toFixed(1) : "—";
@@ -930,16 +812,8 @@
       document.getElementById("result").innerHTML = money(futureValue);
       document.getElementById("lossOut").innerHTML = `${money(loss)} (${pct(lossPct)})`;
       document.getElementById("nominalNeededOut").innerHTML = money(nominalNeeded);
+      document.getElementById("remainingOut").innerHTML = pct(remainingPct);
       document.getElementById("halfLifeOut").innerHTML = halfLife !== null ? `${roundedHalfLife} years` : "Not applicable";
-
-      document.getElementById("insightOut").innerHTML = buildInsight({
-        amount,
-        inflation,
-        years,
-        futureValue,
-        nominalNeeded,
-        lossPct
-      });
 
       document.getElementById("resultCard").style.display = "block";
       drawChart(amount, inflation, years);
@@ -953,80 +827,100 @@
         chart.destroy();
       }
 
-      const labels = [];
-      const nominalSeries = [];
-      const purchasingPowerSeries = [];
-      const priceIndexSeries = [];
-
+      const labels = buildErosionLabels(years);
       const rate = inflation / 100;
       const wholeYears = Math.max(0, Math.ceil(years));
 
-      for (let year = 0; year <= wholeYears; year++) {
+      const todaySeries = [];
+      const purchasingPowerSeries = [];
+      const nominalNeededSeries = [];
+      const lossPctSeries = [];
+
+      for(let year = 0; year <= wholeYears; year++){
         const cappedYear = Math.min(year, years);
-        labels.push(year.toString());
-        nominalSeries.push(amount);
-        purchasingPowerSeries.push(amount / Math.pow(1 + rate, cappedYear));
-        priceIndexSeries.push(Math.pow(1 + rate, cappedYear) * 100);
+        const purchasingPower = amount / Math.pow(1 + rate, cappedYear);
+        const nominalNeeded = amount * Math.pow(1 + rate, cappedYear);
+        const lossPct = 100 - ((purchasingPower / amount) * 100);
+
+        todaySeries.push(amount);
+        purchasingPowerSeries.push(purchasingPower);
+        nominalNeededSeries.push(nominalNeeded);
+        lossPctSeries.push(lossPct);
       }
 
-      chart = new Chart(ctx,{
-        type:'line',
-        data:{
+      chart = new Chart(ctx, {
+        type: 'line',
+        data: {
           labels,
-          datasets:[
+          datasets: [
             {
-              label:'Today’s value',
-              data: nominalSeries,
-              borderColor:'#94a3b8',
-              backgroundColor:'rgba(148,163,184,0.04)',
-              tension:0,
-              fill:false,
-              pointRadius:0,
-              borderDash:[6,6]
+              label: 'Today’s value',
+              data: todaySeries,
+              borderColor: '#94a3b8',
+              backgroundColor: 'rgba(148,163,184,0.04)',
+              tension: 0,
+              fill: false,
+              pointRadius: 0,
+              borderDash: [6, 6]
             },
             {
-              label:'Future purchasing power',
+              label: 'Future purchasing power',
               data: purchasingPowerSeries,
-              borderColor:'#3b82f6',
-              backgroundColor:'rgba(59,130,246,0.14)',
-              tension:0.22,
-              fill:true,
-              pointRadius:3,
-              pointHoverRadius:5
+              borderColor: '#3b82f6',
+              backgroundColor: 'rgba(59,130,246,0.18)',
+              tension: 0.22,
+              fill: true,
+              pointRadius: 3,
+              pointHoverRadius: 5
+            },
+            {
+              label: 'Nominal amount needed',
+              data: nominalNeededSeries,
+              borderColor: '#22c55e',
+              backgroundColor: 'rgba(34,197,94,0.08)',
+              tension: 0.22,
+              fill: false,
+              pointRadius: 3,
+              pointHoverRadius: 5
             }
           ]
         },
-        options:{
-          responsive:true,
-          plugins:{
-            legend:{
-              labels:{ color:'white' }
+        options: {
+          responsive: true,
+          plugins: {
+            legend: {
+              labels: { color: 'white' }
             },
-            tooltip:{
-              callbacks:{
+            tooltip: {
+              callbacks: {
                 label: function(context){
                   return `${context.dataset.label}: ${money(context.parsed.y)}`;
                 }
               }
             }
           },
-          scales:{
-            x:{
-              ticks:{ color:'white' },
-              grid:{ color:'rgba(255,255,255,0.08)' },
-              title:{
-                display:true,
-                text:'Years',
-                color:'white'
+          scales: {
+            x: {
+              ticks: { color: 'white' },
+              grid: { color: 'rgba(255,255,255,0.08)' },
+              title: {
+                display: true,
+                text: 'Years',
+                color: 'white'
               }
             },
-            y:{
-              ticks:{ color:'white' },
-              grid:{ color:'rgba(255,255,255,0.08)' },
-              title:{
-                display:true,
-                text:'Value ($)',
-                color:'white'
+            y: {
+              ticks: {
+                color: 'white',
+                callback: function(value){
+                  return "$" + Number(value).toLocaleString();
+                }
+              },
+              grid: { color: 'rgba(255,255,255,0.08)' },
+              title: {
+                display: true,
+                text: 'Value ($)',
+                color: 'white'
               }
             }
           }
@@ -1049,4 +943,4 @@
     });
   </script>
 </body>
-  </html>
+    </html>
