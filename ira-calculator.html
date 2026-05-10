@@ -925,6 +925,7 @@
 
       drawChart(labels, nominalBalances, inflationAdjustedBalances, afterTaxBalances);
       document.getElementById("resultCard").scrollIntoView({ behavior: "smooth", block: "start" });
+      document.getElementById("nextTool").style.display = "block";
     }
 
     function drawChart(labels, nominalBalances, inflationAdjustedBalances, afterTaxBalances){
@@ -1018,8 +1019,6 @@
         }
       });
     }
-    
-    document.getElementById("nextTool").style.display = "block";
     
     document.addEventListener("DOMContentLoaded", function(){
       setMode("roth");
