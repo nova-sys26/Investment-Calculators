@@ -255,6 +255,46 @@
       color:#cbd5f5;
     }
 
+    .result-line-block{
+      display:block;
+    }
+
+    .insight-stack{
+      margin-top:8px;
+      display:grid;
+      gap:8px;
+    }
+
+    .insight-row{
+      padding:10px 12px;
+      border-radius:12px;
+      background:rgba(255,255,255,0.04);
+      border:1px solid rgba(255,255,255,0.06);
+      color:#e5e7eb;
+      font-size:14px;
+      line-height:1.6;
+    }
+
+    .insight-row strong{
+      display:block;
+      margin-bottom:2px;
+    }
+
+    .insight-good{
+      color:#22c55e;
+      font-weight:700;
+    }
+
+    .insight-medium{
+      color:#facc15;
+      font-weight:700;
+    }
+
+    .insight-weak{
+      color:#ef4444;
+      font-weight:700;
+    }
+
     canvas{
       margin-top:26px;
     }
@@ -424,6 +464,11 @@
       <div class="result-line"><strong>Future value:</strong> <span id="futureOut">—</span></div>
       <div class="result-line"><strong>Total growth:</strong> <span id="growthOut">—</span></div>
       <div class="result-line"><strong>Interest earned:</strong> <span id="interestOut">—</span></div>
+
+      <div class="result-line result-line-block">
+        <strong>Insight:</strong>
+        <div id="insightOut" class="insight-stack">—</div>
+      </div>
     </div>
 
     <canvas id="myChart"></canvas>
@@ -584,13 +629,174 @@
 
   <script src="footer.js"></script>
   <script>
-    let chart;
+    let chart = null;
 
     function money(value) {
       return "$" + Number(value).toLocaleString(undefined, {
         minimumFractionDigits: 2,
         maximumFractionDigits: 2
       });
+    }
+
+    function pct(value) {
+      return `${Number(value).toFixed(2)}%`;
+    }
+
+    function buildInsight({ principal, rate, years, futureValue, growth, interestEarned, balanceSeries }) {
+      const growthMultiple = principal > 0 ? futureValue / principal : 0;
+      const gainPct = principal > 0 ? ((futureValue / principal) - 1) * 100 : 0;
+      const annualizedGain = years > 0 ? (Math.pow(futureValue / principal, 1 / years) - 1) * 100 : 0;
+
+      const yearCount = balanceSeries.length - 1;
+      const firstThirdIndex = Math.max(1, Math.round(yearCount / 3));
+      const twoThirdIndex = Math.max(firstThirdIndex + 1, Math.round((2 * yearCount) / 3));
+      const firstThirdGain = balanceSeries[firstThirdIndex] - principal;
+      const secondThirdGain = balanceSeries[twoThirdIndex] - balanceSeries[firstThirdIndex];
+      const finalThirdGain = balanceSeries[yearCount] - balanceSeries[twoThirdIndex];
+
+      const totalGain = futureValue - principal;
+      const lateStageShare = totalGain > 0 ? (finalThirdGain / totalGain) * 100 : 0;
+
+      const rows = [];
+
+      let overallText = "";
+      let overallClass = "insight-medium";
+
+      if (years <= 3) {
+        if (growthMultiple < 1.2) {
+          overallText = "Short horizon and modest rate. Compounding is working, but the time window is too small to create dramatic growth.";
+          overallClass = "insight-weak";
+        } else {
+          overallText = "Short horizon compounding is visible, but the result is still mostly driven by the starting amount.";
+          overallClass = "insight-medium";
+        }
+      } else if (growthMultiple >= 3) {
+        overallText = "Strong compounding effect. Time is doing real work here, and the later years are carrying a large share of the total gain.";
+        overallClass = "insight-good";
+      } else if (growthMultiple >= 1.5) {
+        overallText = "Healthy compounding. The investment is growing meaningfully, but the final outcome still depends heavily on the rate and the holding period.";
+        overallClass = "insight-good";
+      } else {
+        overallText = "Compounding is present, but the combination of rate and time is still producing only a modest increase.";
+        overallClass = "insight-medium";
+      }
+
+      rows.push({
+        title: "Overall projection",
+        text: overallText,
+        cls: overallClass
+      });
+
+      let growthMixText = "";
+      let growthMixClass = "insight-medium";
+
+      if (principal > 0) {
+        if (gainPct >= 200) {
+          growthMixText = `The investment ends about ${growthMultiple.toFixed(2)}x above the starting amount, or ${pct(gainPct)} total growth.`;
+          growthMixClass = "insight-good";
+        } else if (gainPct >= 50) {
+          growthMixText = `The balance grows by ${pct(gainPct)} overall, which is solid but not extreme.`;
+          growthMixClass = "insight-good";
+        } else if (gainPct >= 10) {
+          growthMixText = `The balance grows by ${pct(gainPct)} overall. Compounding helps, but the effect is still moderate.`;
+          growthMixClass = "insight-medium";
+        } else {
+          growthMixText = "The ending value is close to the starting amount, so the rate or holding period is too limited to create strong compounding.";
+          growthMixClass = "insight-weak";
+        }
+      } else {
+        growthMixText = "No principal was entered, so the growth comparison cannot be evaluated.";
+        growthMixClass = "insight-weak";
+      }
+
+      rows.push({
+        title: "Growth level",
+        text: growthMixText,
+        cls: growthMixClass
+      });
+
+      let compoundingText = "";
+      let compoundingClass = "insight-medium";
+
+      if (totalGain > 0) {
+        if (lateStageShare >= 45) {
+          compoundingText = `About ${pct(lateStageShare)} of total gain comes from the final third of the period. That is classic compounding behavior: later years matter more than earlier ones.`;
+          compoundingClass = "insight-good";
+        } else if (lateStageShare >= 30) {
+          compoundingText = `The final third contributes ${pct(lateStageShare)} of total gains, which shows a meaningful compounding effect across time.`;
+          compoundingClass = "insight-good";
+        } else {
+          compoundingText = `Most gains arrive earlier in the period, which suggests the rate or horizon is not long enough to fully unlock compounding power.`;
+          compoundingClass = "insight-medium";
+        }
+      } else {
+        compoundingText = "There is no positive gain to distribute across the period, so compounding is not adding value at this setting.";
+        compoundingClass = "insight-weak";
+      }
+
+      rows.push({
+        title: "Time effect",
+        text: compoundingText,
+        cls: compoundingClass
+      });
+
+      let rateText = "";
+      let rateClass = "insight-medium";
+
+      if (years > 0 && principal > 0) {
+        const nextRateValue = principal * Math.pow(1 + (rate / 100) + 0.01, years);
+        const rateDelta = nextRateValue - futureValue;
+
+        if (rateDelta >= principal * 0.2) {
+          rateText = `A one-point higher annual rate would add about ${money(rateDelta)} to the ending value. This is a rate-sensitive projection.`;
+          rateClass = "insight-good";
+        } else if (rateDelta >= principal * 0.05) {
+          rateText = `A one-point higher annual rate would add about ${money(rateDelta)} to the ending value. Rate changes matter here, but time still has major influence.`;
+          rateClass = "insight-medium";
+        } else {
+          rateText = `A one-point higher annual rate would add only about ${money(rateDelta)}. With this horizon, time matters more than small rate changes.`;
+          rateClass = "insight-medium";
+        }
+      } else {
+        rateText = "Rate sensitivity cannot be assessed because the inputs are incomplete.";
+        rateClass = "insight-weak";
+      }
+
+      rows.push({
+        title: "Rate sensitivity",
+        text: rateText,
+        cls: rateClass
+      });
+
+      let planningText = "";
+      let planningClass = "insight-medium";
+
+      if (annualizedGain >= 8 && years >= 10) {
+        planningText = "This is a strong long-term projection. The main advantage comes from giving compounding enough time to do its work.";
+        planningClass = "insight-good";
+      } else if (annualizedGain >= 4) {
+        planningText = "This projection is reasonable, but the final outcome is still heavily dependent on keeping the money invested for the full period.";
+        planningClass = "insight-good";
+      } else if (annualizedGain >= 1) {
+        planningText = "The projection is positive, but the practical gain is still fairly measured. Starting earlier or holding longer would matter more than trying to fine-tune the rate.";
+        planningClass = "insight-medium";
+      } else {
+        planningText = "The output is too weak to be compelling. Either the return assumption is low, the timeframe is short, or both.";
+        planningClass = "insight-weak";
+      }
+
+      rows.push({
+        title: "Planning takeaway",
+        text: planningText,
+        cls: planningClass
+      });
+
+      return rows.map(row => `
+        <div class="insight-row ${row.cls}">
+          <strong>${row.title}</strong>
+          <span>${row.text}</span>
+        </div>
+      `).join("");
     }
 
     function calculate(){
@@ -608,63 +814,119 @@
         return;
       }
 
-      const decimalRate = rate / 100;
-      const value = principal * Math.pow(1 + decimalRate, years);
-      const growth = value - principal;
-      const interestEarned = growth;
+      if (rate <= -100) {
+        alert("Interest rate must be greater than -100%.");
+        return;
+      }
 
-      document.getElementById("futureOut").innerText = money(value);
-      document.getElementById("growthOut").innerText = `${((value / principal - 1) * 100).toFixed(2)}%`;
-      document.getElementById("interestOut").innerText = money(interestEarned);
+      const decimalRate = rate / 100;
+      const futureValue = principal * Math.pow(1 + decimalRate, years);
+      const growth = futureValue - principal;
+      const growthPct = ((futureValue / principal) - 1) * 100;
+
+      const balanceSeries = [];
+      for (let year = 0; year <= years; year++) {
+        balanceSeries.push(principal * Math.pow(1 + decimalRate, year));
+      }
+
+      document.getElementById("futureOut").innerText = money(futureValue);
+      document.getElementById("growthOut").innerText = pct(growthPct);
+      document.getElementById("interestOut").innerText = money(growth);
       document.getElementById("resultCard").style.display = "block";
 
-      drawChart(principal, value);
+      document.getElementById("insightOut").innerHTML = buildInsight({
+        principal,
+        rate,
+        years,
+        futureValue,
+        growth,
+        interestEarned: growth,
+        balanceSeries
+      });
+
+      drawChart(balanceSeries);
+      document.getElementById("resultCard").scrollIntoView({ behavior: "smooth", block: "start" });
     }
 
-    function drawChart(investment, value){
+    function drawChart(balanceSeries){
       const ctx = document.getElementById('myChart').getContext('2d');
 
-      if(chart){
+      if (chart) {
         chart.destroy();
       }
 
+      const labels = balanceSeries.map((_, index) => index);
+
       chart = new Chart(ctx, {
-        type:'bar',
-        data:{
-          labels:['Initial Investment','Future Value'],
-          datasets:[{
-            label:'Growth',
-            data:[investment, value],
-            backgroundColor:['#3b82f6', '#22c55e']
-          }]
-        },
-        options:{
-          responsive:true,
-          plugins:{
-            legend:{
-              labels:{ color:'white' }
+        type: 'line',
+        data: {
+          labels,
+          datasets: [
+            {
+              label: 'Projected balance',
+              data: balanceSeries,
+              borderColor: '#3b82f6',
+              backgroundColor: 'rgba(59,130,246,0.12)',
+              tension: 0.25,
+              fill: true,
+              pointRadius: 3,
+              pointHoverRadius: 5
             },
-            tooltip:{
-              callbacks:{
+            {
+              label: 'Initial investment',
+              data: labels.map(() => balanceSeries[0]),
+              borderColor: '#94a3b8',
+              backgroundColor: 'rgba(148,163,184,0.04)',
+              tension: 0,
+              fill: false,
+              pointRadius: 0,
+              borderDash: [6, 6]
+            }
+          ]
+        },
+        options: {
+          responsive: true,
+          plugins: {
+            legend: {
+              labels: { color: 'white' }
+            },
+            tooltip: {
+              callbacks: {
                 label: function(context){
                   return `${context.dataset.label}: ${money(context.parsed.y)}`;
                 }
               }
             }
           },
-          scales:{
-            x:{
-              ticks:{ color:'white' },
-              grid:{ color:'rgba(255,255,255,0.08)' }
+          scales: {
+            x: {
+              ticks: {
+                color: 'white'
+              },
+              grid: {
+                color: 'rgba(255,255,255,0.08)'
+              },
+              title: {
+                display: true,
+                text: 'Years',
+                color: 'white'
+              }
             },
-            y:{
-              ticks:{
-                color:'white',
+            y: {
+              ticks: {
+                color: 'white',
                 callback: function(value){
                   return "$" + Number(value).toLocaleString();
                 }
               },
-              grid:{ color:'rgba(255,255,255,0.08)' }
+              grid: {
+                color: 'rgba(255,255,255,0.08)'
+              },
+              title: {
+                display: true,
+                text: 'Balance ($)',
+                color: 'white'
+              }
             }
           }
         }
@@ -686,4 +948,5 @@
     });
   </script>
 </body>
-                                                  </html>
+  </html>
+                                                  
