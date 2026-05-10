@@ -3,7 +3,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />  <title>Nova Invest Tools – Investment Calculators for Trading & Finance</title>
   <meta name="description" content="Fast calculators for ROI, risk, profit, fees, and position sizing. Clean, practical tools for trading and investing decisions." />
-  <link rel="canonical" href="https://novainvesttools.com/" />  <meta name="theme-color" content="#0b1220" />
+  <link rel="canonical" href="https://novainvesttools.com/" />  <meta name="theme-color" content="#0f172a" />
   <meta name="google-site-verification" content="u0l8oRMy36wLdAQXBcR4sUwHXoz3GfJauJepdsj5dj4" />  <link rel="icon" href="favicon.png" type="image/png" />
   <link rel="apple-touch-icon" href="favicon.png" />  <meta property="og:type" content="website" />
   <meta property="og:url" content="https://novainvesttools.com/" />
@@ -47,6 +47,16 @@
       --radius: 22px;
       --radius-sm: 14px;
       --content: min(1180px, calc(100% - 32px));
+
+      /* spacing scale */
+      --space-1: 4px;
+      --space-2: 8px;
+      --space-3: 12px;
+      --space-4: 16px;
+      --space-5: 24px;
+      --space-6: 32px;
+      --space-7: 48px;
+      --space-8: 72px;
     }
 
     * {
@@ -68,6 +78,7 @@
         linear-gradient(180deg, #050816 0%, #070b14 100%);
       color: var(--text);
       overflow-x: hidden;
+      line-height: 1.5;
     }
 
     a {
@@ -101,8 +112,8 @@
     .topbar {
       display: flex;
       align-items: center;
-      gap: 14px;
-      padding: 18px 0 0;
+      gap: var(--space-4);
+      padding: var(--space-4) 0 0;
       flex-wrap: wrap;
       position: sticky;
       top: 0;
@@ -115,12 +126,13 @@
     .brand {
       display: inline-flex;
       align-items: center;
-      gap: 10px;
+      gap: var(--space-2);
       font-size: 16px;
       font-weight: 800;
       letter-spacing: 0.2px;
       margin-right: auto;
       white-space: nowrap;
+      text-decoration: none;
     }
 
     .brand-mark {
@@ -145,7 +157,7 @@
 
     .topnav {
       display: flex;
-      gap: 12px;
+      gap: 6px;
       flex-wrap: wrap;
       align-items: center;
     }
@@ -177,6 +189,7 @@
       color: white;
       font-size: 18px;
       transition: 0.2s ease;
+      flex: 0 0 auto;
     }
 
     .menu-btn:hover {
@@ -212,7 +225,7 @@
       transform: translateX(-102%);
       transition: 0.22s ease;
       z-index: 90;
-      padding: 18px;
+      padding: var(--space-4);
       overflow: auto;
     }
 
@@ -224,8 +237,8 @@
       display: flex;
       align-items: center;
       justify-content: space-between;
-      gap: 10px;
-      margin-bottom: 18px;
+      gap: var(--space-3);
+      margin-bottom: var(--space-5);
     }
 
     .drawer-head strong {
@@ -245,11 +258,11 @@
     }
 
     .drawer-section {
-      margin: 16px 0 18px;
+      margin: var(--space-5) 0 var(--space-6);
     }
 
     .drawer-section h4 {
-      margin: 0 0 10px;
+      margin: 0 0 var(--space-3);
       font-size: 12px;
       color: #94a3b8;
       text-transform: uppercase;
@@ -259,7 +272,7 @@
     .drawer-links {
       display: flex;
       flex-direction: column;
-      gap: 8px;
+      gap: var(--space-2);
     }
 
     .drawer-links a {
@@ -279,17 +292,17 @@
     }
 
     .hero {
-      padding: 48px 0 28px;
+      padding: var(--space-7) 0 var(--space-5);
       display: grid;
       grid-template-columns: 1.15fr 0.85fr;
-      gap: 28px;
+      gap: var(--space-7);
       align-items: center;
     }
 
     .eyebrow {
       display: inline-flex;
       align-items: center;
-      gap: 8px;
+      gap: var(--space-2);
       padding: 8px 12px;
       border-radius: 999px;
       background: rgba(59,130,246,0.10);
@@ -297,7 +310,7 @@
       color: #bfdbfe;
       font-size: 13px;
       font-weight: 700;
-      margin-bottom: 14px;
+      margin-bottom: var(--space-3);
     }
 
     .hero h1 {
@@ -313,25 +326,25 @@
     }
 
     .hero p {
-      margin: 18px 0 0;
+      margin: var(--space-4) 0 0;
       max-width: 740px;
       color: var(--muted);
       font-size: 17px;
-      line-height: 1.75;
+      line-height: 1.7;
     }
 
     .hero-actions {
       display: flex;
-      gap: 12px;
+      gap: var(--space-3);
       flex-wrap: wrap;
-      margin: 26px 0 0;
+      margin: var(--space-5) 0 0;
     }
 
     .hero-btn {
       display: inline-flex;
       align-items: center;
       justify-content: center;
-      gap: 8px;
+      gap: var(--space-2);
       padding: 13px 18px;
       border-radius: 14px;
       text-decoration: none;
@@ -364,7 +377,7 @@
       background: linear-gradient(180deg, rgba(30,41,59,0.80), rgba(15,23,42,0.76));
       border: 1px solid rgba(255,255,255,0.08);
       border-radius: 28px;
-      padding: 18px;
+      padding: var(--space-4);
       box-shadow: var(--shadow);
       position: relative;
       overflow: hidden;
@@ -385,9 +398,9 @@
     .hero-panel-top {
       display: flex;
       justify-content: space-between;
-      gap: 12px;
+      gap: var(--space-3);
       align-items: center;
-      margin-bottom: 14px;
+      margin-bottom: var(--space-4);
     }
 
     .hero-panel-top strong {
@@ -406,20 +419,20 @@
 
     .calc-mock {
       display: grid;
-      gap: 12px;
+      gap: var(--space-3);
     }
 
     .mock-card {
       background: rgba(15,23,42,0.82);
       border: 1px solid rgba(255,255,255,0.06);
       border-radius: 20px;
-      padding: 16px;
+      padding: var(--space-4);
     }
 
     .mock-row {
       display: grid;
       grid-template-columns: 1fr auto;
-      gap: 14px;
+      gap: var(--space-4);
       align-items: center;
     }
 
@@ -428,7 +441,7 @@
       font-size: 12px;
       text-transform: uppercase;
       letter-spacing: 0.08em;
-      margin-bottom: 6px;
+      margin-bottom: var(--space-2);
     }
 
     .mock-value {
@@ -441,7 +454,7 @@
       color: #cbd5e1;
       font-size: 13px;
       line-height: 1.5;
-      margin-top: 8px;
+      margin-top: var(--space-2);
     }
 
     .spark {
@@ -467,22 +480,22 @@
     .stats {
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(170px, 1fr));
-      gap: 12px;
-      margin-top: 24px;
+      gap: var(--space-3);
+      margin-top: var(--space-5);
     }
 
     .stat {
       background: rgba(30,41,59,0.55);
       border: 1px solid rgba(255,255,255,0.06);
       border-radius: 18px;
-      padding: 14px 16px;
+      padding: var(--space-4);
       backdrop-filter: blur(10px);
     }
 
     .stat strong {
       display: block;
       font-size: 22px;
-      margin-bottom: 6px;
+      margin-bottom: var(--space-2);
     }
 
     .stat span {
@@ -492,18 +505,18 @@
     }
 
     .section {
-      margin-top: 30px;
+      margin-top: var(--space-8);
     }
 
     .section h2 {
-      margin: 0 0 10px;
+      margin: 0 0 var(--space-3);
       font-size: clamp(24px, 3vw, 32px);
       letter-spacing: -0.02em;
     }
 
     .section-lead {
       color: var(--muted);
-      margin: 0 0 16px;
+      margin: 0 0 var(--space-4);
       line-height: 1.7;
       max-width: 72ch;
     }
@@ -512,7 +525,7 @@
       background: linear-gradient(180deg, rgba(30,41,59,0.64), rgba(15,23,42,0.62));
       border: 1px solid rgba(255,255,255,0.08);
       border-radius: 24px;
-      padding: 18px;
+      padding: var(--space-4);
       backdrop-filter: blur(12px);
       box-shadow: var(--shadow);
     }
@@ -523,7 +536,7 @@
 
     #search {
       width: 100%;
-      padding: 16px 16px 16px 48px;
+      padding: 15px 16px 15px 46px;
       border-radius: 16px;
       border: 1px solid rgba(255,255,255,0.10);
       outline: none;
@@ -565,7 +578,7 @@
       border-bottom: 1px solid rgba(255,255,255,0.05);
       display: flex;
       justify-content: space-between;
-      gap: 10px;
+      gap: var(--space-3);
       align-items: center;
     }
 
@@ -590,27 +603,27 @@
 
     .filter-row {
       display: flex;
-      gap: 12px;
+      gap: var(--space-3);
       flex-wrap: wrap;
       align-items: center;
-      margin-top: 14px;
+      margin-top: var(--space-4);
     }
 
     .chip-row {
       display: flex;
       flex-wrap: wrap;
-      gap: 8px;
+      gap: var(--space-2);
       flex: 1;
     }
 
     .chip {
-      border: 1px solid rgba(255,255,255,0.08);
+      border: none;
       cursor: pointer;
       padding: 10px 14px;
       border-radius: 999px;
-      background: rgba(51,65,85,0.90);
+      background: #334155;
       color: white;
-      transition: 0.2s ease;
+      transition: 0.2s;
       width: auto;
     }
 
@@ -619,14 +632,13 @@
     }
 
     .chip.active {
-      background: linear-gradient(135deg, var(--primary), var(--primary-2));
-      border-color: transparent;
+      background: #3b82f6;
     }
 
     .sort-wrap {
       display: flex;
       align-items: center;
-      gap: 10px;
+      gap: var(--space-2);
       margin-left: auto;
       color: #cbd5e1;
       font-size: 13px;
@@ -636,28 +648,13 @@
       background: #0f172a;
       color: white;
       border: 1px solid rgba(255,255,255,0.10);
-      border-radius: 12px;
+      border-radius: 10px;
       padding: 10px 12px;
       outline: none;
     }
 
-    .reset-btn {
-      border: none;
-      cursor: pointer;
-      padding: 10px 14px;
-      border-radius: 12px;
-      background: rgba(255,255,255,0.06);
-      color: white;
-      width: auto;
-      transition: 0.2s ease;
-    }
-
-    .reset-btn:hover {
-      background: rgba(255,255,255,0.10);
-    }
-
     .search-meta {
-      margin: 12px 0 0;
+      margin: var(--space-3) 0 0;
       color: #94a3b8;
       font-size: 13px;
       line-height: 1.5;
@@ -666,7 +663,7 @@
     .quick-links {
       display: flex;
       flex-wrap: wrap;
-      gap: 10px;
+      gap: var(--space-2);
     }
 
     .quick-link {
@@ -679,7 +676,7 @@
       color: white;
       background: rgba(30,41,59,0.75);
       border: 1px solid rgba(255,255,255,0.08);
-      transition: 0.2s ease;
+      transition: 0.2s;
     }
 
     .quick-link:hover {
@@ -691,50 +688,38 @@
     .card-grid {
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-      gap: 16px;
-      margin-top: 16px;
+      gap: var(--space-4);
+      margin-top: var(--space-4);
     }
 
     .tool-card {
-      background: linear-gradient(180deg, rgba(30,41,59,0.72), rgba(15,23,42,0.74));
-      border: 1px solid rgba(255,255,255,0.07);
-      border-radius: 20px;
-      padding: 18px;
+      background: rgba(30,41,59,0.64);
+      border: 1px solid rgba(255,255,255,0.06);
+      border-radius: 18px;
+      padding: var(--space-4);
       backdrop-filter: blur(10px);
       display: flex;
       flex-direction: column;
-      gap: 10px;
-      min-height: 224px;
-      transition: 0.24s ease;
-      position: relative;
-      overflow: hidden;
-    }
-
-    .tool-card::before {
-      content: "";
-      position: absolute;
-      inset: auto -30% -38% auto;
-      width: 180px;
-      height: 180px;
-      background: radial-gradient(circle, rgba(59,130,246,0.15), transparent 60%);
-      pointer-events: none;
+      gap: var(--space-2);
+      min-height: 220px;
+      transition: 0.25s;
     }
 
     .tool-card:hover {
-      transform: translateY(-4px);
-      box-shadow: 0 22px 44px rgba(0,0,0,0.32);
-      border-color: rgba(59,130,246,0.28);
+      transform: translateY(-3px);
+      box-shadow: 0 20px 40px rgba(0,0,0,0.35);
+      border-color: rgba(59,130,246,0.35);
     }
 
     .tool-card.featured {
-      border-color: rgba(59,130,246,0.35);
-      box-shadow: inset 0 0 0 1px rgba(59,130,246,0.06);
+      border-color: rgba(59,130,246,0.40);
+      box-shadow: inset 0 0 0 1px rgba(59,130,246,0.08);
     }
 
     .card-top {
       display: flex;
       justify-content: space-between;
-      gap: 8px;
+      gap: var(--space-2);
       flex-wrap: wrap;
     }
 
@@ -757,7 +742,7 @@
     }
 
     .tool-card h3 {
-      margin: 2px 0 0;
+      margin: 0;
       font-size: 20px;
       line-height: 1.2;
       letter-spacing: -0.02em;
@@ -776,41 +761,54 @@
       align-items: center;
       justify-content: center;
       padding: 11px 14px;
-      border-radius: 14px;
+      border-radius: 12px;
       text-decoration: none;
       color: white;
-      font-weight: 800;
-      background: linear-gradient(135deg, var(--primary), var(--primary-2));
-      transition: 0.2s ease;
+      font-weight: 700;
+      background: linear-gradient(135deg, #3b82f6, #2563eb);
+      transition: 0.2s;
     }
 
     .card-link:hover {
       transform: translateY(-1px);
     }
 
+    .no-result {
+      margin-top: var(--space-4);
+      padding: var(--space-4);
+      background: rgba(239,68,68,0.08);
+      border: 1px solid rgba(239,68,68,0.16);
+      border-radius: 14px;
+      color: #fecaca;
+    }
+
+    .no-result button {
+      margin-top: var(--space-3);
+    }
+
     .live-grid {
       display: grid;
       grid-template-columns: 1fr;
-      gap: 16px;
-      margin-top: 16px;
+      gap: var(--space-4);
+      margin-top: var(--space-4);
     }
 
     .live-card {
-      background: linear-gradient(180deg, rgba(30,41,59,0.78), rgba(15,23,42,0.78));
+      background: rgba(30,41,59,0.70);
       border: 1px solid rgba(255,255,255,0.08);
-      border-radius: 24px;
-      padding: 22px;
-      box-shadow: var(--shadow);
+      border-radius: 22px;
+      padding: var(--space-5);
+      box-shadow: 0 18px 40px rgba(0,0,0,0.28);
       display: grid;
-      grid-template-columns: 1.1fr 0.9fr;
-      gap: 18px;
+      grid-template-columns: 1.2fr 0.8fr;
+      gap: var(--space-5);
       align-items: center;
     }
 
     .live-card h3 {
-      margin: 12px 0 10px;
+      margin: var(--space-3) 0 var(--space-2);
       font-size: 26px;
-      line-height: 1.08;
+      line-height: 1.1;
       letter-spacing: -0.02em;
     }
 
@@ -823,28 +821,27 @@
     .live-badges {
       display: flex;
       flex-wrap: wrap;
-      gap: 8px;
-      margin-bottom: 10px;
+      gap: var(--space-2);
+      margin-bottom: var(--space-2);
     }
 
     .live-mini-grid {
       display: grid;
       grid-template-columns: repeat(2, minmax(0, 1fr));
-      gap: 10px;
+      gap: var(--space-2);
     }
 
     .live-mini {
       background: rgba(15,23,42,0.78);
       border: 1px solid rgba(255,255,255,0.06);
-      border-radius: 18px;
-      padding: 14px;
-      min-height: 88px;
+      border-radius: 16px;
+      padding: var(--space-4);
     }
 
     .live-mini strong {
       display: block;
       font-size: 15px;
-      margin-bottom: 4px;
+      margin-bottom: var(--space-1);
     }
 
     .live-mini span {
@@ -853,7 +850,7 @@
     }
 
     .live-actions {
-      margin-top: 16px;
+      margin-top: var(--space-4);
     }
 
     .live-actions .hero-btn {
@@ -864,20 +861,20 @@
     .value-grid {
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-      gap: 14px;
-      margin-top: 14px;
+      gap: var(--space-4);
+      margin-top: var(--space-4);
     }
 
     .value-card {
       background: rgba(30,41,59,0.58);
       border: 1px solid rgba(255,255,255,0.06);
-      border-radius: 18px;
-      padding: 18px;
+      border-radius: 16px;
+      padding: var(--space-4);
     }
 
     .value-card strong {
       display: block;
-      margin-bottom: 8px;
+      margin-bottom: var(--space-2);
       font-size: 16px;
     }
 
@@ -888,7 +885,7 @@
     }
 
     .faq {
-      margin-top: 14px;
+      margin-top: var(--space-4);
       background: rgba(30,41,59,0.42);
       border: 1px solid rgba(255,255,255,0.06);
       border-radius: 24px;
@@ -909,13 +906,13 @@
       border: none;
       color: white;
       text-align: left;
-      padding: 16px 16px;
+      padding: 16px;
       font-size: 15px;
       display: flex;
       justify-content: space-between;
       align-items: center;
       cursor: pointer;
-      gap: 18px;
+      gap: var(--space-4);
     }
 
     .faq-question:hover {
@@ -943,7 +940,7 @@
 
     .faq-answer p {
       margin: 0;
-      padding-bottom: 14px;
+      padding-bottom: var(--space-4);
       line-height: 1.65;
     }
 
@@ -952,8 +949,8 @@
     }
 
     .footer {
-      margin: 36px 0 24px;
-      padding: 20px 0 0;
+      margin: var(--space-8) 0 var(--space-5);
+      padding: var(--space-5) 0 0;
       border-top: 1px solid rgba(255,255,255,0.10);
       color: #94a3b8;
       font-size: 13px;
@@ -963,8 +960,8 @@
     .footer-links {
       display: flex;
       flex-wrap: wrap;
-      gap: 12px;
-      margin-top: 12px;
+      gap: var(--space-3);
+      margin-top: var(--space-3);
     }
 
     .footer-links a {
@@ -978,57 +975,14 @@
 
     .footer small {
       display: block;
-      margin-top: 14px;
+      margin-top: var(--space-4);
       color: #64748b;
-    }
-
-    .no-result {
-      margin-top: 18px;
-      padding: 16px;
-      background: rgba(239,68,68,0.08);
-      border: 1px solid rgba(239,68,68,0.16);
-      border-radius: 14px;
-      color: var(--danger);
-    }
-
-    .no-result button {
-      margin-top: 10px;
-    }
-
-    .subtle-kicker {
-      color: #94a3b8;
-      font-size: 13px;
-      letter-spacing: 0.08em;
-      text-transform: uppercase;
-      margin-bottom: 8px;
-      font-weight: 700;
-    }
-
-    .tool-count-line {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 10px;
-      align-items: center;
-      margin-top: 14px;
-      color: #94a3b8;
-      font-size: 13px;
-    }
-
-    .tool-count-badge {
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-      padding: 7px 10px;
-      border-radius: 999px;
-      background: rgba(255,255,255,0.04);
-      border: 1px solid rgba(255,255,255,0.07);
-      color: #cbd5e1;
-      font-weight: 700;
     }
 
     @media (max-width: 980px) {
       .hero {
         grid-template-columns: 1fr;
+        gap: var(--space-5);
       }
 
       .topnav {
@@ -1042,7 +996,7 @@
       }
 
       .hero {
-        padding-top: 32px;
+        padding-top: var(--space-6);
       }
 
       .hero p {
@@ -1053,6 +1007,10 @@
         width: 100%;
         margin-left: 0;
         justify-content: space-between;
+      }
+
+      .topbar {
+        padding-top: var(--space-3);
       }
 
       .live-card {
@@ -1081,6 +1039,10 @@
 
       .card-grid {
         grid-template-columns: 1fr;
+      }
+
+      .hero h1 {
+        max-width: 12ch;
       }
     }
   </style></head>
@@ -1215,10 +1177,9 @@
   </section>
 
   <section class="section" id="start-here">
-    <div class="subtle-kicker">Start here</div>
-    <h2>Open the tools that give the fastest value</h2>
+    <h2>Start here</h2>
     <p class="section-lead">
-      If you are new, these are the calculators that help the most on day one.
+      If you are new, these are the tools that give the fastest real value.
     </p>
 
     <div class="quick-links">
@@ -1262,7 +1223,6 @@
   </section>
 
   <section class="section" id="featured">
-    <div class="subtle-kicker">Featured calculators</div>
     <h2>Best starting points</h2>
     <p class="section-lead">These are the tools I would keep closest to the top of the homepage.</p>
 
@@ -1320,10 +1280,9 @@
   </section>
 
   <section class="section" id="all-calculators">
-    <div class="subtle-kicker">All calculators</div>
-    <h2>Search by name, filter by category, or sort by featured tools first</h2>
+    <h2>All calculators</h2>
     <p class="section-lead">
-      This layout keeps the homepage clean while still exposing a deep, useful tool library for search engines and users.
+      Search by name, filter by category, or sort by featured tools first.
     </p>
 
     <div class="card-grid" id="toolGrid">
@@ -1540,10 +1499,9 @@
   </section>
 
   <section class="section" id="live-tools">
-    <div class="subtle-kicker">Live tools</div>
-    <h2>Tools that feel current, not static</h2>
+    <h2>Live tools</h2>
     <p class="section-lead">
-      Real-time tools work from live market data instead of fixed formulas, so the page feels more alive and useful.
+      Real-time tools that work from live market data instead of fixed formulas.
     </p>
 
     <div class="live-grid">
@@ -1590,22 +1548,14 @@
             <a class="hero-btn primary" href="purchasing-power-calculator.html">Open Purchasing Power Tool</a>
           </div>
         </div>
-
-        <div class="live-mini-grid">
-          <div class="live-mini"><strong>Salary</strong><span>Compare value</span></div>
-          <div class="live-mini"><strong>Rent</strong><span>Local cost view</span></div>
-          <div class="live-mini"><strong>Food</strong><span>Living cost check</span></div>
-          <div class="live-mini"><strong>Travel</strong><span>Budget estimate</span></div>
-        </div>
       </article>
     </div>
   </section>
 
   <section class="section" id="why">
-    <div class="subtle-kicker">Why use these calculators?</div>
-    <h2>Built to make decisions faster and cleaner</h2>
+    <h2>Why use these calculators?</h2>
     <p class="section-lead">
-      The goal is simple: reduce mistakes, show the real cost of a trade or investment, and keep the experience polished.
+      The goal is simple: make faster decisions, reduce mistakes, and understand the real cost of a trade or investment.
     </p>
 
     <div class="value-grid">
@@ -1625,10 +1575,9 @@
   </section>
 
   <section class="section" id="faq">
-    <div class="subtle-kicker">Frequently Asked Questions</div>
-    <h2>Quick answers for people trying to find the right calculator fast</h2>
+    <h2>Frequently Asked Questions</h2>
     <p class="section-lead">
-      Keep this section concise so it helps users and search engines without turning the homepage into a wall of text.
+      Quick answers for people trying to find the right calculator fast.
     </p>
 
     <div class="faq">
@@ -1801,6 +1750,33 @@
       });
     }
 
+    function applyFilters() {
+      const query = normalizeText(searchInput.value);
+      let visibleCount = 0;
+
+      cards.forEach(card => {
+        const title = normalizeText(card.dataset.title);
+        const searchBlob = normalizeText(card.dataset.search || "") + " " + title;
+        const matchesCategory = currentCategory === "all" || card.dataset.category === currentCategory;
+        const matchesSearch = !query || searchBlob.includes(query);
+        const show = matchesCategory && matchesSearch;
+
+        card.style.display = show ? "flex" : "none";
+        if (show) visibleCount++;
+      });
+
+      sortVisibleCards();
+
+      if (visibleCount === 0) {
+        noResult.style.display = "block";
+        noResult.firstChild.textContent = query ? "No calculator found." : "No calculators in this category.";
+      } else {
+        noResult.style.display = "none";
+      }
+
+      renderSuggestions();
+    }
+
     function renderSuggestions() {
       const query = normalizeText(searchInput.value);
       suggestionsBox.innerHTML = "";
@@ -1833,33 +1809,6 @@
 
         suggestionsBox.appendChild(item);
       });
-    }
-
-    function applyFilters() {
-      const query = normalizeText(searchInput.value);
-      let visibleCount = 0;
-
-      cards.forEach(card => {
-        const title = normalizeText(card.dataset.title);
-        const searchBlob = normalizeText(card.dataset.search || "") + " " + title;
-        const matchesCategory = currentCategory === "all" || card.dataset.category === currentCategory;
-        const matchesSearch = !query || searchBlob.includes(query);
-        const show = matchesCategory && matchesSearch;
-
-        card.style.display = show ? "flex" : "none";
-        if (show) visibleCount++;
-      });
-
-      sortVisibleCards();
-
-      if (visibleCount === 0) {
-        noResult.style.display = "block";
-        noResult.firstChild.textContent = query ? "No calculator found." : "No calculators in this category.";
-      } else {
-        noResult.style.display = "none";
-      }
-
-      renderSuggestions();
     }
 
     searchInput.addEventListener("input", applyFilters);
@@ -1903,4 +1852,4 @@
 
     applyFilters();
   </script></body>
-      </html>
+  </html>
