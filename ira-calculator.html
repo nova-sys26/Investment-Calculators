@@ -838,11 +838,10 @@
       currentTaxRate,
       retirementTaxRate
     }){
-      const baseTotal = currentBalance + totalContributions;
       const contributionShare = projectedBalance > 0 ? (totalContributions / projectedBalance) * 100 : 0;
       const growthShare = projectedBalance > 0 ? (growthFromReturns / projectedBalance) * 100 : 0;
       const inflationDrag = projectedBalance > 0 ? (1 - inflationAdjustedFinal / projectedBalance) * 100 : 0;
-      const spendableDrag = mode === "traditional" && projectedBalance > 0
+      const taxDrag = mode === "traditional" && projectedBalance > 0
         ? (1 - afterTaxFinal / projectedBalance) * 100
         : 0;
 
@@ -851,30 +850,30 @@
       let overallText = "";
       let overallClass = "insight-medium";
 
-      if (growthFromReturns <= 0) {
-        overallText = "At this return assumption, growth is not adding value yet. Contributions are doing most of the work.";
-        overallClass = "insight-weak";
-      } else if (years < 10) {
+      if (years <= 10) {
         if (growthShare >= 45) {
-          overallText = "Short horizon, but compounding is already contributing meaningfully to the ending balance.";
+          overallText = "Even with a shorter horizon, compounding is already contributing meaningfully to the ending balance.";
           overallClass = "insight-good";
         } else {
-          overallText = "Short horizon projection: contributions still dominate, so saving rate matters more than chasing a slightly higher return.";
+          overallText = "This is a shorter-term projection, so contributions still do most of the work. Small changes in savings rate will matter more than tiny return tweaks.";
           overallClass = "insight-medium";
         }
       } else if (growthShare >= 60) {
-        overallText = "Compounding is doing the heavy lifting here. Over a long horizon, time in the market is a major advantage.";
+        overallText = "Compounding is doing the heavy lifting here. Over a long horizon, the return assumption has a major effect on the final outcome.";
         overallClass = "insight-good";
-      } else if (contributionShare >= 70) {
-        overallText = "This is a contribution-led projection. Increasing the deposit amount will likely move the outcome more than a small return change.";
+      } else if (contributionShare >= 75) {
+        overallText = "This projection is contribution-led. Increasing the deposit rate is likely to move the result more than a small change in return assumptions.";
         overallClass = "insight-medium";
-      } else {
-        overallText = "Balanced projection: both deposits and investment growth are contributing meaningfully to the outcome.";
+      } else if (growthFromReturns > 0) {
+        overallText = "Both contributions and investment growth are meaningfully shaping the outcome, which is a healthy sign for long-term planning.";
         overallClass = "insight-good";
+      } else {
+        overallText = "The projection is not getting much help from returns at this setting. The result is mostly driven by deposits rather than compounding.";
+        overallClass = "insight-weak";
       }
 
       rows.push({
-        title: "Overall",
+        title: "Overall projection",
         text: overallText,
         cls: overallClass
       });
@@ -882,22 +881,19 @@
       let mixText = "";
       let mixClass = "insight-medium";
 
-      if (contributionShare >= 75) {
-        mixText = `About ${fmtPct(contributionShare)} of the ending balance comes from contributions and ${fmtPct(growthShare)} from investment growth.`;
+      if (growthShare >= 60) {
+        mixText = `About ${fmtPct(growthShare)} of the projected balance comes from investment growth, while ${fmtPct(contributionShare)} comes from direct contributions.`;
+        mixClass = "insight-good";
+      } else if (contributionShare >= 75) {
+        mixText = `About ${fmtPct(contributionShare)} of the projected balance comes from contributions. The plan is highly savings-dependent.`;
         mixClass = "insight-medium";
-      } else if (growthShare >= 60) {
-        mixText = `About ${fmtPct(growthShare)} of the ending balance comes from compound growth, so the return assumption has real impact.`;
-        mixClass = "insight-good";
-      } else if (growthShare > 0) {
-        mixText = `Contributions account for ${fmtPct(contributionShare)} of the result and growth accounts for ${fmtPct(growthShare)}.`;
-        mixClass = "insight-good";
       } else {
-        mixText = "The projection is contribution-driven, with little or no growth from returns at this setting.";
-        mixClass = "insight-weak";
+        mixText = `Contributions account for ${fmtPct(contributionShare)} of the balance and growth accounts for ${fmtPct(growthShare)}. Both matter here.`;
+        mixClass = "insight-good";
       }
 
       rows.push({
-        title: "Growth mix",
+        title: "Contribution mix",
         text: mixText,
         cls: mixClass
       });
@@ -906,18 +902,18 @@
       let inflationClass = "insight-medium";
 
       if (inflationDrag >= 35) {
-        inflationText = `Inflation meaningfully erodes purchasing power. Real value falls to about ${fmtPct(100 - inflationDrag)} of the nominal balance.`;
+        inflationText = `Inflation materially reduces purchasing power. The inflation-adjusted value is only ${fmtPct(100 - inflationDrag)} of the headline balance.`;
         inflationClass = "insight-weak";
       } else if (inflationDrag >= 20) {
-        inflationText = `Inflation has a noticeable effect. Real value falls to about ${fmtPct(100 - inflationDrag)} of the nominal balance.`;
+        inflationText = `Inflation has a noticeable effect. The real value falls to ${fmtPct(100 - inflationDrag)} of the nominal projection.`;
         inflationClass = "insight-medium";
       } else {
-        inflationText = `Inflation impact is relatively contained here. Real value stays near ${fmtPct(100 - inflationDrag)} of the nominal balance.`;
+        inflationText = `Inflation pressure is relatively contained in this projection. Real value remains near ${fmtPct(100 - inflationDrag)} of the nominal balance.`;
         inflationClass = "insight-good";
       }
 
       rows.push({
-        title: "Inflation",
+        title: "Inflation impact",
         text: inflationText,
         cls: inflationClass
       });
@@ -927,32 +923,32 @@
         let taxClass = "insight-medium";
 
         if (retirementTaxRate > 0) {
-          taxText = `Estimated retirement taxes reduce spendable value by about ${fmtPct(spendableDrag)}. Current deduction value is estimated using your entered marginal tax rate.`;
-          taxClass = spendableDrag >= 20 ? "insight-weak" : "insight-medium";
+          taxText = `Estimated retirement taxes reduce spendable value by about ${fmtPct(taxDrag)}. The current tax deduction estimate is based on your entered marginal tax rate.`;
+          taxClass = taxDrag >= 20 ? "insight-weak" : "insight-medium";
         } else {
-          taxText = "Traditional IRA note: retirement withdrawals are usually taxable, so the spendable value may be lower than the headline balance. If you leave tax rates blank, the estimate assumes 0%.";
+          taxText = "Traditional IRA note: withdrawals are generally taxable in retirement, so usable value may be lower than the headline balance. Leaving tax rates blank assumes 0%.";
           taxClass = "insight-medium";
         }
 
         rows.push({
-          title: "Tax note",
+          title: "Tax impact",
           text: taxText,
           cls: taxClass
         });
       } else {
         rows.push({
-          title: "Tax note",
+          title: "Tax impact",
           text: "Roth IRA note: qualified withdrawals are generally tax-free, so the projected balance is closer to the amount you can actually spend in retirement.",
           cls: "insight-good"
         });
       }
 
       rows.push({
-        title: "Planning note",
-        text: projectedBalance > baseTotal
-          ? "This projection is moving in the right direction, but the useful question is whether the final amount matches your retirement spending target."
-          : "This projection is not growing much above contributions. A higher contribution rate, longer horizon, or more realistic return assumption may change the result.",
-        cls: projectedBalance > baseTotal ? "insight-good" : "insight-weak"
+        title: "Planning takeaway",
+        text: projectedBalance > (currentBalance + totalContributions)
+          ? "The projection is moving in the right direction, but the real question is whether the final amount matches your retirement spending target."
+          : "This projection is barely growing beyond contributions, which suggests the plan may be too conservative, too short, or using a low return assumption.",
+        cls: projectedBalance > (currentBalance + totalContributions) ? "insight-good" : "insight-weak"
       });
 
       return rows.map(row => `
@@ -1121,16 +1117,11 @@
 
       chart = new Chart(ctx, {
         type: "line",
-        data: {
-          labels: labels,
-          datasets
-        },
+        data: { labels, datasets },
         options: {
           responsive: true,
           plugins: {
-            legend: {
-              labels: { color: "white" }
-            },
+            legend: { labels: { color: "white" } },
             tooltip: {
               callbacks: {
                 label: function(context){
@@ -1185,4 +1176,4 @@
     });
   </script>
 </body>
-          </html>
+        </html>
