@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+      <!DOCTYPE html>
 <html lang="en">
 <head>
   <link rel="canonical" href="https://novainvesttools.com/compound-interest-calculator.html">
@@ -628,7 +628,7 @@
   </div>
 
   <script src="footer.js"></script>
-   <script>
+  <script>
   let chart = null;
 
   function money(value) {
@@ -652,10 +652,10 @@
     let finalThirdShare = null;
 
     if (totalPeriods >= 3 && totalGain > 0) {
-      const firstThirdIndex = Math.max(1, Math.floor(totalPeriods / 3));
-      const secondThirdIndex = Math.max(firstThirdIndex + 1, Math.floor((2 * totalPeriods) / 3));
-      const safeSecondThirdIndex = Math.min(totalPeriods, secondThirdIndex);
-
+      const safeSecondThirdIndex = Math.min(
+        totalPeriods,
+        Math.max(2, Math.floor((2 * totalPeriods) / 3))
+      );
       const finalThirdGain = balanceSeries[totalPeriods] - balanceSeries[safeSecondThirdIndex];
       finalThirdShare = (finalThirdGain / totalGain) * 100;
     }
@@ -666,7 +666,7 @@
     let overallClass = "insight-medium";
 
     if (roundedYears >= 75) {
-      overallText = `This is a ${roundedYears}-year scenario model, not a forecast. The math is correct, but a constant ${rate.toFixed(2)}% annual return for a century is unlikely to reflect real market behavior.`;
+      overallText = `This is a long-horizon scenario model, not a forecast. A constant ${rate.toFixed(2)}% annual return for ${roundedYears} years is mathematically valid, but it should not be treated as a literal prediction.`;
       overallClass = "insight-weak";
     } else if (rate >= 12 && roundedYears >= 20) {
       overallText = `This is an aggressive long-horizon assumption. The ending value can become very large, but sustaining double-digit returns for decades is difficult and comes with meaningful uncertainty.`;
@@ -677,7 +677,7 @@
     } else if (rate >= 5 && roundedYears >= 10) {
       overallText = `This is a balanced long-term projection. Compounding is working in your favor, but the final outcome still depends heavily on keeping the money invested for the full period.`;
       overallClass = "insight-good";
-    } else if (roundedYears <= 5) {
+    } else if (roundedYears <= 3) {
       overallText = `This is a short-horizon projection. Compounding helps, but there is not enough time for the growth effect to become dramatic.`;
       overallClass = "insight-medium";
     } else {
@@ -691,35 +691,27 @@
       cls: overallClass
     });
 
-    let growthLevelText = "";
-    let growthLevelClass = "insight-medium";
+    let scaleText = "";
+    let scaleClass = "insight-medium";
 
-    if (principal > 0) {
-      if (gainPct >= 300) {
-        growthLevelText = `The investment ends at ${growthMultiple.toFixed(2)}x the starting amount, which is a very strong compounding outcome.`;
-        growthLevelClass = "insight-good";
-      } else if (gainPct >= 100) {
-        growthLevelText = `The balance more than doubles over the period. That is a meaningful compounding result.`;
-        growthLevelClass = "insight-good";
-      } else if (gainPct >= 25) {
-        growthLevelText = `The balance grows by ${gainPct.toFixed(2)}% overall. That is a solid result, but not extreme.`;
-        growthLevelClass = "insight-good";
-      } else if (gainPct >= 5) {
-        growthLevelText = `The balance grows by ${gainPct.toFixed(2)}% overall. Compounding is present, but the effect is still moderate.`;
-        growthLevelClass = "insight-medium";
-      } else {
-        growthLevelText = `The ending value is very close to the starting amount, so the rate or holding period is too limited to create strong compounding.`;
-        growthLevelClass = "insight-weak";
-      }
+    if (principal < 100 && futureValue >= 1000) {
+      scaleText = `The percentage gain is huge, but it is built on a very small starting amount. That is mathematically impressive, but the practical scale remains limited.`;
+      scaleClass = "insight-weak";
+    } else if (futureValue < 1000) {
+      scaleText = `The ending value is still relatively small in dollar terms. The rate may be fine, but the initial investment is too low to create a large absolute outcome.`;
+      scaleClass = "insight-medium";
+    } else if (futureValue < 10000) {
+      scaleText = `The ending balance becomes financially meaningful. At this stage, compounding starts creating real portfolio growth rather than only percentage gains on paper.`;
+      scaleClass = "insight-good";
     } else {
-      growthLevelText = "No principal was entered, so growth cannot be evaluated.";
-      growthLevelClass = "insight-weak";
+      scaleText = `The final balance reaches a scale where compounding has a meaningful real-world financial impact, not just a large percentage increase on paper.`;
+      scaleClass = "insight-good";
     }
 
     rows.push({
-      title: "Growth level",
-      text: growthLevelText,
-      cls: growthLevelClass
+      title: "Initial investment impact",
+      text: scaleText,
+      cls: scaleClass
     });
 
     let timeEffectText = "";
@@ -727,7 +719,7 @@
 
     if (totalGain > 0 && finalThirdShare !== null) {
       if (finalThirdShare >= 45) {
-        timeEffectText = `About ${finalThirdShare.toFixed(1)}% of total gains appear in the final third of the period. That is normal compounding behavior: later years matter more than early ones.`;
+        timeEffectText = `About ${finalThirdShare.toFixed(1)}% of total gains appear in the final third of the period. That is classic compounding behavior: later years matter more than early ones.`;
         timeEffectClass = "insight-good";
       } else if (finalThirdShare >= 30) {
         timeEffectText = `The final third contributes about ${finalThirdShare.toFixed(1)}% of total gains, which shows a meaningful time effect.`;
@@ -754,7 +746,7 @@
     let realismClass = "insight-medium";
 
     if (rate <= 0) {
-      realismText = "No positive growth rate was entered, so this projection does not create compounding gains.";
+      realismText = "No positive return rate was entered, so this projection does not create compounding gains.";
       realismClass = "insight-weak";
     } else if (rate < 3) {
       realismText = `A ${rate.toFixed(2)}% return is conservative. It may preserve value better than it grows it.`;
@@ -775,7 +767,9 @@
 
     if (roundedYears >= 40) {
       realismText += " Over very long horizons, a constant-rate model should be treated as illustrative because market cycles, inflation, taxes, and regime changes rarely stay flat for decades.";
-      realismClass = rate >= 8 ? "insight-medium" : realismClass;
+      if (rate >= 8) {
+        realismClass = "insight-medium";
+      }
     }
 
     if (roundedYears >= 75) {
@@ -806,7 +800,7 @@
       planningClass = "insight-medium";
     }
 
-    planningText += " The chart shows nominal value, so real-world purchasing power will be lower once inflation is considered.";
+    planningText += " The chart shows nominal value only, so real-world purchasing power would be lower once inflation is considered.";
 
     rows.push({
       title: "Planning takeaway",
@@ -878,7 +872,7 @@
       chart.destroy();
     }
 
-    const labels = balanceSeries.map((_, index) => index);
+    const labels = balanceSeries.map((_, index) => Math.min(index, balanceSeries.length - 1));
 
     chart = new Chart(ctx, {
       type: 'line',
@@ -969,5 +963,4 @@
       });
     });
   });
-    </script>                     
-                                                        
+                         </script>           
