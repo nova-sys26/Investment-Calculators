@@ -93,13 +93,8 @@
   </script>
 
   <style>
-    *{
-      box-sizing:border-box;
-    }
-
-    html{
-      scroll-behavior:smooth;
-    }
+    *{ box-sizing:border-box; }
+    html{ scroll-behavior:smooth; }
 
     body{
       font-family:Arial, sans-serif;
@@ -189,36 +184,36 @@
       color:#dbeafe;
     }
 
-    .toggle {
-      display: flex;
-      margin: 12px 0 14px;
+    .toggle{
+      display:flex;
+      margin:12px 0 14px;
       gap:0;
     }
 
-    .toggle button {
-      flex: 1;
-      padding: 12px;
-      border: none;
-      cursor: pointer;
-      background: #334155;
-      color: white;
-      transition: 0.2s;
+    .toggle button{
+      flex:1;
+      padding:12px;
+      border:none;
+      cursor:pointer;
+      background:#334155;
+      color:white;
+      transition:0.2s;
       margin-top:0;
       width:auto;
       font-size:15px;
       font-weight:700;
     }
 
-    .toggle button:first-child {
-      border-radius: 10px 0 0 10px;
+    .toggle button:first-child{
+      border-radius:10px 0 0 10px;
     }
 
-    .toggle button:last-child {
-      border-radius: 0 10px 10px 0;
+    .toggle button:last-child{
+      border-radius:0 10px 10px 0;
     }
 
-    .toggle button.active {
-      background: #3b82f6;
+    .toggle button.active{
+      background:#3b82f6;
     }
 
     .section-title{
@@ -235,9 +230,7 @@
     }
 
     @media (max-width:700px){
-      .grid{
-        grid-template-columns:1fr;
-      }
+      .grid{ grid-template-columns:1fr; }
     }
 
     .field{
@@ -311,6 +304,31 @@
 
     .result-line strong{
       color:#cbd5f5;
+    }
+
+    .result-line-block{
+      display:block;
+    }
+
+    .insight-stack{
+      margin-top:8px;
+      display:grid;
+      gap:8px;
+    }
+
+    .insight-row{
+      padding:10px 12px;
+      border-radius:12px;
+      background:rgba(255,255,255,0.04);
+      border:1px solid rgba(255,255,255,0.06);
+      color:#e5e7eb;
+      font-size:14px;
+      line-height:1.6;
+    }
+
+    .insight-row strong{
+      display:block;
+      margin-bottom:2px;
     }
 
     .insight-good{
@@ -450,6 +468,28 @@
       text-decoration:underline;
     }
 
+    .next-tool{
+      display:none;
+      margin-top:18px;
+      padding:14px 16px;
+      border-radius:12px;
+      background:rgba(255,255,255,0.04);
+      border:1px solid rgba(255,255,255,0.08);
+      color:#cbd5e1;
+      font-size:14px;
+      line-height:1.6;
+    }
+
+    .next-tool a{
+      color:#93c5fd;
+      text-decoration:none;
+      font-weight:600;
+    }
+
+    .next-tool a:hover{
+      text-decoration:underline;
+    }
+
     .disclaimer{
       margin-top:24px;
       padding-top:20px;
@@ -463,39 +503,10 @@
     }
 
     @media (max-width:700px){
-      .container{
-        padding:22px;
-      }
-
-      h1{
-        font-size:28px;
-      }
-
-      .content h2{
-        font-size:24px;
-      }
+      .container{ padding:22px; }
+      h1{ font-size:28px; }
+      .content h2{ font-size:24px; }
     }
-    .next-tool{
-  display:none;
-  margin-top:18px;
-  padding:14px 16px;
-  border-radius:12px;
-  background:rgba(255,255,255,0.04);
-  border:1px solid rgba(255,255,255,0.08);
-  color:#cbd5e1;
-  font-size:14px;
-  line-height:1.6;
-}
-
-.next-tool a{
-  color:#93c5fd;
-  text-decoration:none;
-  font-weight:600;
-}
-
-.next-tool a:hover{
-  text-decoration:underline;
-}
   </style>
 </head>
 
@@ -589,21 +600,25 @@
       <div class="result-line"><strong>Years to retirement:</strong> <span id="yearsOut">—</span></div>
       <div class="result-line"><strong>Projected balance:</strong> <span id="balanceOut">—</span></div>
       <div class="result-line" id="taxedValueRow"><strong>After-tax retirement value:</strong> <span id="afterTaxOut">—</span></div>
-      <div class="result-line" id="taxBenefitRow" style="display:none;"><strong>Estimated current tax benefit:</strong> <span id="taxBenefitOut">—</span></div>
+      <div class="result-line" id="taxBenefitRow" style="display:none;"><strong>Estimated current tax deduction value:</strong> <span id="taxBenefitOut">—</span></div>
       <div class="result-line"><strong>Total contributions:</strong> <span id="contribOut">—</span></div>
       <div class="result-line"><strong>Growth from returns:</strong> <span id="growthOut">—</span></div>
       <div class="result-line"><strong>Inflation-adjusted value:</strong> <span id="realBalanceOut">—</span></div>
-      <div class="result-line"><strong>Insight:</strong> <span id="insightOut">—</span></div>
+
+      <div class="result-line result-line-block">
+        <strong>Insight:</strong>
+        <div id="insightOut" class="insight-stack">—</div>
+      </div>
     </div>
 
     <canvas id="myChart"></canvas>
 
     <div id="nextTool" class="next-tool">
-  <p>
-    Also compare your retirement projection with a
-    <a href="401k-calculator.html">401(k) calculator</a>
-    to see how employer matching and contribution limits may affect long-term growth.
-  </p>
+      <p>
+        Also compare your retirement projection with a
+        <a href="401k-calculator.html">401(k) calculator</a>
+        to see how employer matching and contribution limits may affect long-term growth.
+      </p>
     </div>
   </div>
 
@@ -775,12 +790,18 @@
     const taxBenefitRow = document.getElementById("taxBenefitRow");
     const taxBenefitOut = document.getElementById("taxBenefitOut");
     const afterTaxOut = document.getElementById("afterTaxOut");
+    const insightOut = document.getElementById("insightOut");
+    const nextTool = document.getElementById("nextTool");
 
     function fmtMoney(value){
       return value.toLocaleString(undefined, {
         minimumFractionDigits: 0,
         maximumFractionDigits: 2
       });
+    }
+
+    function fmtPct(value){
+      return `${value.toFixed(1)}%`;
     }
 
     function setMode(selectedMode){
@@ -803,6 +824,143 @@
         taxedValueRow.querySelector("strong").textContent = "After-tax retirement value:";
         taxBenefitRow.style.display = "block";
       }
+    }
+
+    function buildInsight({
+      mode,
+      years,
+      currentBalance,
+      totalContributions,
+      growthFromReturns,
+      projectedBalance,
+      inflationAdjustedFinal,
+      afterTaxFinal,
+      currentTaxRate,
+      retirementTaxRate
+    }){
+      const baseTotal = currentBalance + totalContributions;
+      const contributionShare = projectedBalance > 0 ? (totalContributions / projectedBalance) * 100 : 0;
+      const growthShare = projectedBalance > 0 ? (growthFromReturns / projectedBalance) * 100 : 0;
+      const inflationDrag = projectedBalance > 0 ? (1 - inflationAdjustedFinal / projectedBalance) * 100 : 0;
+      const spendableDrag = mode === "traditional" && projectedBalance > 0
+        ? (1 - afterTaxFinal / projectedBalance) * 100
+        : 0;
+
+      const rows = [];
+
+      let overallText = "";
+      let overallClass = "insight-medium";
+
+      if (growthFromReturns <= 0) {
+        overallText = "At this return assumption, growth is not adding value yet. Contributions are doing most of the work.";
+        overallClass = "insight-weak";
+      } else if (years < 10) {
+        if (growthShare >= 45) {
+          overallText = "Short horizon, but compounding is already contributing meaningfully to the ending balance.";
+          overallClass = "insight-good";
+        } else {
+          overallText = "Short horizon projection: contributions still dominate, so saving rate matters more than chasing a slightly higher return.";
+          overallClass = "insight-medium";
+        }
+      } else if (growthShare >= 60) {
+        overallText = "Compounding is doing the heavy lifting here. Over a long horizon, time in the market is a major advantage.";
+        overallClass = "insight-good";
+      } else if (contributionShare >= 70) {
+        overallText = "This is a contribution-led projection. Increasing the deposit amount will likely move the outcome more than a small return change.";
+        overallClass = "insight-medium";
+      } else {
+        overallText = "Balanced projection: both deposits and investment growth are contributing meaningfully to the outcome.";
+        overallClass = "insight-good";
+      }
+
+      rows.push({
+        title: "Overall",
+        text: overallText,
+        cls: overallClass
+      });
+
+      let mixText = "";
+      let mixClass = "insight-medium";
+
+      if (contributionShare >= 75) {
+        mixText = `About ${fmtPct(contributionShare)} of the ending balance comes from contributions and ${fmtPct(growthShare)} from investment growth.`;
+        mixClass = "insight-medium";
+      } else if (growthShare >= 60) {
+        mixText = `About ${fmtPct(growthShare)} of the ending balance comes from compound growth, so the return assumption has real impact.`;
+        mixClass = "insight-good";
+      } else if (growthShare > 0) {
+        mixText = `Contributions account for ${fmtPct(contributionShare)} of the result and growth accounts for ${fmtPct(growthShare)}.`;
+        mixClass = "insight-good";
+      } else {
+        mixText = "The projection is contribution-driven, with little or no growth from returns at this setting.";
+        mixClass = "insight-weak";
+      }
+
+      rows.push({
+        title: "Growth mix",
+        text: mixText,
+        cls: mixClass
+      });
+
+      let inflationText = "";
+      let inflationClass = "insight-medium";
+
+      if (inflationDrag >= 35) {
+        inflationText = `Inflation meaningfully erodes purchasing power. Real value falls to about ${fmtPct(100 - inflationDrag)} of the nominal balance.`;
+        inflationClass = "insight-weak";
+      } else if (inflationDrag >= 20) {
+        inflationText = `Inflation has a noticeable effect. Real value falls to about ${fmtPct(100 - inflationDrag)} of the nominal balance.`;
+        inflationClass = "insight-medium";
+      } else {
+        inflationText = `Inflation impact is relatively contained here. Real value stays near ${fmtPct(100 - inflationDrag)} of the nominal balance.`;
+        inflationClass = "insight-good";
+      }
+
+      rows.push({
+        title: "Inflation",
+        text: inflationText,
+        cls: inflationClass
+      });
+
+      if (mode === "traditional") {
+        let taxText = "";
+        let taxClass = "insight-medium";
+
+        if (retirementTaxRate > 0) {
+          taxText = `Estimated retirement taxes reduce spendable value by about ${fmtPct(spendableDrag)}. Current deduction value is estimated using your entered marginal tax rate.`;
+          taxClass = spendableDrag >= 20 ? "insight-weak" : "insight-medium";
+        } else {
+          taxText = "Traditional IRA note: retirement withdrawals are usually taxable, so the spendable value may be lower than the headline balance. If you leave tax rates blank, the estimate assumes 0%.";
+          taxClass = "insight-medium";
+        }
+
+        rows.push({
+          title: "Tax note",
+          text: taxText,
+          cls: taxClass
+        });
+      } else {
+        rows.push({
+          title: "Tax note",
+          text: "Roth IRA note: qualified withdrawals are generally tax-free, so the projected balance is closer to the amount you can actually spend in retirement.",
+          cls: "insight-good"
+        });
+      }
+
+      rows.push({
+        title: "Planning note",
+        text: projectedBalance > baseTotal
+          ? "This projection is moving in the right direction, but the useful question is whether the final amount matches your retirement spending target."
+          : "This projection is not growing much above contributions. A higher contribution rate, longer horizon, or more realistic return assumption may change the result.",
+        cls: projectedBalance > baseTotal ? "insight-good" : "insight-weak"
+      });
+
+      return rows.map(row => `
+        <div class="insight-row ${row.cls}">
+          <strong>${row.title}</strong>
+          <span>${row.text}</span>
+        </div>
+      `).join("");
     }
 
     function calculateIRA(){
@@ -887,7 +1045,6 @@
       const afterTaxFinal = iraMode === "traditional" ? projectedBalance * (1 - retirementTaxRate / 100) : projectedBalance;
       const currentTaxBenefit = iraMode === "traditional" ? totalContributions * (currentTaxRate / 100) : 0;
       const growthFromReturns = projectedBalance - currentBalance - totalContributions;
-      const startingBase = currentBalance + totalContributions;
 
       document.getElementById("yearsOut").innerText = `${years} years`;
       document.getElementById("balanceOut").innerText = `$${fmtMoney(projectedBalance)}`;
@@ -900,32 +1057,23 @@
         taxBenefitOut.innerText = `$${fmtMoney(currentTaxBenefit)}`;
       }
 
-      let insight = "";
-      let insightClass = "";
+      insightOut.innerHTML = buildInsight({
+        mode: iraMode,
+        years,
+        currentBalance,
+        totalContributions,
+        growthFromReturns,
+        projectedBalance,
+        inflationAdjustedFinal,
+        afterTaxFinal,
+        currentTaxRate,
+        retirementTaxRate
+      });
 
-      if (inflationAdjustedFinal <= startingBase * 0.95) {
-        insight = "Real value is weak after inflation.";
-        insightClass = "insight-weak";
-      } else if (projectedBalance <= startingBase * 1.15) {
-        insight = "Most of the result comes from contributions, not growth.";
-        insightClass = "insight-medium";
-      } else if (afterTaxFinal > startingBase * 2 && inflationAdjustedFinal > startingBase) {
-        insight = "Strong long-term retirement outlook.";
-        insightClass = "insight-good";
-      } else if (growthFromReturns > 0) {
-        insight = "Positive growth, but the projection is still moderate.";
-        insightClass = "insight-medium";
-      } else {
-        insight = "Projection is weak; contribution rate or return assumption may be too low.";
-        insightClass = "insight-weak";
-      }
-
-      document.getElementById("insightOut").innerHTML = `<span class="${insightClass}">${insight}</span>`;
       document.getElementById("resultCard").style.display = "block";
-
       drawChart(labels, nominalBalances, inflationAdjustedBalances, afterTaxBalances);
       document.getElementById("resultCard").scrollIntoView({ behavior: "smooth", block: "start" });
-      document.getElementById("nextTool").style.display = "block";
+      nextTool.style.display = "block";
     }
 
     function drawChart(labels, nominalBalances, inflationAdjustedBalances, afterTaxBalances){
@@ -1019,7 +1167,7 @@
         }
       });
     }
-    
+
     document.addEventListener("DOMContentLoaded", function(){
       setMode("roth");
 
@@ -1028,7 +1176,7 @@
           const item = btn.parentElement;
 
           document.querySelectorAll(".faq-item").forEach(i => {
-            if (i !== item) i.classList.remove("active");
+            if(i !== item) i.classList.remove("active");
           });
 
           item.classList.toggle("active");
@@ -1037,4 +1185,4 @@
     });
   </script>
 </body>
-        </html>
+          </html>
