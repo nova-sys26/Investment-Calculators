@@ -628,325 +628,346 @@
   </div>
 
   <script src="footer.js"></script>
-  <script>
-    let chart = null;
+   <script>
+  let chart = null;
 
-    function money(value) {
-      return "$" + Number(value).toLocaleString(undefined, {
-        minimumFractionDigits: 2,
-        maximumFractionDigits: 2
-      });
+  function money(value) {
+    return "$" + Number(value).toLocaleString(undefined, {
+      minimumFractionDigits: 2,
+      maximumFractionDigits: 2
+    });
+  }
+
+  function pct(value) {
+    return `${Number(value).toFixed(2)}%`;
+  }
+
+  function buildInsight({ principal, rate, years, futureValue, balanceSeries }) {
+    const totalGain = futureValue - principal;
+    const gainPct = principal > 0 ? ((futureValue / principal) - 1) * 100 : 0;
+    const growthMultiple = principal > 0 ? futureValue / principal : 0;
+    const roundedYears = Math.round(years);
+
+    const totalPeriods = Math.max(balanceSeries.length - 1, 0);
+    let finalThirdShare = null;
+
+    if (totalPeriods >= 3 && totalGain > 0) {
+      const firstThirdIndex = Math.max(1, Math.floor(totalPeriods / 3));
+      const secondThirdIndex = Math.max(firstThirdIndex + 1, Math.floor((2 * totalPeriods) / 3));
+      const safeSecondThirdIndex = Math.min(totalPeriods, secondThirdIndex);
+
+      const finalThirdGain = balanceSeries[totalPeriods] - balanceSeries[safeSecondThirdIndex];
+      finalThirdShare = (finalThirdGain / totalGain) * 100;
     }
 
-    function pct(value) {
-      return `${Number(value).toFixed(2)}%`;
+    const rows = [];
+
+    let overallText = "";
+    let overallClass = "insight-medium";
+
+    if (roundedYears >= 75) {
+      overallText = `This is a ${roundedYears}-year scenario model, not a forecast. The math is correct, but a constant ${rate.toFixed(2)}% annual return for a century is unlikely to reflect real market behavior.`;
+      overallClass = "insight-weak";
+    } else if (rate >= 12 && roundedYears >= 20) {
+      overallText = `This is an aggressive long-horizon assumption. The ending value can become very large, but sustaining double-digit returns for decades is difficult and comes with meaningful uncertainty.`;
+      overallClass = "insight-weak";
+    } else if (rate >= 8 && roundedYears >= 20) {
+      overallText = `This is a strong long-term compounding scenario. The result can be powerful over time, but it still depends on market conditions staying favorable for a long stretch.`;
+      overallClass = "insight-good";
+    } else if (rate >= 5 && roundedYears >= 10) {
+      overallText = `This is a balanced long-term projection. Compounding is working in your favor, but the final outcome still depends heavily on keeping the money invested for the full period.`;
+      overallClass = "insight-good";
+    } else if (roundedYears <= 5) {
+      overallText = `This is a short-horizon projection. Compounding helps, but there is not enough time for the growth effect to become dramatic.`;
+      overallClass = "insight-medium";
+    } else {
+      overallText = `Compounding is working, but the projection is still moderate. Longer time horizons or a higher rate would change the outcome more than small tweaks.`;
+      overallClass = "insight-medium";
     }
 
-    function buildInsight({ principal, rate, years, futureValue, growth, interestEarned, balanceSeries }) {
-      const growthMultiple = principal > 0 ? futureValue / principal : 0;
-      const gainPct = principal > 0 ? ((futureValue / principal) - 1) * 100 : 0;
-      const annualizedGain = years > 0 ? (Math.pow(futureValue / principal, 1 / years) - 1) * 100 : 0;
+    rows.push({
+      title: "Overall projection",
+      text: overallText,
+      cls: overallClass
+    });
 
-      const yearCount = balanceSeries.length - 1;
-      const firstThirdIndex = Math.max(1, Math.round(yearCount / 3));
-      const twoThirdIndex = Math.max(firstThirdIndex + 1, Math.round((2 * yearCount) / 3));
-      const firstThirdGain = balanceSeries[firstThirdIndex] - principal;
-      const secondThirdGain = balanceSeries[twoThirdIndex] - balanceSeries[firstThirdIndex];
-      const finalThirdGain = balanceSeries[yearCount] - balanceSeries[twoThirdIndex];
+    let growthLevelText = "";
+    let growthLevelClass = "insight-medium";
 
-      const totalGain = futureValue - principal;
-      const lateStageShare = totalGain > 0 ? (finalThirdGain / totalGain) * 100 : 0;
-
-      const rows = [];
-
-      let overallText = "";
-      let overallClass = "insight-medium";
-
-      if (years <= 3) {
-        if (growthMultiple < 1.2) {
-          overallText = "Short horizon and modest rate. Compounding is working, but the time window is too small to create dramatic growth.";
-          overallClass = "insight-weak";
-        } else {
-          overallText = "Short horizon compounding is visible, but the result is still mostly driven by the starting amount.";
-          overallClass = "insight-medium";
-        }
-      } else if (growthMultiple >= 3) {
-        overallText = "Strong compounding effect. Time is doing real work here, and the later years are carrying a large share of the total gain.";
-        overallClass = "insight-good";
-      } else if (growthMultiple >= 1.5) {
-        overallText = "Healthy compounding. The investment is growing meaningfully, but the final outcome still depends heavily on the rate and the holding period.";
-        overallClass = "insight-good";
+    if (principal > 0) {
+      if (gainPct >= 300) {
+        growthLevelText = `The investment ends at ${growthMultiple.toFixed(2)}x the starting amount, which is a very strong compounding outcome.`;
+        growthLevelClass = "insight-good";
+      } else if (gainPct >= 100) {
+        growthLevelText = `The balance more than doubles over the period. That is a meaningful compounding result.`;
+        growthLevelClass = "insight-good";
+      } else if (gainPct >= 25) {
+        growthLevelText = `The balance grows by ${gainPct.toFixed(2)}% overall. That is a solid result, but not extreme.`;
+        growthLevelClass = "insight-good";
+      } else if (gainPct >= 5) {
+        growthLevelText = `The balance grows by ${gainPct.toFixed(2)}% overall. Compounding is present, but the effect is still moderate.`;
+        growthLevelClass = "insight-medium";
       } else {
-        overallText = "Compounding is present, but the combination of rate and time is still producing only a modest increase.";
-        overallClass = "insight-medium";
+        growthLevelText = `The ending value is very close to the starting amount, so the rate or holding period is too limited to create strong compounding.`;
+        growthLevelClass = "insight-weak";
       }
-
-      rows.push({
-        title: "Overall projection",
-        text: overallText,
-        cls: overallClass
-      });
-
-      let growthMixText = "";
-      let growthMixClass = "insight-medium";
-
-      if (principal > 0) {
-        if (gainPct >= 200) {
-          growthMixText = `The investment ends about ${growthMultiple.toFixed(2)}x above the starting amount, or ${pct(gainPct)} total growth.`;
-          growthMixClass = "insight-good";
-        } else if (gainPct >= 50) {
-          growthMixText = `The balance grows by ${pct(gainPct)} overall, which is solid but not extreme.`;
-          growthMixClass = "insight-good";
-        } else if (gainPct >= 10) {
-          growthMixText = `The balance grows by ${pct(gainPct)} overall. Compounding helps, but the effect is still moderate.`;
-          growthMixClass = "insight-medium";
-        } else {
-          growthMixText = "The ending value is close to the starting amount, so the rate or holding period is too limited to create strong compounding.";
-          growthMixClass = "insight-weak";
-        }
-      } else {
-        growthMixText = "No principal was entered, so the growth comparison cannot be evaluated.";
-        growthMixClass = "insight-weak";
-      }
-
-      rows.push({
-        title: "Growth level",
-        text: growthMixText,
-        cls: growthMixClass
-      });
-
-      let compoundingText = "";
-      let compoundingClass = "insight-medium";
-
-      if (totalGain > 0) {
-        if (lateStageShare >= 45) {
-          compoundingText = `About ${pct(lateStageShare)} of total gain comes from the final third of the period. That is classic compounding behavior: later years matter more than earlier ones.`;
-          compoundingClass = "insight-good";
-        } else if (lateStageShare >= 30) {
-          compoundingText = `The final third contributes ${pct(lateStageShare)} of total gains, which shows a meaningful compounding effect across time.`;
-          compoundingClass = "insight-good";
-        } else {
-          compoundingText = `Most gains arrive earlier in the period, which suggests the rate or horizon is not long enough to fully unlock compounding power.`;
-          compoundingClass = "insight-medium";
-        }
-      } else {
-        compoundingText = "There is no positive gain to distribute across the period, so compounding is not adding value at this setting.";
-        compoundingClass = "insight-weak";
-      }
-
-      rows.push({
-        title: "Time effect",
-        text: compoundingText,
-        cls: compoundingClass
-      });
-
-      let rateText = "";
-      let rateClass = "insight-medium";
-
-      if (years > 0 && principal > 0) {
-        const nextRateValue = principal * Math.pow(1 + (rate / 100) + 0.01, years);
-        const rateDelta = nextRateValue - futureValue;
-
-        if (rateDelta >= principal * 0.2) {
-          rateText = `A one-point higher annual rate would add about ${money(rateDelta)} to the ending value. This is a rate-sensitive projection.`;
-          rateClass = "insight-good";
-        } else if (rateDelta >= principal * 0.05) {
-          rateText = `A one-point higher annual rate would add about ${money(rateDelta)} to the ending value. Rate changes matter here, but time still has major influence.`;
-          rateClass = "insight-medium";
-        } else {
-          rateText = `A one-point higher annual rate would add only about ${money(rateDelta)}. With this horizon, time matters more than small rate changes.`;
-          rateClass = "insight-medium";
-        }
-      } else {
-        rateText = "Rate sensitivity cannot be assessed because the inputs are incomplete.";
-        rateClass = "insight-weak";
-      }
-
-      rows.push({
-        title: "Rate sensitivity",
-        text: rateText,
-        cls: rateClass
-      });
-
-      let planningText = "";
-      let planningClass = "insight-medium";
-
-      if (annualizedGain >= 8 && years >= 10) {
-        planningText = "This is a strong long-term projection. The main advantage comes from giving compounding enough time to do its work.";
-        planningClass = "insight-good";
-      } else if (annualizedGain >= 4) {
-        planningText = "This projection is reasonable, but the final outcome is still heavily dependent on keeping the money invested for the full period.";
-        planningClass = "insight-good";
-      } else if (annualizedGain >= 1) {
-        planningText = "The projection is positive, but the practical gain is still fairly measured. Starting earlier or holding longer would matter more than trying to fine-tune the rate.";
-        planningClass = "insight-medium";
-      } else {
-        planningText = "The output is too weak to be compelling. Either the return assumption is low, the timeframe is short, or both.";
-        planningClass = "insight-weak";
-      }
-
-      rows.push({
-        title: "Planning takeaway",
-        text: planningText,
-        cls: planningClass
-      });
-
-      return rows.map(row => `
-        <div class="insight-row ${row.cls}">
-          <strong>${row.title}</strong>
-          <span>${row.text}</span>
-        </div>
-      `).join("");
+    } else {
+      growthLevelText = "No principal was entered, so growth cannot be evaluated.";
+      growthLevelClass = "insight-weak";
     }
 
-    function calculate(){
-      const principal = parseFloat(document.getElementById("principal").value);
-      const rate = parseFloat(document.getElementById("rate").value);
-      const years = parseFloat(document.getElementById("years").value);
+    rows.push({
+      title: "Growth level",
+      text: growthLevelText,
+      cls: growthLevelClass
+    });
 
-      if ([principal, rate, years].some(v => isNaN(v))) {
-        alert("Fill all fields");
-        return;
+    let timeEffectText = "";
+    let timeEffectClass = "insight-medium";
+
+    if (totalGain > 0 && finalThirdShare !== null) {
+      if (finalThirdShare >= 45) {
+        timeEffectText = `About ${finalThirdShare.toFixed(1)}% of total gains appear in the final third of the period. That is normal compounding behavior: later years matter more than early ones.`;
+        timeEffectClass = "insight-good";
+      } else if (finalThirdShare >= 30) {
+        timeEffectText = `The final third contributes about ${finalThirdShare.toFixed(1)}% of total gains, which shows a meaningful time effect.`;
+        timeEffectClass = "insight-good";
+      } else {
+        timeEffectText = `Most of the gain is arriving earlier in the period, which suggests the horizon is not long enough to fully unlock compounding power.`;
+        timeEffectClass = "insight-medium";
       }
-
-      if (principal <= 0 || years <= 0) {
-        alert("Initial investment and years must be greater than zero.");
-        return;
-      }
-
-      if (rate <= -100) {
-        alert("Interest rate must be greater than -100%.");
-        return;
-      }
-
-      const decimalRate = rate / 100;
-      const futureValue = principal * Math.pow(1 + decimalRate, years);
-      const growth = futureValue - principal;
-      const growthPct = ((futureValue / principal) - 1) * 100;
-
-      const balanceSeries = [];
-      for (let year = 0; year <= years; year++) {
-        balanceSeries.push(principal * Math.pow(1 + decimalRate, year));
-      }
-
-      document.getElementById("futureOut").innerText = money(futureValue);
-      document.getElementById("growthOut").innerText = pct(growthPct);
-      document.getElementById("interestOut").innerText = money(growth);
-      document.getElementById("resultCard").style.display = "block";
-
-      document.getElementById("insightOut").innerHTML = buildInsight({
-        principal,
-        rate,
-        years,
-        futureValue,
-        growth,
-        interestEarned: growth,
-        balanceSeries
-      });
-
-      drawChart(balanceSeries);
-      document.getElementById("resultCard").scrollIntoView({ behavior: "smooth", block: "start" });
+    } else if (totalGain > 0) {
+      timeEffectText = "The projection is positive, but the horizon is too short to break the period into meaningful compounding stages.";
+      timeEffectClass = "insight-medium";
+    } else {
+      timeEffectText = "There is no positive gain to distribute across time, so compounding is not adding value at this setting.";
+      timeEffectClass = "insight-weak";
     }
 
-    function drawChart(balanceSeries){
-      const ctx = document.getElementById('myChart').getContext('2d');
+    rows.push({
+      title: "Time effect",
+      text: timeEffectText,
+      cls: timeEffectClass
+    });
 
-      if (chart) {
-        chart.destroy();
-      }
+    let realismText = "";
+    let realismClass = "insight-medium";
 
-      const labels = balanceSeries.map((_, index) => index);
+    if (rate <= 0) {
+      realismText = "No positive growth rate was entered, so this projection does not create compounding gains.";
+      realismClass = "insight-weak";
+    } else if (rate < 3) {
+      realismText = `A ${rate.toFixed(2)}% return is conservative. It may preserve value better than it grows it.`;
+      realismClass = "insight-medium";
+    } else if (rate < 5) {
+      realismText = `A ${rate.toFixed(2)}% return is modest. It can compound over time, but growth will be relatively slow.`;
+      realismClass = "insight-medium";
+    } else if (rate < 8) {
+      realismText = `A ${rate.toFixed(2)}% return is a reasonable long-run assumption for a diversified portfolio, but it should still be treated as a planning estimate, not a promise.`;
+      realismClass = "insight-good";
+    } else if (rate < 12) {
+      realismText = `A ${rate.toFixed(2)}% return is optimistic. It can happen in strong periods, but sustaining it for a long time is not something to assume casually.`;
+      realismClass = "insight-medium";
+    } else {
+      realismText = `A ${rate.toFixed(2)}% return is very aggressive. High returns can occur, but long-run consistency at this level is hard to rely on.`;
+      realismClass = "insight-weak";
+    }
 
-      chart = new Chart(ctx, {
-        type: 'line',
-        data: {
-          labels,
-          datasets: [
-            {
-              label: 'Projected balance',
-              data: balanceSeries,
-              borderColor: '#3b82f6',
-              backgroundColor: 'rgba(59,130,246,0.12)',
-              tension: 0.25,
-              fill: true,
-              pointRadius: 3,
-              pointHoverRadius: 5
-            },
-            {
-              label: 'Initial investment',
-              data: labels.map(() => balanceSeries[0]),
-              borderColor: '#94a3b8',
-              backgroundColor: 'rgba(148,163,184,0.04)',
-              tension: 0,
-              fill: false,
-              pointRadius: 0,
-              borderDash: [6, 6]
-            }
-          ]
-        },
-        options: {
-          responsive: true,
-          plugins: {
-            legend: {
-              labels: { color: 'white' }
-            },
-            tooltip: {
-              callbacks: {
-                label: function(context){
-                  return `${context.dataset.label}: ${money(context.parsed.y)}`;
-                }
-              }
-            }
+    if (roundedYears >= 40) {
+      realismText += " Over very long horizons, a constant-rate model should be treated as illustrative because market cycles, inflation, taxes, and regime changes rarely stay flat for decades.";
+      realismClass = rate >= 8 ? "insight-medium" : realismClass;
+    }
+
+    if (roundedYears >= 75) {
+      realismText += " At century scale, the projection is useful for showing the power of compounding, but not for making precise financial plans.";
+      realismClass = "insight-weak";
+    }
+
+    rows.push({
+      title: "Realism check",
+      text: realismText,
+      cls: realismClass
+    });
+
+    let planningText = "";
+    let planningClass = "insight-medium";
+
+    if (roundedYears >= 50) {
+      planningText = "Use this as a long-horizon scenario model. The main lesson is how compounding behaves over time, not what the exact final number will be.";
+      planningClass = "insight-good";
+    } else if (growthMultiple >= 3) {
+      planningText = "The projection is powerful enough that staying invested matters more than small short-term noise. Time is doing real work here.";
+      planningClass = "insight-good";
+    } else if (growthMultiple >= 1.5) {
+      planningText = "This is a healthy projection, but the final outcome still depends heavily on the exact rate and the full holding period.";
+      planningClass = "insight-good";
+    } else {
+      planningText = "The projection is positive, but it is not yet compelling enough to rely on compounding alone.";
+      planningClass = "insight-medium";
+    }
+
+    planningText += " The chart shows nominal value, so real-world purchasing power will be lower once inflation is considered.";
+
+    rows.push({
+      title: "Planning takeaway",
+      text: planningText,
+      cls: planningClass
+    });
+
+    return rows.map(row => `
+      <div class="insight-row ${row.cls}">
+        <strong>${row.title}</strong>
+        <span>${row.text}</span>
+      </div>
+    `).join("");
+  }
+
+  function calculate(){
+    const principal = parseFloat(document.getElementById("principal").value);
+    const rate = parseFloat(document.getElementById("rate").value);
+    const years = parseFloat(document.getElementById("years").value);
+
+    if ([principal, rate, years].some(v => isNaN(v))) {
+      alert("Fill all fields");
+      return;
+    }
+
+    if (principal <= 0 || years <= 0) {
+      alert("Initial investment and years must be greater than zero.");
+      return;
+    }
+
+    if (rate <= -100) {
+      alert("Interest rate must be greater than -100%.");
+      return;
+    }
+
+    const decimalRate = rate / 100;
+    const futureValue = principal * Math.pow(1 + decimalRate, years);
+    const growth = futureValue - principal;
+    const growthPct = ((futureValue / principal) - 1) * 100;
+
+    const balanceSeries = [];
+    const wholeYears = Math.max(0, Math.ceil(years));
+    for (let year = 0; year <= wholeYears; year++) {
+      const cappedYear = Math.min(year, years);
+      balanceSeries.push(principal * Math.pow(1 + decimalRate, cappedYear));
+    }
+
+    document.getElementById("futureOut").innerText = money(futureValue);
+    document.getElementById("growthOut").innerText = pct(growthPct);
+    document.getElementById("interestOut").innerText = money(growth);
+    document.getElementById("resultCard").style.display = "block";
+
+    document.getElementById("insightOut").innerHTML = buildInsight({
+      principal,
+      rate,
+      years,
+      futureValue,
+      balanceSeries
+    });
+
+    drawChart(balanceSeries);
+    document.getElementById("resultCard").scrollIntoView({ behavior: "smooth", block: "start" });
+  }
+
+  function drawChart(balanceSeries){
+    const ctx = document.getElementById('myChart').getContext('2d');
+
+    if (chart) {
+      chart.destroy();
+    }
+
+    const labels = balanceSeries.map((_, index) => index);
+
+    chart = new Chart(ctx, {
+      type: 'line',
+      data: {
+        labels,
+        datasets: [
+          {
+            label: 'Projected balance',
+            data: balanceSeries,
+            borderColor: '#3b82f6',
+            backgroundColor: 'rgba(59,130,246,0.12)',
+            tension: 0.25,
+            fill: true,
+            pointRadius: 3,
+            pointHoverRadius: 5
           },
-          scales: {
-            x: {
-              ticks: {
-                color: 'white'
-              },
-              grid: {
-                color: 'rgba(255,255,255,0.08)'
-              },
-              title: {
-                display: true,
-                text: 'Years',
-                color: 'white'
-              }
-            },
-            y: {
-              ticks: {
-                color: 'white',
-                callback: function(value){
-                  return "$" + Number(value).toLocaleString();
-                }
-              },
-              grid: {
-                color: 'rgba(255,255,255,0.08)'
-              },
-              title: {
-                display: true,
-                text: 'Balance ($)',
-                color: 'white'
+          {
+            label: 'Initial investment',
+            data: labels.map(() => balanceSeries[0]),
+            borderColor: '#94a3b8',
+            backgroundColor: 'rgba(148,163,184,0.04)',
+            tension: 0,
+            fill: false,
+            pointRadius: 0,
+            borderDash: [6, 6]
+          }
+        ]
+      },
+      options: {
+        responsive: true,
+        plugins: {
+          legend: {
+            labels: { color: 'white' }
+          },
+          tooltip: {
+            callbacks: {
+              label: function(context){
+                return `${context.dataset.label}: ${money(context.parsed.y)}`;
               }
             }
           }
+        },
+        scales: {
+          x: {
+            ticks: {
+              color: 'white'
+            },
+            grid: {
+              color: 'rgba(255,255,255,0.08)'
+            },
+            title: {
+              display: true,
+              text: 'Years',
+              color: 'white'
+            }
+          },
+          y: {
+            ticks: {
+              color: 'white',
+              callback: function(value){
+                return "$" + Number(value).toLocaleString();
+              }
+            },
+            grid: {
+              color: 'rgba(255,255,255,0.08)'
+            },
+            title: {
+              display: true,
+              text: 'Balance ($)',
+              color: 'white'
+            }
+          }
         }
-      });
-    }
+      }
+    });
+  }
 
-    document.addEventListener("DOMContentLoaded", function(){
-      document.querySelectorAll(".faq-question").forEach(btn => {
-        btn.addEventListener("click", () => {
-          const item = btn.parentElement;
+  document.addEventListener("DOMContentLoaded", function(){
+    document.querySelectorAll(".faq-question").forEach(btn => {
+      btn.addEventListener("click", () => {
+        const item = btn.parentElement;
 
-          document.querySelectorAll(".faq-item").forEach(i => {
-            if(i !== item) i.classList.remove("active");
-          });
-
-          item.classList.toggle("active");
+        document.querySelectorAll(".faq-item").forEach(i => {
+          if(i !== item) i.classList.remove("active");
         });
+
+        item.classList.toggle("active");
       });
     });
-  </script>
-</body>
-  </html>
-                                                  
+  });
+    </script>                     
+                                                        
