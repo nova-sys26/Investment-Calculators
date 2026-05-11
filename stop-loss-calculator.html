@@ -398,7 +398,7 @@
 }
 
 .tip-box strong{
-  display:block;
+  display:none;
   margin-bottom:6px;
 
   font-size:13px;
@@ -643,26 +643,9 @@
       stopLossOut.innerHTML = `$${stopLoss.toFixed(2)}`;
       distanceOut.innerHTML = `$${distance.toFixed(2)} (${risk.toFixed(2)}%)`;
 
-      let insight = "";
-      let insightClass = "";
-
-      if (risk <= 1) {
-        insight = "Tight risk control";
-        insightClass = "insight-good";
-      } else if (risk <= 2) {
-        insight = "Common risk range";
-        insightClass = "insight-good";
-      } else if (risk <= 5) {
-        insight = "Moderate risk";
-        insightClass = "insight-below-average";
-      } else {
-        insight = "Wide stop, higher risk";
-        insightClass = "insight-weak";
-      }
-
-      insightOut.innerHTML = `<span class="${insightClass}">${insight}</span>`;
+      
       resultCard.style.display = "block";
-
+      document.getElementById("tipBox").style.display = "block";
       drawChart(entry, stopLoss);
     }
 
