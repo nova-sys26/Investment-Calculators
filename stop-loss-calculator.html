@@ -182,6 +182,8 @@
       border-radius:0;
       width:auto;
       transition:0.2s;
+      font-size:15px;
+      font-weight:700;
     }
 
     .toggle button:first-child{
@@ -263,6 +265,32 @@
     canvas{
       margin-top:24px;
       max-width:100%;
+    }
+
+    .tip-box{
+      margin-top:22px;
+      padding:14px 16px;
+      border-radius:14px;
+      background:#243041;
+      border:1px solid rgba(255,255,255,0.08);
+      color:#dbe4f0;
+      display:none;
+    }
+
+    .tip-box strong{
+      display:block;
+      margin-bottom:6px;
+      font-size:13px;
+      font-weight:700;
+      letter-spacing:0.2px;
+      color:#bfdbfe;
+    }
+
+    .tip-box p{
+      margin:0;
+      font-size:14px;
+      line-height:1.65;
+      color:#cbd5e1;
     }
 
     .content{
@@ -386,36 +414,6 @@
       .content h2{
         font-size:24px;
       }
-      .tip-box{
-  margin-top:22px;
-  padding:14px 16px;
-  border-radius:14px;
-
-  background:#243041;
-  border:1px solid rgba(255,255,255,0.07);
-
-  color:#dbe4f0;
-}
-
-.tip-box strong{
-  display:none;
-  margin-bottom:6px;
-
-  font-size:13px;
-  font-weight:700;
-  letter-spacing:0.2px;
-
-  color:#bfdbfe;
-}
-
-.tip-box p{
-  margin:0;
-
-  font-size:14px;
-  line-height:1.65;
-
-  color:#cbd5e1;
-    }
     }
   </style>
 </head>
@@ -440,32 +438,33 @@
     </p>
 
     <div class="toggle">
-      <button id="longBtn" class="active" onclick="setType('long')">Long</button>
-      <button id="shortBtn" onclick="setType('short')">Short</button>
+      <button id="longBtn" class="active" type="button" onclick="setType('long')">Long</button>
+      <button id="shortBtn" type="button" onclick="setType('short')">Short</button>
     </div>
 
     <input id="entry" placeholder="Entry price">
     <input id="risk" placeholder="Risk % (e.g. 2)">
 
-    <button onclick="calculate()">Calculate</button>
+    <button type="button" onclick="calculate()">Calculate</button>
 
     <div id="resultCard" class="result-card">
       <p class="result-line"><strong>Stop Loss Price:</strong> <span id="stopLossOut">—</span></p>
       <p class="result-line"><strong>Distance From Entry:</strong> <span id="distanceOut">—</span></p>
-      
+    </div>
 
     <canvas id="myChart"></canvas>
 
-    <div class="tip-box">
-  <strong>Professional Trading Note</strong>
-  <p>
-    Stop losses are not purely mechanical and should not be placed using fixed percentages alone. 
-    Their placement depends on the trading strategy, market conditions, and trade setup. 
-    Many traders use factors such as liquidity zones, volatility, support and resistance, swing levels, or technical invalidation areas when determining stop placement.
-  </p>
+    <div id="tipBox" class="tip-box">
+      <strong>Professional Trading Note</strong>
+      <p>
+        Stop losses are not purely mechanical and should not be placed using fixed percentages alone.
+        Their placement depends on the trading strategy, market conditions, and trade setup.
+        Many traders use factors such as liquidity zones, volatility, support and resistance, swing levels,
+        or technical invalidation areas when determining stop placement.
+      </p>
     </div>
   </div>
-  </div>
+
   <div class="content">
     <h2>What is a Stop Loss Calculator?</h2>
     <p>
@@ -521,7 +520,7 @@
 
     <div class="faq">
       <div class="faq-item">
-        <button class="faq-question">
+        <button class="faq-question" type="button">
           What is a good risk percentage per trade?
           <span class="arrow">▼</span>
         </button>
@@ -533,7 +532,7 @@
       </div>
 
       <div class="faq-item">
-        <button class="faq-question">
+        <button class="faq-question" type="button">
           Can I trade without a stop loss?
           <span class="arrow">▼</span>
         </button>
@@ -545,7 +544,7 @@
       </div>
 
       <div class="faq-item">
-        <button class="faq-question">
+        <button class="faq-question" type="button">
           Should I move my stop loss after entering a trade?
           <span class="arrow">▼</span>
         </button>
@@ -557,7 +556,7 @@
       </div>
 
       <div class="faq-item">
-        <button class="faq-question">
+        <button class="faq-question" type="button">
           How does stop loss relate to position size?
           <span class="arrow">▼</span>
         </button>
@@ -569,7 +568,7 @@
       </div>
 
       <div class="faq-item">
-        <button class="faq-question">
+        <button class="faq-question" type="button">
           Does this calculator work for all markets?
           <span class="arrow">▼</span>
         </button>
@@ -604,12 +603,11 @@
 
   <script src="footer.js"></script>
   <script>
-    let chart;
+    let chart = null;
     let type = "long";
 
     function setType(selected){
       type = selected;
-
       document.getElementById("longBtn").classList.toggle("active", selected === "long");
       document.getElementById("shortBtn").classList.toggle("active", selected === "short");
     }
@@ -618,7 +616,7 @@
       const entry = parseFloat(document.getElementById("entry").value);
       const risk = parseFloat(document.getElementById("risk").value);
 
-      if (!entry || !risk || risk <= 0) {
+      if (isNaN(entry) || isNaN(risk) || entry <= 0 || risk <= 0) {
         alert("Fill all fields with valid values.");
         return;
       }
@@ -635,22 +633,18 @@
       }
 
       const distance = Math.abs(entry - stopLoss);
-      const stopLossOut = document.getElementById("stopLossOut");
-      const distanceOut = document.getElementById("distanceOut");
-      const insightOut = document.getElementById("insightOut");
-      const resultCard = document.getElementById("resultCard");
 
-      stopLossOut.innerHTML = `$${stopLoss.toFixed(2)}`;
-      distanceOut.innerHTML = `$${distance.toFixed(2)} (${risk.toFixed(2)}%)`;
+      document.getElementById("stopLossOut").innerHTML = `$${stopLoss.toFixed(2)}`;
+      document.getElementById("distanceOut").innerHTML = `$${distance.toFixed(2)} (${risk.toFixed(2)}%)`;
 
-      
-      resultCard.style.display = "block";
-      
+      document.getElementById("resultCard").style.display = "block";
+      document.getElementById("tipBox").style.display = "block";
+
       drawChart(entry, stopLoss);
     }
 
     function drawChart(entry, stopLoss){
-      const ctx = document.getElementById("myChart");
+      const ctx = document.getElementById("myChart").getContext("2d");
 
       if (chart) {
         chart.destroy();
@@ -667,6 +661,7 @@
           }]
         },
         options: {
+          responsive: true,
           plugins: {
             legend: {
               labels: { color: "white" }
@@ -685,14 +680,14 @@
         }
       });
     }
-document.getElementById("tipBox").style.display = "block";
+
     document.addEventListener("DOMContentLoaded", function(){
       document.querySelectorAll(".faq-question").forEach(btn => {
         btn.addEventListener("click", () => {
           const item = btn.parentElement;
 
           document.querySelectorAll(".faq-item").forEach(i => {
-            if(i !== item) i.classList.remove("active");
+            if (i !== item) i.classList.remove("active");
           });
 
           item.classList.toggle("active");
