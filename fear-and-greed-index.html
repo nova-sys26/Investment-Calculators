@@ -224,9 +224,20 @@
       width:180px;
       height:180px;
       border-radius:50%;
-      background:conic-gradient(#22c55e 0deg 90deg, #facc15 90deg 180deg, #3b82f6 180deg 270deg, #ef4444 270deg 360deg);
       position:relative;
       box-shadow:0 0 0 1px rgba(255,255,255,0.04) inset;
+      background:conic-gradient(
+        #ef4444 0deg 40deg,
+        #f97316 40deg 74deg,
+        #facc15 74deg 105deg,
+        #22c55e 105deg 150deg,
+        #06b6d4 150deg 180deg,
+        #06b6d4 180deg 210deg,
+        #22c55e 210deg 255deg,
+        #facc15 255deg 286deg,
+        #f97316 286deg 320deg,
+        #ef4444 320deg 360deg
+      );
     }
 
     .gauge::after{
@@ -399,6 +410,15 @@
       line-height:1.6;
     }
 
+    .source-line a{
+      color:#93c5fd;
+      text-decoration:none;
+    }
+
+    .source-line a:hover{
+      text-decoration:underline;
+    }
+
     .content{
       width:90%;
       max-width:900px;
@@ -540,6 +560,11 @@
       color:#94a3b8;
     }
 
+    .insight-weak{ color:#ef4444; }
+    .insight-below-average{ color:#f97316; }
+    .insight-good{ color:#22c55e; }
+    .insight-aggressive{ color:#06b6d4; }
+
     @media (max-width:760px){
       .dashboard{ grid-template-columns:1fr; }
       .gauge-wrap{ padding-top:6px; }
@@ -657,7 +682,7 @@
         <h2>Historical Trend</h2>
         <canvas id="historyChart"></canvas>
         <div class="source-line">
-          Source: Alternative.me Fear & Greed Index API. Data is displayed with attribution and is refreshed from the public endpoint <code>/fng/</code>. ([alternative.me](https://alternative.me/crypto/fear-and-greed-index/))
+          Source: <a href="https://alternative.me/crypto/fear-and-greed-index/" target="_blank" rel="noopener noreferrer">Alternative.me Fear &amp; Greed Index API</a>. Data is displayed with attribution and is refreshed from the public endpoint <code>/fng/</code>.
         </div>
       </div>
     </div>
@@ -666,16 +691,16 @@
   <div class="content">
     <h2>What is the Fear & Greed Index?</h2>
     <p>
-      The Fear & Greed Index is a sentiment gauge that compresses market emotion into a single number from 0 to 100. Lower values mean fear is dominating, while higher values mean greed is dominating. Alternative.me’s public index page describes it as a daily sentiment measure for Bitcoin and other large cryptocurrencies. ([alternative.me](https://alternative.me/crypto/fear-and-greed-index/))
+      The Fear & Greed Index is a sentiment gauge that compresses market emotion into a single number from 0 to 100. Lower values mean fear is dominating, while higher values mean greed is dominating. Alternative.me’s public index page describes it as a daily sentiment measure for Bitcoin and other large cryptocurrencies.
     </p>
 
     <p>
-      A live sentiment tool is useful because sentiment often moves ahead of headlines. When fear is very high, sellers may already be exhausted. When greed is very high, buyers may already be crowded in. That does not create a signal by itself, but it gives useful context. ([alternative.me](https://alternative.me/crypto/fear-and-greed-index/))
+      A live sentiment tool is useful because sentiment often moves ahead of headlines. When fear is very high, sellers may already be exhausted. When greed is very high, buyers may already be crowded in. That does not create a signal by itself, but it gives useful context.
     </p>
 
     <h2>How this page works</h2>
     <p>
-      This page loads the latest daily Fear & Greed reading from Alternative.me’s public <code>/fng/</code> endpoint, then builds a live dashboard, a short historical summary, and a chart from the returned daily values. The API supports a <code>limit</code> parameter, with <code>limit=1</code> returning the latest value and higher values returning older entries too. ([alternative.me](https://alternative.me/crypto/fear-and-greed-index/))
+      This page loads the latest daily Fear & Greed reading from Alternative.me’s public <code>/fng/</code> endpoint, then builds a live dashboard, a short historical summary, and a chart from the returned daily values. The API supports a <code>limit</code> parameter, with <code>limit=1</code> returning the latest value and higher values returning older entries too.
     </p>
 
     <div class="formula">
@@ -691,7 +716,7 @@
     </p>
 
     <p>
-      Alternative.me also publishes attribution rules for this dataset, and their docs say commercial use is allowed as long as attribution is given next to the data. This page includes that attribution directly under the chart. ([alternative.me](https://alternative.me/crypto/fear-and-greed-index/))
+      Alternative.me also publishes attribution rules for this dataset, and their docs say commercial use is allowed as long as attribution is given next to the data. This page includes that attribution directly under the chart.
     </p>
 
     <h2>How to use it</h2>
@@ -747,7 +772,7 @@
         </button>
         <div class="faq-answer">
           <p>
-            The latest API response includes a time-until-update field for the newest value, and the public index is presented as a daily reading. ([alternative.me](https://alternative.me/crypto/fear-and-greed-index/))
+            The latest API response includes a time-until-update field for the newest value, and the public index is presented as a daily reading.
           </p>
         </div>
       </div>
@@ -769,7 +794,7 @@
   <div class="disclaimer">
     <p>
       <strong>Disclaimer:</strong> This page is for informational purposes only and does not constitute financial, investment, or trading advice.
-      Live data is provided by Alternative.me and should be verified independently before making decisions. ([alternative.me](https://alternative.me/crypto/fear-and-greed-index/))
+      Live data is provided by <a href="https://alternative.me/crypto/fear-and-greed-index/" target="_blank" rel="noopener noreferrer">Alternative.me</a> and should be verified independently before making decisions.
     </p>
   </div>
 
@@ -822,8 +847,7 @@
       const angle = (Number(score) / 100) * 180 - 90;
       needle.style.transform = `translate(-50%, -100%) rotate(${angle}deg)`;
 
-      const hue = Number(score) < 25 ? '#ef4444' : Number(score) < 45 ? '#facc15' : Number(score) < 75 ? '#22c55e' : '#f97316';
-      gauge.style.background = `conic-gradient(#ef4444 0deg 48deg, #facc15 48deg 90deg, #22c55e 90deg 138deg, #f97316 138deg 180deg, #ef4444 180deg 360deg)`;
+      const hue = Number(score) < 25 ? '#ef4444' : Number(score) < 45 ? '#f97316' : Number(score) < 75 ? '#22c55e' : '#06b6d4';
       scoreValue.style.color = hue;
     }
 
@@ -1009,4 +1033,4 @@
     });
   </script>
 </body>
-    </html>
+  </html>
