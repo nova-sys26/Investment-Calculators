@@ -187,6 +187,8 @@
       border-radius:0;
       width:auto;
       font-size:15px;
+      font-weight:700;
+      transition:0.2s;
     }
 
     .toggle button:first-child{
@@ -258,7 +260,7 @@
 
     .result-line{
       padding-left:18px;
-      margin:15px 0;
+      margin:14px 0;
       font-size:18px;
       color:#e5e7eb;
       line-height:1.4;
@@ -268,24 +270,52 @@
       color:#cbd5f5;
     }
 
+    .insight-stack{
+      margin-top:8px;
+      display:grid;
+      gap:8px;
+    }
+
+    .insight-row{
+      padding:10px 12px;
+      border-radius:12px;
+      background:rgba(255,255,255,0.04);
+      border:1px solid rgba(255,255,255,0.06);
+      color:#e5e7eb;
+      font-size:14px;
+      line-height:1.6;
+    }
+
+    .insight-row strong{
+      display:block;
+      margin-bottom:2px;
+      font-size:13px;
+      letter-spacing:0.01em;
+    }
+
     .insight-good{
       color:#22c55e;
+      font-weight:700;
     }
 
-    .insight-strong{
-      color:#66FF66;
-    }
-
-    .insight-below-average{
+    .insight-medium{
       color:#facc15;
+      font-weight:700;
     }
 
     .insight-weak{
       color:#ef4444;
+      font-weight:700;
+    }
+
+    .insight-strong{
+      color:#66FF66;
+      font-weight:700;
     }
 
     .insight-aggressive{
-      color:#FF0000;
+      color:#FF6B6B;
+      font-weight:700;
     }
 
     canvas{
@@ -668,6 +698,167 @@
       document.getElementById("shortBtn").classList.toggle("active", side === "short");
     }
 
+    function money(value){
+      return "$" + Number(value).toLocaleString(undefined, {
+        minimumFractionDigits: 2,
+        maximumFractionDigits: 2
+      });
+    }
+
+    function buildInsight({ risk, reward, rr, entry, stop, take, position, tradeSide }) {
+      const rows = [];
+      const riskPctOfReward = reward > 0 ? (risk / reward) * 100 : 0;
+      const rewardPctOfRisk = risk > 0 ? (reward / risk) * 100 : 0;
+      const moveDistance = Math.abs(take - entry);
+      const stopDistance = Math.abs(entry - stop);
+      const targetVsStop = stopDistance > 0 ? moveDistance / stopDistance : 0;
+
+      let overallText = "";
+      let overallClass = "insight-medium";
+
+      if (rr < 1) {
+        overallText = "This setup is not attractive on a pure risk/reward basis. The potential reward is smaller than the amount being risked.";
+        overallClass = "insight-weak";
+      } else if (rr < 1.5) {
+        overallText = "This is a marginal setup. It may work in a high-win-rate system, but the reward cushion is still thin.";
+        overallClass = "insight-medium";
+      } else if (rr < 2.5) {
+        overallText = "This is a solid trading setup. The reward is large enough relative to risk to support disciplined execution.";
+        overallClass = "insight-good";
+      } else if (rr < 3.5) {
+        overallText = "This is a strong setup on paper. The ratio is attractive, but the target still needs to be realistic for the market structure.";
+        overallClass = "insight-strong";
+      } else {
+        overallText = "This is an aggressive setup. The ratio looks excellent, but very large targets often fail more often in live trading.";
+        overallClass = "insight-aggressive";
+      }
+
+      rows.push({
+        title: "Overall setup",
+        text: overallText,
+        cls: overallClass
+      });
+
+      let dollarText = "";
+      let dollarClass = "insight-medium";
+
+      if (risk <= 0 || reward <= 0) {
+        dollarText = "The calculated dollar risk or reward is invalid, so the setup cannot be assessed properly.";
+        dollarClass = "insight-weak";
+      } else if (risk >= reward) {
+        dollarText = `You are risking ${money(risk)} to potentially make ${money(reward)}. The dollar risk is equal to or larger than the upside.`;
+        dollarClass = "insight-weak";
+      } else if (reward >= risk * 3) {
+        dollarText = `The trade risks ${money(risk)} and targets ${money(reward)}. That reward cushion is meaningful, assuming the target is reachable.`;
+        dollarClass = "insight-good";
+      } else {
+        dollarText = `The trade risks ${money(risk)} and targets ${money(reward)}. The dollar profile is workable, but not exceptionally wide.`;
+        dollarClass = "insight-good";
+      }
+
+      rows.push({
+        title: "Dollar reality",
+        text: dollarText,
+        cls: dollarClass
+      });
+
+      let ratioText = "";
+      let ratioClass = "insight-medium";
+
+      if (rr < 1) {
+        ratioText = `The ratio is ${rr.toFixed(2)}:1 against you. That means the market must move farther in your favor than it needs to move against you.`;
+        ratioClass = "insight-weak";
+      } else if (rr < 2) {
+        ratioText = `The ratio is ${rr.toFixed(2)}:1. That is acceptable only if your strategy has a strong win rate or strong execution edge.`;
+        ratioClass = "insight-medium";
+      } else if (rr < 3.5) {
+        ratioText = `The ratio is ${rr.toFixed(2)}:1. This is generally the kind of profile traders look for when they want positive expectancy.`;
+        ratioClass = "insight-good";
+      } else {
+        ratioText = `The ratio is ${rr.toFixed(2)}:1. The math is attractive, but very large targets usually demand patience and excellent trade selection.`;
+        ratioClass = "insight-aggressive";
+      }
+
+      rows.push({
+        title: "Risk / reward ratio",
+        text: ratioText,
+        cls: ratioClass
+      });
+
+      let structureText = "";
+      let structureClass = "insight-medium";
+
+      if (targetVsStop >= 3.5) {
+        structureText = "Your target is much farther than your stop. That can be valid, but it usually requires a strong trend or a very clean setup.";
+        structureClass = "insight-aggressive";
+      } else if (targetVsStop >= 2) {
+        structureText = "The target is reasonably larger than the stop. That is a healthy structure for many trend-following setups.";
+        structureClass = "insight-good";
+      } else if (targetVsStop >= 1) {
+        structureText = "The target and stop are fairly close in size. This may be fine for fast trades, but the edge must be strong.";
+        structureClass = "insight-medium";
+      } else {
+        structureText = "Your target is closer than your stop. That usually weakens the setup unless the win rate is exceptionally high.";
+        structureClass = "insight-weak";
+      }
+
+      rows.push({
+        title: "Trade structure",
+        text: structureText,
+        cls: structureClass
+      });
+
+      let executionText = "";
+      let executionClass = "insight-medium";
+
+      if (position <= 0) {
+        executionText = "Position size is invalid, so the dollar risk cannot be trusted.";
+        executionClass = "insight-weak";
+      } else if (risk > 0 && risk < 50) {
+        executionText = "The dollar risk per trade is relatively small. That is usually easier to manage if the size fits your account plan.";
+        executionClass = "insight-good";
+      } else if (risk >= 50 && risk < 250) {
+        executionText = "The dollar risk per trade is noticeable. Make sure this still fits your total account risk rules.";
+        executionClass = "insight-medium";
+      } else {
+        executionText = "The dollar risk is large. Even a good setup can become dangerous if the position is oversized.";
+        executionClass = "insight-weak";
+      }
+
+      rows.push({
+        title: "Execution note",
+        text: executionText,
+        cls: executionClass
+      });
+
+      let finalText = "";
+      let finalClass = "insight-medium";
+
+      if (rr >= 2 && risk < reward) {
+        finalText = "This is the kind of setup traders usually want to see: the upside is meaningfully larger than the downside, but the target still needs to be realistic.";
+        finalClass = "insight-good";
+      } else if (rr >= 1.5) {
+        finalText = "This setup is workable, but the outcome will depend heavily on discipline, entry quality, and whether the target is actually reachable.";
+        finalClass = "insight-medium";
+      } else {
+        finalText = "This setup needs more work. Either the stop is too wide, the target is too close, or the trade idea does not offer enough edge.";
+        finalClass = "insight-weak";
+      }
+
+      rows.push({
+        title: "Bottom line",
+        text: finalText,
+        cls: finalClass
+      });
+
+      return rows.map(row => `
+        <div class="insight-row ${row.cls}">
+          <strong>${row.title}</strong>
+          <span>${row.text}</span>
+        </div>
+      `).join("");
+    }
+
     function calculate(){
       const entry = parseFloat(document.getElementById("entry").value);
       const position = parseFloat(document.getElementById("position").value);
@@ -715,13 +906,8 @@
 
       const rr = reward / risk;
 
-      const riskOut = document.getElementById("riskOut");
-      const rewardOut = document.getElementById("rewardOut");
-      const ratioOut = document.getElementById("ratioOut");
-      const insightOut = document.getElementById("insightOut");
-
-      riskOut.innerText = "$" + risk.toFixed(2);
-      rewardOut.innerText = "$" + reward.toFixed(2);
+      document.getElementById("riskOut").innerText = money(risk);
+      document.getElementById("rewardOut").innerText = money(reward);
 
       let ratioText = "";
       if(rr >= 1){
@@ -729,33 +915,23 @@
       } else {
         ratioText = (1 / rr).toFixed(2) + " : 1";
       }
-      ratioOut.innerText = ratioText;
+      document.getElementById("ratioOut").innerText = ratioText;
 
-      let insight = "";
-      let insightClass = "";
-
-      if(rr < 1){
-        insight = "Weak setup";
-        insightClass = "insight-weak";
-      } else if(rr < 1.5){
-        insight = "Below average";
-        insightClass = "insight-below-average";
-      } else if(rr < 2.5){
-        insight = "Good setup";
-        insightClass = "insight-good";
-      } else if(rr < 3.5){
-        insight = "Strong setup";
-        insightClass = "insight-strong";
-      } else {
-        insight = "Aggressive / unrealistic target";
-        insightClass = "insight-aggressive";
-      }
-
-      insightOut.innerText = insight;
-      insightOut.className = "result-value " + insightClass;
+      document.getElementById("insightOut").innerHTML = buildInsight({
+        risk,
+        reward,
+        rr,
+        entry,
+        stop,
+        take,
+        position,
+        tradeSide
+      });
 
       document.getElementById("resultsBox").style.display = "block";
       drawChart(risk, reward);
+
+      document.getElementById("resultsBox").scrollIntoView({ behavior: "smooth", block: "start" });
     }
 
     function drawChart(risk, reward){
@@ -784,7 +960,7 @@
             tooltip:{
               callbacks:{
                 label: function(context){
-                  return "$" + Number(context.parsed.y).toFixed(2);
+                  return money(context.parsed.y);
                 }
               }
             }
@@ -818,4 +994,4 @@
     });
   </script>
 </body>
-        </html>
+      </html>
