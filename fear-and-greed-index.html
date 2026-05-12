@@ -1,0 +1,1012 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <link rel="canonical" href="https://novainvesttools.com/fear-greed-index.html">
+
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-ZPCXDVE8C5"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);} 
+    gtag('js', new Date());
+    gtag('config', 'G-ZPCXDVE8C5');
+  </script>
+
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Fear & Greed Index – Live Crypto Sentiment</title>
+  <meta name="description" content="Track live crypto market sentiment with a clean Fear & Greed Index page, historical trend chart, and simple market context.">
+  <meta name="theme-color" content="#0f172a">
+  <meta name="robots" content="index,follow,max-image-preview:large">
+
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://novainvesttools.com/fear-greed-index.html">
+  <meta property="og:title" content="Fear & Greed Index – Live Crypto Sentiment">
+  <meta property="og:description" content="Track live crypto market sentiment with a clean Fear & Greed Index page, historical trend chart, and simple market context.">
+
+  <link rel="preconnect" href="https://cdn.jsdelivr.net">
+  <link rel="dns-prefetch" href="https://cdn.jsdelivr.net">
+
+  <link rel="stylesheet" href="style.css">
+  <link rel="icon" href="favicon.png" type="image/png">
+  <link rel="apple-touch-icon" href="favicon.png">
+
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "WebApplication",
+    "name": "Fear & Greed Index",
+    "url": "https://novainvesttools.com/fear-greed-index.html",
+    "applicationCategory": "FinanceApplication",
+    "operatingSystem": "All",
+    "browserRequirements": "Requires JavaScript",
+    "description": "Track live crypto market sentiment with a Fear & Greed Index, historical chart, and market context.",
+    "featureList": [
+      "Live sentiment reading",
+      "Historical sentiment chart",
+      "Market classification",
+      "Time-until-update countdown"
+    ],
+    "offers": {
+      "@type": "Offer",
+      "price": "0",
+      "priceCurrency": "USD"
+    }
+  }
+  </script>
+
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": [
+      {
+        "@type": "Question",
+        "name": "What does the Fear & Greed Index measure?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "It measures crypto market sentiment on a scale from 0 to 100, where lower values indicate fear and higher values indicate greed."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "How often is the index updated?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "The latest value includes a time-until-update field, and the public API returns the latest daily reading along with historical values."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Is the index only for Bitcoin?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "The underlying Alternative.me index page says the current index is for Bitcoin and other large cryptocurrencies."
+        }
+      }
+    ]
+  }
+  </script>
+
+  <style>
+    *{ box-sizing:border-box; }
+
+    html{ scroll-behavior:smooth; }
+
+    body{
+      font-family:Arial, sans-serif;
+      background:#0b1a33;
+      color:white;
+      display:flex;
+      justify-content:center;
+      align-items:center;
+      flex-direction:column;
+      min-height:100vh;
+      margin:0;
+      padding:24px 0;
+    }
+
+    .toptext{
+      font-size:14px;
+      color:#6b7a99;
+      margin-bottom:5px;
+    }
+
+    .menu{ margin-bottom:25px; }
+
+    .menu a{
+      color:#3b82f6;
+      margin:10px;
+      text-decoration:none;
+      font-weight:600;
+    }
+
+    .container{
+      background:#1e293b;
+      padding:30px;
+      border-radius:16px;
+      width:90%;
+      max-width:760px;
+      box-shadow:0 10px 25px rgba(0,0,0,0.35);
+      border:1px solid rgba(255,255,255,0.05);
+    }
+
+    h1{
+      margin-top:0;
+      margin-bottom:10px;
+      font-size:32px;
+      line-height:1.15;
+    }
+
+    .quick-answer{
+      background:rgba(59,130,246,0.12);
+      border:1px solid rgba(59,130,246,0.25);
+      padding:12px 14px;
+      border-radius:10px;
+      font-size:15px;
+      line-height:1.6;
+      color:#e2e8f0;
+      margin-bottom:18px;
+    }
+
+    .subhead{
+      color:#94a3b8;
+      font-size:15px;
+      line-height:1.6;
+      margin-bottom:18px;
+    }
+
+    .badge-row{
+      display:flex;
+      gap:10px;
+      flex-wrap:wrap;
+      margin:14px 0 16px;
+    }
+
+    .badge{
+      display:inline-flex;
+      padding:5px 10px;
+      border-radius:999px;
+      font-size:12px;
+      font-weight:700;
+      background:rgba(59,130,246,0.12);
+      color:#bfdbfe;
+      border:1px solid rgba(59,130,246,0.22);
+    }
+
+    .badge.soft{
+      background:rgba(255,255,255,0.05);
+      border-color:rgba(255,255,255,0.08);
+      color:#dbeafe;
+    }
+
+    .live-header{
+      display:flex;
+      justify-content:space-between;
+      gap:16px;
+      flex-wrap:wrap;
+      align-items:flex-start;
+      margin-top:8px;
+    }
+
+    .live-status{
+      color:#93c5fd;
+      font-size:13px;
+      font-weight:700;
+      letter-spacing:0.06em;
+      text-transform:uppercase;
+    }
+
+    .updated-at{
+      color:#94a3b8;
+      font-size:13px;
+      margin-top:6px;
+    }
+
+    .dashboard{
+      display:grid;
+      grid-template-columns:220px 1fr;
+      gap:18px;
+      align-items:center;
+      margin-top:18px;
+    }
+
+    .gauge-wrap{
+      display:flex;
+      flex-direction:column;
+      align-items:center;
+      gap:14px;
+    }
+
+    .gauge{
+      width:180px;
+      height:180px;
+      border-radius:50%;
+      background:conic-gradient(#22c55e 0deg 90deg, #facc15 90deg 180deg, #3b82f6 180deg 270deg, #ef4444 270deg 360deg);
+      position:relative;
+      box-shadow:0 0 0 1px rgba(255,255,255,0.04) inset;
+    }
+
+    .gauge::after{
+      content:"";
+      position:absolute;
+      inset:16px;
+      border-radius:50%;
+      background:#0f172a;
+      box-shadow:inset 0 0 0 1px rgba(255,255,255,0.05);
+    }
+
+    .needle{
+      position:absolute;
+      left:50%;
+      top:50%;
+      width:3px;
+      height:74px;
+      background:#e2e8f0;
+      transform-origin:bottom center;
+      transform:translate(-50%, -100%) rotate(-90deg);
+      border-radius:999px;
+      z-index:2;
+      box-shadow:0 0 10px rgba(255,255,255,0.15);
+    }
+
+    .needle::before{
+      content:"";
+      position:absolute;
+      left:50%;
+      top:-8px;
+      width:12px;
+      height:12px;
+      transform:translateX(-50%);
+      border-radius:50%;
+      background:#e2e8f0;
+    }
+
+    .score-box{
+      position:absolute;
+      inset:0;
+      z-index:3;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      flex-direction:column;
+      text-align:center;
+      padding:24px;
+    }
+
+    .score-value{
+      font-size:44px;
+      line-height:1;
+      font-weight:800;
+      color:#fff;
+    }
+
+    .score-label{
+      margin-top:8px;
+      font-size:14px;
+      color:#cbd5e1;
+      font-weight:700;
+      text-transform:uppercase;
+      letter-spacing:0.08em;
+    }
+
+    .score-sub{
+      margin-top:5px;
+      font-size:12px;
+      color:#94a3b8;
+    }
+
+    .summary-grid{
+      display:grid;
+      grid-template-columns:repeat(2, minmax(0, 1fr));
+      gap:12px;
+    }
+
+    .summary-card{
+      background:rgba(15,23,42,0.78);
+      border:1px solid rgba(255,255,255,0.06);
+      border-radius:16px;
+      padding:16px;
+      min-height:86px;
+    }
+
+    .summary-card span{
+      display:block;
+      font-size:12px;
+      color:#94a3b8;
+      text-transform:uppercase;
+      letter-spacing:0.08em;
+      margin-bottom:8px;
+      font-weight:700;
+    }
+
+    .summary-card strong{
+      font-size:18px;
+      line-height:1.25;
+    }
+
+    .summary-card p{
+      margin:6px 0 0;
+      color:#cbd5e1;
+      font-size:13px;
+      line-height:1.55;
+    }
+
+    .text-section{
+      margin-top:22px;
+      display:grid;
+      gap:12px;
+    }
+
+    .note-box{
+      padding:16px 18px;
+      border-radius:14px;
+      background:rgba(255,255,255,0.04);
+      border:1px solid rgba(255,255,255,0.06);
+      color:#cbd5e1;
+      line-height:1.65;
+      font-size:14px;
+    }
+
+    .note-box strong{
+      display:block;
+      margin-bottom:4px;
+      color:#e2e8f0;
+      font-size:14px;
+    }
+
+    .meta-row{
+      display:grid;
+      grid-template-columns:repeat(3, minmax(0, 1fr));
+      gap:12px;
+      margin-top:16px;
+    }
+
+    .meta-card{
+      background:rgba(15,23,42,0.78);
+      border:1px solid rgba(255,255,255,0.06);
+      border-radius:14px;
+      padding:14px 16px;
+    }
+
+    .meta-card span{
+      display:block;
+      color:#94a3b8;
+      font-size:12px;
+      text-transform:uppercase;
+      letter-spacing:0.08em;
+      font-weight:700;
+      margin-bottom:6px;
+    }
+
+    .meta-card strong{
+      font-size:16px;
+      line-height:1.3;
+    }
+
+    .chart-wrap{
+      margin-top:24px;
+    }
+
+    canvas{ margin-top:8px; }
+
+    .source-line{
+      margin-top:12px;
+      color:#94a3b8;
+      font-size:12px;
+      line-height:1.6;
+    }
+
+    .content{
+      width:90%;
+      max-width:900px;
+      margin-top:34px;
+    }
+
+    .content h2{
+      margin-top:34px;
+      margin-bottom:10px;
+      font-size:28px;
+    }
+
+    .content p,
+    .content li{
+      color:#cbd5e1;
+      line-height:1.7;
+      font-size:15px;
+    }
+
+    .content ul{ padding-left:20px; }
+
+    .formula{
+      background:rgba(255,255,255,0.05);
+      border:1px solid rgba(255,255,255,0.08);
+      padding:14px 16px;
+      border-radius:12px;
+      margin:12px 0;
+      color:#e2e8f0;
+      overflow:auto;
+      line-height:1.7;
+    }
+
+    .faq{ margin-top:14px; }
+
+    .faq-item{
+      border-bottom:1px solid rgba(255,255,255,0.08);
+    }
+
+    .faq-question{
+      width:100%;
+      background:none;
+      border:none;
+      color:white;
+      text-align:left;
+      padding:14px 8px;
+      font-size:15px;
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      cursor:pointer;
+    }
+
+    .faq-question:hover{ color:#93c5fd; }
+
+    .arrow{ transition:0.25s; }
+
+    .faq-item.active .arrow{ transform:rotate(180deg); }
+
+    .faq-answer{
+      max-height:0;
+      overflow:hidden;
+      transition:max-height 0.3s ease;
+      color:#cbd5e1;
+      font-size:14px;
+      padding:0 8px;
+    }
+
+    .faq-item.active .faq-answer{
+      max-height:240px;
+      padding-bottom:12px;
+    }
+
+    .related{
+      width:90%;
+      max-width:760px;
+      margin-top:34px;
+      background:rgba(30,41,59,0.62);
+      border:1px solid rgba(255,255,255,0.08);
+      border-radius:16px;
+      padding:22px;
+    }
+
+    .related h3{
+      margin-top:0;
+      margin-bottom:10px;
+    }
+
+    .related p,
+    .related li{
+      color:#cbd5e1;
+      line-height:1.7;
+      font-size:15px;
+    }
+
+    .related ul{
+      padding-left:18px;
+      margin-bottom:0;
+    }
+
+    .related a{
+      color:#93c5fd;
+      text-decoration:none;
+    }
+
+    .related a:hover{ text-decoration:underline; }
+
+    .disclaimer{
+      margin-top:24px;
+      padding-top:20px;
+      border-top:1px solid rgba(255,255,255,0.1);
+      font-size:13px;
+      color:#9ca3af;
+      max-width:900px;
+      text-align:center;
+      line-height:1.6;
+      width:90%;
+    }
+
+    .loading-state,
+    .error-state{
+      margin-top:16px;
+      padding:16px;
+      border-radius:14px;
+      background:rgba(255,255,255,0.04);
+      border:1px solid rgba(255,255,255,0.06);
+      color:#cbd5e1;
+      line-height:1.6;
+      font-size:14px;
+    }
+
+    .error-state{
+      border-color:rgba(239,68,68,0.25);
+      background:rgba(239,68,68,0.08);
+      color:#fecaca;
+    }
+
+    .tiny{
+      font-size:12px;
+      color:#94a3b8;
+    }
+
+    @media (max-width:760px){
+      .dashboard{ grid-template-columns:1fr; }
+      .gauge-wrap{ padding-top:6px; }
+      .summary-grid,
+      .meta-row{ grid-template-columns:1fr; }
+      .container{ padding:22px; }
+      h1{ font-size:28px; }
+      .content h2{ font-size:24px; }
+      .gauge{ width:160px; height:160px; }
+      .score-value{ font-size:38px; }
+    }
+  </style>
+</head>
+<body>
+  <p class="toptext">Explore more calculators</p>
+
+  <div class="menu">
+    <a href="index.html">Home</a>
+  </div>
+
+  <div class="container">
+    <div class="live-header">
+      <div>
+        <div class="live-status">Live crypto sentiment</div>
+        <h1>Fear & Greed Index</h1>
+        <p class="quick-answer">
+          Track live crypto market sentiment in one place — the index updates daily, shows the latest reading, and adds context with a historical trend.
+        </p>
+        <p class="subhead">
+          A clean live tool for reading market emotion fast. Use it as a sentiment check, not as a buy or sell signal.
+        </p>
+      </div>
+
+      <div style="text-align:right; min-width:220px;">
+        <div class="badge-row" style="justify-content:flex-end; margin-top:2px;">
+          <span class="badge">Live tool</span>
+          <span class="badge soft">Daily updated</span>
+          <span class="badge soft">Crypto sentiment</span>
+        </div>
+        <div class="updated-at" id="updatedAt">Loading latest reading…</div>
+        <div class="tiny" id="countdownText"></div>
+      </div>
+    </div>
+
+    <div id="loadingState" class="loading-state">Loading live Fear & Greed data…</div>
+    <div id="errorState" class="error-state" style="display:none;"></div>
+
+    <div id="dashboard" style="display:none;">
+      <div class="dashboard">
+        <div class="gauge-wrap">
+          <div class="gauge" id="gauge">
+            <div class="needle" id="needle"></div>
+            <div class="score-box">
+              <div class="score-value" id="scoreValue">—</div>
+              <div class="score-label" id="scoreLabel">—</div>
+              <div class="score-sub">0 = Fear · 100 = Greed</div>
+            </div>
+          </div>
+          <div class="tiny" id="scaleHint">Fear on the left, greed on the right.</div>
+        </div>
+
+        <div>
+          <div class="summary-grid">
+            <div class="summary-card">
+              <span>Current reading</span>
+              <strong id="currentReading">—</strong>
+              <p id="currentReadingNote">—</p>
+            </div>
+            <div class="summary-card">
+              <span>Momentum</span>
+              <strong id="momentumReading">—</strong>
+              <p id="momentumNote">—</p>
+            </div>
+            <div class="summary-card">
+              <span>Short-term context</span>
+              <strong id="shortTermReading">—</strong>
+              <p id="shortTermNote">—</p>
+            </div>
+            <div class="summary-card">
+              <span>Trend bias</span>
+              <strong id="trendBias">—</strong>
+              <p id="trendBiasNote">—</p>
+            </div>
+          </div>
+
+          <div class="meta-row">
+            <div class="meta-card">
+              <span>Yesterday</span>
+              <strong id="yesterdayValue">—</strong>
+            </div>
+            <div class="meta-card">
+              <span>Last week</span>
+              <strong id="weekValue">—</strong>
+            </div>
+            <div class="meta-card">
+              <span>Last month</span>
+              <strong id="monthValue">—</strong>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="text-section">
+        <div class="note-box">
+          <strong>How to read it</strong>
+          Extreme fear usually means traders are defensive and volatility is elevated. Extreme greed usually means sentiment is crowded and the market may be more vulnerable to sharp pullbacks.
+        </div>
+        <div class="note-box">
+          <strong>Use case</strong>
+          This tool is best used as a context filter. It helps you judge whether the market is emotionally stretched before you act on a trade or add to a position.
+        </div>
+      </div>
+
+      <div class="chart-wrap">
+        <h2>Historical Trend</h2>
+        <canvas id="historyChart"></canvas>
+        <div class="source-line">
+          Source: Alternative.me Fear & Greed Index API. Data is displayed with attribution and is refreshed from the public endpoint <code>/fng/</code>. ([alternative.me](https://alternative.me/crypto/fear-and-greed-index/))
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="content">
+    <h2>What is the Fear & Greed Index?</h2>
+    <p>
+      The Fear & Greed Index is a sentiment gauge that compresses market emotion into a single number from 0 to 100. Lower values mean fear is dominating, while higher values mean greed is dominating. Alternative.me’s public index page describes it as a daily sentiment measure for Bitcoin and other large cryptocurrencies. ([alternative.me](https://alternative.me/crypto/fear-and-greed-index/))
+    </p>
+
+    <p>
+      A live sentiment tool is useful because sentiment often moves ahead of headlines. When fear is very high, sellers may already be exhausted. When greed is very high, buyers may already be crowded in. That does not create a signal by itself, but it gives useful context. ([alternative.me](https://alternative.me/crypto/fear-and-greed-index/))
+    </p>
+
+    <h2>How this page works</h2>
+    <p>
+      This page loads the latest daily Fear & Greed reading from Alternative.me’s public <code>/fng/</code> endpoint, then builds a live dashboard, a short historical summary, and a chart from the returned daily values. The API supports a <code>limit</code> parameter, with <code>limit=1</code> returning the latest value and higher values returning older entries too. ([alternative.me](https://alternative.me/crypto/fear-and-greed-index/))
+    </p>
+
+    <div class="formula">
+      Sentiment score: 0–100<br>
+      Lower score = more fear<br>
+      Higher score = more greed<br>
+      Historical line = daily values returned by the public API
+    </div>
+
+    <h2>Why this is a live tool, not a toy</h2>
+    <p>
+      The point is not decoration. The point is fast context. A good live tool should answer three things immediately: what the market feels like now, how that compares with recent readings, and whether the current mood is stretched or balanced.
+    </p>
+
+    <p>
+      Alternative.me also publishes attribution rules for this dataset, and their docs say commercial use is allowed as long as attribution is given next to the data. This page includes that attribution directly under the chart. ([alternative.me](https://alternative.me/crypto/fear-and-greed-index/))
+    </p>
+
+    <h2>How to use it</h2>
+    <ul>
+      <li>Check the current score first</li>
+      <li>Compare it with yesterday, last week, and last month</li>
+      <li>Read the trend chart for direction, not prediction</li>
+      <li>Use it as context before making a crypto decision</li>
+    </ul>
+
+    <h2>Frequently Asked Questions</h2>
+    <div class="faq">
+      <div class="faq-item">
+        <button class="faq-question" type="button">
+          What does a low score mean?
+          <span class="arrow">▼</span>
+        </button>
+        <div class="faq-answer">
+          <p>
+            A lower score means fear is dominating sentiment. In practice, that often means the market is cautious, defensive, or more volatile.
+          </p>
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <button class="faq-question" type="button">
+          What does a high score mean?
+          <span class="arrow">▼</span>
+        </button>
+        <div class="faq-answer">
+          <p>
+            A higher score means greed is dominating sentiment. That often lines up with crowded optimism and can come with higher pullback risk.
+          </p>
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <button class="faq-question" type="button">
+          Is this a buy or sell signal?
+          <span class="arrow">▼</span>
+        </button>
+        <div class="faq-answer">
+          <p>
+            No. It is a sentiment context tool. It helps frame decisions, but it should not replace your own strategy, risk control, or market analysis.
+          </p>
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <button class="faq-question" type="button">
+          How often does the data update?
+          <span class="arrow">▼</span>
+        </button>
+        <div class="faq-answer">
+          <p>
+            The latest API response includes a time-until-update field for the newest value, and the public index is presented as a daily reading. ([alternative.me](https://alternative.me/crypto/fear-and-greed-index/))
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="related">
+    <h3>Related Calculators</h3>
+    <p>You may also find these tools useful:</p>
+    <ul>
+      <li><a href="btc-dominance.html">BTC Dominance</a></li>
+      <li><a href="inflation-calculator.html">Inflation Calculator</a></li>
+      <li><a href="compound-interest-calculator.html">Compound Interest Calculator</a></li>
+      <li><a href="risk-reward-calculator.html">Risk Reward Calculator</a></li>
+      <li><a href="position-size-calculator.html">Position Size Calculator</a></li>
+    </ul>
+  </div>
+
+  <div class="disclaimer">
+    <p>
+      <strong>Disclaimer:</strong> This page is for informational purposes only and does not constitute financial, investment, or trading advice.
+      Live data is provided by Alternative.me and should be verified independently before making decisions. ([alternative.me](https://alternative.me/crypto/fear-and-greed-index/))
+    </p>
+  </div>
+
+  <script src="footer.js"></script>
+  <script>
+    let historyChart = null;
+    let countdownInterval = null;
+
+    const loadingState = document.getElementById('loadingState');
+    const errorState = document.getElementById('errorState');
+    const dashboard = document.getElementById('dashboard');
+    const updatedAt = document.getElementById('updatedAt');
+    const countdownText = document.getElementById('countdownText');
+    const scoreValue = document.getElementById('scoreValue');
+    const scoreLabel = document.getElementById('scoreLabel');
+    const needle = document.getElementById('needle');
+    const gauge = document.getElementById('gauge');
+
+    const currentReading = document.getElementById('currentReading');
+    const currentReadingNote = document.getElementById('currentReadingNote');
+    const momentumReading = document.getElementById('momentumReading');
+    const momentumNote = document.getElementById('momentumNote');
+    const shortTermReading = document.getElementById('shortTermReading');
+    const shortTermNote = document.getElementById('shortTermNote');
+    const trendBias = document.getElementById('trendBias');
+    const trendBiasNote = document.getElementById('trendBiasNote');
+
+    const yesterdayValue = document.getElementById('yesterdayValue');
+    const weekValue = document.getElementById('weekValue');
+    const monthValue = document.getElementById('monthValue');
+
+    function classifyScore(value){
+      if (value <= 24) return { label: 'Extreme Fear', colorClass: 'insight-weak' };
+      if (value <= 44) return { label: 'Fear', colorClass: 'insight-below-average' };
+      if (value <= 55) return { label: 'Neutral', colorClass: 'insight-good' };
+      if (value <= 74) return { label: 'Greed', colorClass: 'insight-good' };
+      return { label: 'Extreme Greed', colorClass: 'insight-aggressive' };
+    }
+
+    function fmtDateFromUnix(ts){
+      const d = new Date(Number(ts) * 1000);
+      return d.toLocaleDateString(undefined, { year: 'numeric', month: 'short', day: 'numeric' });
+    }
+
+    function fmtNumber(v){
+      return Number(v).toFixed(0);
+    }
+
+    function updateNeedle(score){
+      const angle = (Number(score) / 100) * 180 - 90;
+      needle.style.transform = `translate(-50%, -100%) rotate(${angle}deg)`;
+
+      const hue = Number(score) < 25 ? '#ef4444' : Number(score) < 45 ? '#facc15' : Number(score) < 75 ? '#22c55e' : '#f97316';
+      gauge.style.background = `conic-gradient(#ef4444 0deg 48deg, #facc15 48deg 90deg, #22c55e 90deg 138deg, #f97316 138deg 180deg, #ef4444 180deg 360deg)`;
+      scoreValue.style.color = hue;
+    }
+
+    function startCountdown(seconds){
+      clearInterval(countdownInterval);
+      let remaining = Number(seconds);
+
+      function render(){
+        const hrs = Math.floor(remaining / 3600);
+        const mins = Math.floor((remaining % 3600) / 60);
+        const secs = remaining % 60;
+        countdownText.textContent = `Next update in ${hrs}h ${mins}m ${secs}s`;
+      }
+
+      render();
+      countdownInterval = setInterval(() => {
+        if (remaining > 0) remaining -= 1;
+        render();
+      }, 1000);
+    }
+
+    function buildNarrative(latest, previous, weekAgo, monthAgo){
+      const current = Number(latest.value);
+      const prev = previous ? Number(previous.value) : null;
+      const week = weekAgo ? Number(weekAgo.value) : null;
+      const month = monthAgo ? Number(monthAgo.value) : null;
+
+      const classInfo = classifyScore(current);
+      currentReading.innerText = `${current} · ${classInfo.label}`;
+      currentReadingNote.innerText = current <= 24
+        ? 'Sentiment is very defensive.'
+        : current <= 44
+          ? 'Sentiment is cautious.'
+          : current <= 55
+            ? 'Sentiment is balanced.'
+            : current <= 74
+              ? 'Sentiment is optimistic.'
+              : 'Sentiment is crowded.';
+
+      if (prev !== null) {
+        const diff = current - prev;
+        momentumReading.innerText = `${diff >= 0 ? '+' : ''}${fmtNumber(diff)} vs yesterday`;
+        momentumNote.innerText = diff > 0 ? 'Momentum improved.' : diff < 0 ? 'Momentum cooled.' : 'No change from yesterday.';
+      } else {
+        momentumReading.innerText = '—';
+        momentumNote.innerText = 'Not enough data for comparison.';
+      }
+
+      if (week !== null) {
+        const diff = current - week;
+        shortTermReading.innerText = `${diff >= 0 ? '+' : ''}${fmtNumber(diff)} vs last week`;
+        shortTermNote.innerText = diff > 0 ? 'Short-term sentiment is stronger.' : diff < 0 ? 'Short-term sentiment is weaker.' : 'Flat vs last week.';
+      } else {
+        shortTermReading.innerText = '—';
+        shortTermNote.innerText = 'Not enough data for comparison.';
+      }
+
+      if (month !== null) {
+        const diff = current - month;
+        trendBias.innerText = `${diff >= 0 ? '+' : ''}${fmtNumber(diff)} vs last month`;
+        trendBiasNote.innerText = diff > 0 ? 'Longer-term bias improved.' : diff < 0 ? 'Longer-term bias softened.' : 'Flat vs last month.';
+      } else {
+        trendBias.innerText = '—';
+        trendBiasNote.innerText = 'Not enough data for comparison.';
+      }
+
+      yesterdayValue.innerText = prev !== null ? `${prev} · ${classifyScore(prev).label}` : '—';
+      weekValue.innerText = week !== null ? `${week} · ${classifyScore(week).label}` : '—';
+      monthValue.innerText = month !== null ? `${month} · ${classifyScore(month).label}` : '—';
+    }
+
+    function drawChart(data){
+      const ctx = document.getElementById('historyChart').getContext('2d');
+      if (historyChart) historyChart.destroy();
+
+      const points = [...data].reverse();
+      const labels = points.map(item => fmtDateFromUnix(item.timestamp));
+      const values = points.map(item => Number(item.value));
+
+      historyChart = new Chart(ctx, {
+        type: 'line',
+        data: {
+          labels,
+          datasets: [{
+            label: 'Fear & Greed Index',
+            data: values,
+            borderColor: '#3b82f6',
+            backgroundColor: 'rgba(59,130,246,0.15)',
+            fill: true,
+            tension: 0.25,
+            pointRadius: 2.5,
+            pointHoverRadius: 5
+          }]
+        },
+        options: {
+          responsive: true,
+          plugins: {
+            legend: { labels: { color: 'white' } },
+            tooltip: {
+              callbacks: {
+                label: function(context){
+                  const info = classifyScore(context.parsed.y);
+                  return ` ${context.parsed.y} · ${info.label}`;
+                }
+              }
+            }
+          },
+          scales: {
+            x: {
+              ticks: { color: 'white', maxRotation: 0, autoSkip: true },
+              grid: { color: 'rgba(255,255,255,0.08)' }
+            },
+            y: {
+              min: 0,
+              max: 100,
+              ticks: { color: 'white' },
+              grid: { color: 'rgba(255,255,255,0.08)' }
+            }
+          }
+        }
+      });
+    }
+
+    async function loadFearGreed(){
+      try{
+        loadingState.style.display = 'block';
+        errorState.style.display = 'none';
+        dashboard.style.display = 'none';
+
+        const res = await fetch('https://api.alternative.me/fng/?limit=31&format=json&date_format=us');
+        if (!res.ok) throw new Error(`Request failed with status ${res.status}`);
+        const json = await res.json();
+
+        if (!json || !json.data || !json.data.length) {
+          throw new Error('No data returned by the API.');
+        }
+
+        const latest = json.data[0];
+        const previous = json.data[1] || null;
+        const weekAgo = json.data[7] || null;
+        const monthAgo = json.data[30] || null;
+
+        const score = Number(latest.value);
+        const info = classifyScore(score);
+
+        scoreValue.textContent = latest.value;
+        scoreLabel.textContent = info.label;
+        scoreLabel.className = `score-label ${info.colorClass}`;
+        updatedAt.textContent = `Updated: ${latest.timestamp ? fmtDateFromUnix(latest.timestamp) : 'today'}`;
+        document.title = `Fear & Greed Index – ${latest.value} (${info.label})`;
+
+        updateNeedle(score);
+        buildNarrative(latest, previous, weekAgo, monthAgo);
+        drawChart(json.data.slice(0, Math.min(31, json.data.length)));
+
+        if (latest.time_until_update) {
+          startCountdown(Number(latest.time_until_update));
+        } else {
+          countdownText.textContent = '';
+        }
+
+        loadingState.style.display = 'none';
+        dashboard.style.display = 'block';
+      } catch (err){
+        loadingState.style.display = 'none';
+        errorState.style.display = 'block';
+        errorState.textContent = `Live data could not be loaded right now. ${err.message}`;
+      }
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
+      loadFearGreed();
+
+      document.querySelectorAll('.faq-question').forEach(btn => {
+        btn.addEventListener('click', () => {
+          const item = btn.parentElement;
+          document.querySelectorAll('.faq-item').forEach(i => {
+            if (i !== item) i.classList.remove('active');
+          });
+          item.classList.toggle('active');
+        });
+      });
+    });
+  </script>
+</body>
+    </html>
