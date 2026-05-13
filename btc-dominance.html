@@ -16,7 +16,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 
   <title>BTC Dominance – Live Crypto Market Share</title>
-  <meta name="description" content="Track live Bitcoin dominance with a clean dashboard, market context, and trend memory. Built with live crypto market data." />
+  <meta name="description" content="Track live Bitcoin dominance with a clean dashboard, market context, and trend memory. Built with live crypto market data.">
   <meta name="theme-color" content="#0b1a33">
   <meta name="robots" content="index,follow,max-image-preview:large">
 
@@ -417,7 +417,7 @@
       display:grid;
       grid-template-columns:220px 1fr;
       gap:18px;
-      align-items:center;
+      align-items:start;
       margin-top:18px;
     }
 
@@ -829,7 +829,7 @@
       <div class="eyebrow">Live crypto market share</div>
       <h1>BTC Dominance</h1>
       <p>
-        See how much of the total crypto market Bitcoin currently controls, then compare it with recent local snapshots for context.
+        See how much of the total crypto market Bitcoin currently controls, then compare it with recent snapshots for context.
       </p>
 
       <div class="hero-actions">
@@ -891,7 +891,7 @@
                   <div class="score-sub">BTC share of total crypto market</div>
                 </div>
               </div>
-              <div class="tiny" id="scaleHint">Lower values usually favor altcoin breadth; higher values usually point to Bitcoin-led market structure.</div>
+              <div class="tiny" id="scaleHint">Higher readings usually mean a more BTC-led market; lower readings usually mean broader altcoin participation.</div>
             </div>
 
             <div>
@@ -928,7 +928,7 @@
                   <strong id="ethReading">—</strong>
                 </div>
                 <div class="meta-card">
-                  <span>Other assets</span>
+                  <span>Altcoin share</span>
                   <strong id="othersReading">—</strong>
                 </div>
               </div>
@@ -947,11 +947,11 @@
           </div>
 
           <div class="chart-wrap" id="chart">
-            <h2>Local trend memory</h2>
+            <h2>Trend memory</h2>
             <canvas id="historyChart"></canvas>
             <div class="source-line">
               Live data: <a href="https://www.coingecko.com/en/charts/bitcoin-dominance" target="_blank" rel="noopener noreferrer">CoinGecko Bitcoin Dominance</a>.
-              This chart stores a small local snapshot history in your browser so the page can show recent movement without needing a separate local JSON file.
+              The chart stores daily snapshots in your browser, so the page can show recent movement without a separate local JSON file.
             </div>
           </div>
         </div>
@@ -970,13 +970,13 @@
 
       <h2>How this page works</h2>
       <p>
-        The page loads CoinGecko’s global crypto market data, reads the BTC share from the market-cap-percentage field, and updates a dashboard, a gauge, and a recent snapshot chart. It then stores small snapshots locally so the trend section stays useful over time.
+        The page loads CoinGecko’s global crypto market data, reads the BTC share from the market-cap-percentage field, and updates a dashboard, a gauge, and a recent snapshot chart. It stores one daily snapshot per browser day so the trend section remains meaningful over time.
       </p>
 
       <div class="formula">
         BTC Dominance = Bitcoin Market Cap ÷ Total Crypto Market Cap<br>
-        ETH and other shares are read from the same global market snapshot<br>
-        Recent trend = local browser snapshot history
+        ETH and Altcoin shares are read from the same global market snapshot<br>
+        Recent trend = daily browser snapshot history
       </div>
 
       <h2>Why it matters</h2>
@@ -992,7 +992,7 @@
       <ul>
         <li>Check the current BTC dominance reading first</li>
         <li>Compare it with the market cap cards below the gauge</li>
-        <li>Look at the local trend memory for direction</li>
+        <li>Look at the trend memory for direction</li>
         <li>Use it as context before making crypto allocation decisions</li>
       </ul>
 
@@ -1056,7 +1056,7 @@
   </div>
 
   <script>
-    const COINGECKO_DEMO_API_KEY = ""; // Optional. Leave blank if the public endpoint works for you.
+    const COINGECKO_DEMO_API_KEY = "";
 
     let historyChart = null;
     let refreshInterval = null;
@@ -1070,7 +1070,6 @@
     const scoreValue = document.getElementById('scoreValue');
     const scoreLabel = document.getElementById('scoreLabel');
     const needle = document.getElementById('needle');
-    const gauge = document.getElementById('gauge');
 
     const currentReading = document.getElementById('currentReading');
     const currentReadingNote = document.getElementById('currentReadingNote');
@@ -1086,7 +1085,7 @@
     const heroCap = document.getElementById('heroCap');
     const heroGlobal = document.getElementById('heroGlobal');
 
-    const STORAGE_KEY = "novainvesttools_btc_dominance_snapshots_v1";
+    const STORAGE_KEY = "novainvesttools_btc_dominance_snapshots_v2";
 
     function fmtPercent(value, digits = 1){
       return `${Number(value).toFixed(digits)}%`;
@@ -1111,20 +1110,31 @@
       });
     }
 
-    function classifyDominance(value){
-      if (value >= 65) return { label: "Bitcoin-led", cls: "insight-risk-on" };
-      if (value >= 55) return { label: "BTC-strong", cls: "insight-balanced" };
-      if (value >= 45) return { label: "Balanced", cls: "insight-balanced" };
-      if (value >= 35) return { label: "Altcoin-friendly", cls: "insight-wary" };
-      return { label: "Alt-season regime", cls: "insight-fear" };
+    function dayKeyFromTs(ts){
+      const d = new Date(Number(ts) * 1000);
+      return [
+        d.getUTCFullYear(),
+        String(d.getUTCMonth() + 1).padStart(2, "0"),
+        String(d.getUTCDate()).padStart(2, "0")
+      ].join("-");
     }
 
-    function normalizeSnapshot(ts, btc, eth, total){
+    function classifyDominance(value){
+      if (value >= 65) return { label: "Bitcoin-led", cls: "insight-risk-on", note: "Bitcoin is dominating capital flow." };
+      if (value >= 55) return { label: "BTC-strong", cls: "insight-balanced", note: "Bitcoin is leading, but the market is not extreme." };
+      if (value >= 45) return { label: "Balanced", cls: "insight-balanced", note: "Market structure is relatively even." };
+      if (value >= 35) return { label: "Altcoin-friendly", cls: "insight-wary", note: "Altcoins are taking a larger share." };
+      return { label: "Alt-season regime", cls: "insight-fear", note: "Altcoins are broadly outperforming on share." };
+    }
+
+    function normalizeSnapshot(snapshot){
       return {
-        ts: Number(ts),
-        btc: Number(btc),
-        eth: Number(eth),
-        total: Number(total)
+        ts: Number(snapshot.ts),
+        day: String(snapshot.day),
+        btc: Number(snapshot.btc),
+        eth: Number(snapshot.eth),
+        total: Number(snapshot.total),
+        marketMove: Number(snapshot.marketMove)
       };
     }
 
@@ -1138,21 +1148,20 @@
       }
     }
 
-    function saveSnapshot(snapshot){
+    function saveSnapshots(list){
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(list));
+    }
+
+    function upsertSnapshot(snapshot){
       const existing = loadSnapshots();
-      existing.push(snapshot);
 
-      const unique = existing
-        .filter(item => item && Number.isFinite(item.ts))
-        .sort((a, b) => a.ts - b.ts)
-        .reduce((acc, item) => {
-          const key = item.ts;
-          acc.set(key, item);
-          return acc;
-        }, new Map());
+      const filtered = existing.filter(item => item && item.day !== snapshot.day);
+      filtered.push(snapshot);
 
-      const trimmed = Array.from(unique.values()).slice(-40);
-      localStorage.setItem(STORAGE_KEY, JSON.stringify(trimmed));
+      filtered.sort((a, b) => a.ts - b.ts);
+
+      const trimmed = filtered.slice(-45);
+      saveSnapshots(trimmed);
       localSnapshots = trimmed;
     }
 
@@ -1164,14 +1173,6 @@
       scoreValue.style.color = hue;
     }
 
-    function pushLiveSnapshot(snapshot){
-      const last = localSnapshots[localSnapshots.length - 1];
-      if (last && Math.abs(last.btc - snapshot.btc) < 0.0001 && Math.abs(last.total - snapshot.total) < 1 && Math.abs(last.eth - snapshot.eth) < 0.0001) {
-        return;
-      }
-      saveSnapshot(snapshot);
-    }
-
     function updateSummary(data){
       const btc = Number(data.market_cap_percentage?.btc ?? 0);
       const eth = Number(data.market_cap_percentage?.eth ?? 0);
@@ -1179,7 +1180,7 @@
       const marketMove = Number(data.market_cap_change_percentage_24h_usd ?? 0);
       const btcCap = total * (btc / 100);
       const ethCap = total * (eth / 100);
-      const others = Math.max(0, 100 - btc - eth);
+      const altShare = Math.max(0, 100 - btc - eth);
 
       const classification = classifyDominance(btc);
 
@@ -1188,12 +1189,7 @@
       scoreLabel.className = `score-label ${classification.cls}`;
 
       currentReading.innerText = `${btc.toFixed(1)}% · ${classification.label}`;
-      currentReadingNote.innerText =
-        btc >= 65 ? 'Bitcoin is absorbing a larger share of the market.' :
-        btc >= 55 ? 'Bitcoin is leading, but the market is not extreme.' :
-        btc >= 45 ? 'Market structure is balanced.' :
-        btc >= 35 ? 'Altcoins are taking a larger role.' :
-        'Altcoins are broadly outperforming on a share basis.';
+      currentReadingNote.innerText = classification.note;
 
       btcCapReading.innerText = fmtMoney(btcCap);
       globalCapReading.innerText = fmtMoney(total);
@@ -1201,18 +1197,18 @@
       marketMoveReading.className = marketMove >= 0 ? 'insight-balanced' : 'insight-wary';
       marketMoveNote.innerText = marketMove >= 0 ? 'Global market cap is expanding.' : 'Global market cap is contracting.';
 
-      shiftReading.innerText = localSnapshots.length > 1
-        ? `${(btc - localSnapshots[localSnapshots.length - 2].btc).toFixed(1)} pts`
-        : '—';
+      const previous = localSnapshots.length > 1 ? localSnapshots[localSnapshots.length - 2] : null;
+      shiftReading.innerText = previous ? `${(btc - previous.btc).toFixed(1)} pts vs last snapshot` : '—';
 
       ethReading.innerText = `${eth.toFixed(1)}%`;
-      othersReading.innerText = `${others.toFixed(1)}%`;
+      othersReading.innerText = `${altShare.toFixed(1)}%`;
 
-      heroScore.innerText = btc.toFixed(1) + '%';
+      heroScore.innerText = `${btc.toFixed(1)}%`;
       heroCap.innerText = fmtMoney(btcCap);
       heroGlobal.innerText = fmtMoney(total);
 
-      updatedAt.textContent = `Updated: ${data.updated_at ? fmtDate(data.updated_at) : 'just now'}`;
+      const updatedAtLabel = data.updated_at ? fmtDate(data.updated_at) : 'just now';
+      updatedAt.textContent = `Updated: ${updatedAtLabel}`;
       refreshText.textContent = 'Auto-refreshing every 5 minutes.';
       document.title = `BTC Dominance – ${btc.toFixed(1)}% (${classification.label})`;
 
@@ -1272,6 +1268,26 @@
       });
     }
 
+    function pushDailySnapshot(data){
+      const ts = Number(data.updated_at || Math.floor(Date.now() / 1000));
+      const day = dayKeyFromTs(ts);
+      const btc = Number(data.market_cap_percentage?.btc ?? 0);
+      const eth = Number(data.market_cap_percentage?.eth ?? 0);
+      const total = Number(data.total_market_cap?.usd ?? 0);
+      const marketMove = Number(data.market_cap_change_percentage_24h_usd ?? 0);
+
+      const snapshot = normalizeSnapshot({
+        ts,
+        day,
+        btc,
+        eth,
+        total,
+        marketMove
+      });
+
+      upsertSnapshot(snapshot);
+    }
+
     async function fetchDominance(){
       loadingState.style.display = 'block';
       errorState.style.display = 'none';
@@ -1282,14 +1298,14 @@
         baseHeaders['x-cg-demo-api-key'] = COINGECKO_DEMO_API_KEY;
       }
 
-      const urls = [
+      const attempts = [
         { url: 'https://api.coingecko.com/api/v3/global', headers: baseHeaders },
         { url: 'https://api.coingecko.com/api/v3/global', headers: {} }
       ];
 
       let lastError = null;
 
-      for (const attempt of urls) {
+      for (const attempt of attempts) {
         try{
           const res = await fetch(attempt.url, { headers: attempt.headers, cache: 'no-store' });
           if (!res.ok) throw new Error(`Request failed with status ${res.status}`);
@@ -1298,16 +1314,16 @@
 
           const data = json.data;
           const btc = Number(data.market_cap_percentage?.btc);
-          const eth = Number(data.market_cap_percentage?.eth);
           const total = Number(data.total_market_cap?.usd);
-          const updatedAtTs = Number(data.updated_at || Math.floor(Date.now() / 1000));
 
           if (!Number.isFinite(btc) || !Number.isFinite(total)) {
             throw new Error('Missing market data fields.');
           }
 
           localSnapshots = loadSnapshots();
-          pushLiveSnapshot(normalizeSnapshot(updatedAtTs, btc, eth || 0, total));
+          pushDailySnapshot(data);
+          localSnapshots = loadSnapshots();
+
           updateSummary(data);
           drawChart();
 
@@ -1377,4 +1393,4 @@
     });
   </script>
 </body>
-  </html>
+                                      </html>
