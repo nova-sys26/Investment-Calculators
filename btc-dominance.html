@@ -16,23 +16,23 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 
   <title>BTC Dominance – Live Crypto Market Share</title>
-  <meta name="description" content="Track live Bitcoin dominance with a clean dashboard, market context, and trend memory. Built with live crypto market data.">
+  <meta name="description" content="Track live Bitcoin dominance with a clean dashboard, real historical chart, and market context. Built with live crypto market data.">
   <meta name="theme-color" content="#0b1a33">
   <meta name="robots" content="index,follow,max-image-preview:large">
 
   <meta property="og:type" content="website">
   <meta property="og:url" content="https://novainvesttools.com/btc-dominance.html">
   <meta property="og:title" content="BTC Dominance – Live Crypto Market Share">
-  <meta property="og:description" content="Track live Bitcoin dominance with a clean dashboard, market context, and trend memory.">
+  <meta property="og:description" content="Track live Bitcoin dominance with a clean dashboard, real historical chart, and market context.">
 
   <link rel="preconnect" href="https://cdn.jsdelivr.net">
+  <link rel="preconnect" href="https://api.coingecko.com">
+  <link rel="preconnect" href="https://s3.tradingview.com">
   <link rel="dns-prefetch" href="https://cdn.jsdelivr.net">
 
   <link rel="stylesheet" href="style.css">
   <link rel="icon" href="favicon.png" type="image/png">
   <link rel="apple-touch-icon" href="favicon.png">
-
-  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
   <script type="application/ld+json">
   {
@@ -43,11 +43,11 @@
     "applicationCategory":"FinanceApplication",
     "operatingSystem":"All",
     "browserRequirements":"Requires JavaScript",
-    "description":"Track live Bitcoin dominance and global crypto market share with trend memory and market context.",
+    "description":"Track live Bitcoin dominance and global crypto market share with a real historical chart and market context.",
     "featureList":[
       "Live BTC dominance",
+      "TradingView historical chart",
       "Market cap comparison",
-      "Trend memory chart",
       "Market context cards"
     ],
     "offers":{
@@ -609,7 +609,14 @@
       margin-top:24px;
     }
 
-    canvas{ margin-top:8px; }
+    #tvchart{
+      height:680px;
+      margin-top:10px;
+      border-radius:16px;
+      overflow:hidden;
+      border:1px solid rgba(255,255,255,0.08);
+      background:#0f172a;
+    }
 
     .source-line{
       margin-top:12px;
@@ -781,6 +788,7 @@
       .content h2{ font-size:24px; }
       .gauge{ width:160px; height:160px; }
       .score-value{ font-size:38px; }
+      #tvchart{ height:520px; }
     }
   </style>
 </head>
@@ -829,7 +837,7 @@
       <div class="eyebrow">Live crypto market share</div>
       <h1>BTC Dominance</h1>
       <p>
-        See how much of the total crypto market Bitcoin currently controls, then compare it with recent snapshots for context.
+        See how much of the total crypto market Bitcoin currently controls, then compare it with a real historical chart for context.
       </p>
 
       <div class="hero-actions">
@@ -947,11 +955,11 @@
           </div>
 
           <div class="chart-wrap" id="chart">
-            <h2>Trend memory</h2>
-            <canvas id="historyChart"></canvas>
+            <h2>Historical chart</h2>
+            <div id="tvchart"></div>
             <div class="source-line">
-              Live data: <a href="https://www.coingecko.com/en/charts/bitcoin-dominance" target="_blank" rel="noopener noreferrer">CoinGecko Bitcoin Dominance</a>.
-              The chart stores daily snapshots in your browser, so the page can show recent movement without a separate local JSON file.
+              Live data: <a href="https://www.tradingview.com/symbols/CRYPTOCAP-BTC.D/" target="_blank" rel="noopener noreferrer">TradingView BTC.D</a>.
+              Current market snapshot: <a href="https://www.coingecko.com/en/global-charts" target="_blank" rel="noopener noreferrer">CoinGecko Global</a>.
             </div>
           </div>
         </div>
@@ -970,13 +978,13 @@
 
       <h2>How this page works</h2>
       <p>
-        The page loads CoinGecko’s global crypto market data, reads the BTC share from the market-cap-percentage field, and updates a dashboard, a gauge, and a recent snapshot chart. It stores one daily snapshot per browser day so the trend section remains meaningful over time.
+        The page loads current market data from CoinGecko for the dashboard cards, while the chart itself is a real historical BTC.D chart from TradingView. That removes the need for localStorage history and gives you a proper charting experience.
       </p>
 
       <div class="formula">
         BTC Dominance = Bitcoin Market Cap ÷ Total Crypto Market Cap<br>
         ETH and Altcoin shares are read from the same global market snapshot<br>
-        Recent trend = daily browser snapshot history
+        Historical chart = TradingView BTC.D
       </div>
 
       <h2>Why it matters</h2>
@@ -992,7 +1000,7 @@
       <ul>
         <li>Check the current BTC dominance reading first</li>
         <li>Compare it with the market cap cards below the gauge</li>
-        <li>Look at the trend memory for direction</li>
+        <li>Use the TradingView chart for real historical structure</li>
         <li>Use it as context before making crypto allocation decisions</li>
       </ul>
 
@@ -1050,17 +1058,14 @@
     <div class="disclaimer">
       <p>
         <strong>Disclaimer:</strong> This page is for informational purposes only and does not constitute financial, investment, or trading advice.
-        Live data is provided by CoinGecko and should be verified independently before making decisions.
+        Live data is provided by CoinGecko and TradingView and should be verified independently before making decisions.
       </p>
     </div>
   </div>
 
-  <script>
-    const COINGECKO_DEMO_API_KEY = "";
 
-    let historyChart = null;
-    let refreshInterval = null;
-    let localSnapshots = [];
+  <script>
+    let currentStatsLoaded = false;
 
     const loadingState = document.getElementById('loadingState');
     const errorState = document.getElementById('errorState');
@@ -1085,12 +1090,6 @@
     const heroCap = document.getElementById('heroCap');
     const heroGlobal = document.getElementById('heroGlobal');
 
-    const STORAGE_KEY = "novainvesttools_btc_dominance_snapshots_v2";
-
-    function fmtPercent(value, digits = 1){
-      return `${Number(value).toFixed(digits)}%`;
-    }
-
     function fmtMoney(value){
       if (!Number.isFinite(value)) return "—";
       if (Math.abs(value) >= 1e12) return "$" + (value / 1e12).toFixed(2) + "T";
@@ -1110,59 +1109,12 @@
       });
     }
 
-    function dayKeyFromTs(ts){
-      const d = new Date(Number(ts) * 1000);
-      return [
-        d.getUTCFullYear(),
-        String(d.getUTCMonth() + 1).padStart(2, "0"),
-        String(d.getUTCDate()).padStart(2, "0")
-      ].join("-");
-    }
-
     function classifyDominance(value){
       if (value >= 65) return { label: "Bitcoin-led", cls: "insight-risk-on", note: "Bitcoin is dominating capital flow." };
       if (value >= 55) return { label: "BTC-strong", cls: "insight-balanced", note: "Bitcoin is leading, but the market is not extreme." };
       if (value >= 45) return { label: "Balanced", cls: "insight-balanced", note: "Market structure is relatively even." };
       if (value >= 35) return { label: "Altcoin-friendly", cls: "insight-wary", note: "Altcoins are taking a larger share." };
       return { label: "Alt-season regime", cls: "insight-fear", note: "Altcoins are broadly outperforming on share." };
-    }
-
-    function normalizeSnapshot(snapshot){
-      return {
-        ts: Number(snapshot.ts),
-        day: String(snapshot.day),
-        btc: Number(snapshot.btc),
-        eth: Number(snapshot.eth),
-        total: Number(snapshot.total),
-        marketMove: Number(snapshot.marketMove)
-      };
-    }
-
-    function loadSnapshots(){
-      try{
-        const raw = localStorage.getItem(STORAGE_KEY);
-        const parsed = raw ? JSON.parse(raw) : [];
-        return Array.isArray(parsed) ? parsed : [];
-      } catch {
-        return [];
-      }
-    }
-
-    function saveSnapshots(list){
-      localStorage.setItem(STORAGE_KEY, JSON.stringify(list));
-    }
-
-    function upsertSnapshot(snapshot){
-      const existing = loadSnapshots();
-
-      const filtered = existing.filter(item => item && item.day !== snapshot.day);
-      filtered.push(snapshot);
-
-      filtered.sort((a, b) => a.ts - b.ts);
-
-      const trimmed = filtered.slice(-45);
-      saveSnapshots(trimmed);
-      localSnapshots = trimmed;
     }
 
     function updateNeedle(score){
@@ -1173,182 +1125,93 @@
       scoreValue.style.color = hue;
     }
 
-    function updateSummary(data){
-      const btc = Number(data.market_cap_percentage?.btc ?? 0);
-      const eth = Number(data.market_cap_percentage?.eth ?? 0);
-      const total = Number(data.total_market_cap?.usd ?? 0);
-      const marketMove = Number(data.market_cap_change_percentage_24h_usd ?? 0);
-      const btcCap = total * (btc / 100);
-      const ethCap = total * (eth / 100);
-      const altShare = Math.max(0, 100 - btc - eth);
-
-      const classification = classifyDominance(btc);
-
-      scoreValue.textContent = btc.toFixed(1);
-      scoreLabel.textContent = classification.label;
-      scoreLabel.className = `score-label ${classification.cls}`;
-
-      currentReading.innerText = `${btc.toFixed(1)}% · ${classification.label}`;
-      currentReadingNote.innerText = classification.note;
-
-      btcCapReading.innerText = fmtMoney(btcCap);
-      globalCapReading.innerText = fmtMoney(total);
-      marketMoveReading.innerText = `${marketMove >= 0 ? '+' : ''}${marketMove.toFixed(2)}%`;
-      marketMoveReading.className = marketMove >= 0 ? 'insight-balanced' : 'insight-wary';
-      marketMoveNote.innerText = marketMove >= 0 ? 'Global market cap is expanding.' : 'Global market cap is contracting.';
-
-      const previous = localSnapshots.length > 1 ? localSnapshots[localSnapshots.length - 2] : null;
-      shiftReading.innerText = previous ? `${(btc - previous.btc).toFixed(1)} pts vs last snapshot` : '—';
-
-      ethReading.innerText = `${eth.toFixed(1)}%`;
-      othersReading.innerText = `${altShare.toFixed(1)}%`;
-
-      heroScore.innerText = `${btc.toFixed(1)}%`;
-      heroCap.innerText = fmtMoney(btcCap);
-      heroGlobal.innerText = fmtMoney(total);
-
-      const updatedAtLabel = data.updated_at ? fmtDate(data.updated_at) : 'just now';
-      updatedAt.textContent = `Updated: ${updatedAtLabel}`;
-      refreshText.textContent = 'Auto-refreshing every 5 minutes.';
-      document.title = `BTC Dominance – ${btc.toFixed(1)}% (${classification.label})`;
-
-      updateNeedle(btc);
-    }
-
-    function drawChart(){
-      const ctx = document.getElementById('historyChart').getContext('2d');
-      if (historyChart) historyChart.destroy();
-
-      const points = [...localSnapshots].sort((a, b) => a.ts - b.ts);
-      const labels = points.map(item => new Date(item.ts * 1000).toLocaleDateString(undefined, { month: 'short', day: 'numeric' }));
-      const values = points.map(item => item.btc);
-
-      historyChart = new Chart(ctx, {
-        type: 'line',
-        data: {
-          labels,
-          datasets: [{
-            label: 'BTC dominance',
-            data: values,
-            borderColor: '#3b82f6',
-            backgroundColor: 'rgba(59,130,246,0.16)',
-            fill: true,
-            tension: 0.25,
-            pointRadius: 3,
-            pointHoverRadius: 5
-          }]
-        },
-        options: {
-          responsive: true,
-          plugins: {
-            legend: {
-              labels: { color: 'white' }
-            },
-            tooltip: {
-              callbacks: {
-                label: function(context){
-                  return ` ${context.parsed.y.toFixed(2)}%`;
-                }
-              }
-            }
-          },
-          scales: {
-            x: {
-              ticks: { color: 'white', maxRotation: 0, autoSkip: true },
-              grid: { color: 'rgba(255,255,255,0.08)' }
-            },
-            y: {
-              min: 0,
-              max: 100,
-              ticks: { color: 'white' },
-              grid: { color: 'rgba(255,255,255,0.08)' }
-            }
-          }
-        }
-      });
-    }
-
-    function pushDailySnapshot(data){
-      const ts = Number(data.updated_at || Math.floor(Date.now() / 1000));
-      const day = dayKeyFromTs(ts);
-      const btc = Number(data.market_cap_percentage?.btc ?? 0);
-      const eth = Number(data.market_cap_percentage?.eth ?? 0);
-      const total = Number(data.total_market_cap?.usd ?? 0);
-      const marketMove = Number(data.market_cap_change_percentage_24h_usd ?? 0);
-
-      const snapshot = normalizeSnapshot({
-        ts,
-        day,
-        btc,
-        eth,
-        total,
-        marketMove
-      });
-
-      upsertSnapshot(snapshot);
-    }
-
     async function fetchDominance(){
       loadingState.style.display = 'block';
       errorState.style.display = 'none';
       dashboard.style.display = 'none';
 
-      const baseHeaders = {};
-      if (COINGECKO_DEMO_API_KEY) {
-        baseHeaders['x-cg-demo-api-key'] = COINGECKO_DEMO_API_KEY;
+      try{
+        const res = await fetch('https://api.coingecko.com/api/v3/global', { cache: 'no-store' });
+        if (!res.ok) throw new Error(`Request failed with status ${res.status}`);
+        const json = await res.json();
+        if (!json || !json.data) throw new Error('Invalid API response.');
+
+        const data = json.data;
+        const btc = Number(data.market_cap_percentage?.btc ?? 0);
+        const eth = Number(data.market_cap_percentage?.eth ?? 0);
+        const total = Number(data.total_market_cap?.usd ?? 0);
+        const marketMove = Number(data.market_cap_change_percentage_24h_usd ?? 0);
+        const btcCap = total * (btc / 100);
+        const altShare = Math.max(0, 100 - btc - eth);
+
+        const classification = classifyDominance(btc);
+
+        scoreValue.textContent = btc.toFixed(1);
+        scoreLabel.textContent = classification.label;
+        scoreLabel.className = `score-label ${classification.cls}`;
+
+        currentReading.innerText = `${btc.toFixed(1)}% · ${classification.label}`;
+        currentReadingNote.innerText = classification.note;
+
+        btcCapReading.innerText = fmtMoney(btcCap);
+        globalCapReading.innerText = fmtMoney(total);
+        marketMoveReading.innerText = `${marketMove >= 0 ? '+' : ''}${marketMove.toFixed(2)}%`;
+        marketMoveReading.className = marketMove >= 0 ? 'insight-balanced' : 'insight-wary';
+        marketMoveNote.innerText = marketMove >= 0 ? 'Global market cap is expanding.' : 'Global market cap is contracting.';
+
+        ethReading.innerText = `${eth.toFixed(1)}%`;
+        othersReading.innerText = `${altShare.toFixed(1)}%`;
+
+        heroScore.innerText = `${btc.toFixed(1)}%`;
+        heroCap.innerText = fmtMoney(btcCap);
+        heroGlobal.innerText = fmtMoney(total);
+
+        updatedAt.textContent = `Updated: ${data.updated_at ? fmtDate(data.updated_at) : 'just now'}`;
+        refreshText.textContent = 'Current stats refresh every 5 minutes.';
+        document.title = `BTC Dominance – ${btc.toFixed(1)}% (${classification.label})`;
+
+        updateNeedle(btc);
+
+        loadingState.style.display = 'none';
+        dashboard.style.display = 'block';
+        currentStatsLoaded = true;
+      } catch (err){
+        loadingState.style.display = 'none';
+        errorState.style.display = 'block';
+        errorState.textContent = `Live data could not be loaded right now. ${err.message}`;
       }
-
-      const attempts = [
-        { url: 'https://api.coingecko.com/api/v3/global', headers: baseHeaders },
-        { url: 'https://api.coingecko.com/api/v3/global', headers: {} }
-      ];
-
-      let lastError = null;
-
-      for (const attempt of attempts) {
-        try{
-          const res = await fetch(attempt.url, { headers: attempt.headers, cache: 'no-store' });
-          if (!res.ok) throw new Error(`Request failed with status ${res.status}`);
-          const json = await res.json();
-          if (!json || !json.data) throw new Error('Invalid API response.');
-
-          const data = json.data;
-          const btc = Number(data.market_cap_percentage?.btc);
-          const total = Number(data.total_market_cap?.usd);
-
-          if (!Number.isFinite(btc) || !Number.isFinite(total)) {
-            throw new Error('Missing market data fields.');
-          }
-
-          localSnapshots = loadSnapshots();
-          pushDailySnapshot(data);
-          localSnapshots = loadSnapshots();
-
-          updateSummary(data);
-          drawChart();
-
-          loadingState.style.display = 'none';
-          dashboard.style.display = 'block';
-          return;
-        } catch (err) {
-          lastError = err;
-        }
-      }
-
-      loadingState.style.display = 'none';
-      errorState.style.display = 'block';
-      errorState.textContent = `Live data could not be loaded right now. ${lastError ? lastError.message : 'Unknown error.'}`;
     }
 
-    function startAutoRefresh(){
-      clearInterval(refreshInterval);
-      refreshInterval = setInterval(fetchDominance, 300000);
+    function loadTradingViewChart(){
+      const script = document.createElement('script');
+      script.type = 'text/javascript';
+      script.src = 'https://s3.tradingview.com/external-embedding/embed-widget-advanced-chart.js';
+      script.async = true;
+      script.innerHTML = JSON.stringify({
+        "autosize": true,
+        "symbol": "CRYPTOCAP:BTC.D",
+        "interval": "D",
+        "timezone": "Etc/UTC",
+        "theme": "dark",
+        "style": "1",
+        "locale": "en",
+        "enable_publishing": false,
+        "hide_top_toolbar": false,
+        "hide_legend": false,
+        "save_image": false,
+        "calendar": false,
+        "support_host": "https://www.tradingview.com"
+      });
+
+      const container = document.getElementById('tvchart');
+      container.innerHTML = '';
+      container.appendChild(script);
     }
 
     document.addEventListener('DOMContentLoaded', () => {
-      localSnapshots = loadSnapshots();
       fetchDominance();
-      startAutoRefresh();
+      loadTradingViewChart();
+      setInterval(fetchDominance, 300000);
 
       document.querySelectorAll('.faq-question').forEach(btn => {
         btn.addEventListener('click', () => {
@@ -1393,4 +1256,4 @@
     });
   </script>
 </body>
-                                      </html>
+  </html>
