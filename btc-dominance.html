@@ -1,0 +1,1380 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <link rel="canonical" href="https://novainvesttools.com/btc-dominance.html">
+
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-ZPCXDVE8C5"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-ZPCXDVE8C5');
+  </script>
+
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+
+  <title>BTC Dominance – Live Crypto Market Share</title>
+  <meta name="description" content="Track live Bitcoin dominance with a clean dashboard, market context, and trend memory. Built with live crypto market data." />
+  <meta name="theme-color" content="#0b1a33">
+  <meta name="robots" content="index,follow,max-image-preview:large">
+
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://novainvesttools.com/btc-dominance.html">
+  <meta property="og:title" content="BTC Dominance – Live Crypto Market Share">
+  <meta property="og:description" content="Track live Bitcoin dominance with a clean dashboard, market context, and trend memory.">
+
+  <link rel="preconnect" href="https://cdn.jsdelivr.net">
+  <link rel="dns-prefetch" href="https://cdn.jsdelivr.net">
+
+  <link rel="stylesheet" href="style.css">
+  <link rel="icon" href="favicon.png" type="image/png">
+  <link rel="apple-touch-icon" href="favicon.png">
+
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+  <script type="application/ld+json">
+  {
+    "@context":"https://schema.org",
+    "@type":"WebApplication",
+    "name":"BTC Dominance",
+    "url":"https://novainvesttools.com/btc-dominance.html",
+    "applicationCategory":"FinanceApplication",
+    "operatingSystem":"All",
+    "browserRequirements":"Requires JavaScript",
+    "description":"Track live Bitcoin dominance and global crypto market share with trend memory and market context.",
+    "featureList":[
+      "Live BTC dominance",
+      "Market cap comparison",
+      "Trend memory chart",
+      "Market context cards"
+    ],
+    "offers":{
+      "@type":"Offer",
+      "price":"0",
+      "priceCurrency":"USD"
+    }
+  }
+  </script>
+
+  <script type="application/ld+json">
+  {
+    "@context":"https://schema.org",
+    "@type":"FAQPage",
+    "mainEntity":[
+      {
+        "@type":"Question",
+        "name":"What is BTC dominance?",
+        "acceptedAnswer":{
+          "@type":"Answer",
+          "text":"BTC dominance is Bitcoin’s share of the total crypto market cap."
+        }
+      },
+      {
+        "@type":"Question",
+        "name":"Why does BTC dominance matter?",
+        "acceptedAnswer":{
+          "@type":"Answer",
+          "text":"It helps show whether Bitcoin is leading the market or whether capital is spreading into other crypto assets."
+        }
+      },
+      {
+        "@type":"Question",
+        "name":"Is this a buy or sell signal?",
+        "acceptedAnswer":{
+          "@type":"Answer",
+          "text":"No. It is a market context tool, not a trading signal."
+        }
+      }
+    ]
+  }
+  </script>
+
+  <style>
+    *{ box-sizing:border-box; }
+    html{ scroll-behavior:smooth; }
+
+    body{
+      font-family:Arial, sans-serif;
+      background:
+        radial-gradient(circle at top, rgba(59,130,246,0.20), transparent 35%),
+        radial-gradient(circle at bottom right, rgba(34,197,94,0.10), transparent 30%),
+        #020617;
+      color:white;
+      margin:0;
+      min-height:100vh;
+    }
+
+    .page-shell{
+      width:min(1180px, calc(100% - 32px));
+      margin:0 auto;
+    }
+
+    .topbar{
+      display:flex;
+      align-items:center;
+      gap:16px;
+      padding:20px 0 0;
+      flex-wrap:wrap;
+    }
+
+    .menu-btn{
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      width:44px;
+      height:44px;
+      border:none;
+      border-radius:12px;
+      cursor:pointer;
+      background:rgba(255,255,255,0.06);
+      color:white;
+      font-size:20px;
+      transition:0.2s;
+    }
+
+    .menu-btn:hover{ background:rgba(255,255,255,0.10); }
+
+    .brand{
+      font-size:18px;
+      font-weight:700;
+      letter-spacing:0.2px;
+      margin-right:auto;
+    }
+
+    .topnav{
+      display:flex;
+      gap:14px;
+      flex-wrap:wrap;
+    }
+
+    .topnav a{
+      color:#cbd5e1;
+      text-decoration:none;
+      font-size:14px;
+    }
+
+    .topnav a:hover{ color:white; }
+
+    .drawer-overlay{
+      position:fixed;
+      inset:0;
+      background:rgba(2,6,23,0.62);
+      backdrop-filter:blur(2px);
+      opacity:0;
+      pointer-events:none;
+      transition:0.25s;
+      z-index:80;
+    }
+
+    .drawer-overlay.show{
+      opacity:1;
+      pointer-events:auto;
+    }
+
+    .drawer{
+      position:fixed;
+      top:0;
+      left:0;
+      height:100%;
+      width:min(360px, 88vw);
+      background:#0f172a;
+      border-right:1px solid rgba(255,255,255,0.08);
+      box-shadow:18px 0 40px rgba(0,0,0,0.35);
+      transform:translateX(-102%);
+      transition:0.25s ease;
+      z-index:90;
+      padding:18px;
+      overflow:auto;
+    }
+
+    .drawer.open{ transform:translateX(0); }
+
+    .drawer-head{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:10px;
+      margin-bottom:18px;
+    }
+
+    .drawer-head strong{ font-size:16px; }
+
+    .drawer-close{
+      width:40px;
+      height:40px;
+      border:none;
+      border-radius:10px;
+      cursor:pointer;
+      background:rgba(255,255,255,0.06);
+      color:white;
+      font-size:22px;
+      line-height:1;
+    }
+
+    .drawer-section{
+      margin:16px 0 18px;
+    }
+
+    .drawer-section h4{
+      margin:0 0 10px;
+      font-size:13px;
+      color:#94a3b8;
+      text-transform:uppercase;
+      letter-spacing:0.08em;
+    }
+
+    .drawer-links{
+      display:flex;
+      flex-direction:column;
+      gap:8px;
+    }
+
+    .drawer-links a{
+      display:block;
+      padding:11px 12px;
+      border-radius:12px;
+      color:white;
+      text-decoration:none;
+      background:rgba(255,255,255,0.04);
+      border:1px solid rgba(255,255,255,0.06);
+    }
+
+    .drawer-links a:hover{
+      background:rgba(59,130,246,0.14);
+      border-color:rgba(59,130,246,0.30);
+    }
+
+    .hero{
+      padding:42px 0 26px;
+    }
+
+    .eyebrow{
+      display:inline-flex;
+      align-items:center;
+      gap:8px;
+      padding:7px 12px;
+      border-radius:999px;
+      background:rgba(59,130,246,0.12);
+      border:1px solid rgba(59,130,246,0.25);
+      color:#bfdbfe;
+      font-size:13px;
+      font-weight:700;
+      margin-bottom:14px;
+    }
+
+    .hero h1{
+      margin:0;
+      font-size:clamp(36px, 6vw, 62px);
+      line-height:1.02;
+      max-width:900px;
+      background:linear-gradient(90deg,#e2e8f0 10%, #93c5fd 45%, #86efac 95%);
+      -webkit-background-clip:text;
+      background-clip:text;
+      color:transparent;
+    }
+
+    .hero p{
+      margin:16px 0 0;
+      max-width:840px;
+      color:#94a3b8;
+      font-size:18px;
+      line-height:1.7;
+    }
+
+    .hero-actions{
+      display:flex;
+      gap:12px;
+      flex-wrap:wrap;
+      margin:24px 0 0;
+    }
+
+    .hero-btn{
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      padding:12px 18px;
+      border-radius:12px;
+      text-decoration:none;
+      font-weight:700;
+      transition:0.2s;
+    }
+
+    .hero-btn.primary{
+      background:linear-gradient(135deg,#3b82f6,#2563eb);
+      color:white;
+      box-shadow:0 10px 22px rgba(37,99,235,0.25);
+    }
+
+    .hero-btn.secondary{
+      background:rgba(255,255,255,0.05);
+      color:white;
+      border:1px solid rgba(255,255,255,0.08);
+    }
+
+    .hero-btn:hover{ transform:translateY(-1px); }
+
+    .stats{
+      display:grid;
+      grid-template-columns:repeat(auto-fit, minmax(170px, 1fr));
+      gap:12px;
+      margin-top:24px;
+    }
+
+    .stat{
+      background:rgba(30,41,59,0.55);
+      border:1px solid rgba(255,255,255,0.06);
+      border-radius:16px;
+      padding:14px 16px;
+      backdrop-filter:blur(10px);
+    }
+
+    .stat strong{
+      display:block;
+      font-size:22px;
+      margin-bottom:6px;
+    }
+
+    .stat span{
+      color:#94a3b8;
+      font-size:13px;
+      line-height:1.4;
+    }
+
+    .section{
+      margin:26px 0 0;
+    }
+
+    .section h2{
+      margin:0 0 10px;
+      font-size:28px;
+    }
+
+    .section-lead{
+      color:#94a3b8;
+      margin:0 0 16px;
+      line-height:1.65;
+    }
+
+    .live-card{
+      background:rgba(30,41,59,0.70);
+      border:1px solid rgba(255,255,255,0.08);
+      border-radius:20px;
+      padding:22px;
+      box-shadow:0 18px 40px rgba(0,0,0,0.28);
+    }
+
+    .live-header{
+      display:flex;
+      justify-content:space-between;
+      gap:16px;
+      flex-wrap:wrap;
+      align-items:flex-start;
+      margin-top:8px;
+    }
+
+    .live-status{
+      color:#93c5fd;
+      font-size:13px;
+      font-weight:700;
+      letter-spacing:0.06em;
+      text-transform:uppercase;
+    }
+
+    .updated-at{
+      color:#94a3b8;
+      font-size:13px;
+      margin-top:6px;
+      line-height:1.5;
+    }
+
+    .badge-row{
+      display:flex;
+      gap:10px;
+      flex-wrap:wrap;
+      margin:14px 0 0;
+    }
+
+    .badge{
+      display:inline-flex;
+      padding:5px 10px;
+      border-radius:999px;
+      font-size:12px;
+      font-weight:700;
+      background:rgba(59,130,246,0.12);
+      color:#bfdbfe;
+      border:1px solid rgba(59,130,246,0.22);
+    }
+
+    .badge.soft{
+      background:rgba(255,255,255,0.05);
+      border-color:rgba(255,255,255,0.08);
+      color:#dbeafe;
+    }
+
+    .dashboard{
+      display:grid;
+      grid-template-columns:220px 1fr;
+      gap:18px;
+      align-items:center;
+      margin-top:18px;
+    }
+
+    .gauge-wrap{
+      display:flex;
+      flex-direction:column;
+      align-items:center;
+      gap:14px;
+    }
+
+    .gauge{
+      width:180px;
+      height:180px;
+      border-radius:50%;
+      position:relative;
+      box-shadow:0 0 0 1px rgba(255,255,255,0.04) inset;
+      background:conic-gradient(
+        #ef4444 0deg 34deg,
+        #f97316 34deg 68deg,
+        #facc15 68deg 102deg,
+        #22c55e 102deg 136deg,
+        #06b6d4 136deg 180deg,
+        #06b6d4 180deg 224deg,
+        #22c55e 224deg 258deg,
+        #facc15 258deg 292deg,
+        #f97316 292deg 326deg,
+        #ef4444 326deg 360deg
+      );
+    }
+
+    .gauge::after{
+      content:"";
+      position:absolute;
+      inset:16px;
+      border-radius:50%;
+      background:#0f172a;
+      box-shadow:inset 0 0 0 1px rgba(255,255,255,0.05);
+    }
+
+    .needle{
+      position:absolute;
+      left:50%;
+      top:50%;
+      width:3px;
+      height:74px;
+      background:#e2e8f0;
+      transform-origin:bottom center;
+      transform:translate(-50%, -100%) rotate(-90deg);
+      border-radius:999px;
+      z-index:2;
+      box-shadow:0 0 10px rgba(255,255,255,0.15);
+    }
+
+    .needle::before{
+      content:"";
+      position:absolute;
+      left:50%;
+      top:-8px;
+      width:12px;
+      height:12px;
+      transform:translateX(-50%);
+      border-radius:50%;
+      background:#e2e8f0;
+    }
+
+    .score-box{
+      position:absolute;
+      inset:0;
+      z-index:3;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      flex-direction:column;
+      text-align:center;
+      padding:24px;
+    }
+
+    .score-value{
+      font-size:44px;
+      line-height:1;
+      font-weight:800;
+      color:#fff;
+    }
+
+    .score-label{
+      margin-top:8px;
+      font-size:14px;
+      color:#cbd5e1;
+      font-weight:700;
+      text-transform:uppercase;
+      letter-spacing:0.08em;
+    }
+
+    .score-sub{
+      margin-top:5px;
+      font-size:12px;
+      color:#94a3b8;
+    }
+
+    .summary-grid{
+      display:grid;
+      grid-template-columns:repeat(2, minmax(0, 1fr));
+      gap:12px;
+    }
+
+    .summary-card{
+      background:rgba(15,23,42,0.78);
+      border:1px solid rgba(255,255,255,0.06);
+      border-radius:16px;
+      padding:16px;
+      min-height:86px;
+    }
+
+    .summary-card span{
+      display:block;
+      font-size:12px;
+      color:#94a3b8;
+      text-transform:uppercase;
+      letter-spacing:0.08em;
+      margin-bottom:8px;
+      font-weight:700;
+    }
+
+    .summary-card strong{
+      font-size:18px;
+      line-height:1.25;
+    }
+
+    .summary-card p{
+      margin:6px 0 0;
+      color:#cbd5e1;
+      font-size:13px;
+      line-height:1.55;
+    }
+
+    .text-section{
+      margin-top:22px;
+      display:grid;
+      gap:12px;
+    }
+
+    .note-box{
+      padding:16px 18px;
+      border-radius:14px;
+      background:rgba(255,255,255,0.04);
+      border:1px solid rgba(255,255,255,0.06);
+      color:#cbd5e1;
+      line-height:1.65;
+      font-size:14px;
+    }
+
+    .note-box strong{
+      display:block;
+      margin-bottom:4px;
+      color:#e2e8f0;
+      font-size:14px;
+    }
+
+    .meta-row{
+      display:grid;
+      grid-template-columns:repeat(3, minmax(0, 1fr));
+      gap:12px;
+      margin-top:16px;
+    }
+
+    .meta-card{
+      background:rgba(15,23,42,0.78);
+      border:1px solid rgba(255,255,255,0.06);
+      border-radius:14px;
+      padding:14px 16px;
+    }
+
+    .meta-card span{
+      display:block;
+      color:#94a3b8;
+      font-size:12px;
+      text-transform:uppercase;
+      letter-spacing:0.08em;
+      font-weight:700;
+      margin-bottom:6px;
+    }
+
+    .meta-card strong{
+      font-size:16px;
+      line-height:1.3;
+    }
+
+    .chart-wrap{
+      margin-top:24px;
+    }
+
+    canvas{ margin-top:8px; }
+
+    .source-line{
+      margin-top:12px;
+      color:#94a3b8;
+      font-size:12px;
+      line-height:1.6;
+    }
+
+    .source-line a{
+      color:#93c5fd;
+      text-decoration:none;
+    }
+
+    .source-line a:hover{ text-decoration:underline; }
+
+    .content{
+      width:90%;
+      max-width:900px;
+      margin-top:34px;
+    }
+
+    .content h2{
+      margin-top:34px;
+      margin-bottom:10px;
+      font-size:28px;
+    }
+
+    .content p,
+    .content li{
+      color:#cbd5e1;
+      line-height:1.7;
+      font-size:15px;
+    }
+
+    .content ul{ padding-left:20px; }
+
+    .formula{
+      background:rgba(255,255,255,0.05);
+      border:1px solid rgba(255,255,255,0.08);
+      padding:14px 16px;
+      border-radius:12px;
+      margin:12px 0;
+      color:#e2e8f0;
+      overflow:auto;
+      line-height:1.7;
+    }
+
+    .faq{ margin-top:14px; }
+
+    .faq-item{
+      border-bottom:1px solid rgba(255,255,255,0.08);
+    }
+
+    .faq-question{
+      width:100%;
+      background:none;
+      border:none;
+      color:white;
+      text-align:left;
+      padding:14px 8px;
+      font-size:15px;
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      cursor:pointer;
+    }
+
+    .faq-question:hover{ color:#93c5fd; }
+
+    .arrow{ transition:0.25s; }
+
+    .faq-item.active .arrow{ transform:rotate(180deg); }
+
+    .faq-answer{
+      max-height:0;
+      overflow:hidden;
+      transition:max-height 0.3s ease;
+      color:#cbd5e1;
+      font-size:14px;
+      padding:0 8px;
+    }
+
+    .faq-item.active .faq-answer{
+      max-height:240px;
+      padding-bottom:12px;
+    }
+
+    .related{
+      width:90%;
+      max-width:760px;
+      margin-top:34px;
+      background:rgba(30,41,59,0.62);
+      border:1px solid rgba(255,255,255,0.08);
+      border-radius:16px;
+      padding:22px;
+    }
+
+    .related h3{
+      margin-top:0;
+      margin-bottom:10px;
+    }
+
+    .related p,
+    .related li{
+      color:#cbd5e1;
+      line-height:1.7;
+      font-size:15px;
+    }
+
+    .related ul{
+      padding-left:18px;
+      margin-bottom:0;
+    }
+
+    .related a{
+      color:#93c5fd;
+      text-decoration:none;
+    }
+
+    .related a:hover{ text-decoration:underline; }
+
+    .disclaimer{
+      margin-top:24px;
+      padding-top:20px;
+      border-top:1px solid rgba(255,255,255,0.1);
+      font-size:13px;
+      color:#9ca3af;
+      max-width:900px;
+      text-align:center;
+      line-height:1.6;
+      width:90%;
+    }
+
+    .loading-state,
+    .error-state{
+      margin-top:16px;
+      padding:16px;
+      border-radius:14px;
+      background:rgba(255,255,255,0.04);
+      border:1px solid rgba(255,255,255,0.06);
+      color:#cbd5e1;
+      line-height:1.6;
+      font-size:14px;
+    }
+
+    .error-state{
+      border-color:rgba(239,68,68,0.25);
+      background:rgba(239,68,68,0.08);
+      color:#fecaca;
+    }
+
+    .tiny{
+      font-size:12px;
+      color:#94a3b8;
+    }
+
+    .insight-fear{ color:#ef4444; }
+    .insight-wary{ color:#f97316; }
+    .insight-balanced{ color:#22c55e; }
+    .insight-risk-on{ color:#06b6d4; }
+
+    @media (max-width:760px){
+      .dashboard{ grid-template-columns:1fr; }
+      .gauge-wrap{ padding-top:6px; }
+      .summary-grid,
+      .meta-row{ grid-template-columns:1fr; }
+      .container{ padding:22px; }
+      h1{ font-size:28px; }
+      .content h2{ font-size:24px; }
+      .gauge{ width:160px; height:160px; }
+      .score-value{ font-size:38px; }
+    }
+  </style>
+</head>
+<body>
+  <div class="drawer-overlay" id="drawerOverlay"></div>
+
+  <aside class="drawer" id="drawerPanel" aria-hidden="true">
+    <div class="drawer-head">
+      <strong>Navigation</strong>
+      <button class="drawer-close" id="drawerCloseBtn" type="button" aria-label="Close menu">×</button>
+    </div>
+
+    <div class="drawer-section">
+      <h4>Explore</h4>
+      <div class="drawer-links">
+        <a href="#overview">Overview</a>
+        <a href="#chart">Trend</a>
+        <a href="#why">Why it matters</a>
+        <a href="#faq">FAQ</a>
+      </div>
+    </div>
+
+    <div class="drawer-section">
+      <h4>Live tools</h4>
+      <div class="drawer-links">
+        <a href="currency-converter.html">Currency Converter</a>
+        <a href="purchasing-power-calculator.html">Purchasing Power Calculator</a>
+        <a href="fear-greed-index.html">Fear & Greed Index</a>
+      </div>
+    </div>
+  </aside>
+
+  <div class="page-shell">
+    <header class="topbar">
+      <button class="menu-btn" id="menuBtn" type="button" aria-label="Open navigation menu" aria-controls="drawerPanel" aria-expanded="false">☰</button>
+      <div class="brand">Nova Invest Tools</div>
+      <nav class="topnav">
+        <a href="#overview">Overview</a>
+        <a href="#chart">Trend</a>
+        <a href="#why">Why it matters</a>
+        <a href="#faq">FAQ</a>
+      </nav>
+    </header>
+
+    <section class="hero" id="overview">
+      <div class="eyebrow">Live crypto market share</div>
+      <h1>BTC Dominance</h1>
+      <p>
+        See how much of the total crypto market Bitcoin currently controls, then compare it with recent local snapshots for context.
+      </p>
+
+      <div class="hero-actions">
+        <a class="hero-btn primary" href="#chart">View trend</a>
+        <a class="hero-btn secondary" href="#why">Read context</a>
+      </div>
+
+      <div class="stats">
+        <div class="stat">
+          <strong id="heroScore">—</strong>
+          <span>current BTC dominance</span>
+        </div>
+        <div class="stat">
+          <strong id="heroCap">—</strong>
+          <span>Bitcoin market cap</span>
+        </div>
+        <div class="stat">
+          <strong id="heroGlobal">—</strong>
+          <span>global crypto market cap</span>
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="live-card">
+        <div class="live-header">
+          <div>
+            <div class="live-status">Live market dashboard</div>
+            <div class="badge-row">
+              <span class="badge">CoinGecko data</span>
+              <span class="badge soft">Auto refresh</span>
+              <span class="badge soft">Market context</span>
+            </div>
+            <div class="updated-at" id="updatedAt">Loading latest market data…</div>
+            <div class="tiny" id="refreshText"></div>
+          </div>
+
+          <div style="text-align:right; min-width:220px;">
+            <div class="tiny">Source</div>
+            <div class="updated-at">
+              <a href="https://www.coingecko.com/en/charts/bitcoin-dominance" target="_blank" rel="noopener noreferrer" style="color:#93c5fd; text-decoration:none;">
+                CoinGecko Bitcoin Dominance
+              </a>
+            </div>
+          </div>
+        </div>
+
+        <div id="loadingState" class="loading-state">Loading BTC dominance…</div>
+        <div id="errorState" class="error-state" style="display:none;"></div>
+
+        <div id="dashboard" style="display:none;">
+          <div class="dashboard">
+            <div class="gauge-wrap">
+              <div class="gauge" id="gauge">
+                <div class="needle" id="needle"></div>
+                <div class="score-box">
+                  <div class="score-value" id="scoreValue">—</div>
+                  <div class="score-label" id="scoreLabel">—</div>
+                  <div class="score-sub">BTC share of total crypto market</div>
+                </div>
+              </div>
+              <div class="tiny" id="scaleHint">Lower values usually favor altcoin breadth; higher values usually point to Bitcoin-led market structure.</div>
+            </div>
+
+            <div>
+              <div class="summary-grid">
+                <div class="summary-card">
+                  <span>Current reading</span>
+                  <strong id="currentReading">—</strong>
+                  <p id="currentReadingNote">—</p>
+                </div>
+                <div class="summary-card">
+                  <span>BTC market cap</span>
+                  <strong id="btcCapReading">—</strong>
+                  <p>Estimated from the global market snapshot.</p>
+                </div>
+                <div class="summary-card">
+                  <span>Total crypto market cap</span>
+                  <strong id="globalCapReading">—</strong>
+                  <p>Broad market size across crypto assets.</p>
+                </div>
+                <div class="summary-card">
+                  <span>24h market move</span>
+                  <strong id="marketMoveReading">—</strong>
+                  <p id="marketMoveNote">—</p>
+                </div>
+              </div>
+
+              <div class="meta-row">
+                <div class="meta-card">
+                  <span>Dominance shift</span>
+                  <strong id="shiftReading">—</strong>
+                </div>
+                <div class="meta-card">
+                  <span>ETH share</span>
+                  <strong id="ethReading">—</strong>
+                </div>
+                <div class="meta-card">
+                  <span>Other assets</span>
+                  <strong id="othersReading">—</strong>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="text-section">
+            <div class="note-box">
+              <strong>How to read it</strong>
+              BTC dominance measures Bitcoin’s share of total crypto market cap. Higher readings usually mean capital is concentrating in Bitcoin; lower readings usually mean more spread into other crypto assets.
+            </div>
+            <div class="note-box">
+              <strong>Use case</strong>
+              Treat this as a market structure filter. It is useful before positioning, rotation analysis, and altcoin risk checks, but it is not a trading signal by itself.
+            </div>
+          </div>
+
+          <div class="chart-wrap" id="chart">
+            <h2>Local trend memory</h2>
+            <canvas id="historyChart"></canvas>
+            <div class="source-line">
+              Live data: <a href="https://www.coingecko.com/en/charts/bitcoin-dominance" target="_blank" rel="noopener noreferrer">CoinGecko Bitcoin Dominance</a>.
+              This chart stores a small local snapshot history in your browser so the page can show recent movement without needing a separate local JSON file.
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="content">
+      <h2>What is BTC Dominance?</h2>
+      <p>
+        BTC dominance is Bitcoin’s share of the total crypto market cap. When that share rises, Bitcoin is taking a larger portion of the market. When it falls, capital is usually spreading more into altcoins and other crypto assets.
+      </p>
+
+      <p>
+        The number matters because it gives a fast read on market structure. It does not tell you what price will do next, but it does tell you who is currently leading the market.
+      </p>
+
+      <h2>How this page works</h2>
+      <p>
+        The page loads CoinGecko’s global crypto market data, reads the BTC share from the market-cap-percentage field, and updates a dashboard, a gauge, and a recent snapshot chart. It then stores small snapshots locally so the trend section stays useful over time.
+      </p>
+
+      <div class="formula">
+        BTC Dominance = Bitcoin Market Cap ÷ Total Crypto Market Cap<br>
+        ETH and other shares are read from the same global market snapshot<br>
+        Recent trend = local browser snapshot history
+      </div>
+
+      <h2>Why it matters</h2>
+      <p>
+        BTC dominance is useful for understanding whether the market is concentrating into Bitcoin or rotating toward broader crypto risk. That makes it a better context tool than a simple price widget.
+      </p>
+
+      <p>
+        A higher dominance reading often points to a more defensive market structure. A lower reading often points to broader risk appetite and stronger altcoin participation.
+      </p>
+
+      <h2>How to use it</h2>
+      <ul>
+        <li>Check the current BTC dominance reading first</li>
+        <li>Compare it with the market cap cards below the gauge</li>
+        <li>Look at the local trend memory for direction</li>
+        <li>Use it as context before making crypto allocation decisions</li>
+      </ul>
+
+      <h2>Frequently Asked Questions</h2>
+      <div class="faq" id="faq">
+        <div class="faq-item">
+          <button class="faq-question" type="button">
+            What does a rising BTC dominance mean?
+            <span class="arrow">▼</span>
+          </button>
+          <div class="faq-answer">
+            <p>
+              It usually means Bitcoin is absorbing more of the market’s value, often at the expense of altcoins.
+            </p>
+          </div>
+        </div>
+
+        <div class="faq-item">
+          <button class="faq-question" type="button">
+            What does a falling BTC dominance mean?
+            <span class="arrow">▼</span>
+          </button>
+          <div class="faq-answer">
+            <p>
+              It usually means capital is rotating into other crypto assets and the market is broadening beyond Bitcoin.
+            </p>
+          </div>
+        </div>
+
+        <div class="faq-item">
+          <button class="faq-question" type="button">
+            Is BTC dominance a buy or sell signal?
+            <span class="arrow">▼</span>
+          </button>
+          <div class="faq-answer">
+            <p>
+              No. It is a market context tool. Use it with price action, liquidity, and risk management.
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="related">
+      <h3>Related Calculators</h3>
+      <p>You may also find these tools useful:</p>
+      <ul>
+        <li><a href="fear-greed-index.html">Fear & Greed Index</a></li>
+        <li><a href="currency-converter.html">Currency Converter</a></li>
+        <li><a href="purchasing-power-calculator.html">Purchasing Power Calculator</a></li>
+        <li><a href="compound-interest-calculator.html">Compound Interest Calculator</a></li>
+      </ul>
+    </section>
+
+    <div class="disclaimer">
+      <p>
+        <strong>Disclaimer:</strong> This page is for informational purposes only and does not constitute financial, investment, or trading advice.
+        Live data is provided by CoinGecko and should be verified independently before making decisions.
+      </p>
+    </div>
+  </div>
+
+  <script>
+    const COINGECKO_DEMO_API_KEY = ""; // Optional. Leave blank if the public endpoint works for you.
+
+    let historyChart = null;
+    let refreshInterval = null;
+    let localSnapshots = [];
+
+    const loadingState = document.getElementById('loadingState');
+    const errorState = document.getElementById('errorState');
+    const dashboard = document.getElementById('dashboard');
+    const updatedAt = document.getElementById('updatedAt');
+    const refreshText = document.getElementById('refreshText');
+    const scoreValue = document.getElementById('scoreValue');
+    const scoreLabel = document.getElementById('scoreLabel');
+    const needle = document.getElementById('needle');
+    const gauge = document.getElementById('gauge');
+
+    const currentReading = document.getElementById('currentReading');
+    const currentReadingNote = document.getElementById('currentReadingNote');
+    const btcCapReading = document.getElementById('btcCapReading');
+    const globalCapReading = document.getElementById('globalCapReading');
+    const marketMoveReading = document.getElementById('marketMoveReading');
+    const marketMoveNote = document.getElementById('marketMoveNote');
+    const shiftReading = document.getElementById('shiftReading');
+    const ethReading = document.getElementById('ethReading');
+    const othersReading = document.getElementById('othersReading');
+
+    const heroScore = document.getElementById('heroScore');
+    const heroCap = document.getElementById('heroCap');
+    const heroGlobal = document.getElementById('heroGlobal');
+
+    const STORAGE_KEY = "novainvesttools_btc_dominance_snapshots_v1";
+
+    function fmtPercent(value, digits = 1){
+      return `${Number(value).toFixed(digits)}%`;
+    }
+
+    function fmtMoney(value){
+      if (!Number.isFinite(value)) return "—";
+      if (Math.abs(value) >= 1e12) return "$" + (value / 1e12).toFixed(2) + "T";
+      if (Math.abs(value) >= 1e9) return "$" + (value / 1e9).toFixed(2) + "B";
+      if (Math.abs(value) >= 1e6) return "$" + (value / 1e6).toFixed(2) + "M";
+      return "$" + Number(value).toLocaleString(undefined, { maximumFractionDigits: 2 });
+    }
+
+    function fmtDate(ts){
+      const d = new Date(Number(ts) * 1000);
+      return d.toLocaleString(undefined, {
+        year: 'numeric',
+        month: 'short',
+        day: 'numeric',
+        hour: '2-digit',
+        minute: '2-digit'
+      });
+    }
+
+    function classifyDominance(value){
+      if (value >= 65) return { label: "Bitcoin-led", cls: "insight-risk-on" };
+      if (value >= 55) return { label: "BTC-strong", cls: "insight-balanced" };
+      if (value >= 45) return { label: "Balanced", cls: "insight-balanced" };
+      if (value >= 35) return { label: "Altcoin-friendly", cls: "insight-wary" };
+      return { label: "Alt-season regime", cls: "insight-fear" };
+    }
+
+    function normalizeSnapshot(ts, btc, eth, total){
+      return {
+        ts: Number(ts),
+        btc: Number(btc),
+        eth: Number(eth),
+        total: Number(total)
+      };
+    }
+
+    function loadSnapshots(){
+      try{
+        const raw = localStorage.getItem(STORAGE_KEY);
+        const parsed = raw ? JSON.parse(raw) : [];
+        return Array.isArray(parsed) ? parsed : [];
+      } catch {
+        return [];
+      }
+    }
+
+    function saveSnapshot(snapshot){
+      const existing = loadSnapshots();
+      existing.push(snapshot);
+
+      const unique = existing
+        .filter(item => item && Number.isFinite(item.ts))
+        .sort((a, b) => a.ts - b.ts)
+        .reduce((acc, item) => {
+          const key = item.ts;
+          acc.set(key, item);
+          return acc;
+        }, new Map());
+
+      const trimmed = Array.from(unique.values()).slice(-40);
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(trimmed));
+      localSnapshots = trimmed;
+    }
+
+    function updateNeedle(score){
+      const angle = (Number(score) / 100) * 180 - 90;
+      needle.style.transform = `translate(-50%, -100%) rotate(${angle}deg)`;
+
+      const hue = Number(score) < 35 ? '#f97316' : Number(score) < 45 ? '#facc15' : Number(score) < 65 ? '#22c55e' : '#06b6d4';
+      scoreValue.style.color = hue;
+    }
+
+    function pushLiveSnapshot(snapshot){
+      const last = localSnapshots[localSnapshots.length - 1];
+      if (last && Math.abs(last.btc - snapshot.btc) < 0.0001 && Math.abs(last.total - snapshot.total) < 1 && Math.abs(last.eth - snapshot.eth) < 0.0001) {
+        return;
+      }
+      saveSnapshot(snapshot);
+    }
+
+    function updateSummary(data){
+      const btc = Number(data.market_cap_percentage?.btc ?? 0);
+      const eth = Number(data.market_cap_percentage?.eth ?? 0);
+      const total = Number(data.total_market_cap?.usd ?? 0);
+      const marketMove = Number(data.market_cap_change_percentage_24h_usd ?? 0);
+      const btcCap = total * (btc / 100);
+      const ethCap = total * (eth / 100);
+      const others = Math.max(0, 100 - btc - eth);
+
+      const classification = classifyDominance(btc);
+
+      scoreValue.textContent = btc.toFixed(1);
+      scoreLabel.textContent = classification.label;
+      scoreLabel.className = `score-label ${classification.cls}`;
+
+      currentReading.innerText = `${btc.toFixed(1)}% · ${classification.label}`;
+      currentReadingNote.innerText =
+        btc >= 65 ? 'Bitcoin is absorbing a larger share of the market.' :
+        btc >= 55 ? 'Bitcoin is leading, but the market is not extreme.' :
+        btc >= 45 ? 'Market structure is balanced.' :
+        btc >= 35 ? 'Altcoins are taking a larger role.' :
+        'Altcoins are broadly outperforming on a share basis.';
+
+      btcCapReading.innerText = fmtMoney(btcCap);
+      globalCapReading.innerText = fmtMoney(total);
+      marketMoveReading.innerText = `${marketMove >= 0 ? '+' : ''}${marketMove.toFixed(2)}%`;
+      marketMoveReading.className = marketMove >= 0 ? 'insight-balanced' : 'insight-wary';
+      marketMoveNote.innerText = marketMove >= 0 ? 'Global market cap is expanding.' : 'Global market cap is contracting.';
+
+      shiftReading.innerText = localSnapshots.length > 1
+        ? `${(btc - localSnapshots[localSnapshots.length - 2].btc).toFixed(1)} pts`
+        : '—';
+
+      ethReading.innerText = `${eth.toFixed(1)}%`;
+      othersReading.innerText = `${others.toFixed(1)}%`;
+
+      heroScore.innerText = btc.toFixed(1) + '%';
+      heroCap.innerText = fmtMoney(btcCap);
+      heroGlobal.innerText = fmtMoney(total);
+
+      updatedAt.textContent = `Updated: ${data.updated_at ? fmtDate(data.updated_at) : 'just now'}`;
+      refreshText.textContent = 'Auto-refreshing every 5 minutes.';
+      document.title = `BTC Dominance – ${btc.toFixed(1)}% (${classification.label})`;
+
+      updateNeedle(btc);
+    }
+
+    function drawChart(){
+      const ctx = document.getElementById('historyChart').getContext('2d');
+      if (historyChart) historyChart.destroy();
+
+      const points = [...localSnapshots].sort((a, b) => a.ts - b.ts);
+      const labels = points.map(item => new Date(item.ts * 1000).toLocaleDateString(undefined, { month: 'short', day: 'numeric' }));
+      const values = points.map(item => item.btc);
+
+      historyChart = new Chart(ctx, {
+        type: 'line',
+        data: {
+          labels,
+          datasets: [{
+            label: 'BTC dominance',
+            data: values,
+            borderColor: '#3b82f6',
+            backgroundColor: 'rgba(59,130,246,0.16)',
+            fill: true,
+            tension: 0.25,
+            pointRadius: 3,
+            pointHoverRadius: 5
+          }]
+        },
+        options: {
+          responsive: true,
+          plugins: {
+            legend: {
+              labels: { color: 'white' }
+            },
+            tooltip: {
+              callbacks: {
+                label: function(context){
+                  return ` ${context.parsed.y.toFixed(2)}%`;
+                }
+              }
+            }
+          },
+          scales: {
+            x: {
+              ticks: { color: 'white', maxRotation: 0, autoSkip: true },
+              grid: { color: 'rgba(255,255,255,0.08)' }
+            },
+            y: {
+              min: 0,
+              max: 100,
+              ticks: { color: 'white' },
+              grid: { color: 'rgba(255,255,255,0.08)' }
+            }
+          }
+        }
+      });
+    }
+
+    async function fetchDominance(){
+      loadingState.style.display = 'block';
+      errorState.style.display = 'none';
+      dashboard.style.display = 'none';
+
+      const baseHeaders = {};
+      if (COINGECKO_DEMO_API_KEY) {
+        baseHeaders['x-cg-demo-api-key'] = COINGECKO_DEMO_API_KEY;
+      }
+
+      const urls = [
+        { url: 'https://api.coingecko.com/api/v3/global', headers: baseHeaders },
+        { url: 'https://api.coingecko.com/api/v3/global', headers: {} }
+      ];
+
+      let lastError = null;
+
+      for (const attempt of urls) {
+        try{
+          const res = await fetch(attempt.url, { headers: attempt.headers, cache: 'no-store' });
+          if (!res.ok) throw new Error(`Request failed with status ${res.status}`);
+          const json = await res.json();
+          if (!json || !json.data) throw new Error('Invalid API response.');
+
+          const data = json.data;
+          const btc = Number(data.market_cap_percentage?.btc);
+          const eth = Number(data.market_cap_percentage?.eth);
+          const total = Number(data.total_market_cap?.usd);
+          const updatedAtTs = Number(data.updated_at || Math.floor(Date.now() / 1000));
+
+          if (!Number.isFinite(btc) || !Number.isFinite(total)) {
+            throw new Error('Missing market data fields.');
+          }
+
+          localSnapshots = loadSnapshots();
+          pushLiveSnapshot(normalizeSnapshot(updatedAtTs, btc, eth || 0, total));
+          updateSummary(data);
+          drawChart();
+
+          loadingState.style.display = 'none';
+          dashboard.style.display = 'block';
+          return;
+        } catch (err) {
+          lastError = err;
+        }
+      }
+
+      loadingState.style.display = 'none';
+      errorState.style.display = 'block';
+      errorState.textContent = `Live data could not be loaded right now. ${lastError ? lastError.message : 'Unknown error.'}`;
+    }
+
+    function startAutoRefresh(){
+      clearInterval(refreshInterval);
+      refreshInterval = setInterval(fetchDominance, 300000);
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
+      localSnapshots = loadSnapshots();
+      fetchDominance();
+      startAutoRefresh();
+
+      document.querySelectorAll('.faq-question').forEach(btn => {
+        btn.addEventListener('click', () => {
+          const item = btn.parentElement;
+          document.querySelectorAll('.faq-item').forEach(i => {
+            if (i !== item) i.classList.remove('active');
+          });
+          item.classList.toggle('active');
+        });
+      });
+
+      const menuBtn = document.getElementById("menuBtn");
+      const drawerPanel = document.getElementById("drawerPanel");
+      const drawerOverlay = document.getElementById("drawerOverlay");
+      const drawerCloseBtn = document.getElementById("drawerCloseBtn");
+
+      function openDrawer(){
+        drawerPanel.classList.add("open");
+        drawerOverlay.classList.add("show");
+        menuBtn.setAttribute("aria-expanded", "true");
+        drawerPanel.setAttribute("aria-hidden", "false");
+      }
+
+      function closeDrawer(){
+        drawerPanel.classList.remove("open");
+        drawerOverlay.classList.remove("show");
+        menuBtn.setAttribute("aria-expanded", "false");
+        drawerPanel.setAttribute("aria-hidden", "true");
+      }
+
+      menuBtn.addEventListener("click", openDrawer);
+      drawerCloseBtn.addEventListener("click", closeDrawer);
+      drawerOverlay.addEventListener("click", closeDrawer);
+
+      document.querySelectorAll(".drawer a").forEach(link => {
+        link.addEventListener("click", closeDrawer);
+      });
+
+      document.addEventListener("keydown", (e) => {
+        if (e.key === "Escape") closeDrawer();
+      });
+    });
+  </script>
+</body>
+  </html>
