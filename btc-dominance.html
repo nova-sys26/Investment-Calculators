@@ -97,10 +97,7 @@
 
     body{
       font-family:Arial, sans-serif;
-      background:
-        radial-gradient(circle at top, rgba(59,130,246,0.20), transparent 35%),
-        radial-gradient(circle at bottom right, rgba(34,197,94,0.10), transparent 30%),
-        #020617;
+      background:#0b1a33;   
       color:white;
       margin:0;
       min-height:100vh;
@@ -157,95 +154,7 @@
 
     .topnav a:hover{ color:white; }
 
-    .drawer-overlay{
-      position:fixed;
-      inset:0;
-      background:rgba(2,6,23,0.62);
-      backdrop-filter:blur(2px);
-      opacity:0;
-      pointer-events:none;
-      transition:0.25s;
-      z-index:80;
-    }
-
-    .drawer-overlay.show{
-      opacity:1;
-      pointer-events:auto;
-    }
-
-    .drawer{
-      position:fixed;
-      top:0;
-      left:0;
-      height:100%;
-      width:min(360px, 88vw);
-      background:#0f172a;
-      border-right:1px solid rgba(255,255,255,0.08);
-      box-shadow:18px 0 40px rgba(0,0,0,0.35);
-      transform:translateX(-102%);
-      transition:0.25s ease;
-      z-index:90;
-      padding:18px;
-      overflow:auto;
-    }
-
-    .drawer.open{ transform:translateX(0); }
-
-    .drawer-head{
-      display:flex;
-      align-items:center;
-      justify-content:space-between;
-      gap:10px;
-      margin-bottom:18px;
-    }
-
-    .drawer-head strong{ font-size:16px; }
-
-    .drawer-close{
-      width:40px;
-      height:40px;
-      border:none;
-      border-radius:10px;
-      cursor:pointer;
-      background:rgba(255,255,255,0.06);
-      color:white;
-      font-size:22px;
-      line-height:1;
-    }
-
-    .drawer-section{
-      margin:16px 0 18px;
-    }
-
-    .drawer-section h4{
-      margin:0 0 10px;
-      font-size:13px;
-      color:#94a3b8;
-      text-transform:uppercase;
-      letter-spacing:0.08em;
-    }
-
-    .drawer-links{
-      display:flex;
-      flex-direction:column;
-      gap:8px;
-    }
-
-    .drawer-links a{
-      display:block;
-      padding:11px 12px;
-      border-radius:12px;
-      color:white;
-      text-decoration:none;
-      background:rgba(255,255,255,0.04);
-      border:1px solid rgba(255,255,255,0.06);
-    }
-
-    .drawer-links a:hover{
-      background:rgba(59,130,246,0.14);
-      border-color:rgba(59,130,246,0.30);
-    }
-
+    
     .hero{
       padding:42px 0 26px;
     }
@@ -663,7 +572,20 @@
       overflow:auto;
       line-height:1.7;
     }
+.toptext{
+      font-size:14px;
+      color:#6b7a99;
+      margin-bottom:5px;
+    }
 
+    .menu{ margin-bottom:25px; }
+
+    .menu a{
+      color:#3b82f6;
+      margin:10px;
+      text-decoration:none;
+      font-weight:600;
+    }
     .faq{ margin-top:14px; }
 
     .faq-item{
@@ -793,46 +715,13 @@
   </style>
 </head>
 <body>
-  <div class="drawer-overlay" id="drawerOverlay"></div>
+<p class="toptext">Explore more calculators</p>
 
-  <aside class="drawer" id="drawerPanel" aria-hidden="true">
-    <div class="drawer-head">
-      <strong>Navigation</strong>
-      <button class="drawer-close" id="drawerCloseBtn" type="button" aria-label="Close menu">×</button>
-    </div>
+  <div class="menu">
+    <a href="index.html">Home</a>
+  </div>
 
-    <div class="drawer-section">
-      <h4>Explore</h4>
-      <div class="drawer-links">
-        <a href="#overview">Overview</a>
-        <a href="#chart">Trend</a>
-        <a href="#why">Why it matters</a>
-        <a href="#faq">FAQ</a>
-      </div>
-    </div>
-
-    <div class="drawer-section">
-      <h4>Live tools</h4>
-      <div class="drawer-links">
-        <a href="currency-converter.html">Currency Converter</a>
-        <a href="purchasing-power-calculator.html">Purchasing Power Calculator</a>
-        <a href="fear-greed-index.html">Fear & Greed Index</a>
-      </div>
-    </div>
-  </aside>
-
-  <div class="page-shell">
-    <header class="topbar">
-      <button class="menu-btn" id="menuBtn" type="button" aria-label="Open navigation menu" aria-controls="drawerPanel" aria-expanded="false">☰</button>
-      <div class="brand">Nova Invest Tools</div>
-      <nav class="topnav">
-        <a href="#overview">Overview</a>
-        <a href="#chart">Trend</a>
-        <a href="#why">Why it matters</a>
-        <a href="#faq">FAQ</a>
-      </nav>
-    </header>
-
+ 
     <section class="hero" id="overview">
       <div class="eyebrow">Live crypto market share</div>
       <h1>BTC Dominance</h1>
