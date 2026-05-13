@@ -7,7 +7,7 @@
   <script async src="https://www.googletagmanager.com/gtag/js?id=G-ZPCXDVE8C5"></script>
   <script>
     window.dataLayer = window.dataLayer || [];
-    function gtag(){dataLayer.push(arguments);} 
+    function gtag(){dataLayer.push(arguments);}
     gtag('js', new Date());
     gtag('config', 'G-ZPCXDVE8C5');
   </script>
@@ -810,7 +810,6 @@
     const scoreValue = document.getElementById('scoreValue');
     const scoreLabel = document.getElementById('scoreLabel');
     const needle = document.getElementById('needle');
-    const gauge = document.getElementById('gauge');
 
     const currentReading = document.getElementById('currentReading');
     const currentReadingNote = document.getElementById('currentReadingNote');
@@ -833,13 +832,34 @@
       return { label: 'Extreme Greed', colorClass: 'insight-aggressive' };
     }
 
-    function fmtDateFromUnix(ts){
-      const d = new Date(Number(ts) * 1000);
-      return d.toLocaleDateString(undefined, { year: 'numeric', month: 'short', day: 'numeric' });
-    }
-
     function fmtNumber(v){
       return Number(v).toFixed(0);
+    }
+
+    function parseApiDate(value){
+      if (value === undefined || value === null || value === '') return null;
+
+      const raw = String(value).trim();
+
+      if (/^\d+$/.test(raw)) {
+        const num = Number(raw);
+        if (!Number.isFinite(num)) return null;
+        return num < 1e12 ? new Date(num * 1000) : new Date(num);
+      }
+
+      const date = new Date(raw);
+      return Number.isNaN(date.getTime()) ? null : date;
+    }
+
+    function fmtDate(value){
+      const date = parseApiDate(value);
+      if (!date) return 'Unknown date';
+
+      return date.toLocaleDateString(undefined, {
+        year: 'numeric',
+        month: 'short',
+        day: 'numeric'
+      });
     }
 
     function updateNeedle(score){
@@ -852,7 +872,12 @@
 
     function startCountdown(seconds){
       clearInterval(countdownInterval);
+
       let remaining = Number(seconds);
+      if (!Number.isFinite(remaining) || remaining <= 0) {
+        countdownText.textContent = '';
+        return;
+      }
 
       function render(){
         const hrs = Math.floor(remaining / 3600);
@@ -923,7 +948,7 @@
       if (historyChart) historyChart.destroy();
 
       const points = [...data].reverse();
-      const labels = points.map(item => fmtDateFromUnix(item.timestamp));
+      const labels = points.map(item => fmtDate(item.timestamp));
       const values = points.map(item => Number(item.value));
 
       historyChart = new Chart(ctx, {
@@ -976,7 +1001,7 @@
         errorState.style.display = 'none';
         dashboard.style.display = 'none';
 
-        const res = await fetch('https://api.alternative.me/fng/?limit=31&format=json&date_format=us');
+        const res = await fetch('https://api.alternative.me/fng/?limit=31&format=json');
         if (!res.ok) throw new Error(`Request failed with status ${res.status}`);
         const json = await res.json();
 
@@ -995,14 +1020,14 @@
         scoreValue.textContent = latest.value;
         scoreLabel.textContent = info.label;
         scoreLabel.className = `score-label ${info.colorClass}`;
-        updatedAt.textContent = `Updated: ${latest.timestamp ? fmtDateFromUnix(latest.timestamp) : 'today'}`;
+        updatedAt.textContent = `Updated: ${fmtDate(latest.timestamp)}`;
         document.title = `Fear & Greed Index – ${latest.value} (${info.label})`;
 
         updateNeedle(score);
         buildNarrative(latest, previous, weekAgo, monthAgo);
         drawChart(json.data.slice(0, Math.min(31, json.data.length)));
 
-        if (latest.time_until_update) {
+        if (latest.time_until_update && Number(latest.time_until_update) > 0) {
           startCountdown(Number(latest.time_until_update));
         } else {
           countdownText.textContent = '';
@@ -1032,4 +1057,4 @@
     });
   </script>
 </body>
-  </html>
+</html>
