@@ -107,420 +107,441 @@
   </script>
 
   <style>
-    *{ box-sizing:border-box; }
-    html{ scroll-behavior:smooth; }
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
 
-    body{
-      font-family:Arial, sans-serif;
-      background:#0f172a;
-      color:white;
-      display:flex;
-      justify-content:center;
-      align-items:center;
-      flex-direction:column;
-      min-height:100vh;
-      margin:0;
-      padding:24px 0;
+    body {
+      font-family: Arial, sans-serif;
+      background:
+        radial-gradient(circle at top, rgba(59,130,246,0.18), transparent 35%),
+        radial-gradient(circle at bottom right, rgba(34,197,94,0.10), transparent 30%),
+        #0f172a;
+      color: white;
+      margin: 0;
+      min-height: 100vh;
+      padding: 24px 0 40px;
     }
 
-    .toptext{
-      font-size:14px;
-      color:#6b7a99;
-      margin-bottom:5px;
+    .page-wrap {
+      width: min(1100px, calc(100% - 24px));
+      margin: 0 auto;
     }
 
-    .menu{
-      margin-bottom:25px;
+    .toptext {
+      font-size: 14px;
+      color: #94a3b8;
+      margin: 0 0 6px;
     }
 
-    .menu a{
-      color:#3b82f6;
-      margin:10px;
-      text-decoration:none;
-      font-weight:600;
+    .menu {
+      margin-bottom: 18px;
     }
 
-    .container{
-      background:#1e293b;
-      padding:30px;
-      border-radius:16px;
-      width:90%;
-      max-width:760px;
-      box-shadow:0 10px 25px rgba(0,0,0,0.35);
-      border:1px solid rgba(255,255,255,0.05);
-      backdrop-filter:blur(6px);
+    .menu a {
+      color: #93c5fd;
+      text-decoration: none;
+      font-weight: 700;
     }
 
-    h1{
-      margin-top:0;
-      margin-bottom:10px;
-      font-size:32px;
-      line-height:1.15;
+    .menu a:hover {
+      text-decoration: underline;
     }
 
-    .quick-answer{
-      background:rgba(59,130,246,0.12);
-      border:1px solid rgba(59,130,246,0.25);
-      padding:12px 14px;
-      border-radius:10px;
-      font-size:15px;
-      line-height:1.6;
-      color:#e2e8f0;
-      margin:0 0 18px;
+    .container {
+      width: 100%;
+      background: rgba(30,41,59,0.92);
+      border: 1px solid rgba(255,255,255,0.06);
+      box-shadow: 0 18px 40px rgba(0,0,0,0.35);
+      border-radius: 18px;
+      padding: 30px;
     }
 
-    .subhead{
-      color:#94a3b8;
-      font-size:15px;
-      line-height:1.6;
-      margin:0 0 18px;
+    h1 {
+      margin: 0 0 10px;
+      font-size: clamp(28px, 4vw, 36px);
+      line-height: 1.12;
     }
 
-    .toggle{
-      display:flex;
-      margin:12px 0 14px;
-      gap:0;
+    .quick-answer {
+      background: rgba(59,130,246,0.12);
+      border: 1px solid rgba(59,130,246,0.25);
+      padding: 12px 14px;
+      border-radius: 12px;
+      font-size: 15px;
+      line-height: 1.6;
+      color: #e2e8f0;
+      margin: 0 0 16px;
     }
 
-    .toggle button{
-      flex:1;
-      padding:12px;
-      border:none;
-      cursor:pointer;
-      background:#334155;
-      color:white;
-      transition:0.2s;
-      margin-top:0;
-      width:auto;
-      font-size:15px;
-      font-weight:700;
+    .subhead {
+      color: #94a3b8;
+      font-size: 15px;
+      line-height: 1.6;
+      margin: 0 0 18px;
     }
 
-    .toggle button:first-child{ border-radius:10px 0 0 10px; }
-    .toggle button:last-child{ border-radius:0 10px 10px 0; }
-    .toggle button.active{ background:#3b82f6; }
-
-    .field-label{
-      display:block;
-      font-size:13px;
-      color:#cbd5e1;
-      font-weight:600;
-      margin:12px 0 6px;
+    .toggle {
+      display: flex;
+      margin: 12px 0 14px;
+      gap: 0;
     }
 
-    input{
-      width:100%;
-      padding:14px;
-      border-radius:10px;
-      border:none;
-      background:#e5e7eb;
-      font-size:16px;
-      outline:none;
+    .toggle button {
+      flex: 1;
+      padding: 12px;
+      border: none;
+      cursor: pointer;
+      background: #334155;
+      color: white;
+      transition: 0.2s;
+      margin-top: 0;
+      width: auto;
+      font-size: 15px;
+      font-weight: 700;
     }
 
-    input:focus{
-      box-shadow:0 0 0 3px rgba(59,130,246,0.18);
+    .toggle button:first-child { border-radius: 10px 0 0 10px; }
+    .toggle button:last-child { border-radius: 0 10px 10px 0; }
+    .toggle button.active { background: #3b82f6; }
+
+    .field-label {
+      display: block;
+      font-size: 13px;
+      color: #cbd5e1;
+      font-weight: 600;
+      margin: 12px 0 6px;
     }
 
-    .action-btn{
-      padding:14px;
-      background:#3b82f6;
-      border:none;
-      border-radius:10px;
-      color:white;
-      cursor:pointer;
-      margin-top:14px;
-      width:100%;
-      font-size:16px;
-      font-weight:700;
-      transition:0.2s;
+    input {
+      width: 100%;
+      padding: 14px;
+      border-radius: 10px;
+      border: none;
+      background: #e5e7eb;
+      font-size: 16px;
+      outline: none;
     }
 
-    .action-btn:hover{
-      background:#2563eb;
-      transform:translateY(-1px);
+    input:focus {
+      box-shadow: 0 0 0 3px rgba(59,130,246,0.18);
     }
 
-    .result-card{
-      margin-top:18px;
-      padding:16px;
-      border-radius:14px;
-      background:rgba(255,255,255,0.05);
-      border:1px solid rgba(255,255,255,0.08);
-      display:none;
+    .action-btn {
+      padding: 14px;
+      background: #3b82f6;
+      border: none;
+      border-radius: 10px;
+      color: white;
+      cursor: pointer;
+      margin-top: 14px;
+      width: 100%;
+      font-size: 16px;
+      font-weight: 700;
+      transition: 0.2s;
     }
 
-    .result-sentence{
-      margin:0 0 14px;
-      font-size:16px;
-      line-height:1.6;
-      color:#e5e7eb;
+    .action-btn:hover {
+      background: #2563eb;
+      transform: translateY(-1px);
     }
 
-    .result-grid{
-      display:grid;
-      grid-template-columns:repeat(auto-fit, minmax(220px, 1fr));
-      gap:12px;
+    .result-card {
+      margin-top: 18px;
+      padding: 16px;
+      border-radius: 14px;
+      background: rgba(255,255,255,0.05);
+      border: 1px solid rgba(255,255,255,0.08);
+      display: none;
     }
 
-    .result-box{
-      background:rgba(15,23,42,0.72);
-      border:1px solid rgba(255,255,255,0.06);
-      border-radius:14px;
-      padding:14px;
+    .result-sentence {
+      margin: 0 0 14px;
+      font-size: 16px;
+      line-height: 1.6;
+      color: #e5e7eb;
     }
 
-    .result-label{
-      display:block;
-      color:#cbd5f5;
-      font-size:13px;
-      font-weight:700;
-      margin-bottom:4px;
+    .result-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 12px;
     }
 
-    .result-value{
-      font-size:18px;
-      font-weight:800;
-      color:#e5e7eb;
+    .result-box {
+      background: rgba(15,23,42,0.72);
+      border: 1px solid rgba(255,255,255,0.06);
+      border-radius: 14px;
+      padding: 14px;
     }
 
-    .insight-banner{
-      margin-top:14px;
-      padding:16px;
-      border-radius:16px;
-      background:rgba(15,23,42,0.88);
-      border:1px solid rgba(255,255,255,0.08);
+    .result-label {
+      display: block;
+      color: #cbd5f5;
+      font-size: 13px;
+      font-weight: 700;
+      margin-bottom: 4px;
     }
 
-    .insight-banner.insight-good{
-      border-color:rgba(34,197,94,0.25);
-      background:rgba(34,197,94,0.08);
+    .result-value {
+      font-size: 18px;
+      font-weight: 800;
+      color: #e5e7eb;
     }
 
-    .insight-banner.insight-medium{
-      border-color:rgba(250,204,21,0.25);
-      background:rgba(250,204,21,0.08);
+    .insight-banner {
+      margin-top: 14px;
+      padding: 16px;
+      border-radius: 16px;
+      background: rgba(15,23,42,0.88);
+      border: 1px solid rgba(255,255,255,0.08);
     }
 
-    .insight-banner.insight-weak{
-      border-color:rgba(239,68,68,0.25);
-      background:rgba(239,68,68,0.08);
+    .insight-banner.insight-good {
+      border-color: rgba(34,197,94,0.25);
+      background: rgba(34,197,94,0.08);
     }
 
-    .insight-kicker{
-      display:inline-flex;
-      align-items:center;
-      padding:5px 10px;
-      border-radius:999px;
-      font-size:11px;
-      font-weight:800;
-      letter-spacing:0.08em;
-      text-transform:uppercase;
-      background:rgba(255,255,255,0.06);
-      color:#cbd5e1;
+    .insight-banner.insight-medium {
+      border-color: rgba(250,204,21,0.25);
+      background: rgba(250,204,21,0.08);
     }
 
-    .insight-headline{
-      display:block;
-      margin-top:8px;
-      font-size:18px;
-      line-height:1.25;
+    .insight-banner.insight-weak {
+      border-color: rgba(239,68,68,0.25);
+      background: rgba(239,68,68,0.08);
     }
 
-    .insight-body{
-      margin:8px 0 0;
-      color:#cbd5e1;
-      line-height:1.6;
-      font-size:14px;
+    .insight-kicker {
+      display: inline-flex;
+      align-items: center;
+      padding: 5px 10px;
+      border-radius: 999px;
+      font-size: 11px;
+      font-weight: 800;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      background: rgba(255,255,255,0.06);
+      color: #cbd5e1;
     }
 
-    .insight-grid{
-      display:grid;
-      grid-template-columns:repeat(auto-fit, minmax(180px, 1fr));
-      gap:12px;
-      margin-top:12px;
+    .insight-headline {
+      display: block;
+      margin-top: 8px;
+      font-size: 18px;
+      line-height: 1.25;
     }
 
-    .insight-card{
-      background:rgba(15,23,42,0.72);
-      border:1px solid rgba(255,255,255,0.06);
-      border-radius:14px;
-      padding:14px;
+    .insight-body {
+      margin: 8px 0 0;
+      color: #cbd5e1;
+      line-height: 1.6;
+      font-size: 14px;
     }
 
-    .insight-card span{
-      display:block;
-      color:#94a3b8;
-      font-size:12px;
-      text-transform:uppercase;
-      letter-spacing:0.08em;
-      font-weight:700;
-      margin-bottom:6px;
+    .insight-mini {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-top: 12px;
     }
 
-    .insight-card strong{
-      display:block;
-      font-size:16px;
-      line-height:1.25;
+    .insight-mini span {
+      display: inline-flex;
+      align-items: center;
+      padding: 7px 10px;
+      border-radius: 999px;
+      background: rgba(255,255,255,0.06);
+      border: 1px solid rgba(255,255,255,0.08);
+      color: #e2e8f0;
+      font-size: 12px;
+      line-height: 1;
     }
 
-    .insight-card p{
-      margin:6px 0 0;
-      color:#cbd5e1;
-      font-size:13px;
-      line-height:1.55;
+    .insight-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+      gap: 12px;
+      margin-top: 12px;
     }
 
-    .chart-shell{
-      margin-top:18px;
-      padding:16px;
-      border-radius:16px;
-      background:rgba(255,255,255,0.04);
-      border:1px solid rgba(255,255,255,0.08);
+    .insight-card {
+      background: rgba(15,23,42,0.72);
+      border: 1px solid rgba(255,255,255,0.06);
+      border-radius: 14px;
+      padding: 14px;
     }
 
-    .chart-shell h3{
-      margin:0 0 8px;
-      font-size:16px;
+    .insight-card span {
+      display: block;
+      color: #94a3b8;
+      font-size: 12px;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      font-weight: 700;
+      margin-bottom: 6px;
     }
 
-    .chart-wrap{
-      position:relative;
-      height:360px;
-      width:100%;
+    .insight-card strong {
+      display: block;
+      font-size: 16px;
+      line-height: 1.25;
     }
 
-    .chart-note{
-      margin:8px 0 0;
-      color:#94a3b8;
-      font-size:12px;
-      line-height:1.6;
+    .insight-card p {
+      margin: 6px 0 0;
+      color: #cbd5e1;
+      font-size: 13px;
+      line-height: 1.55;
     }
 
-    .content{
-      width:90%;
-      max-width:900px;
-      margin-top:34px;
+    .insight-good { color: #22c55e; font-weight: 700; }
+    .insight-medium { color: #facc15; font-weight: 700; }
+    .insight-weak { color: #ef4444; font-weight: 700; }
+
+    .chart-shell {
+      margin-top: 18px;
+      padding: 16px;
+      border-radius: 16px;
+      background: rgba(255,255,255,0.04);
+      border: 1px solid rgba(255,255,255,0.08);
     }
 
-    .content h2{
-      margin-top:34px;
-      margin-bottom:10px;
-      font-size:28px;
+    .chart-shell h3 {
+      margin: 0 0 8px;
+      font-size: 16px;
+    }
+
+    .chart-wrap {
+      position: relative;
+      height: 360px;
+      width: 100%;
+    }
+
+    .chart-note {
+      margin: 8px 0 0;
+      color: #94a3b8;
+      font-size: 12px;
+      line-height: 1.6;
+    }
+
+    .content {
+      width: 90%;
+      max-width: 900px;
+      margin-top: 34px;
+    }
+
+    .content h2 {
+      margin-top: 34px;
+      margin-bottom: 10px;
+      font-size: 28px;
     }
 
     .content p,
-    .content li{
-      color:#cbd5e1;
-      line-height:1.7;
-      font-size:15px;
+    .content li {
+      color: #cbd5e1;
+      line-height: 1.7;
+      font-size: 15px;
     }
 
-    .content ul{ padding-left:20px; }
+    .content ul { padding-left: 20px; }
 
-    .formula{
-      background:rgba(255,255,255,0.05);
-      border:1px solid rgba(255,255,255,0.08);
-      padding:14px 16px;
-      border-radius:12px;
-      margin:12px 0;
-      color:#e2e8f0;
-      overflow:auto;
-      line-height:1.7;
+    .formula {
+      background: rgba(255,255,255,0.05);
+      border: 1px solid rgba(255,255,255,0.08);
+      padding: 14px 16px;
+      border-radius: 12px;
+      margin: 12px 0;
+      color: #e2e8f0;
+      overflow: auto;
+      line-height: 1.7;
     }
 
-    .faq{ margin-top:14px; }
+    .faq { margin-top: 14px; }
 
-    .faq-item{
-      border-bottom:1px solid rgba(255,255,255,0.08);
+    .faq-item {
+      border-bottom: 1px solid rgba(255,255,255,0.08);
     }
 
-    .faq-question{
-      width:100%;
-      background:none;
-      border:none;
-      color:white;
-      text-align:left;
-      padding:14px 8px;
-      font-size:15px;
-      display:flex;
-      justify-content:space-between;
-      align-items:center;
-      cursor:pointer;
+    .faq-question {
+      width: 100%;
+      background: none;
+      border: none;
+      color: white;
+      text-align: left;
+      padding: 14px 8px;
+      font-size: 15px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      cursor: pointer;
     }
 
-    .faq-question:hover{
-      color:#93c5fd;
+    .faq-question:hover { color: #93c5fd; }
+
+    .arrow { transition: 0.25s; }
+
+    .faq-item.active .arrow { transform: rotate(180deg); }
+
+    .faq-answer {
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height 0.3s ease;
+      color: #cbd5e1;
+      font-size: 14px;
+      padding: 0 8px;
     }
 
-    .arrow{
-      transition:0.25s;
+    .faq-item.active .faq-answer {
+      max-height: 260px;
+      padding-bottom: 12px;
     }
 
-    .faq-item.active .arrow{
-      transform:rotate(180deg);
+    .related {
+      width: 90%;
+      max-width: 900px;
+      margin-top: 34px;
     }
 
-    .faq-answer{
-      max-height:0;
-      overflow:hidden;
-      transition:max-height 0.3s ease;
-      color:#cbd5e1;
-      font-size:14px;
-      padding:0 8px;
+    .related a {
+      color: #93c5fd;
+      text-decoration: none;
     }
 
-    .faq-item.active .faq-answer{
-      max-height:260px;
-      padding-bottom:12px;
+    .related a:hover {
+      text-decoration: underline;
     }
 
-    .related{
-      width:90%;
-      max-width:900px;
-      margin-top:34px;
+    .disclaimer {
+      margin-top: 40px;
+      padding-top: 20px;
+      border-top: 1px solid rgba(255,255,255,0.1);
+      font-size: 13px;
+      color: #9ca3af;
+      max-width: 900px;
+      text-align: center;
+      line-height: 1.6;
+      width: 90%;
     }
 
-    .related a{
-      color:#93c5fd;
-      text-decoration:none;
-    }
-
-    .related a:hover{
-      text-decoration:underline;
-    }
-
-    .disclaimer{
-      margin-top:40px;
-      padding-top:20px;
-      border-top:1px solid rgba(255,255,255,0.1);
-      font-size:13px;
-      color:#9ca3af;
-      max-width:900px;
-      text-align:center;
-      line-height:1.6;
-      width:90%;
-    }
-
-    @media (max-width: 700px){
-      .container{
-        padding:22px;
+    @media (max-width: 700px) {
+      .container {
+        padding: 22px;
       }
 
-      h1{
-        font-size:28px;
+      h1 {
+        font-size: 28px;
       }
 
-      .content h2{
-        font-size:24px;
+      .content h2 {
+        font-size: 24px;
       }
 
-      .toggle button{
-        font-size:14px;
+      .toggle button {
+        font-size: 14px;
       }
 
-      .chart-wrap{
-        height:300px;
+      .chart-wrap {
+        height: 300px;
       }
     }
   </style>
@@ -564,29 +585,33 @@
     <div id="resultCard" class="result-card" aria-live="polite">
       <p id="resultSentence" class="result-sentence">—</p>
 
-      <div id="insightBanner" class="insight-banner">
-        <span id="insightKicker" class="insight-kicker">—</span>
-        <strong id="insightHeadline" class="insight-headline">—</strong>
-        <p id="insightBody" class="insight-body">—</p>
-      </div>
-
       <div class="result-grid">
         <div class="result-box">
           <span class="result-label" id="resultPrimaryLabel">APR</span>
           <span id="resultPrimaryOut" class="result-value">—</span>
         </div>
+
         <div class="result-box">
           <span class="result-label">Total paid</span>
           <span id="totalPaidOut" class="result-value">—</span>
         </div>
+
         <div class="result-box">
           <span class="result-label">Total interest</span>
           <span id="totalInterestOut" class="result-value">—</span>
         </div>
+
         <div class="result-box">
-          <span class="result-label">Insight</span>
-          <span id="insightOut" class="result-value">—</span>
+          <span class="result-label">Monthly payment</span>
+          <span id="monthlyPaymentOut" class="result-value">—</span>
         </div>
+      </div>
+
+      <div id="insightBanner" class="insight-banner">
+        <span id="insightKicker" class="insight-kicker">—</span>
+        <strong id="insightHeadline" class="insight-headline">—</strong>
+        <p id="insightBody" class="insight-body">—</p>
+        <div id="insightMini" class="insight-mini"></div>
       </div>
 
       <div class="insight-grid">
@@ -735,7 +760,7 @@
         </button>
         <div class="faq-answer">
           <p>
-            Yes. If one loan has extra fees and the other does not, their APR values can differ even when the interest rates are the same.
+            Yes. If one loan has extra fees and the other does not, the APR values can differ even when the interest rates are the same.
           </p>
         </div>
       </div>
@@ -822,6 +847,13 @@
       }
     }
 
+    function paymentFromRate(loan, monthlyRate, months){
+      if (monthlyRate === 0) return loan / months;
+      const pow = Math.pow(1 + monthlyRate, months);
+      const denom = pow - 1;
+      return loan * (monthlyRate * pow) / denom;
+    }
+
     function calculateAPR(loan, payment, months){
       const minPayment = loan / months;
 
@@ -837,14 +869,15 @@
 
       let low = 0;
       let high = 1;
-      let rate = 0;
 
+      while (paymentFromRate(loan, high, months) < payment && high < 1000) {
+        high *= 2;
+      }
+
+      let rate = 0;
       for(let i = 0; i < 120; i++){
         rate = (low + high) / 2;
-        const denominator = Math.pow(1 + rate, months) - 1;
-        const calcPayment = denominator === 0
-          ? loan / months
-          : loan * (rate * Math.pow(1 + rate, months)) / denominator;
+        const calcPayment = paymentFromRate(loan, rate, months);
 
         if(calcPayment > payment){
           high = rate;
@@ -863,14 +896,7 @@
       }
 
       const monthlyRate = (apr / 100) / 12;
-      let payment;
-
-      if(monthlyRate === 0){
-        payment = loan / months;
-      } else {
-        payment = loan * (monthlyRate * Math.pow(1 + monthlyRate, months)) / (Math.pow(1 + monthlyRate, months) - 1);
-      }
-
+      const payment = paymentFromRate(loan, monthlyRate, months);
       const totalPaid = payment * months;
       const totalInterest = totalPaid - loan;
 
@@ -879,11 +905,23 @@
       document.getElementById("resultPrimaryOut").innerText = money(payment);
       document.getElementById("totalPaidOut").innerText = money(totalPaid);
       document.getElementById("totalInterestOut").innerText = money(totalInterest);
+      document.getElementById("monthlyPaymentOut").innerText = money(payment);
 
-      renderInsights({ loan, months, payment, apr, totalPaid, totalInterest, monthlyRate, mode: "payment" });
+      renderInsights({
+        loan,
+        months,
+        payment,
+        apr,
+        totalPaid,
+        totalInterest,
+        monthlyRate,
+        mode: "payment"
+      });
+
+      document.getElementById("resultSentence").textContent =
+        `With an APR of ${apr.toFixed(2)}%, the monthly payment is about ${money(payment)}.`;
+
       drawChart(loan, payment, months, monthlyRate);
-      document.getElementById("resultSentence").textContent = `With an APR of ${apr.toFixed(2)}%, the monthly payment is about ${money(payment)}.`;
-
       document.getElementById("resultCard").scrollIntoView({ behavior: "smooth", block: "start" });
     }
 
@@ -897,11 +935,23 @@
       document.getElementById("resultPrimaryOut").innerText = `${apr.toFixed(2)}%`;
       document.getElementById("totalPaidOut").innerText = money(totalPaid);
       document.getElementById("totalInterestOut").innerText = money(totalInterest);
+      document.getElementById("monthlyPaymentOut").innerText = money(payment);
 
-      renderInsights({ loan, months, payment, apr, totalPaid, totalInterest, monthlyRate, mode: "apr" });
+      renderInsights({
+        loan,
+        months,
+        payment,
+        apr,
+        totalPaid,
+        totalInterest,
+        monthlyRate,
+        mode: "apr"
+      });
+
+      document.getElementById("resultSentence").textContent =
+        `A monthly payment of ${money(payment)} over ${months} months implies an APR of about ${apr.toFixed(2)}%.`;
+
       drawChart(loan, payment, months, monthlyRate);
-      document.getElementById("resultSentence").textContent = `A monthly payment of ${money(payment)} over ${months} months implies an APR of about ${apr.toFixed(2)}%.`;
-
       document.getElementById("resultCard").scrollIntoView({ behavior: "smooth", block: "start" });
     }
 
@@ -911,23 +961,24 @@
       const interestShare = totalPaid > 0 ? (totalInterest / totalPaid) * 100 : 0;
       const interestToPrincipal = loan > 0 ? (totalInterest / loan) * 100 : 0;
       const monthlyRatePct = monthlyRate * 100;
-      const affordabilityGap = payment - minPayment;
+      const termYears = months / 12;
+      const leftoverCash = payment - minPayment;
 
       let overallClass = "insight-good";
       let headline = "Borrowing cost looks reasonable";
-      let body = "This structure is not screaming danger, but you still want to compare offers and watch the fee load.";
+      let body = "The structure is manageable, but the real picture still depends on term length, payment burden, and total interest.";
       let kicker = "Balanced";
 
       if (apr >= 20 || interestShare >= 40 || paymentPressure >= 1.6) {
         overallClass = "insight-weak";
         kicker = "Expensive";
         headline = "This loan is costly";
-        body = "The APR, payment burden, or interest share is high enough that a shorter term or a cheaper lender could save real money.";
+        body = "The APR is high enough that the loan is likely expensive in real terms. A shorter term, lower fee structure, or a different lender could materially improve the deal.";
       } else if (apr >= 10 || interestShare >= 25 || paymentPressure >= 1.25) {
         overallClass = "insight-medium";
         kicker = "Caution";
         headline = "Costs are noticeable";
-        body = "The loan is usable, but the fee and interest drag are meaningful. Compare alternatives before locking it in.";
+        body = "This loan is not broken, but the drag from interest and payment size is meaningful. Compare other offers before committing.";
       }
 
       const aprLevel =
@@ -938,10 +989,10 @@
 
       const aprNote =
         apr < 3 ? "Very cheap borrowing for most normal use cases." :
-        apr < 7 ? "Still competitive if the fees are clean." :
+        apr < 7 ? "Competitive if the fees are clean." :
         apr < 12 ? "Normal, but not especially cheap." :
-        apr < 20 ? "Starts to get expensive fast." :
-        "Usually too expensive unless the loan is special-purpose.";
+        apr < 20 ? "Starts to get expensive." :
+        "Usually too expensive unless there is a special reason.";
 
       const burdenLevel =
         paymentPressure <= 1.05 ? "Very light" :
@@ -949,10 +1000,10 @@
         paymentPressure <= 1.5 ? "Tight" : "Aggressive";
 
       const burdenNote =
-        paymentPressure <= 1.05 ? "Payment is close to the minimum amortized amount." :
-        paymentPressure <= 1.25 ? "Payment is only modestly above the baseline." :
-        paymentPressure <= 1.5 ? "Monthly cash flow is starting to feel tight." :
-        "You are paying much more than the minimum structure suggests.";
+        paymentPressure <= 1.05 ? "The payment is very close to the minimum amortized baseline." :
+        paymentPressure <= 1.25 ? "The monthly burden is still fairly normal." :
+        paymentPressure <= 1.5 ? "This starts to squeeze monthly cash flow." :
+        "This is well above the minimum structure and can strain budget flexibility.";
 
       const interestLevel =
         interestShare < 10 ? "Low interest load" :
@@ -961,7 +1012,7 @@
 
       const interestNote =
         interestShare < 10 ? "Most of what you pay goes to principal." :
-        interestShare < 25 ? "Interest is present, but not dominating." :
+        interestShare < 25 ? "Interest is there, but not dominating." :
         interestShare < 40 ? "A large share of total paid is interest." :
         "Interest is taking a very large cut of the total cost.";
 
@@ -972,35 +1023,47 @@
 
       const actionNote =
         (apr >= 15 || interestToPrincipal >= 50)
-          ? "A shorter term or lower fee structure could materially improve the deal."
+          ? "A shorter term or cheaper structure could save a lot."
           : (paymentPressure >= 1.35)
             ? "Make sure the payment will not squeeze your monthly budget."
             : (apr >= 7)
-              ? "A slightly better APR or fewer fees can still make a meaningful difference."
-              : "Even good loans deserve a quick comparison before you accept.";
+              ? "A slightly better APR or fewer fees can still matter."
+              : "Even good loans deserve a quick comparison.";
+
+      const mini = [
+        `APR ${apr.toFixed(2)}%`,
+        `Payment ${paymentPressure.toFixed(2)}x baseline`,
+        `Interest ${interestShare.toFixed(1)}% of total`,
+        `Term ${months} mo / ${termYears.toFixed(1)} yr`
+      ];
 
       document.getElementById("insightBanner").className = `insight-banner ${overallClass}`;
       document.getElementById("insightKicker").textContent = kicker;
       document.getElementById("insightHeadline").textContent = headline;
       document.getElementById("insightBody").textContent = body;
+      document.getElementById("insightMini").innerHTML = mini.map(text => `<span>${text}</span>`).join("");
       document.getElementById("insightOut").innerHTML = `<span class="${overallClass}">${headline}</span>`;
 
       document.getElementById("insightAprLevel").textContent = aprLevel;
       document.getElementById("insightAprNote").textContent = `${aprNote} Monthly rate ≈ ${monthlyRatePct.toFixed(3)}%.`;
 
       document.getElementById("insightPaymentLevel").textContent = `${burdenLevel} (${paymentPressure.toFixed(2)}x)`;
-      document.getElementById("insightPaymentNote").textContent = `${burdenNote} Minimum payment baseline: ${money(minPayment)}. Extra over minimum: ${money(Math.max(0, affordabilityGap))}.`;
+      document.getElementById("insightPaymentNote").textContent =
+        `${burdenNote} Minimum payment baseline: ${money(minPayment)}. Extra over minimum: ${money(Math.max(0, leftoverCash))}.`;
 
       document.getElementById("insightInterestLevel").textContent = `${interestLevel} (${interestShare.toFixed(1)}%)`;
-      document.getElementById("insightInterestNote").textContent = `${interestNote} Interest vs principal: ${interestToPrincipal.toFixed(1)}%.`;
+      document.getElementById("insightInterestNote").textContent =
+        `${interestNote} Interest vs principal: ${interestToPrincipal.toFixed(1)}%.`;
 
       document.getElementById("insightActionLevel").textContent = actionLevel;
       document.getElementById("insightActionNote").textContent = actionNote;
 
       if (mode === "apr") {
-        document.getElementById("resultSentence").textContent = `A monthly payment of ${money(payment)} over ${months} months implies an APR of about ${apr.toFixed(2)}%.`;
+        document.getElementById("resultSentence").textContent =
+          `A monthly payment of ${money(payment)} over ${months} months implies an APR of about ${apr.toFixed(2)}%.`;
       } else {
-        document.getElementById("resultSentence").textContent = `With an APR of ${apr.toFixed(2)}%, the monthly payment is about ${money(payment)}.`;
+        document.getElementById("resultSentence").textContent =
+          `With an APR of ${apr.toFixed(2)}%, the monthly payment is about ${money(payment)}.`;
       }
     }
 
@@ -1033,7 +1096,8 @@
     }
 
     function drawChart(principal, payment, months, monthlyRate){
-      const ctx = document.getElementById("myChart").getContext("2d");
+      const canvas = document.getElementById("myChart");
+      const ctx = canvas.getContext("2d");
 
       if(chart){ chart.destroy(); }
 
@@ -1129,17 +1193,19 @@
       });
     }
 
-    document.addEventListener('DOMContentLoaded', () => {
-      document.querySelectorAll('.faq-question').forEach(btn => {
-        btn.addEventListener('click', () => {
+    document.addEventListener("DOMContentLoaded", function(){
+      document.querySelectorAll(".faq-question").forEach(btn => {
+        btn.addEventListener("click", () => {
           const item = btn.parentElement;
-          document.querySelectorAll('.faq-item').forEach(i => {
-            if(i !== item) i.classList.remove('active');
+
+          document.querySelectorAll(".faq-item").forEach(i => {
+            if(i !== item) i.classList.remove("active");
           });
-          item.classList.toggle('active');
+
+          item.classList.toggle("active");
         });
       });
     });
   </script>
 </body>
-  </html>
+      </html>
