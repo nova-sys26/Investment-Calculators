@@ -294,6 +294,7 @@
       border-radius: 16px;
       background: rgba(15,23,42,0.88);
       border: 1px solid rgba(255,255,255,0.08);
+      display: block;
     }
 
     .insight-banner.insight-good {
@@ -329,6 +330,7 @@
       margin-top: 8px;
       font-size: 18px;
       line-height: 1.25;
+      color: #e5e7eb;
     }
 
     .insight-body {
@@ -355,6 +357,7 @@
       color: #e2e8f0;
       font-size: 12px;
       line-height: 1;
+      white-space: nowrap;
     }
 
     .insight-grid {
@@ -369,6 +372,7 @@
       border: 1px solid rgba(255,255,255,0.06);
       border-radius: 14px;
       padding: 14px;
+      min-height: 118px;
     }
 
     .insight-card span {
@@ -385,6 +389,7 @@
       display: block;
       font-size: 16px;
       line-height: 1.25;
+      color: #e5e7eb;
     }
 
     .insight-card p {
@@ -524,127 +529,115 @@
     }
 
     @media (max-width: 700px) {
-      .container {
-        padding: 22px;
-      }
-
-      h1 {
-        font-size: 28px;
-      }
-
-      .content h2 {
-        font-size: 24px;
-      }
-
-      .toggle button {
-        font-size: 14px;
-      }
-
-      .chart-wrap {
-        height: 300px;
-      }
+      .container { padding: 22px; }
+      h1 { font-size: 28px; }
+      .content h2 { font-size: 24px; }
+      .toggle button { font-size: 14px; }
+      .chart-wrap { height: 300px; }
     }
   </style>
 </head>
 
 <body>
-  <p class="toptext">Explore more calculators</p>
+  <div class="page-wrap">
+    <p class="toptext">Explore more calculators</p>
 
-  <div class="menu">
-    <a href="index.html">Home</a>
-  </div>
-
-  <div class="container" data-search="apr calculator annual percentage rate loan payment total interest borrowing cost">
-    <h1>APR Calculator</h1>
-
-    <p class="quick-answer">
-      APR shows the real yearly cost of borrowing money, including interest and most mandatory fees.
-    </p>
-
-    <p class="subhead">
-      Calculate APR or monthly payment depending on what you already know.
-      Use it to compare loan offers and understand the true cost of borrowing.
-    </p>
-
-    <div class="toggle">
-      <button id="aprBtn" class="active" onclick="setMode('apr')" type="button">Find APR</button>
-      <button id="payBtn" onclick="setMode('payment')" type="button">Find Payment</button>
+    <div class="menu">
+      <a href="index.html">Home</a>
     </div>
 
-    <label class="field-label" for="loan">Loan Amount ($)</label>
-    <input id="loan" type="number" min="0" step="any" placeholder="e.g. 10000">
+    <div class="container" data-search="apr calculator annual percentage rate loan payment total interest borrowing cost">
+      <h1>APR Calculator</h1>
 
-    <label class="field-label" for="months">Loan Term (months)</label>
-    <input id="months" type="number" min="1" step="1" placeholder="e.g. 24">
+      <p class="quick-answer">
+        APR shows the real yearly cost of borrowing money, including interest and most mandatory fees.
+      </p>
 
-    <label class="field-label" id="dynamicLabel" for="dynamicInput">Monthly Payment ($)</label>
-    <input id="dynamicInput" type="number" min="0" step="any" placeholder="e.g. 450">
+      <p class="subhead">
+        Calculate APR or monthly payment depending on what you already know.
+        Use it to compare loan offers and understand the true cost of borrowing.
+      </p>
 
-    <button class="action-btn" onclick="calculate()" type="button">Calculate</button>
-
-    <div id="resultCard" class="result-card" aria-live="polite">
-      <p id="resultSentence" class="result-sentence">—</p>
-
-      <div class="result-grid">
-        <div class="result-box">
-          <span class="result-label" id="resultPrimaryLabel">APR</span>
-          <span id="resultPrimaryOut" class="result-value">—</span>
-        </div>
-
-        <div class="result-box">
-          <span class="result-label">Total paid</span>
-          <span id="totalPaidOut" class="result-value">—</span>
-        </div>
-
-        <div class="result-box">
-          <span class="result-label">Total interest</span>
-          <span id="totalInterestOut" class="result-value">—</span>
-        </div>
-
-        <div class="result-box">
-          <span class="result-label">Monthly payment</span>
-          <span id="monthlyPaymentOut" class="result-value">—</span>
-        </div>
+      <div class="toggle">
+        <button id="aprBtn" class="active" onclick="setMode('apr')" type="button">Find APR</button>
+        <button id="payBtn" onclick="setMode('payment')" type="button">Find Payment</button>
       </div>
 
-      <div id="insightBanner" class="insight-banner">
-        <span id="insightKicker" class="insight-kicker">—</span>
-        <strong id="insightHeadline" class="insight-headline">—</strong>
-        <p id="insightBody" class="insight-body">—</p>
-        <div id="insightMini" class="insight-mini"></div>
-      </div>
+      <label class="field-label" for="loan">Loan Amount ($)</label>
+      <input id="loan" type="number" min="0" step="any" placeholder="e.g. 10000">
 
-      <div class="insight-grid">
-        <div class="insight-card">
-          <span>APR quality</span>
-          <strong id="insightAprLevel">—</strong>
-          <p id="insightAprNote">—</p>
-        </div>
-        <div class="insight-card">
-          <span>Payment burden</span>
-          <strong id="insightPaymentLevel">—</strong>
-          <p id="insightPaymentNote">—</p>
-        </div>
-        <div class="insight-card">
-          <span>Interest load</span>
-          <strong id="insightInterestLevel">—</strong>
-          <p id="insightInterestNote">—</p>
-        </div>
-        <div class="insight-card">
-          <span>Best next move</span>
-          <strong id="insightActionLevel">—</strong>
-          <p id="insightActionNote">—</p>
-        </div>
-      </div>
+      <label class="field-label" for="months">Loan Term (months)</label>
+      <input id="months" type="number" min="1" step="1" placeholder="e.g. 24">
 
-      <div class="chart-shell">
-        <h3>Amortization breakdown</h3>
-        <div class="chart-wrap">
-          <canvas id="myChart"></canvas>
+      <label class="field-label" id="dynamicLabel" for="dynamicInput">Monthly Payment ($)</label>
+      <input id="dynamicInput" type="number" min="0" step="any" placeholder="e.g. 450">
+
+      <button class="action-btn" onclick="calculate()" type="button">Calculate</button>
+
+      <div id="resultCard" class="result-card" aria-live="polite">
+        <p id="resultSentence" class="result-sentence">—</p>
+
+        <div class="result-grid">
+          <div class="result-box">
+            <span class="result-label" id="resultPrimaryLabel">APR</span>
+            <span id="resultPrimaryOut" class="result-value">—</span>
+          </div>
+
+          <div class="result-box">
+            <span class="result-label">Total paid</span>
+            <span id="totalPaidOut" class="result-value">—</span>
+          </div>
+
+          <div class="result-box">
+            <span class="result-label">Total interest</span>
+            <span id="totalInterestOut" class="result-value">—</span>
+          </div>
+
+          <div class="result-box">
+            <span class="result-label">Monthly payment</span>
+            <span id="monthlyPaymentOut" class="result-value">—</span>
+          </div>
         </div>
-        <p class="chart-note">
-          Stacked area shows monthly interest and principal. The line shows remaining balance over time.
-        </p>
+
+        <div id="insightBanner" class="insight-banner">
+          <span id="insightKicker" class="insight-kicker">—</span>
+          <strong id="insightHeadline" class="insight-headline">—</strong>
+          <p id="insightBody" class="insight-body">—</p>
+          <div id="insightMini" class="insight-mini"></div>
+        </div>
+
+        <div class="insight-grid">
+          <div class="insight-card">
+            <span>APR quality</span>
+            <strong id="insightAprLevel">—</strong>
+            <p id="insightAprNote">—</p>
+          </div>
+          <div class="insight-card">
+            <span>Payment burden</span>
+            <strong id="insightPaymentLevel">—</strong>
+            <p id="insightPaymentNote">—</p>
+          </div>
+          <div class="insight-card">
+            <span>Interest load</span>
+            <strong id="insightInterestLevel">—</strong>
+            <p id="insightInterestNote">—</p>
+          </div>
+          <div class="insight-card">
+            <span>Best next move</span>
+            <strong id="insightActionLevel">—</strong>
+            <p id="insightActionNote">—</p>
+          </div>
+        </div>
+
+        <div class="chart-shell">
+          <h3>Amortization breakdown</h3>
+          <div class="chart-wrap">
+            <canvas id="myChart"></canvas>
+          </div>
+          <p class="chart-note">
+            Stacked area shows monthly interest and principal. The line shows remaining balance over time.
+          </p>
+        </div>
       </div>
     </div>
   </div>
@@ -819,6 +812,7 @@
       }
 
       document.getElementById("resultCard").style.display = "none";
+
       if(chart){
         chart.destroy();
         chart = null;
@@ -1037,7 +1031,9 @@
         `Term ${months} mo / ${termYears.toFixed(1)} yr`
       ];
 
-      document.getElementById("insightBanner").className = `insight-banner ${overallClass}`;
+      const banner = document.getElementById("insightBanner");
+      banner.className = `insight-banner ${overallClass}`;
+
       document.getElementById("insightKicker").textContent = kicker;
       document.getElementById("insightHeadline").textContent = headline;
       document.getElementById("insightBody").textContent = body;
