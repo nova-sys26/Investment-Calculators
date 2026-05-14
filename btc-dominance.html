@@ -1124,63 +1124,76 @@
       const hue = Number(score) < 35 ? '#f97316' : Number(score) < 45 ? '#facc15' : Number(score) < 65 ? '#22c55e' : '#06b6d4';
       scoreValue.style.color = hue;
     }
+async function fetchDominance(){
+  loadingState.style.display = 'block';
+  errorState.style.display = 'none';
+  dashboard.style.display = 'none';
 
-    async function fetchDominance(){
-      loadingState.style.display = 'block';
-      errorState.style.display = 'none';
-      dashboard.style.display = 'none';
+  try {
+    const url = `https://api.coingecko.com/api/v3/global?t=${Date.now()}`;
 
-      try{
-        const res = await fetch('https://api.coingecko.com/api/v3/global', { cache: 'no-store' });
-        if (!res.ok) throw new Error(`Request failed with status ${res.status}`);
-        const json = await res.json();
-        if (!json || !json.data) throw new Error('Invalid API response.');
-
-        const data = json.data;
-        const btc = Number(data.market_cap_percentage?.btc ?? 0);
-        const eth = Number(data.market_cap_percentage?.eth ?? 0);
-        const total = Number(data.total_market_cap?.usd ?? 0);
-        const marketMove = Number(data.market_cap_change_percentage_24h_usd ?? 0);
-        const btcCap = total * (btc / 100);
-        const altShare = Math.max(0, 100 - btc - eth);
-
-        const classification = classifyDominance(btc);
-
-        scoreValue.textContent = btc.toFixed(1);
-        scoreLabel.textContent = classification.label;
-        scoreLabel.className = `score-label ${classification.cls}`;
-
-        currentReading.innerText = `${btc.toFixed(1)}% · ${classification.label}`;
-        currentReadingNote.innerText = classification.note;
-
-        btcCapReading.innerText = fmtMoney(btcCap);
-        globalCapReading.innerText = fmtMoney(total);
-        marketMoveReading.innerText = `${marketMove >= 0 ? '+' : ''}${marketMove.toFixed(2)}%`;
-        marketMoveReading.className = marketMove >= 0 ? 'insight-balanced' : 'insight-wary';
-        marketMoveNote.innerText = marketMove >= 0 ? 'Global market cap is expanding.' : 'Global market cap is contracting.';
-
-        ethReading.innerText = `${eth.toFixed(1)}%`;
-        othersReading.innerText = `${altShare.toFixed(1)}%`;
-
-        heroScore.innerText = `${btc.toFixed(1)}%`;
-        heroCap.innerText = fmtMoney(btcCap);
-        heroGlobal.innerText = fmtMoney(total);
-
-        updatedAt.textContent = `Updated: ${data.updated_at ? fmtDate(data.updated_at) : 'just now'}`;
-        refreshText.textContent = 'Current stats refresh every 5 minutes.';
-        document.title = `BTC Dominance – ${btc.toFixed(1)}% (${classification.label})`;
-
-        updateNeedle(btc);
-
-        loadingState.style.display = 'none';
-        dashboard.style.display = 'block';
-        currentStatsLoaded = true;
-      } catch (err){
-        loadingState.style.display = 'none';
-        errorState.style.display = 'block';
-        errorState.textContent = `Live data could not be loaded right now. ${err.message}`;
+    const res = await fetch(url, {
+      method: 'GET',
+      cache: 'no-store',
+      headers: {
+        'Cache-Control': 'no-cache, no-store, must-revalidate',
+        'Pragma': 'no-cache',
+        'Expires': '0'
       }
-    }
+    });
+
+    if (!res.ok) throw new Error(`Request failed with status ${res.status}`);
+
+    const json = await res.json();
+    if (!json || !json.data) throw new Error('Invalid API response.');
+
+    const data = json.data;
+    const btc = Number(data.market_cap_percentage?.btc ?? 0);
+    const eth = Number(data.market_cap_percentage?.eth ?? 0);
+    const total = Number(data.total_market_cap?.usd ?? 0);
+    const marketMove = Number(data.market_cap_change_percentage_24h_usd ?? 0);
+    const btcCap = total * (btc / 100);
+    const altShare = Math.max(0, 100 - btc - eth);
+
+    const classification = classifyDominance(btc);
+
+    scoreValue.textContent = btc.toFixed(2);
+    scoreLabel.textContent = classification.label;
+    scoreLabel.className = `score-label ${classification.cls}`;
+
+    currentReading.innerText = `${btc.toFixed(2)}% · ${classification.label}`;
+    currentReadingNote.innerText = classification.note;
+
+    btcCapReading.innerText = fmtMoney(btcCap);
+    globalCapReading.innerText = fmtMoney(total);
+
+    marketMoveReading.innerText = `${marketMove >= 0 ? '+' : ''}${marketMove.toFixed(2)}%`;
+    marketMoveReading.className = marketMove >= 0 ? 'insight-balanced' : 'insight-wary';
+    marketMoveNote.innerText = marketMove >= 0 ? 'Global market cap is expanding.' : 'Global market cap is contracting.';
+
+    ethReading.innerText = `${eth.toFixed(2)}%`;
+    othersReading.innerText = `${altShare.toFixed(2)}%`;
+
+    heroScore.innerText = `${btc.toFixed(2)}%`;
+    heroCap.innerText = fmtMoney(btcCap);
+    heroGlobal.innerText = fmtMoney(total);
+
+    updatedAt.textContent = `Updated: ${new Date().toLocaleTimeString()}`;
+    refreshText.textContent = 'Current stats refresh every 60 seconds.';
+    document.title = `BTC Dominance – ${btc.toFixed(2)}% (${classification.label})`;
+
+    updateNeedle(btc);
+
+    loadingState.style.display = 'none';
+    dashboard.style.display = 'block';
+    currentStatsLoaded = true;
+  } catch (err) {
+    loadingState.style.display = 'none';
+    errorState.style.display = 'block';
+    errorState.textContent = `Live data could not be loaded right now. ${err.message}`;
+  }
+       }
+
 
     function loadTradingViewChart(){
       const script = document.createElement('script');
@@ -1211,7 +1224,7 @@
     document.addEventListener('DOMContentLoaded', () => {
       fetchDominance();
       loadTradingViewChart();
-      setInterval(fetchDominance, 300000);
+      setInterval(fetchDominance, 60000);
 
       document.querySelectorAll('.faq-question').forEach(btn => {
         btn.addEventListener('click', () => {
