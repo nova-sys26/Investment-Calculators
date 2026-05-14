@@ -213,6 +213,92 @@
       background: #3b82f6;
     }
 
+.insight-banner{
+  margin-top:14px;
+  padding:16px;
+  border-radius:16px;
+  background:rgba(15,23,42,0.88);
+  border:1px solid rgba(255,255,255,0.08);
+}
+
+.insight-banner.insight-good{
+  border-color:rgba(34,197,94,0.25);
+  background:rgba(34,197,94,0.08);
+}
+
+.insight-banner.insight-medium{
+  border-color:rgba(250,204,21,0.25);
+  background:rgba(250,204,21,0.08);
+}
+
+.insight-banner.insight-weak{
+  border-color:rgba(239,68,68,0.25);
+  background:rgba(239,68,68,0.08);
+}
+
+.insight-kicker{
+  display:inline-flex;
+  align-items:center;
+  padding:5px 10px;
+  border-radius:999px;
+  font-size:11px;
+  font-weight:800;
+  letter-spacing:0.08em;
+  text-transform:uppercase;
+  background:rgba(255,255,255,0.06);
+  color:#cbd5e1;
+}
+
+.insight-headline{
+  display:block;
+  margin-top:8px;
+  font-size:18px;
+  line-height:1.25;
+}
+
+.insight-body{
+  margin:8px 0 0;
+  color:#cbd5e1;
+  line-height:1.6;
+  font-size:14px;
+}
+
+.insight-grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fit, minmax(180px, 1fr));
+  gap:12px;
+  margin-top:12px;
+}
+
+.insight-card{
+  background:rgba(15,23,42,0.72);
+  border:1px solid rgba(255,255,255,0.06);
+  border-radius:14px;
+  padding:14px;
+}
+
+.insight-card span{
+  display:block;
+  color:#94a3b8;
+  font-size:12px;
+  text-transform:uppercase;
+  letter-spacing:0.08em;
+  font-weight:700;
+  margin-bottom:6px;
+}
+
+.insight-card strong{
+  display:block;
+  font-size:16px;
+  line-height:1.25;
+}
+
+.insight-card p{
+  margin:6px 0 0;
+  color:#cbd5e1;
+  font-size:13px;
+  line-height:1.55;
+}
     .field-label{
       display:block;
       font-size:13px;
@@ -470,25 +556,58 @@
     <button onclick="calculate()" type="button">Calculate</button>
 
     <div id="resultCard" class="result-card">
-      <div class="result-grid">
-        <div class="result-box">
-          <span class="result-label" id="resultPrimaryLabel">APR</span>
-          <span id="resultPrimaryOut" class="result-value">—</span>
-        </div>
-        <div class="result-box">
-          <span class="result-label">Total paid</span>
-          <span id="totalPaidOut" class="result-value">—</span>
-        </div>
-        <div class="result-box">
-          <span class="result-label">Total interest</span>
-          <span id="totalInterestOut" class="result-value">—</span>
-        </div>
-        <div class="result-box">
-          <span class="result-label">Insight</span>
-          <span id="insightOut" class="result-value">—</span>
-        </div>
-      </div>
+    
+<div id="resultCard" class="result-card">
+  <p id="resultSentence" class="result-sentence">—</p>
+
+  <div id="insightBanner" class="insight-banner">
+    <span id="insightKicker" class="insight-kicker">—</span>
+    <strong id="insightHeadline" class="insight-headline">—</strong>
+    <p id="insightBody" class="insight-body">—</p>
+  </div>
+
+  <div class="result-grid">
+    <div class="result-box">
+      <span class="result-label" id="resultPrimaryLabel">APR</span>
+      <span id="resultPrimaryOut" class="result-value">—</span>
     </div>
+    <div class="result-box">
+      <span class="result-label">Total paid</span>
+      <span id="totalPaidOut" class="result-value">—</span>
+    </div>
+    <div class="result-box">
+      <span class="result-label">Total interest</span>
+      <span id="totalInterestOut" class="result-value">—</span>
+    </div>
+    <div class="result-box">
+      <span class="result-label">Insight</span>
+      <span id="insightOut" class="result-value">—</span>
+    </div>
+  </div>
+
+  <div class="insight-grid">
+    <div class="insight-card">
+      <span>APR quality</span>
+      <strong id="insightAprLevel">—</strong>
+      <p id="insightAprNote">—</p>
+    </div>
+    <div class="insight-card">
+      <span>Payment burden</span>
+      <strong id="insightPaymentLevel">—</strong>
+      <p id="insightPaymentNote">—</p>
+    </div>
+    <div class="insight-card">
+      <span>Interest load</span>
+      <strong id="insightInterestLevel">—</strong>
+      <p id="insightInterestNote">—</p>
+    </div>
+    <div class="insight-card">
+      <span>Best next move</span>
+      <strong id="insightActionLevel">—</strong>
+      <p id="insightActionNote">—</p>
+    </div>
+  </div>
+</div>
 
     <canvas id="myChart" style="display:none;"></canvas>
   </div>
@@ -632,223 +751,308 @@
   </div>
 
   <script src="footer.js"></script>
-  <script>
-    let chart = null;
-    let mode = "apr";
+<script>
+  let chart = null;
+  let mode = "apr";
 
-    function money(value) {
-      return "$" + Number(value).toLocaleString(undefined, {
-        minimumFractionDigits: 2,
-        maximumFractionDigits: 2
-      });
+  function money(value) {
+    return "$" + Number(value).toLocaleString(undefined, {
+      minimumFractionDigits: 2,
+      maximumFractionDigits: 2
+    });
+  }
+
+  function pct(value, digits = 1) {
+    return `${Number(value).toFixed(digits)}%`;
+  }
+
+  function setMode(selected){
+    mode = selected;
+
+    document.getElementById("aprBtn").classList.remove("active");
+    document.getElementById("payBtn").classList.remove("active");
+
+    const dynamicLabel = document.getElementById("dynamicLabel");
+    const dynamicInput = document.getElementById("dynamicInput");
+
+    if(selected === "apr"){
+      document.getElementById("aprBtn").classList.add("active");
+      dynamicLabel.innerText = "Monthly Payment ($)";
+      dynamicInput.placeholder = "e.g. 450";
+    } else {
+      document.getElementById("payBtn").classList.add("active");
+      dynamicLabel.innerText = "APR (%)";
+      dynamicInput.placeholder = "e.g. 7.5";
     }
 
-    function setMode(selected){
-      mode = selected;
+    document.getElementById("resultCard").style.display = "none";
+    document.getElementById("myChart").style.display = "none";
 
-      document.getElementById("aprBtn").classList.remove("active");
-      document.getElementById("payBtn").classList.remove("active");
+    if(chart){
+      chart.destroy();
+      chart = null;
+    }
+  }
 
-      const dynamicLabel = document.getElementById("dynamicLabel");
-      const dynamicInput = document.getElementById("dynamicInput");
+  function calculate(){
+    const loan = parseFloat(document.getElementById("loan").value);
+    const months = parseInt(document.getElementById("months").value, 10);
+    const input = parseFloat(document.getElementById("dynamicInput").value);
 
-      if(selected === "apr"){
-        document.getElementById("aprBtn").classList.add("active");
-        dynamicLabel.innerText = "Monthly Payment ($)";
-        dynamicInput.placeholder = "e.g. 450";
+    if([loan, months, input].some(v => isNaN(v))) {
+      alert("Fill all fields");
+      return;
+    }
+
+    if (loan <= 0 || months <= 0) {
+      alert("Loan amount and loan term must be greater than zero.");
+      return;
+    }
+
+    if(mode === "apr"){
+      calculateAPR(loan, input, months);
+    } else {
+      calculatePayment(loan, input, months);
+    }
+  }
+
+  function calculateAPR(loan, payment, months){
+    const minPayment = loan / months;
+
+    if(payment < minPayment){
+      alert("Payment is too low to repay this loan.");
+      return;
+    }
+
+    if(Math.abs(payment - minPayment) < 1e-9){
+      showAPRResult(0, payment, months, loan);
+      return;
+    }
+
+    let low = 0;
+    let high = 1;
+    let rate = 0;
+
+    for(let i = 0; i < 100; i++){
+      rate = (low + high) / 2;
+
+      const calcPayment = loan * (rate * Math.pow(1 + rate, months)) / (Math.pow(1 + rate, months) - 1);
+
+      if(calcPayment > payment){
+        high = rate;
       } else {
-        document.getElementById("payBtn").classList.add("active");
-        dynamicLabel.innerText = "APR (%)";
-        dynamicInput.placeholder = "e.g. 7.5";
-      }
-
-      document.getElementById("resultCard").style.display = "none";
-      document.getElementById("myChart").style.display = "none";
-
-      if(chart){
-        chart.destroy();
-        chart = null;
+        low = rate;
       }
     }
 
-    function calculate(){
-      const loan = parseFloat(document.getElementById("loan").value);
-      const months = parseInt(document.getElementById("months").value, 10);
-      const input = parseFloat(document.getElementById("dynamicInput").value);
+    showAPRResult(rate, payment, months, loan);
+  }
 
-      if([loan, months, input].some(v => isNaN(v))) {
-        alert("Fill all fields");
-        return;
-      }
-
-      if (loan <= 0 || months <= 0) {
-        alert("Loan amount and loan term must be greater than zero.");
-        return;
-      }
-
-      if(mode === "apr"){
-        calculateAPR(loan, input, months);
-      } else {
-        calculatePayment(loan, input, months);
-      }
+  function calculatePayment(loan, apr, months){
+    if (apr < 0) {
+      alert("APR cannot be negative.");
+      return;
     }
 
-    function calculateAPR(loan, payment, months){
-      const minPayment = loan / months;
+    const monthlyRate = (apr / 100) / 12;
+    let payment;
 
-      if(payment < minPayment){
-        alert("Payment is too low to repay this loan.");
-        return;
-      }
-
-      if(Math.abs(payment - minPayment) < 1e-9){
-        showAPRResult(0, payment, months, loan);
-        return;
-      }
-
-      let low = 0;
-      let high = 1;
-      let rate = 0;
-
-      for(let i = 0; i < 100; i++){
-        rate = (low + high) / 2;
-
-        const calcPayment = loan * (rate * Math.pow(1 + rate, months)) / (Math.pow(1 + rate, months) - 1);
-
-        if(calcPayment > payment){
-          high = rate;
-        } else {
-          low = rate;
-        }
-      }
-
-      showAPRResult(rate, payment, months, loan);
+    if(monthlyRate === 0){
+      payment = loan / months;
+    } else {
+      payment = loan * (monthlyRate * Math.pow(1 + monthlyRate, months)) / (Math.pow(1 + monthlyRate, months) - 1);
     }
 
-    function showAPRResult(monthlyRate, payment, months, loan){
-      const apr = (Math.pow(1 + monthlyRate, 12) - 1) * 100;
-      const totalPaid = payment * months;
-      const totalInterest = totalPaid - loan;
+    const totalPaid = payment * months;
+    const totalInterest = totalPaid - loan;
 
-      document.getElementById("resultCard").style.display = "block";
-      document.getElementById("myChart").style.display = "block";
+    document.getElementById("resultCard").style.display = "block";
+    document.getElementById("myChart").style.display = "block";
 
-      document.getElementById("resultPrimaryLabel").innerText = "APR";
-      document.getElementById("resultPrimaryOut").innerText = `${apr.toFixed(2)}%`;
-      document.getElementById("totalPaidOut").innerText = money(totalPaid);
-      document.getElementById("totalInterestOut").innerText = money(totalInterest);
+    document.getElementById("resultPrimaryLabel").innerText = "Monthly Payment";
+    document.getElementById("resultPrimaryOut").innerText = money(payment);
+    document.getElementById("totalPaidOut").innerText = money(totalPaid);
+    document.getElementById("totalInterestOut").innerText = money(totalInterest);
 
-      let insight = "";
-      let insightClass = "";
+    renderInsights({
+      loan,
+      months,
+      payment,
+      apr,
+      totalPaid,
+      totalInterest,
+      monthlyRate
+    });
 
-      if (apr <= 5) {
-        insight = "This is a relatively low borrowing cost.";
-        insightClass = "insight-good";
-      } else if (apr <= 12) {
-        insight = "This loan has a moderate borrowing cost.";
-        insightClass = "insight-medium";
-      } else {
-        insight = "This loan is expensive. Compare offers carefully.";
-        insightClass = "insight-weak";
-      }
+    drawChart(loan, totalInterest);
+  }
 
-      document.getElementById("insightOut").innerHTML = `<span class="${insightClass}">${insight}</span>`;
+  function showAPRResult(monthlyRate, payment, months, loan){
+    const apr = (Math.pow(1 + monthlyRate, 12) - 1) * 100;
+    const totalPaid = payment * months;
+    const totalInterest = totalPaid - loan;
 
-      drawChart(loan, totalInterest);
+    document.getElementById("resultCard").style.display = "block";
+    document.getElementById("myChart").style.display = "block";
+
+    document.getElementById("resultPrimaryLabel").innerText = "APR";
+    document.getElementById("resultPrimaryOut").innerText = `${apr.toFixed(2)}%`;
+    document.getElementById("totalPaidOut").innerText = money(totalPaid);
+    document.getElementById("totalInterestOut").innerText = money(totalInterest);
+
+    renderInsights({
+      loan,
+      months,
+      payment,
+      apr,
+      totalPaid,
+      totalInterest,
+      monthlyRate
+    });
+
+    drawChart(loan, totalInterest);
+  }
+
+  function renderInsights({ loan, months, payment, apr, totalPaid, totalInterest, monthlyRate }) {
+    const minPayment = loan / months;
+    const paymentPressure = payment / minPayment;
+    const interestShare = totalPaid > 0 ? (totalInterest / totalPaid) * 100 : 0;
+    const interestToPrincipal = loan > 0 ? (totalInterest / loan) * 100 : 0;
+    const monthlyRatePct = monthlyRate * 100;
+
+    let overallClass = "insight-good";
+    let headline = "Borrowing cost looks reasonable";
+    let body = "This loan structure is not screaming danger, but you still want to compare offers and watch the fee load.";
+    let kicker = "Balanced";
+
+    if (apr >= 20 || interestShare >= 40 || paymentPressure >= 1.6) {
+      overallClass = "insight-weak";
+      kicker = "Expensive";
+      headline = "This loan is costly";
+      body = "The APR, payment burden, or interest share is high enough that a shorter term or a cheaper lender could save real money.";
+    } else if (apr >= 10 || interestShare >= 25 || paymentPressure >= 1.25) {
+      overallClass = "insight-medium";
+      kicker = "Caution";
+      headline = "Costs are noticeable";
+      body = "The loan is usable, but the fee and interest drag are meaningful. Compare alternatives before locking it in.";
     }
 
-    function calculatePayment(loan, apr, months){
-      if (apr < 0) {
-        alert("APR cannot be negative.");
-        return;
-      }
+    const aprLevel =
+      apr < 3 ? "Excellent APR" :
+      apr < 7 ? "Good APR" :
+      apr < 12 ? "Fair APR" :
+      apr < 20 ? "High APR" : "Very high APR";
 
-      const monthlyRate = (apr / 100) / 12;
-      let payment;
+    const aprNote =
+      apr < 3 ? "Very cheap borrowing for most normal use cases." :
+      apr < 7 ? "Still competitive if the fees are clean." :
+      apr < 12 ? "Normal, but not especially cheap." :
+      apr < 20 ? "Starts to get expensive fast." :
+      "Usually too expensive unless the loan is special-purpose.";
 
-      if(monthlyRate === 0){
-        payment = loan / months;
-      } else {
-        payment = loan * (monthlyRate * Math.pow(1 + monthlyRate, months)) / (Math.pow(1 + monthlyRate, months) - 1);
-      }
+    const burdenLevel =
+      paymentPressure <= 1.05 ? "Very light" :
+      paymentPressure <= 1.25 ? "Manageable" :
+      paymentPressure <= 1.5 ? "Tight" : "Aggressive";
 
-      const totalPaid = payment * months;
-      const totalInterest = totalPaid - loan;
+    const burdenNote =
+      paymentPressure <= 1.05 ? "Payment is close to the minimum amortized amount." :
+      paymentPressure <= 1.25 ? "Payment is only modestly above the baseline." :
+      paymentPressure <= 1.5 ? "Monthly cash flow is starting to feel tight." :
+      "You are paying much more than the minimum structure suggests.";
 
-      document.getElementById("resultCard").style.display = "block";
-      document.getElementById("myChart").style.display = "block";
+    const interestLevel =
+      interestShare < 10 ? "Low interest load" :
+      interestShare < 25 ? "Moderate interest load" :
+      interestShare < 40 ? "Heavy interest load" : "Very heavy load";
 
-      document.getElementById("resultPrimaryLabel").innerText = "Monthly Payment";
-      document.getElementById("resultPrimaryOut").innerText = money(payment);
-      document.getElementById("totalPaidOut").innerText = money(totalPaid);
-      document.getElementById("totalInterestOut").innerText = money(totalInterest);
+    const interestNote =
+      interestShare < 10 ? "Most of what you pay goes to principal." :
+      interestShare < 25 ? "Interest is present, but not dominating." :
+      interestShare < 40 ? "A large share of total paid is interest." :
+      "Interest is taking a very large cut of the total cost.";
 
-      let insight = "";
-      let insightClass = "";
+    const actionLevel =
+      (apr >= 15 || interestToPrincipal >= 50) ? "Compare a shorter term" :
+      (paymentPressure >= 1.35) ? "Check monthly cash flow" :
+      (apr >= 7) ? "Compare another lender" : "Still compare fees";
 
-      if (totalInterest < loan * 0.2) {
-        insight = "This loan keeps interest costs relatively low.";
-        insightClass = "insight-good";
-      } else if (totalInterest < loan * 0.5) {
-        insight = "Interest costs are noticeable, so term length matters.";
-        insightClass = "insight-medium";
-      } else {
-        insight = "Total interest is high. A shorter term or lower rate could save a lot.";
-        insightClass = "insight-weak";
-      }
+    const actionNote =
+      (apr >= 15 || interestToPrincipal >= 50)
+        ? "A shorter term or lower fee structure could materially improve the deal."
+        : (paymentPressure >= 1.35)
+          ? "Make sure the payment will not squeeze your monthly budget."
+          : (apr >= 7)
+            ? "A slightly better APR or fewer fees can still make a meaningful difference."
+            : "Even good loans deserve a quick comparison before you accept.";
 
-      document.getElementById("insightOut").innerHTML = `<span class="${insightClass}">${insight}</span>`;
+    document.getElementById("insightBanner").className = `insight-banner ${overallClass}`;
+    document.getElementById("insightKicker").textContent = kicker;
+    document.getElementById("insightHeadline").textContent = headline;
+    document.getElementById("insightBody").textContent = body;
 
-      drawChart(loan, totalInterest);
+    document.getElementById("insightOut").innerHTML = `<span class="${overallClass}">${headline}</span>`;
+
+    document.getElementById("insightAprLevel").textContent = aprLevel;
+    document.getElementById("insightAprNote").textContent = `${aprNote} Monthly rate ≈ ${monthlyRatePct.toFixed(3)}%.`;
+
+    document.getElementById("insightPaymentLevel").textContent = `${burdenLevel} (${paymentPressure.toFixed(2)}x)`;
+    document.getElementById("insightPaymentNote").textContent = burdenNote + ` Minimum payment baseline: ${money(minPayment)}.`;
+
+    document.getElementById("insightInterestLevel").textContent = `${interestLevel} (${interestShare.toFixed(1)}%)`;
+    document.getElementById("insightInterestNote").textContent = interestNote + ` Interest vs principal: ${interestToPrincipal.toFixed(1)}%.`;
+
+    document.getElementById("insightActionLevel").textContent = actionLevel;
+    document.getElementById("insightActionNote").textContent = actionNote;
+  }
+
+  function drawChart(principal, interest){
+    const ctx = document.getElementById("myChart").getContext("2d");
+
+    if(chart){
+      chart.destroy();
     }
 
-    function drawChart(principal, interest){
-      const ctx = document.getElementById("myChart").getContext("2d");
-
-      if(chart){
-        chart.destroy();
-      }
-
-      chart = new Chart(ctx,{
-        type:'pie',
-        data:{
-          labels:['Loan','Interest'],
-          datasets:[{
-            data:[principal, interest],
-            backgroundColor:['#3b82f6','#ef4444']
-          }]
-        },
-        options:{
-          responsive:true,
-          plugins:{
-            legend:{
-              labels:{ color:'white' }
-            },
-            tooltip:{
-              callbacks:{
-                label: function(context){
-                  return `${context.label}: ${money(context.parsed)}`;
-                }
+    chart = new Chart(ctx,{
+      type:'pie',
+      data:{
+        labels:['Loan','Interest'],
+        datasets:[{
+          data:[principal, interest],
+          backgroundColor:['#3b82f6','#ef4444']
+        }]
+      },
+      options:{
+        responsive:true,
+        plugins:{
+          legend:{
+            labels:{ color:'white' }
+          },
+          tooltip:{
+            callbacks:{
+              label: function(context){
+                return `${context.label}: ${money(context.parsed)}`;
               }
             }
           }
         }
-      });
-    }
+      }
+    });
+  }
 
-    document.addEventListener("DOMContentLoaded", function(){
-      document.querySelectorAll(".faq-question").forEach(btn => {
-        btn.addEventListener("click", () => {
-          const item = btn.parentElement;
+  document.addEventListener("DOMContentLoaded", function(){
+    document.querySelectorAll(".faq-question").forEach(btn => {
+      btn.addEventListener("click", () => {
+        const item = btn.parentElement;
 
-          document.querySelectorAll(".faq-item").forEach(i => {
-            if(i !== item) i.classList.remove("active");
-          });
-
-          item.classList.toggle("active");
+        document.querySelectorAll(".faq-item").forEach(i => {
+          if(i !== item) i.classList.remove("active");
         });
+
+        item.classList.toggle("active");
       });
     });
-  </script>
+  });
+      </script>
 </body>
       </html>
