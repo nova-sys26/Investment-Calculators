@@ -89,6 +89,22 @@
       },
       {
         "@type": "Question",
+        "name": "What is the difference between isolated and cross margin?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Isolated margin limits risk to the margin assigned to the position. Cross margin can use additional wallet balance, which may move liquidation farther away but also exposes more of the account."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Can a stop-loss prevent liquidation?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "A stop-loss can reduce liquidation risk if it is placed well before the liquidation level, but it does not guarantee protection if the market gaps or moves too fast."
+        }
+      },
+      {
+        "@type": "Question",
         "name": "Is this calculator exact for every exchange?",
         "acceptedAnswer": {
           "@type": "Answer",
@@ -240,6 +256,38 @@
     input:focus,
     select:focus{
       box-shadow:0 0 0 3px rgba(59,130,246,0.18);
+    }
+
+    .toggle {
+      display: flex;
+      margin: 12px 0 14px;
+      gap: 0;
+    }
+
+    .toggle button {
+      flex: 1;
+      padding: 12px;
+      border: none;
+      cursor: pointer;
+      background: #334155;
+      color: white;
+      transition: 0.2s;
+      margin-top: 0;
+      width: auto;
+      font-size: 15px;
+      font-weight: 700;
+    }
+
+    .toggle button:first-child {
+      border-radius: 10px 0 0 10px;
+    }
+
+    .toggle button:last-child {
+      border-radius: 0 10px 10px 0;
+    }
+
+    .toggle button.active {
+      background: #3b82f6;
     }
 
     button{
@@ -610,11 +658,11 @@
       </div>
 
       <div class="field">
-        <label for="side">Position Side</label>
-        <select id="side">
-          <option value="long">Long</option>
-          <option value="short">Short</option>
-        </select>
+        <label>Position Side</label>
+        <div class="toggle">
+          <button id="longBtn" class="active" type="button">Long</button>
+          <button id="shortBtn" type="button">Short</button>
+        </div>
       </div>
 
       <div class="field">
@@ -773,6 +821,30 @@
 
       <div class="faq-item">
         <button class="faq-question" type="button">
+          Can a stop-loss still be useful near liquidation?
+          <span class="arrow">▼</span>
+        </button>
+        <div class="faq-answer">
+          <p>
+            Yes. A stop-loss placed well before liquidation can protect capital and keep a bad trade from turning into a forced exit. The key is giving the stop enough room to work.
+          </p>
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <button class="faq-question" type="button">
+          Does cross margin always improve liquidation distance?
+          <span class="arrow">▼</span>
+        </button>
+        <div class="faq-answer">
+          <p>
+            Cross margin can improve liquidation distance if you actually have extra wallet equity available, but it also increases account-wide risk. It is not free protection.
+          </p>
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <button class="faq-question" type="button">
           Is this exact for every exchange?
           <span class="arrow">▼</span>
         </button>
@@ -796,7 +868,7 @@
       <li><a href="stop-loss-calculator.html">Stop Loss Calculator</a></li>
     </ul>
   </div>
- <script src="footer.js"></script>
+
   <div class="disclaimer">
     <p>
       <strong>Disclaimer:</strong> This is a simplified estimation. Real liquidation prices vary by exchange, fees, maintenance margin, funding, and position settings.
@@ -810,11 +882,13 @@
     const entryInput = document.getElementById("entry");
     const positionSizeInput = document.getElementById("positionSize");
     const leverageInput = document.getElementById("leverage");
-    const sideInput = document.getElementById("side");
     const marginModeInput = document.getElementById("marginMode");
     const maintenanceInput = document.getElementById("maintenance");
     const crossMarginRow = document.getElementById("crossMarginRow");
     const crossMarginInput = document.getElementById("crossMargin");
+
+    const longBtn = document.getElementById("longBtn");
+    const shortBtn = document.getElementById("shortBtn");
 
     const resultCard = document.getElementById("resultCard");
     const resultSentence = document.getElementById("resultSentence");
@@ -839,6 +913,8 @@
     const insightMaintenanceNote = document.getElementById("insightMaintenanceNote");
     const insightActionLevel = document.getElementById("insightActionLevel");
     const insightActionNote = document.getElementById("insightActionNote");
+
+    let selectedSide = "long";
 
     function fmtMoney(value){
       if (!Number.isFinite(value)) return "—";
@@ -869,10 +945,6 @@
       return mode === "cross" ? "Cross" : "Isolated";
     }
 
-    function clamp(n, min, max){
-      return Math.max(min, Math.min(max, n));
-    }
-
     function liquidationColorClass(distancePct, viable){
       if (!viable) return "insight-weak";
       if (distancePct <= 3) return "insight-weak";
@@ -890,13 +962,6 @@
       return { notional, qty, baseMargin, totalMargin, maintenanceMargin, buffer };
     }
 
-    function liquidationPrice(entry, positionSize, leverage, maintenancePct, side, extraCrossMargin){
-      const { qty, totalMargin, maintenanceMargin } = paymentFromBuffer(entry, positionSize, leverage, maintenancePct, extraCrossMargin);
-      const offset = (totalMargin - maintenanceMargin) / qty;
-      const price = side === "short" ? entry + offset : entry - offset;
-      return { price: Math.max(0, price), qty, totalMargin, maintenanceMargin, offset };
-    }
-
     function calcEquityAtPrice(price, entry, qty, totalMargin, side){
       const pnl = side === "long"
         ? qty * (price - entry)
@@ -904,7 +969,7 @@
       return totalMargin + pnl;
     }
 
-    function renderChart(entry, side, qty, totalMargin, maintenanceMargin, liquidation, maintenancePct){
+    function renderChart(entry, side, qty, totalMargin, maintenanceMargin, liquidation){
       const canvas = document.getElementById("myChart");
       const ctx = canvas.getContext("2d");
 
@@ -926,16 +991,8 @@
         });
       }
 
-      const entryPoint = [{
-        x: entry,
-        y: totalMargin
-      }];
-
-      const liquidationPoint = [{
-        x: liquidation.price,
-        y: maintenanceMargin
-      }];
-
+      const entryPoint = [{ x: entry, y: totalMargin }];
+      const liquidationPoint = [{ x: liquidation.price, y: maintenanceMargin }];
       const maintenanceLine = [
         { x: low, y: maintenanceMargin },
         { x: high, y: maintenanceMargin }
@@ -1051,7 +1108,6 @@
 
     function renderInsights(params){
       const {
-        entry,
         positionSize,
         leverage,
         side,
@@ -1063,7 +1119,6 @@
         distanceDollar,
         distancePct,
         maintenanceMargin,
-        totalMargin,
         buffer,
         effectiveLeverage,
         viable
@@ -1079,7 +1134,7 @@
 
       if (!viable) {
         headline = "This setup is already below maintenance";
-        body = "At these inputs, the available margin does not comfortably clear the maintenance threshold. In practice, this means the trade is too tight or unrealistic unless the exchange rules are different from this simplified estimate.";
+        body = "At these inputs, the available margin does not clear the maintenance threshold comfortably. In practice, the trade is too tight unless the exchange rules or extra balance are different from this simplified estimate.";
       } else if (distancePct <= 3) {
         headline = "Liquidation is extremely close to entry";
         body = "This position has very little room for adverse price movement. A smaller size, lower leverage, or more margin buffer would make the setup healthier.";
@@ -1116,7 +1171,7 @@
       const marginEffect =
         marginMode === "cross"
           ? `Cross margin adds ${fmtMoney(extraCrossMargin)} of extra buffer.`
-          : "Isolated margin keeps the risk inside the position.";
+          : "Isolated margin keeps the risk contained inside the position.";
 
       const maintenanceImpact =
         maintenancePct <= 0.25 ? "Very light maintenance load." :
@@ -1125,8 +1180,8 @@
         "Maintenance requirement is heavy.";
 
       const maintenanceNote =
-        maintenancePct <= 0.25 ? "The liquidation estimate is mostly driven by leverage and not much by maintenance." :
-        maintenancePct <= 0.75 ? "Maintenance matters, but the main driver is still leverage." :
+        maintenancePct <= 0.25 ? "The estimate is mostly driven by leverage and position size." :
+        maintenancePct <= 0.75 ? "Maintenance matters, but leverage is still the main driver." :
         maintenancePct <= 1.5 ? "A slightly higher maintenance rate would pull liquidation closer." :
         "Maintenance margin is doing a lot of the damage here.";
 
@@ -1181,7 +1236,7 @@
       const positionSize = parseFloat(positionSizeInput.value);
       const leverage = parseFloat(leverageInput.value);
       const maintenancePct = parseFloat(maintenanceInput.value);
-      const side = sideInput.value;
+      const side = selectedSide;
       const marginMode = marginModeInput.value;
       const extraCrossMargin = marginMode === "cross" ? parseFloat(crossMarginInput.value || "0") : 0;
 
@@ -1231,7 +1286,6 @@
       resultCard.style.display = "block";
 
       renderInsights({
-        entry,
         positionSize,
         leverage,
         side,
@@ -1251,21 +1305,24 @@
 
       renderChart(entry, side, qty, totalMargin, maintenanceMargin, {
         price: liquidationPriceValue
-      }, maintenancePct);
+      });
 
       resultCard.scrollIntoView({ behavior: "smooth", block: "start" });
     }
 
-    function toggleCrossField(){
-      crossMarginRow.style.display = marginModeInput.value === "cross" ? "block" : "none";
+    function setSide(side){
+      selectedSide = side;
+      longBtn.classList.toggle("active", side === "long");
+      shortBtn.classList.toggle("active", side === "short");
     }
 
     document.addEventListener("DOMContentLoaded", function(){
       updateMarginModeUI();
 
-      marginModeInput.addEventListener("change", () => {
-        updateMarginModeUI();
-      });
+      marginModeInput.addEventListener("change", updateMarginModeUI);
+
+      longBtn.addEventListener("click", () => setSide("long"));
+      shortBtn.addEventListener("click", () => setSide("short"));
 
       document.querySelectorAll(".faq-question").forEach(btn => {
         btn.addEventListener("click", () => {
@@ -1281,4 +1338,4 @@
     });
   </script>
 </body>
-          </html>
+  </html>
