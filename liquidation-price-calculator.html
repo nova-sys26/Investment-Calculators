@@ -640,7 +640,15 @@
     </div>
 
     <div class="section-title">Your details</div>
-
+    
+<div class="field">
+        <label>Position Side</label>
+        <div class="toggle">
+          <button id="longBtn" class="active" type="button">Long</button>
+          <button id="shortBtn" type="button">Short</button>
+        </div>
+</div>
+    
     <div class="grid">
       <div class="field">
         <label for="entry">Entry Price</label>
@@ -657,13 +665,7 @@
         <input id="leverage" type="number" min="0" step="any" placeholder="e.g. 10">
       </div>
 
-      <div class="field">
-        <label>Position Side</label>
-        <div class="toggle">
-          <button id="longBtn" class="active" type="button">Long</button>
-          <button id="shortBtn" type="button">Short</button>
-        </div>
-      </div>
+      
 
       <div class="field">
         <label for="marginMode">Margin Mode</label>
