@@ -16,14 +16,14 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
   <title>Liquidation Price Calculator – Estimate Leverage Risk</title>
-  <meta name="description" content="Estimate your liquidation price in leveraged trading. See how leverage affects risk, liquidation distance, and capital protection before entering a trade.">
+  <meta name="description" content="Estimate liquidation price for long and short positions with isolated or cross margin, maintenance margin, and a clear risk chart.">
   <meta name="theme-color" content="#0b1a33">
   <meta name="robots" content="index,follow,max-image-preview:large">
 
   <meta property="og:type" content="website">
   <meta property="og:url" content="https://novainvesttools.com/liquidation-price-calculator.html">
   <meta property="og:title" content="Liquidation Price Calculator – Estimate Leverage Risk">
-  <meta property="og:description" content="Estimate your liquidation price in leveraged trading. See how leverage affects risk and liquidation distance before entering a trade.">
+  <meta property="og:description" content="Estimate liquidation price for long and short positions with isolated or cross margin.">
 
   <link rel="preconnect" href="https://cdn.jsdelivr.net">
   <link rel="dns-prefetch" href="https://cdn.jsdelivr.net">
@@ -43,12 +43,12 @@
     "applicationCategory": "FinanceApplication",
     "operatingSystem": "All",
     "browserRequirements": "Requires JavaScript",
-    "description": "Estimate liquidation price and leverage risk for a simplified long position.",
+    "description": "Estimate liquidation price and leverage risk for long and short positions with isolated or cross margin.",
     "featureList": [
       "Liquidation price estimate",
-      "Leverage risk estimation",
-      "Price distance analysis",
-      "Trading risk planning"
+      "Long and short support",
+      "Isolated and cross margin",
+      "Maintenance margin analysis"
     ],
     "offers": {
       "@type": "Offer",
@@ -68,47 +68,31 @@
         "name": "What is liquidation price?",
         "acceptedAnswer": {
           "@type": "Answer",
-          "text": "Liquidation price is the level where a leveraged position is automatically closed because margin is no longer enough to support the trade."
+          "text": "Liquidation price is the level where a leveraged position can be forced closed because the remaining margin is no longer enough to support the trade."
         }
       },
       {
         "@type": "Question",
-        "name": "Why does liquidation happen so quickly with leverage?",
+        "name": "Why does higher leverage move liquidation closer?",
         "acceptedAnswer": {
           "@type": "Answer",
-          "text": "Leverage amplifies small price movements, so a small move against the position can reduce margin very quickly."
+          "text": "Higher leverage reduces the amount of margin supporting the position, so the trade can survive a smaller adverse move before liquidation."
         }
       },
       {
         "@type": "Question",
-        "name": "Does higher leverage move liquidation price closer to entry?",
+        "name": "What is maintenance margin?",
         "acceptedAnswer": {
           "@type": "Answer",
-          "text": "Yes. Higher leverage reduces your safety buffer and brings liquidation closer to the entry price."
+          "text": "Maintenance margin is the minimum equity the position must keep to remain open. If equity drops below that level, liquidation risk becomes immediate."
         }
       },
       {
         "@type": "Question",
-        "name": "Is this calculator accurate for every exchange?",
+        "name": "Is this calculator exact for every exchange?",
         "acceptedAnswer": {
           "@type": "Answer",
-          "text": "No. This tool provides a simplified estimate. Real liquidation prices vary by exchange, fees, and position settings."
-        }
-      },
-      {
-        "@type": "Question",
-        "name": "Can a good strategy still be liquidated?",
-        "acceptedAnswer": {
-          "@type": "Answer",
-          "text": "Yes. Even a good strategy can be liquidated if leverage is too high or position sizing is too aggressive."
-        }
-      },
-      {
-        "@type": "Question",
-        "name": "Should beginners use high leverage?",
-        "acceptedAnswer": {
-          "@type": "Answer",
-          "text": "Beginners usually do better with lower leverage because it gives more room for price movement and lowers liquidation risk."
+          "text": "No. This is a simplified estimate. Real liquidation prices vary by exchange, fees, funding, contract type, and position settings."
         }
       }
     ]
@@ -155,8 +139,9 @@
       padding:30px;
       border-radius:16px;
       width:90%;
-      max-width:560px;
+      max-width:760px;
       box-shadow:0 10px 25px rgba(0,0,0,0.35);
+      border:1px solid rgba(255,255,255,0.05);
     }
 
     h1{
@@ -239,7 +224,8 @@
       font-weight:600;
     }
 
-    input{
+    input,
+    select{
       width:100%;
       padding:14px;
       margin:0;
@@ -248,9 +234,11 @@
       background:#e5e7eb;
       font-size:16px;
       outline:none;
+      color:#0f172a;
     }
 
-    input:focus{
+    input:focus,
+    select:focus{
       box-shadow:0 0 0 3px rgba(59,130,246,0.18);
     }
 
@@ -293,23 +281,140 @@
       color:#cbd5f5;
     }
 
-    .insight-good{
-      color:#22c55e;
-      font-weight:700;
+    .insight-banner{
+      margin-top:14px;
+      padding:16px;
+      border-radius:16px;
+      background:rgba(15,23,42,0.88);
+      border:1px solid rgba(255,255,255,0.08);
     }
 
-    .insight-medium{
-      color:#facc15;
-      font-weight:700;
+    .insight-banner.insight-good{
+      border-color:rgba(34,197,94,0.25);
+      background:rgba(34,197,94,0.08);
     }
 
-    .insight-weak{
-      color:#ef4444;
-      font-weight:700;
+    .insight-banner.insight-medium{
+      border-color:rgba(250,204,21,0.25);
+      background:rgba(250,204,21,0.08);
     }
 
-    canvas{
-      margin-top:26px;
+    .insight-banner.insight-weak{
+      border-color:rgba(239,68,68,0.25);
+      background:rgba(239,68,68,0.08);
+    }
+
+    .insight-kicker{
+      display:inline-flex;
+      align-items:center;
+      padding:5px 10px;
+      border-radius:999px;
+      font-size:11px;
+      font-weight:800;
+      letter-spacing:0.08em;
+      text-transform:uppercase;
+      background:rgba(255,255,255,0.06);
+      color:#cbd5e1;
+    }
+
+    .insight-headline{
+      display:block;
+      margin-top:8px;
+      font-size:18px;
+      line-height:1.25;
+    }
+
+    .insight-body{
+      margin:8px 0 0;
+      color:#cbd5e1;
+      line-height:1.6;
+      font-size:14px;
+    }
+
+    .insight-mini{
+      display:flex;
+      flex-wrap:wrap;
+      gap:8px;
+      margin-top:12px;
+    }
+
+    .insight-mini span{
+      display:inline-flex;
+      align-items:center;
+      padding:7px 10px;
+      border-radius:999px;
+      background:rgba(255,255,255,0.06);
+      border:1px solid rgba(255,255,255,0.08);
+      color:#e2e8f0;
+      font-size:12px;
+      line-height:1;
+    }
+
+    .insight-grid{
+      display:grid;
+      grid-template-columns:repeat(auto-fit, minmax(180px, 1fr));
+      gap:12px;
+      margin-top:12px;
+    }
+
+    .insight-card{
+      background:rgba(15,23,42,0.72);
+      border:1px solid rgba(255,255,255,0.06);
+      border-radius:14px;
+      padding:14px;
+    }
+
+    .insight-card span{
+      display:block;
+      color:#94a3b8;
+      font-size:12px;
+      text-transform:uppercase;
+      letter-spacing:0.08em;
+      font-weight:700;
+      margin-bottom:6px;
+    }
+
+    .insight-card strong{
+      display:block;
+      font-size:16px;
+      line-height:1.25;
+    }
+
+    .insight-card p{
+      margin:6px 0 0;
+      color:#cbd5e1;
+      font-size:13px;
+      line-height:1.55;
+    }
+
+    .insight-good{ color:#22c55e; font-weight:700; }
+    .insight-medium{ color:#facc15; font-weight:700; }
+    .insight-weak{ color:#ef4444; font-weight:700; }
+
+    .chart-shell{
+      margin-top:18px;
+      padding:16px;
+      border-radius:16px;
+      background:rgba(255,255,255,0.04);
+      border:1px solid rgba(255,255,255,0.08);
+    }
+
+    .chart-shell h3{
+      margin:0 0 8px;
+      font-size:16px;
+    }
+
+    .chart-wrap{
+      position:relative;
+      height:360px;
+      width:100%;
+    }
+
+    .chart-note{
+      margin:8px 0 0;
+      color:#94a3b8;
+      font-size:12px;
+      line-height:1.6;
     }
 
     .content{
@@ -396,8 +501,8 @@
 
     .related{
       width:90%;
-      max-width:560px;
-      margin-top:26px;
+      max-width:760px;
+      margin-top:34px;
       background:rgba(30,41,59,0.62);
       border:1px solid rgba(255,255,255,0.08);
       border-radius:16px;
@@ -454,6 +559,10 @@
       .content h2{
         font-size:24px;
       }
+
+      .chart-wrap{
+        height:300px;
+      }
     }
   </style>
 </head>
@@ -468,20 +577,22 @@
   <div class="container">
     <h1>Liquidation Price Calculator</h1>
     <p class="quick-answer">
-      A $100 margin with 10x leverage can be liquidated after roughly a 10% move against you — use this liquidation price calculator to estimate risk before entering a leveraged trade.
+      Estimate liquidation risk for long or short positions before you click buy or sell.
+      This version supports isolated and cross margin with maintenance margin included.
     </p>
 
     <p class="subhead">
-      Estimate your liquidation price in leveraged trading and understand how leverage affects your safety buffer, capital risk, and price distance to liquidation.
+      Use it to estimate the liquidation price, see how much room you have before liquidation, and compare isolated versus cross margin.
     </p>
 
     <div class="badge-row">
-      <span class="badge">Leverage risk</span>
-      <span class="badge soft">Liquidation level</span>
-      <span class="badge soft">Capital protection</span>
+      <span class="badge">Long / Short</span>
+      <span class="badge soft">Isolated / Cross</span>
+      <span class="badge soft">Maintenance margin</span>
     </div>
 
     <div class="section-title">Your details</div>
+
     <div class="grid">
       <div class="field">
         <label for="entry">Entry Price</label>
@@ -489,179 +600,185 @@
       </div>
 
       <div class="field">
+        <label for="positionSize">Position Size ($ notional)</label>
+        <input id="positionSize" type="number" min="0" step="any" placeholder="e.g. 1000">
+      </div>
+
+      <div class="field">
         <label for="leverage">Leverage (e.g. 10x)</label>
         <input id="leverage" type="number" min="0" step="any" placeholder="e.g. 10">
       </div>
+
+      <div class="field">
+        <label for="side">Position Side</label>
+        <select id="side">
+          <option value="long">Long</option>
+          <option value="short">Short</option>
+        </select>
+      </div>
+
+      <div class="field">
+        <label for="marginMode">Margin Mode</label>
+        <select id="marginMode">
+          <option value="isolated">Isolated</option>
+          <option value="cross">Cross</option>
+        </select>
+      </div>
+
+      <div class="field">
+        <label for="maintenance">Maintenance Margin (%)</label>
+        <input id="maintenance" type="number" min="0" step="any" value="0.50" placeholder="e.g. 0.5">
+      </div>
+
+      <div class="field" id="crossMarginRow" style="display:none; grid-column:1 / -1;">
+        <label for="crossMargin">Extra Cross Margin / Wallet Buffer ($)</label>
+        <input id="crossMargin" type="number" min="0" step="any" placeholder="e.g. 250">
+      </div>
     </div>
 
-    <button onclick="calculate()">Calculate</button>
+    <button onclick="calculate()" type="button">Calculate</button>
 
-    <div id="resultCard" class="result-card">
+    <div id="resultCard" class="result-card" aria-live="polite">
+      <p id="resultSentence" class="result-sentence">—</p>
+
       <div class="result-line"><strong>Liquidation price:</strong> <span id="result">—</span></div>
-      <div class="result-line"><strong>Estimated move to liquidation:</strong> <span id="moveOut">—</span></div>
-      <div class="result-line"><strong>Insight:</strong> <span id="insightOut">—</span></div>
-    </div>
+      <div class="result-line"><strong>Move against position:</strong> <span id="moveOut">—</span></div>
+      <div class="result-line"><strong>Distance from entry:</strong> <span id="distanceOut">—</span></div>
+      <div class="result-line"><strong>Maintenance margin:</strong> <span id="maintenanceOut">—</span></div>
+      <div class="result-line"><strong>Margin buffer above maintenance:</strong> <span id="bufferOut">—</span></div>
+      <div class="result-line"><strong>Effective leverage:</strong> <span id="effectiveLeverageOut">—</span></div>
 
-    <canvas id="myChart"></canvas>
+      <div id="insightBanner" class="insight-banner">
+        <span id="insightKicker" class="insight-kicker">—</span>
+        <strong id="insightHeadline" class="insight-headline">—</strong>
+        <p id="insightBody" class="insight-body">—</p>
+        <div id="insightMini" class="insight-mini"></div>
+      </div>
+
+      <div class="insight-grid">
+        <div class="insight-card">
+          <span>Risk distance</span>
+          <strong id="insightDistanceLevel">—</strong>
+          <p id="insightDistanceNote">—</p>
+        </div>
+        <div class="insight-card">
+          <span>Margin mode effect</span>
+          <strong id="insightModeLevel">—</strong>
+          <p id="insightModeNote">—</p>
+        </div>
+        <div class="insight-card">
+          <span>Maintenance pressure</span>
+          <strong id="insightMaintenanceLevel">—</strong>
+          <p id="insightMaintenanceNote">—</p>
+        </div>
+        <div class="insight-card">
+          <span>Best next move</span>
+          <strong id="insightActionLevel">—</strong>
+          <p id="insightActionNote">—</p>
+        </div>
+      </div>
+
+      <div class="chart-shell">
+        <h3>Equity vs. maintenance</h3>
+        <div class="chart-wrap">
+          <canvas id="myChart"></canvas>
+        </div>
+        <p class="chart-note">
+          The shaded line is estimated equity as price moves. The flat line is the maintenance threshold.
+          The red marker shows the liquidation estimate.
+        </p>
+      </div>
+    </div>
   </div>
 
   <div class="content">
     <h2>What is Liquidation Price?</h2>
     <p>
-      Liquidation price is the level at which your leveraged position is automatically closed by the exchange to prevent further losses.
-      It happens when your margin is no longer sufficient to support your open position.
+      Liquidation price is the level at which a leveraged position is forced closed because equity is no longer enough to support the trade.
+      This calculator uses a simplified model that is useful for planning, not a perfect exchange-specific replica.
     </p>
 
     <p>
-      In simple terms, it is the price where you lose most or all of your collateral.
-      Understanding your liquidation price is critical when trading with leverage because even small price movements can trigger liquidation.
+      Long positions liquidate when price falls too far. Short positions liquidate when price rises too far.
+      Cross margin can push liquidation farther away if you have extra wallet buffer available.
     </p>
 
     <h2>How Liquidation Works</h2>
     <p>
-      When you open a leveraged position, you are effectively borrowing funds to increase your exposure.
-      This amplifies both potential profits and losses.
+      The key inputs are entry price, position size, leverage, side, maintenance margin, and margin mode.
+      That is enough to estimate the distance to liquidation in a clean way.
     </p>
 
     <div class="formula">
-      Liquidation Price = Entry Price × (1 − 1 / Leverage)
-      <br>
-      Estimated Move to Liquidation = 1 / Leverage × 100
+      Notional = position size<br>
+      Quantity = notional ÷ entry price<br>
+      Base margin = notional ÷ leverage<br>
+      Total available margin = base margin + extra cross margin<br>
+      Liquidation offset = (total available margin − maintenance margin) ÷ quantity
     </div>
 
-    <p>
-      Higher leverage moves your liquidation price closer to entry.
-      Lower leverage gives you more room before liquidation.
-    </p>
-
+    <h2>Why this version is better</h2>
     <ul>
-      <li><strong>Higher leverage</strong> → liquidation price moves closer to entry</li>
-      <li><strong>Lower leverage</strong> → more room before liquidation</li>
-      <li><strong>More margin</strong> → increases your safety buffer</li>
+      <li>Supports both long and short positions</li>
+      <li>Separates isolated and cross margin</li>
+      <li>Includes maintenance margin in the estimate</li>
+      <li>Shows an equity chart instead of a weak one-off comparison</li>
     </ul>
-
-    <h2>Why Liquidation Price Matters</h2>
-    <p>
-      Many traders focus on profit targets but ignore liquidation levels.
-      That is a critical mistake.
-    </p>
-
-    <ul>
-      <li>Liquidation can happen faster than expected</li>
-      <li>High leverage reduces your margin for error</li>
-      <li>One bad trade can wipe out a large part of your capital</li>
-    </ul>
-
-    <p>
-      Professional traders always know their liquidation price before entering a trade.
-    </p>
 
     <h2>How to Use This Calculator</h2>
-    <p>
-      This tool helps you estimate your liquidation price based on your trade parameters.
-      Before entering any leveraged position, you should:
-    </p>
-
     <ul>
-      <li>Calculate your liquidation level</li>
-      <li>Compare it with your stop-loss</li>
-      <li>Ensure you have enough buffer</li>
+      <li>Enter your entry price and position size</li>
+      <li>Set the leverage and choose long or short</li>
+      <li>Pick isolated or cross margin</li>
+      <li>Set maintenance margin, then calculate</li>
     </ul>
 
-    <p>
-      If your stop-loss is too close to your liquidation price, your position is extremely risky.
-    </p>
-
-    <h2>Professional Insight</h2>
-    <p>
-      Liquidation is not just a technical level — it is a risk management boundary.
-    </p>
-
-    <p>
-      Successful traders do not ask:
-    </p>
-
-    <p><strong>“How much can I make?”</strong></p>
-
-    <p>They ask:</p>
-
-    <p><strong>“How close am I to liquidation?”</strong></p>
-
-    <p>
-      Controlling this distance is one of the most important skills in leveraged trading.
-    </p>
-
     <h2>Frequently Asked Questions</h2>
-
     <div class="faq">
       <div class="faq-item">
         <button class="faq-question" type="button">
-          Why does liquidation happen so suddenly?
+          Why does higher leverage reduce the safety buffer?
           <span class="arrow">▼</span>
         </button>
         <div class="faq-answer">
           <p>
-            Because leverage amplifies small price movements. A minor move against your position can rapidly reduce your margin and trigger liquidation faster than most traders expect.
+            Higher leverage means you are supporting a larger notional position with less of your own margin, so the position can only survive a smaller move against it.
           </p>
         </div>
       </div>
 
       <div class="faq-item">
         <button class="faq-question" type="button">
-          Why do traders underestimate liquidation risk?
+          What is the difference between isolated and cross margin?
           <span class="arrow">▼</span>
         </button>
         <div class="faq-answer">
           <p>
-            Many traders focus on potential profit and ignore downside risk. They assume the market will reverse before reaching liquidation, which often leads to overleveraged positions.
+            Isolated margin limits risk to the margin assigned to that position. Cross margin can use additional wallet balance, which may push liquidation farther away but also exposes more of the account.
           </p>
         </div>
       </div>
 
       <div class="faq-item">
         <button class="faq-question" type="button">
-          How does leverage change my liquidation price?
+          Why include maintenance margin?
           <span class="arrow">▼</span>
         </button>
         <div class="faq-answer">
           <p>
-            Higher leverage brings your liquidation price closer to your entry. This means you have less room for price fluctuations, increasing the probability of being liquidated.
+            Maintenance margin is the minimum equity the exchange expects. If you ignore it, the liquidation estimate will be too optimistic.
           </p>
         </div>
       </div>
 
       <div class="faq-item">
         <button class="faq-question" type="button">
-          Why is liquidation worse than a normal loss?
+          Is this exact for every exchange?
           <span class="arrow">▼</span>
         </button>
         <div class="faq-answer">
           <p>
-            Liquidation is a forced exit where you lose control of the trade. Unlike a controlled loss with a stop-loss, liquidation often results in maximum loss of your margin.
-          </p>
-        </div>
-      </div>
-
-      <div class="faq-item">
-        <button class="faq-question" type="button">
-          Can a good strategy still lead to liquidation?
-          <span class="arrow">▼</span>
-        </button>
-        <div class="faq-answer">
-          <p>
-            Yes. Even profitable strategies can fail if position sizing and risk management are poor. A single losing streak with high leverage can wipe out your account.
-          </p>
-        </div>
-      </div>
-
-      <div class="faq-item">
-        <button class="faq-question" type="button">
-          What separates professional traders from beginners regarding liquidation?
-          <span class="arrow">▼</span>
-        </button>
-        <div class="faq-answer">
-          <p>
-            Professionals think in terms of survival first. They use lower leverage, plan exits in advance, and avoid situations where liquidation is even possible.
+            No. It is a simplified estimate. Real liquidation levels depend on exchange rules, contract type, fees, funding, and how the exchange calculates maintenance margin.
           </p>
         </div>
       </div>
@@ -679,108 +796,477 @@
       <li><a href="stop-loss-calculator.html">Stop Loss Calculator</a></li>
     </ul>
   </div>
-
+ <script src="footer.js"></script>
   <div class="disclaimer">
     <p>
-      <strong>Disclaimer:</strong> This is a simplified estimation. Real liquidation prices vary by exchange, fees, maintenance margin, and position settings.
+      <strong>Disclaimer:</strong> This is a simplified estimation. Real liquidation prices vary by exchange, fees, maintenance margin, funding, and position settings.
     </p>
   </div>
 
   <script src="footer.js"></script>
   <script>
-    let chart;
+    let chart = null;
 
-    function calculate(){
-      const entry = parseFloat(document.getElementById("entry").value);
-      const leverage = parseFloat(document.getElementById("leverage").value);
+    const entryInput = document.getElementById("entry");
+    const positionSizeInput = document.getElementById("positionSize");
+    const leverageInput = document.getElementById("leverage");
+    const sideInput = document.getElementById("side");
+    const marginModeInput = document.getElementById("marginMode");
+    const maintenanceInput = document.getElementById("maintenance");
+    const crossMarginRow = document.getElementById("crossMarginRow");
+    const crossMarginInput = document.getElementById("crossMargin");
 
-      if (isNaN(entry) || isNaN(leverage)) {
-        alert("Fill all fields");
-        return;
-      }
+    const resultCard = document.getElementById("resultCard");
+    const resultSentence = document.getElementById("resultSentence");
+    const resultOut = document.getElementById("result");
+    const moveOut = document.getElementById("moveOut");
+    const distanceOut = document.getElementById("distanceOut");
+    const maintenanceOut = document.getElementById("maintenanceOut");
+    const bufferOut = document.getElementById("bufferOut");
+    const effectiveLeverageOut = document.getElementById("effectiveLeverageOut");
 
-      if (entry <= 0 || leverage <= 1) {
-        alert("Entry must be greater than zero and leverage must be above 1.");
-        return;
-      }
+    const insightBanner = document.getElementById("insightBanner");
+    const insightKicker = document.getElementById("insightKicker");
+    const insightHeadline = document.getElementById("insightHeadline");
+    const insightBody = document.getElementById("insightBody");
+    const insightMini = document.getElementById("insightMini");
 
-      const liquidation = entry * (1 - (1 / leverage));
-      const movePct = (1 / leverage) * 100;
+    const insightDistanceLevel = document.getElementById("insightDistanceLevel");
+    const insightDistanceNote = document.getElementById("insightDistanceNote");
+    const insightModeLevel = document.getElementById("insightModeLevel");
+    const insightModeNote = document.getElementById("insightModeNote");
+    const insightMaintenanceLevel = document.getElementById("insightMaintenanceLevel");
+    const insightMaintenanceNote = document.getElementById("insightMaintenanceNote");
+    const insightActionLevel = document.getElementById("insightActionLevel");
+    const insightActionNote = document.getElementById("insightActionNote");
 
-      document.getElementById("resultCard").style.display = "block";
-      document.getElementById("result").innerHTML = `$${liquidation.toFixed(2)}`;
-      document.getElementById("moveOut").innerHTML = `${movePct.toFixed(2)}%`;
-
-      let insight = "";
-      let insightClass = "";
-
-      if (leverage >= 20) {
-        insight = "Very tight buffer. Small market moves can force liquidation quickly.";
-        insightClass = "insight-weak";
-      } else if (leverage >= 10) {
-        insight = "Moderate risk, but you still need a clear stop-loss and position plan.";
-        insightClass = "insight-medium";
-      } else {
-        insight = "More room before liquidation, but risk control still matters.";
-        insightClass = "insight-good";
-      }
-
-      document.getElementById("insightOut").innerHTML = `<span class="${insightClass}">${insight}</span>`;
-
-      drawChart(entry, liquidation);
+    function fmtMoney(value){
+      if (!Number.isFinite(value)) return "—";
+      const abs = Math.abs(value);
+      if (abs >= 1e12) return "$" + (value / 1e12).toFixed(2) + "T";
+      if (abs >= 1e9) return "$" + (value / 1e9).toFixed(2) + "B";
+      if (abs >= 1e6) return "$" + (value / 1e6).toFixed(2) + "M";
+      return "$" + Number(value).toLocaleString(undefined, { maximumFractionDigits: 2 });
     }
 
-    function drawChart(entry, liquidation){
-      const ctx = document.getElementById('myChart').getContext('2d');
+    function fmtPct(value, digits = 2){
+      return `${Number(value).toFixed(digits)}%`;
+    }
 
-      if(chart){
-        chart.destroy();
+    function fmtNumber(value, digits = 2){
+      return Number(value).toFixed(digits);
+    }
+
+    function updateMarginModeUI(){
+      crossMarginRow.style.display = marginModeInput.value === "cross" ? "block" : "none";
+    }
+
+    function positionSideLabel(side){
+      return side === "short" ? "Short" : "Long";
+    }
+
+    function marginModeLabel(mode){
+      return mode === "cross" ? "Cross" : "Isolated";
+    }
+
+    function clamp(n, min, max){
+      return Math.max(min, Math.min(max, n));
+    }
+
+    function liquidationColorClass(distancePct, viable){
+      if (!viable) return "insight-weak";
+      if (distancePct <= 3) return "insight-weak";
+      if (distancePct <= 8) return "insight-medium";
+      return "insight-good";
+    }
+
+    function paymentFromBuffer(entry, positionSize, leverage, maintenancePct, extraCrossMargin){
+      const notional = positionSize;
+      const qty = notional / entry;
+      const baseMargin = notional / leverage;
+      const totalMargin = baseMargin + extraCrossMargin;
+      const maintenanceMargin = notional * (maintenancePct / 100);
+      const buffer = totalMargin - maintenanceMargin;
+      return { notional, qty, baseMargin, totalMargin, maintenanceMargin, buffer };
+    }
+
+    function liquidationPrice(entry, positionSize, leverage, maintenancePct, side, extraCrossMargin){
+      const { qty, totalMargin, maintenanceMargin } = paymentFromBuffer(entry, positionSize, leverage, maintenancePct, extraCrossMargin);
+      const offset = (totalMargin - maintenanceMargin) / qty;
+      const price = side === "short" ? entry + offset : entry - offset;
+      return { price: Math.max(0, price), qty, totalMargin, maintenanceMargin, offset };
+    }
+
+    function calcEquityAtPrice(price, entry, qty, totalMargin, side){
+      const pnl = side === "long"
+        ? qty * (price - entry)
+        : qty * (entry - price);
+      return totalMargin + pnl;
+    }
+
+    function renderChart(entry, side, qty, totalMargin, maintenanceMargin, liquidation, maintenancePct){
+      const canvas = document.getElementById("myChart");
+      const ctx = canvas.getContext("2d");
+
+      if (chart) chart.destroy();
+
+      const minAnchor = Math.min(entry, liquidation.price);
+      const maxAnchor = Math.max(entry, liquidation.price);
+      const low = Math.max(0, minAnchor * 0.55);
+      let high = maxAnchor * 1.45;
+      if (high <= low) high = low + Math.max(1, entry * 0.25);
+
+      const points = [];
+      const steps = 60;
+      for (let i = 0; i <= steps; i++) {
+        const price = low + ((high - low) * i / steps);
+        points.push({
+          x: Number(price.toFixed(2)),
+          y: Number(calcEquityAtPrice(price, entry, qty, totalMargin, side).toFixed(2))
+        });
       }
 
-      chart = new Chart(ctx,{
-        type:'bar',
-        data:{
-          labels:['Entry Price','Liquidation Price'],
-          datasets:[{
-            label:'Price Comparison',
-            data:[entry, liquidation],
-            backgroundColor:['#22c55e','#ef4444']
-          }]
-        },
-        options:{
-          responsive:true,
-          plugins:{
-            legend:{
-              labels:{ color:'white' }
+      const entryPoint = [{
+        x: entry,
+        y: totalMargin
+      }];
+
+      const liquidationPoint = [{
+        x: liquidation.price,
+        y: maintenanceMargin
+      }];
+
+      const maintenanceLine = [
+        { x: low, y: maintenanceMargin },
+        { x: high, y: maintenanceMargin }
+      ];
+
+      const maxY = Math.max(
+        totalMargin,
+        maintenanceMargin,
+        ...points.map(p => p.y)
+      ) * 1.15;
+
+      chart = new Chart(ctx, {
+        data: {
+          datasets: [
+            {
+              type: "line",
+              label: "Maintenance margin",
+              data: maintenanceLine,
+              borderColor: "#f59e0b",
+              backgroundColor: "rgba(245,158,11,0.08)",
+              borderWidth: 2,
+              pointRadius: 0,
+              tension: 0,
+              fill: false
             },
-            tooltip:{
-              callbacks:{
+            {
+              type: "line",
+              label: "Estimated equity",
+              data: points,
+              borderColor: "#3b82f6",
+              backgroundColor: "rgba(59,130,246,0.16)",
+              borderWidth: 2,
+              pointRadius: 0,
+              tension: 0.22,
+              fill: "-1"
+            },
+            {
+              type: "scatter",
+              label: "Entry",
+              data: entryPoint,
+              borderColor: "#22c55e",
+              backgroundColor: "#22c55e",
+              pointRadius: 6,
+              pointHoverRadius: 8
+            },
+            {
+              type: "scatter",
+              label: "Liquidation",
+              data: liquidationPoint,
+              borderColor: "#ef4444",
+              backgroundColor: "#ef4444",
+              pointRadius: 6,
+              pointHoverRadius: 8
+            }
+          ]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          plugins: {
+            legend: {
+              labels: { color: "white" }
+            },
+            tooltip: {
+              mode: "nearest",
+              intersect: false,
+              callbacks: {
                 label: function(context){
-                  return `$${Number(context.parsed.y).toFixed(2)}`;
+                  const label = context.dataset.label || "";
+                  return `${label}: ${fmtMoney(context.parsed.y)}`;
                 }
               }
             }
           },
-          scales:{
-            x:{
-              ticks:{ color:'white' },
-              grid:{ color:'rgba(255,255,255,0.08)' }
-            },
-            y:{
-              ticks:{
-                color:'white',
-                callback: function(value){
-                  return "$" + Number(value).toLocaleString();
-                }
+          interaction: {
+            mode: "nearest",
+            intersect: false
+          },
+          scales: {
+            x: {
+              type: "linear",
+              min: low,
+              max: high,
+              ticks: {
+                color: "white",
+                callback: (value) => fmtMoney(value)
               },
-              grid:{ color:'rgba(255,255,255,0.08)' }
+              grid: { color: "rgba(255,255,255,0.08)" },
+              title: {
+                display: true,
+                text: "Price",
+                color: "white"
+              }
+            },
+            y: {
+              min: 0,
+              max: maxY,
+              ticks: {
+                color: "white",
+                callback: (value) => fmtMoney(value)
+              },
+              grid: { color: "rgba(255,255,255,0.08)" },
+              title: {
+                display: true,
+                text: "Equity / Margin ($)",
+                color: "white"
+              }
             }
           }
         }
       });
     }
 
+    function renderInsights(params){
+      const {
+        entry,
+        positionSize,
+        leverage,
+        side,
+        marginMode,
+        maintenancePct,
+        extraCrossMargin,
+        liquidationPrice,
+        moveAgainstPct,
+        distanceDollar,
+        distancePct,
+        maintenanceMargin,
+        totalMargin,
+        buffer,
+        effectiveLeverage,
+        viable
+      } = params;
+
+      const sideWord = positionSideLabel(side);
+      const modeWord = marginModeLabel(marginMode);
+
+      let overallClass = liquidationColorClass(distancePct, viable);
+      let kicker = `${sideWord.toUpperCase()} · ${modeWord.toUpperCase()}`;
+      let headline = "";
+      let body = "";
+
+      if (!viable) {
+        headline = "This setup is already below maintenance";
+        body = "At these inputs, the available margin does not comfortably clear the maintenance threshold. In practice, this means the trade is too tight or unrealistic unless the exchange rules are different from this simplified estimate.";
+      } else if (distancePct <= 3) {
+        headline = "Liquidation is extremely close to entry";
+        body = "This position has very little room for adverse price movement. A smaller size, lower leverage, or more margin buffer would make the setup healthier.";
+      } else if (distancePct <= 8) {
+        headline = "Liquidation risk is high";
+        body = "The setup can work, but the buffer is thin. This is the kind of leverage that needs a plan before entry, not after.";
+      } else if (distancePct <= 15) {
+        headline = "Liquidation risk is moderate";
+        body = "There is usable room here, but the trade still needs discipline. Cross margin or lower leverage can improve survival if you truly need more distance.";
+      } else {
+        headline = "Liquidation buffer is relatively wide";
+        body = "The position has meaningful room before liquidation. That does not make it safe, but it is far less fragile than a highly leveraged setup.";
+      }
+
+      const mini = [
+        `${sideWord}`,
+        `${modeWord}`,
+        `Maintenance ${fmtPct(maintenancePct, 2)}`,
+        `Eff. lev ${fmtNumber(effectiveLeverage, 2)}x`
+      ];
+
+      insightBanner.className = `insight-banner ${overallClass}`;
+      insightKicker.textContent = kicker;
+      insightHeadline.textContent = headline;
+      insightBody.textContent = body;
+      insightMini.innerHTML = mini.map(text => `<span>${text}</span>`).join("");
+
+      const riskTier =
+        !viable ? "Unviable setup" :
+        distancePct <= 3 ? "Critical" :
+        distancePct <= 8 ? "High" :
+        distancePct <= 15 ? "Moderate" : "Lower";
+
+      const marginEffect =
+        marginMode === "cross"
+          ? `Cross margin adds ${fmtMoney(extraCrossMargin)} of extra buffer.`
+          : "Isolated margin keeps the risk inside the position.";
+
+      const maintenanceImpact =
+        maintenancePct <= 0.25 ? "Very light maintenance load." :
+        maintenancePct <= 0.75 ? "Normal maintenance requirement." :
+        maintenancePct <= 1.5 ? "Maintenance is starting to matter." :
+        "Maintenance requirement is heavy.";
+
+      const maintenanceNote =
+        maintenancePct <= 0.25 ? "The liquidation estimate is mostly driven by leverage and not much by maintenance." :
+        maintenancePct <= 0.75 ? "Maintenance matters, but the main driver is still leverage." :
+        maintenancePct <= 1.5 ? "A slightly higher maintenance rate would pull liquidation closer." :
+        "Maintenance margin is doing a lot of the damage here.";
+
+      const nextMove =
+        !viable ? "Reduce size or lower leverage" :
+        distancePct <= 3 ? "Cut leverage or add margin" :
+        distancePct <= 8 ? "Use a wider stop or smaller size" :
+        distancePct <= 15 ? "Keep the setup disciplined" :
+        "Still compare exchange rules";
+
+      const nextMoveNote =
+        !viable ? "The trade needs more margin room before it makes sense." :
+        distancePct <= 3 ? "Even a normal wick can hurt this position." :
+        distancePct <= 8 ? "You have some room, but not much room for error." :
+        distancePct <= 15 ? "The trade is workable if your plan is tight." :
+        "This structure is not fragile, but it still deserves a stop-loss and sizing plan.";
+
+      const distanceNote =
+        side === "long"
+          ? `Price can fall about ${fmtPct(moveAgainstPct, 2)} before liquidation.`
+          : `Price can rise about ${fmtPct(moveAgainstPct, 2)} before liquidation.`;
+
+      const bufferNote =
+        buffer <= 0
+          ? "No real buffer remains above maintenance."
+          : `${fmtMoney(buffer)} remains above maintenance threshold.`;
+
+      document.getElementById("insightDistanceLevel").textContent = riskTier;
+      document.getElementById("insightDistanceNote").textContent = distanceNote;
+
+      document.getElementById("insightModeLevel").textContent = marginMode === "cross" ? "Cross margin uses extra account buffer" : "Isolated keeps risk contained";
+      document.getElementById("insightModeNote").textContent = marginEffect;
+
+      document.getElementById("insightMaintenanceLevel").textContent = maintenanceImpact;
+      document.getElementById("insightMaintenanceNote").textContent = maintenanceNote + ` ${bufferNote}`;
+
+      document.getElementById("insightActionLevel").textContent = nextMove;
+      document.getElementById("insightActionNote").textContent = nextMoveNote;
+
+      resultSentence.textContent = `${sideWord} ${marginMode} position estimated at ${fmtMoney(positionSize)} notional, ${fmtNumber(leverage, 2)}x leverage, and ${fmtPct(maintenancePct, 2)} maintenance margin.`;
+
+      resultOut.textContent = fmtMoney(liquidationPrice);
+      moveOut.textContent = `${fmtPct(moveAgainstPct, 2)} ${side === "long" ? "down" : "up"} from entry`;
+      distanceOut.textContent = `${fmtMoney(distanceDollar)} (${fmtPct(distancePct, 2)})`;
+      maintenanceOut.textContent = fmtMoney(maintenanceMargin);
+      bufferOut.textContent = buffer > 0 ? fmtMoney(buffer) : "0 / below maintenance";
+      effectiveLeverageOut.textContent = `${fmtNumber(effectiveLeverage, 2)}x`;
+    }
+
+    function calculate(){
+      const entry = parseFloat(entryInput.value);
+      const positionSize = parseFloat(positionSizeInput.value);
+      const leverage = parseFloat(leverageInput.value);
+      const maintenancePct = parseFloat(maintenanceInput.value);
+      const side = sideInput.value;
+      const marginMode = marginModeInput.value;
+      const extraCrossMargin = marginMode === "cross" ? parseFloat(crossMarginInput.value || "0") : 0;
+
+      if ([entry, positionSize, leverage, maintenancePct].some(v => Number.isNaN(v))) {
+        alert("Fill all required fields.");
+        return;
+      }
+
+      if (entry <= 0 || positionSize <= 0 || leverage <= 1) {
+        alert("Entry price and position size must be greater than zero. Leverage must be above 1.");
+        return;
+      }
+
+      if (maintenancePct < 0 || maintenancePct >= 100) {
+        alert("Maintenance margin must be between 0 and 100.");
+        return;
+      }
+
+      if (marginMode === "cross" && (Number.isNaN(extraCrossMargin) || extraCrossMargin < 0)) {
+        alert("Cross margin buffer must be zero or greater.");
+        return;
+      }
+
+      const notional = positionSize;
+      const qty = notional / entry;
+      const baseMargin = notional / leverage;
+      const totalMargin = baseMargin + extraCrossMargin;
+      const maintenanceMargin = notional * (maintenancePct / 100);
+      const buffer = totalMargin - maintenanceMargin;
+      const effectiveLeverage = notional / totalMargin;
+
+      const offset = buffer / qty;
+      let liquidationPriceValue = side === "short"
+        ? entry + offset
+        : entry - offset;
+
+      liquidationPriceValue = Math.max(0, liquidationPriceValue);
+
+      const moveAgainstPct = side === "short"
+        ? ((liquidationPriceValue - entry) / entry) * 100
+        : ((entry - liquidationPriceValue) / entry) * 100;
+
+      const distanceDollar = Math.abs(entry - liquidationPriceValue);
+      const distancePct = Math.abs((entry - liquidationPriceValue) / entry) * 100;
+      const viable = buffer > 0;
+
+      resultCard.style.display = "block";
+
+      renderInsights({
+        entry,
+        positionSize,
+        leverage,
+        side,
+        marginMode,
+        maintenancePct,
+        extraCrossMargin,
+        liquidationPrice: liquidationPriceValue,
+        moveAgainstPct,
+        distanceDollar,
+        distancePct,
+        maintenanceMargin,
+        totalMargin,
+        buffer,
+        effectiveLeverage,
+        viable
+      });
+
+      renderChart(entry, side, qty, totalMargin, maintenanceMargin, {
+        price: liquidationPriceValue
+      }, maintenancePct);
+
+      resultCard.scrollIntoView({ behavior: "smooth", block: "start" });
+    }
+
+    function toggleCrossField(){
+      crossMarginRow.style.display = marginModeInput.value === "cross" ? "block" : "none";
+    }
+
     document.addEventListener("DOMContentLoaded", function(){
+      updateMarginModeUI();
+
+      marginModeInput.addEventListener("change", () => {
+        updateMarginModeUI();
+      });
+
       document.querySelectorAll(".faq-question").forEach(btn => {
         btn.addEventListener("click", () => {
           const item = btn.parentElement;
@@ -795,4 +1281,4 @@
     });
   </script>
 </body>
-  </html>
+          </html>
