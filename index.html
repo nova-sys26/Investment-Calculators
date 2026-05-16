@@ -296,44 +296,29 @@
 }
 
 .quick-access-ico{
-  width:72px;
-  height:72px;
-  flex:0 0 auto;
+  width:42px;
+  height:42px;
   display:grid;
   place-items:center;
-  border-radius:20px;
-  background:rgba(255,255,255,0.03);
-  border:1px solid rgba(255,255,255,0.06);
-  backdrop-filter:blur(10px);
-  box-shadow:inset 0 0 0 1px rgba(255,255,255,0.02);
+  border-radius:14px;
+  background:#0f172a;
+  border:1px solid rgba(255,255,255,0.08);
+  color:#e2e8f0;
+  flex:0 0 auto;
 }
 
 .quick-access-ico svg{
-  width:38px;
-  height:38px;
+  width:24px;
+  height:24px;
   display:block;
-  fill:none;
-  stroke:currentColor;
-  stroke-linecap:round;
-  stroke-linejoin:round;
 }
 
 .ico-calc{
-  color:#4f86ff;
-  filter:drop-shadow(0 0 10px rgba(59,130,246,0.75)) drop-shadow(0 0 22px rgba(59,130,246,0.35));
-}
-
-.ico-calc svg{
-  stroke-width:1.8;
+  color:#93c5fd;
 }
 
 .ico-live{
-  color:#28d66b;
-  filter:drop-shadow(0 0 10px rgba(34,197,94,0.75)) drop-shadow(0 0 22px rgba(34,197,94,0.35));
-}
-
-.ico-live svg{
-  stroke-width:1.6;
+  color:#86efac;
 }
 
     .section{
@@ -887,39 +872,34 @@
 </a>
 
 <a href="#live-tools" class="quick-access-card live">
-  <span class="quick-access-ico ico-live" aria-hidden="true">
-    <svg viewBox="0 0 24 24">
-      <defs>
-        <linearGradient id="coinFill" x1="0%" y1="0%" x2="100%" y2="100%">
-          <stop offset="0%" stop-color="currentColor" stop-opacity="0.28"></stop>
-          <stop offset="50%" stop-color="currentColor" stop-opacity="0.12"></stop>
-          <stop offset="100%" stop-color="currentColor" stop-opacity="0.30"></stop>
-        </linearGradient>
-      </defs>
+  <!-- Calculator icon -->
+<span class="quick-access-ico ico-calc" aria-hidden="true">
+  <svg viewBox="0 0 24 24">
+    <rect x="4" y="3" width="16" height="18" rx="4" fill="none" stroke="currentColor"></rect>
+    <rect x="7" y="6" width="10" height="3" rx="1" fill="none" stroke="currentColor"></rect>
 
-      <circle cx="12" cy="12" r="8.8" fill="url(#coinFill)"></circle>
-      <circle cx="12" cy="12" r="8.8"></circle>
-      <circle cx="12" cy="12" r="6.1"></circle>
+    <rect x="7" y="11" width="2.5" height="2.5" rx="0.6" fill="currentColor" stroke="none"></rect>
+    <rect x="10.75" y="11" width="2.5" height="2.5" rx="0.6" fill="currentColor" stroke="none"></rect>
+    <rect x="14.5" y="11" width="2.5" height="2.5" rx="0.6" fill="currentColor" stroke="none"></rect>
 
-      <path d="M13.8 7.2c-1.6-.6-4 .1-4 2.2 0 1.8 1.7 2.4 3.1 2.8 1.6.4 3.1.9 3.1 2.6 0 2-2.2 2.9-4 2.2"></path>
-      <path d="M12 6.7v10.6"></path>
-      <path d="M9.8 8.4h4.6"></path>
-      <path d="M9.6 15.6h4.8"></path>
-    </svg>
+    <rect x="7" y="14.75" width="2.5" height="2.5" rx="0.6" fill="currentColor" stroke="none"></rect>
+    <rect x="10.75" y="14.75" width="2.5" height="2.5" rx="0.6" fill="currentColor" stroke="none"></rect>
+    <rect x="14.5" y="14.75" width="2.5" height="2.5" rx="0.6" fill="currentColor" stroke="none"></rect>
+  </svg>
+</span>
+
+<!-- Live tool icon -->
+<span class="quick-access-ico ico-live" aria-hidden="true">
+  <svg viewBox="0 0 24 24">
+    <circle cx="12" cy="12" r="8.5" fill="none" stroke="currentColor"></circle>
+    <circle cx="12" cy="12" r="6.2" fill="none" stroke="currentColor"></circle>
+
+    <path d="M9 9.2c0-1.2 1.1-2.1 3-2.1 1.4 0 2.5.6 3 1.5" fill="none" stroke="currentColor"></path>
+    <path d="M15 15.2c0 1.2-1.1 2.1-3 2.1-1.4 0-2.5-.6-3-1.5" fill="none" stroke="currentColor"></path>
+
+    <path d="M12 6.8v10.4" fill="none" stroke="currentColor"></path>
+  </svg>
   </span>
-  <div>
-    <strong>Live Tools</strong>
-    <small>Real-time market and conversion tools</small>
-  </div>
-</a>
-        
-        
-          <div>
-            <strong>Live Tools</strong>
-            <small>Real-time market and conversion tools</small>
-          </div>
-        </a>
-      </div>
     </section>
 
     <section class="section" id="start-here">
