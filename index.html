@@ -1,1 +1,1602 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 
+  <title>Nova Invest Tools – Investment Calculators for Trading & Finance</title>
+  <meta name="description" content="Fast calculators for ROI, risk, profit, fees, and position sizing. Clean, practical tools for trading and investing decisions.">
+  <link rel="canonical" href="https://novainvesttools.com/">
+
+  <meta name="theme-color" content="#0f172a">
+  <meta name="google-site-verification" content="u0l8oRMy36wLdAQXBcR4sUwHXoz3GfJauJepdsj5dj4">
+
+  <link rel="icon" href="favicon.png" type="image/png">
+  <link rel="apple-touch-icon" href="favicon.png">
+
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://novainvesttools.com/">
+  <meta property="og:title" content="Nova Invest Tools">
+  <meta property="og:description" content="Free tools for trading, investing, loans, savings, risk, and profit calculations.">
+
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-ZPCXDVE8C5"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);} 
+    gtag('js', new Date());
+    gtag('config', 'G-ZPCXDVE8C5');
+  </script>
+
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "WebSite",
+    "name": "Nova Invest Tools",
+    "url": "https://novainvesttools.com/"
+  }
+  </script>
+
+  <script>
+    if (location.hostname.includes("github.io")) {
+      location.replace("https://novainvesttools.com");
+    }
+  </script>
+
+  <style>
+    *{ box-sizing:border-box; }
+    html{ scroll-behavior:smooth; }
+
+    body{
+      font-family:Arial, sans-serif;
+      background:
+        radial-gradient(circle at top, rgba(59,130,246,0.20), transparent 35%),
+        radial-gradient(circle at bottom right, rgba(34,197,94,0.10), transparent 30%),
+        #020617;
+      color:white;
+      margin:0;
+      min-height:100vh;
+    }
+
+    .page-shell{
+      width:min(1180px, calc(100% - 32px));
+      margin:0 auto;
+    }
+
+    .topbar{
+      display:flex;
+      align-items:center;
+      gap:16px;
+      padding:20px 0 0;
+      flex-wrap:wrap;
+    }
+
+    .menu-btn{
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      width:44px;
+      height:44px;
+      border:none;
+      border-radius:12px;
+      cursor:pointer;
+      background:rgba(255,255,255,0.06);
+      color:white;
+      font-size:20px;
+      transition:0.2s;
+    }
+
+    .menu-btn:hover{ background:rgba(255,255,255,0.10); }
+
+    .brand{
+      font-size:18px;
+      font-weight:700;
+      letter-spacing:0.2px;
+      margin-right:auto;
+    }
+
+    .topnav{
+      display:flex;
+      gap:14px;
+      flex-wrap:wrap;
+    }
+
+    .topnav a{
+      color:#cbd5e1;
+      text-decoration:none;
+      font-size:14px;
+    }
+
+    .topnav a:hover{ color:white; }
+
+    .drawer-overlay{
+      position:fixed;
+      inset:0;
+      background:rgba(2,6,23,0.62);
+      backdrop-filter:blur(2px);
+      opacity:0;
+      pointer-events:none;
+      transition:0.25s;
+      z-index:80;
+    }
+
+    .drawer-overlay.show{
+      opacity:1;
+      pointer-events:auto;
+    }
+
+    .drawer{
+      position:fixed;
+      top:0;
+      left:0;
+      height:100%;
+      width:min(360px, 88vw);
+      background:#0f172a;
+      border-right:1px solid rgba(255,255,255,0.08);
+      box-shadow:18px 0 40px rgba(0,0,0,0.35);
+      transform:translateX(-102%);
+      transition:0.25s ease;
+      z-index:90;
+      padding:18px;
+      overflow:auto;
+    }
+
+    .drawer.open{ transform:translateX(0); }
+
+    .drawer-head{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:10px;
+      margin-bottom:18px;
+    }
+
+    .drawer-head strong{ font-size:16px; }
+
+    .drawer-close{
+      width:40px;
+      height:40px;
+      border:none;
+      border-radius:10px;
+      cursor:pointer;
+      background:rgba(255,255,255,0.06);
+      color:white;
+      font-size:22px;
+      line-height:1;
+    }
+
+    .drawer-section{ margin:16px 0 18px; }
+
+    .drawer-section h4{
+      margin:0 0 10px;
+      font-size:13px;
+      color:#94a3b8;
+      text-transform:uppercase;
+      letter-spacing:0.08em;
+    }
+
+    .drawer-links{ display:flex; flex-direction:column; gap:8px; }
+
+    .drawer-links a{
+      display:block;
+      padding:11px 12px;
+      border-radius:12px;
+      color:white;
+      text-decoration:none;
+      background:rgba(255,255,255,0.04);
+      border:1px solid rgba(255,255,255,0.06);
+    }
+
+    .drawer-links a:hover{
+      background:rgba(59,130,246,0.14);
+      border-color:rgba(59,130,246,0.30);
+    }
+
+    .hero{ padding:42px 0 18px; }
+
+    .eyebrow{
+      display:inline-flex;
+      align-items:center;
+      gap:8px;
+      padding:7px 12px;
+      border-radius:999px;
+      background:rgba(59,130,246,0.12);
+      border:1px solid rgba(59,130,246,0.25);
+      color:#bfdbfe;
+      font-size:13px;
+      font-weight:700;
+      margin-bottom:14px;
+    }
+
+    .hero h1{
+      margin:0;
+      font-size:clamp(36px, 6vw, 62px);
+      line-height:1.02;
+      max-width:900px;
+      background:linear-gradient(90deg,#e2e8f0 10%, #93c5fd 45%, #86efac 95%);
+      -webkit-background-clip:text;
+      background-clip:text;
+      color:transparent;
+    }
+
+    .hero p{
+      margin:16px 0 0;
+      max-width:840px;
+      color:#94a3b8;
+      font-size:18px;
+      line-height:1.7;
+    }
+
+    .hero-actions{
+      display:flex;
+      gap:12px;
+      flex-wrap:wrap;
+      margin:24px 0 0;
+    }
+
+    .hero-btn{
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      padding:12px 18px;
+      border-radius:12px;
+      text-decoration:none;
+      font-weight:700;
+      transition:0.2s;
+    }
+
+    .hero-btn.primary{
+      background:linear-gradient(135deg,#3b82f6,#2563eb);
+      color:white;
+      box-shadow:0 10px 22px rgba(37,99,235,0.25);
+    }
+
+    .hero-btn.secondary{
+      background:rgba(255,255,255,0.05);
+      color:white;
+      border:1px solid rgba(255,255,255,0.08);
+    }
+
+    .hero-btn:hover{ transform:translateY(-1px); }
+
+    .stats{
+      display:grid;
+      grid-template-columns:repeat(auto-fit, minmax(160px, 1fr));
+      gap:10px;
+      margin-top:20px;
+    }
+
+    .stat{
+      background:rgba(30,41,59,0.55);
+      border:1px solid rgba(255,255,255,0.06);
+      border-radius:14px;
+      padding:11px 13px;
+      backdrop-filter:blur(10px);
+    }
+
+    .stat strong{
+      display:block;
+      font-size:18px;
+      margin-bottom:4px;
+    }
+
+    .stat span{
+      color:#94a3b8;
+      font-size:12px;
+      line-height:1.35;
+    }
+
+    .quick-access{
+      display:grid;
+      grid-template-columns:repeat(2, minmax(0, 1fr));
+      gap:12px;
+      margin-top:18px;
+    }
+
+    .quick-access-card{
+      display:flex;
+      align-items:center;
+      gap:14px;
+      padding:15px 16px;
+      border-radius:18px;
+      text-decoration:none;
+      color:white;
+      background:rgba(15,23,42,0.72);
+      border:1px solid rgba(255,255,255,0.08);
+      backdrop-filter:blur(12px);
+      transition:0.22s ease;
+    }
+
+    .quick-access-card:hover{
+      transform:translateY(-2px);
+      border-color:rgba(59,130,246,0.30);
+      background:rgba(30,41,59,0.88);
+    }
+
+    .quick-access-ico{
+  width:40px;
+  height:40px;
+  display:grid;
+  place-items:center;
+  border-radius:14px;
+  background:rgba(255,255,255,0.03);
+  border:1px solid rgba(255,255,255,0.06);
+  backdrop-filter:blur(10px);
+}
+
+.quick-access-ico svg{
+  width:24px;
+  height:24px;
+  display:block;
+  fill:none;
+  stroke:currentColor;
+  stroke-linecap:round;
+  stroke-linejoin:round;
+}
+
+.ico-calc{
+  color:rgba(59,130,246,0.88);
+}
+
+.ico-calc svg{
+  stroke-width:1.7;
+  opacity:0.95;
+}
+
+.ico-live{
+  color:rgba(34,197,94,0.88);
+}
+
+.ico-live svg{
+  stroke-width:1.6;
+  opacity:0.95;
+}
+
+    .quick-access-card strong{
+      display:block;
+      font-size:15px;
+      margin-bottom:3px;
+    }
+
+    .quick-access-card small{
+      display:block;
+      color:#94a3b8;
+      font-size:12px;
+      line-height:1.4;
+    }
+
+    .section{ margin:26px 0 0; }
+
+    .section h2{
+      margin:0 0 10px;
+      font-size:28px;
+    }
+
+    .section-lead{
+      color:#94a3b8;
+      margin:0 0 16px;
+      line-height:1.65;
+    }
+
+    .live-grid{
+      display:grid;
+      grid-template-columns:1fr;
+      gap:16px;
+    }
+
+    .live-card{
+      background:rgba(30,41,59,0.70);
+      border:1px solid rgba(255,255,255,0.08);
+      border-radius:20px;
+      padding:22px;
+      box-shadow:0 18px 40px rgba(0,0,0,0.28);
+      display:grid;
+      grid-template-columns:1.2fr 0.8fr;
+      gap:18px;
+      align-items:center;
+    }
+
+    .live-card h3{
+      margin:12px 0 10px;
+      font-size:26px;
+      line-height:1.1;
+    }
+
+    .live-card p{
+      margin:0;
+      color:#cbd5e1;
+      line-height:1.65;
+    }
+
+    .live-badges{
+      display:flex;
+      flex-wrap:wrap;
+      gap:8px;
+      margin-bottom:10px;
+    }
+
+    .badge{
+      display:inline-flex;
+      align-items:center;
+      padding:5px 10px;
+      border-radius:999px;
+      font-size:12px;
+      font-weight:700;
+      border:1px solid rgba(255,255,255,0.08);
+      color:#e2e8f0;
+      background:rgba(255,255,255,0.04);
+    }
+
+    .badge-featured{
+      color:#86efac;
+      background:rgba(34,197,94,0.10);
+      border-color:rgba(34,197,94,0.22);
+    }
+
+    .live-mini-grid{
+      display:grid;
+      grid-template-columns:repeat(2, minmax(0, 1fr));
+      gap:10px;
+    }
+
+    .live-mini{
+      background:rgba(15,23,42,0.78);
+      border:1px solid rgba(255,255,255,0.06);
+      border-radius:16px;
+      padding:14px;
+    }
+
+    .live-mini strong{
+      display:block;
+      font-size:15px;
+      margin-bottom:4px;
+    }
+
+    .live-mini span{
+      font-size:13px;
+      color:#94a3b8;
+    }
+
+    .live-actions{ margin-top:16px; }
+
+    .live-actions .hero-btn{
+      width:100%;
+      justify-content:center;
+    }
+
+    .quick-links{
+      display:flex;
+      flex-wrap:wrap;
+      gap:10px;
+    }
+
+    .quick-link{
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      padding:11px 15px;
+      border-radius:999px;
+      text-decoration:none;
+      color:white;
+      background:rgba(30,41,59,0.75);
+      border:1px solid rgba(255,255,255,0.08);
+      transition:0.2s;
+    }
+
+    .quick-link:hover{
+      transform:translateY(-1px);
+      border-color:rgba(59,130,246,0.45);
+      background:rgba(59,130,246,0.16);
+    }
+
+    .controls{
+      margin-top:16px;
+      background:rgba(30,41,59,0.56);
+      border:1px solid rgba(255,255,255,0.08);
+      border-radius:20px;
+      padding:18px;
+      backdrop-filter:blur(10px);
+    }
+
+    .search-wrap{ position:relative; }
+
+    #search{
+      width:100%;
+      padding:14px 16px;
+      border-radius:12px;
+      border:1px solid rgba(255,255,255,0.10);
+      outline:none;
+      font-size:15px;
+      background:#0f172a;
+      color:white;
+    }
+
+    #search::placeholder{ color:#64748b; }
+
+    #suggestions{
+      position:absolute;
+      left:0;
+      right:0;
+      top:calc(100% + 8px);
+      background:#111827;
+      border:1px solid rgba(255,255,255,0.08);
+      border-radius:14px;
+      overflow:hidden;
+      z-index:40;
+      box-shadow:0 18px 40px rgba(0,0,0,0.35);
+    }
+
+    .suggestion-item{
+      padding:12px 14px;
+      cursor:pointer;
+      border-bottom:1px solid rgba(255,255,255,0.05);
+      display:flex;
+      justify-content:space-between;
+      gap:10px;
+      align-items:center;
+    }
+
+    .suggestion-item:last-child{ border-bottom:none; }
+
+    .suggestion-item:hover{ background:#1f2937; }
+
+    .suggestion-name{
+      font-weight:700;
+      font-size:14px;
+    }
+
+    .suggestion-cat{
+      font-size:12px;
+      color:#94a3b8;
+      white-space:nowrap;
+    }
+
+    .filter-row{
+      display:flex;
+      gap:12px;
+      flex-wrap:wrap;
+      align-items:center;
+      margin-top:14px;
+    }
+
+    .chip-row{
+      display:flex;
+      flex-wrap:wrap;
+      gap:8px;
+      flex:1;
+    }
+
+    .chip{
+      border:none;
+      cursor:pointer;
+      padding:10px 14px;
+      border-radius:999px;
+      background:#334155;
+      color:white;
+      transition:0.2s;
+      width:auto;
+    }
+
+    .chip:hover{ background:#475569; }
+    .chip.active{ background:#3b82f6; }
+
+    .sort-wrap{
+      display:flex;
+      align-items:center;
+      gap:10px;
+      margin-left:auto;
+      color:#cbd5e1;
+      font-size:13px;
+    }
+
+    .sort-select{
+      background:#0f172a;
+      color:white;
+      border:1px solid rgba(255,255,255,0.10);
+      border-radius:10px;
+      padding:10px 12px;
+      outline:none;
+    }
+
+    .search-meta{
+      margin:12px 0 0;
+      color:#94a3b8;
+      font-size:13px;
+      line-height:1.5;
+    }
+
+    .reset-btn{
+      border:none;
+      cursor:pointer;
+      padding:10px 14px;
+      border-radius:10px;
+      background:rgba(255,255,255,0.06);
+      color:white;
+      width:auto;
+      transition:0.2s;
+    }
+
+    .reset-btn:hover{ background:rgba(255,255,255,0.10); }
+
+    .card-grid{
+      display:grid;
+      grid-template-columns:repeat(auto-fit, minmax(240px, 1fr));
+      gap:16px;
+      margin-top:16px;
+    }
+
+    .tool-card{
+      background:rgba(30,41,59,0.64);
+      border:1px solid rgba(255,255,255,0.06);
+      border-radius:18px;
+      padding:18px;
+      backdrop-filter:blur(10px);
+      display:flex;
+      flex-direction:column;
+      gap:10px;
+      min-height:220px;
+      transition:0.25s;
+    }
+
+    .tool-card:hover{
+      transform:translateY(-5px);
+      box-shadow:0 20px 40px rgba(0,0,0,0.35);
+      border-color:rgba(59,130,246,0.35);
+    }
+
+    .tool-card.featured{
+      border-color:rgba(59,130,246,0.40);
+      box-shadow:inset 0 0 0 1px rgba(59,130,246,0.08);
+    }
+
+    .card-top{
+      display:flex;
+      justify-content:space-between;
+      gap:8px;
+      flex-wrap:wrap;
+    }
+
+    .tool-card h3{
+      margin:2px 0 0;
+      font-size:20px;
+      line-height:1.2;
+    }
+
+    .tool-card p{
+      margin:0;
+      color:#cbd5e1;
+      line-height:1.55;
+      font-size:14px;
+    }
+
+    .card-link{
+      margin-top:auto;
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      padding:11px 14px;
+      border-radius:12px;
+      text-decoration:none;
+      color:white;
+      font-weight:700;
+      background:linear-gradient(135deg,#3b82f6,#2563eb);
+      transition:0.2s;
+    }
+
+    .card-link:hover{ transform:translateY(-1px); }
+
+    .no-result{
+      margin-top:18px;
+      padding:16px;
+      background:rgba(239,68,68,0.08);
+      border:1px solid rgba(239,68,68,0.16);
+      border-radius:14px;
+      color:#fecaca;
+    }
+
+    .no-result button{ margin-top:10px; }
+
+    .faq{ margin-top:14px; }
+
+    .faq-item{ border-bottom:1px solid rgba(255,255,255,0.08); }
+
+    .faq-question{
+      width:100%;
+      background:none;
+      border:none;
+      color:white;
+      text-align:left;
+      padding:14px 8px;
+      font-size:15px;
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      cursor:pointer;
+    }
+
+    .faq-question:hover{ color:#93c5fd; }
+
+    .arrow{ transition:0.25s; }
+    .faq-item.active .arrow{ transform:rotate(180deg); }
+
+    .faq-answer{
+      max-height:0;
+      overflow:hidden;
+      transition:max-height 0.3s ease;
+      color:#cbd5e1;
+      font-size:14px;
+      padding:0 8px;
+    }
+
+    .faq-item.active .faq-answer{
+      max-height:240px;
+      padding-bottom:12px;
+    }
+
+    .footer{
+      margin:36px 0 24px;
+      padding:20px 0 0;
+      border-top:1px solid rgba(255,255,255,0.10);
+      color:#94a3b8;
+      font-size:13px;
+      line-height:1.65;
+    }
+
+    .footer-links{
+      display:flex;
+      flex-wrap:wrap;
+      gap:12px;
+      margin-top:12px;
+    }
+
+    .footer-links a{
+      color:#93c5fd;
+      text-decoration:none;
+    }
+
+    .footer-links a:hover{ text-decoration:underline; }
+
+    .footer small{
+      display:block;
+      margin-top:14px;
+      color:#64748b;
+    }
+
+    @media (max-width: 900px){
+      .topnav{ display:none; }
+    }
+
+    @media (max-width: 760px){
+      .hero{ padding-top:30px; }
+      .hero p{ font-size:16px; }
+      .sort-wrap{
+        width:100%;
+        margin-left:0;
+        justify-content:space-between;
+      }
+      .topbar{ padding-top:16px; }
+      .live-card{ grid-template-columns:1fr; }
+      .quick-access{ grid-template-columns:1fr; }
+    }
+
+    @media (max-width: 560px){
+      .page-shell{ width:min(1180px, calc(100% - 20px)); }
+      .hero-btn{ width:100%; }
+      .quick-link{ width:100%; }
+      .chip{ width:calc(50% - 4px); }
+      .menu-btn{ width:42px; height:42px; }
+    }
+  </style>
+</head>
+
+<body>
+  <div class="drawer-overlay" id="drawerOverlay"></div>
+
+  <aside class="drawer" id="drawerPanel" aria-hidden="true">
+    <div class="drawer-head">
+      <strong>Navigation</strong>
+      <button class="drawer-close" id="drawerCloseBtn" type="button" aria-label="Close menu">×</button>
+    </div>
+
+    <div class="drawer-section">
+      <h4>Explore</h4>
+      <div class="drawer-links">
+        <a href="#start-here">Start here</a>
+        <a href="#all-calculators">All calculators</a>
+        <a href="#faq">FAQ</a>
+      </div>
+    </div>
+
+    <div class="drawer-section">
+      <h4>Popular calculators</h4>
+      <div class="drawer-links">
+        <a href="compound-interest-calculator.html">Compound Interest Calculator</a>
+        <a href="position-size-calculator.html">Position Size Calculator</a>
+        <a href="risk-reward-calculator.html">Risk Reward Calculator</a>
+        <a href="roi-calculator.html">ROI Calculator</a>
+        <a href="stop-loss-calculator.html">Stop Loss Calculator</a>
+      </div>
+    </div>
+
+    <div class="drawer-section">
+      <h4>Live tools</h4>
+      <div class="drawer-links">
+        <a href="currency-converter.html">Currency Converter</a>
+        <a href="purchasing-power-calculator.html">Purchasing Power Calculator</a>
+        <a href="fear-and-greed-index.html">Fear and Greed Index</a>
+      </div>
+    </div>
+  </aside>
+
+  <div class="page-shell">
+    <header class="topbar">
+      <button class="menu-btn" id="menuBtn" type="button" aria-label="Open navigation menu" aria-controls="drawerPanel" aria-expanded="false">☰</button>
+      <div class="brand">Nova Investment Calculators</div>
+      <nav class="topnav">
+        <a href="#start-here">Start here</a>
+        <a href="#all-calculators">All calculators</a>
+        <a href="#faq">FAQ</a>
+      </nav>
+    </header>
+
+    <section class="hero">
+      <div class="eyebrow">Fast & simple trading tools</div>
+      <h1>Simple tools to manage risk, profit, fees, and strategy.</h1>
+      <p>
+        Calculate ROI, risk, fees, profit, stop loss, position size, liquidation, and more in seconds.
+        Built for traders and investors who want clear answers, not clutter.
+      </p>
+
+      <div class="hero-actions">
+        <a class="hero-btn primary" href="#start-here">Start with key tools</a>
+        <a class="hero-btn secondary" href="#all-calculators">Browse all calculators</a>
+      </div>
+
+      <div class="stats">
+        <div class="stat">
+          <strong id="toolCountHero">22</strong>
+          <span>calculators available</span>
+        </div>
+        <div class="stat">
+          <strong>Fast</strong>
+          <span>search, filter, and open in seconds</span>
+        </div>
+        <div class="stat">
+          <strong>Practical</strong>
+          <span>built for trading and investing decisions</span>
+        </div>
+      </div>
+
+      <a href="#all-calculators" class="quick-access-card">
+  <span class="quick-access-ico ico-calc" aria-hidden="true">
+  <svg viewBox="0 0 24 24">
+    <rect x="4" y="3" width="16" height="18" rx="3" fill="none"></rect>
+    <rect x="7" y="6" width="10" height="3" rx="1.2" fill="none"></rect>
+
+    <rect x="7" y="11" width="2.2" height="2.2" rx="0.5" fill="none"></rect>
+    <rect x="10.9" y="11" width="2.2" height="2.2" rx="0.5" fill="none"></rect>
+    <rect x="14.8" y="11" width="2.2" height="2.2" rx="0.5" fill="none"></rect>
+
+    <rect x="7" y="14.8" width="2.2" height="2.2" rx="0.5" fill="none"></rect>
+    <rect x="10.9" y="14.8" width="2.2" height="2.2" rx="0.5" fill="none"></rect>
+    <rect x="14.8" y="14.8" width="2.2" height="2.2" rx="0.5" fill="none"></rect>
+  </svg>
+  </span>
+    <div>
+    <strong>All Calculators</strong>
+    <small>Trading, investing, and loan tools</small>
+  </div>
+</a>
+
+<a href="#live-tools" class="quick-access-card">
+  <span class="quick-access-ico ico-live" aria-hidden="true">
+  <svg viewBox="0 0 24 24">
+    <defs>
+      <linearGradient id="coinFill" x1="0%" y1="0%" x2="100%" y2="100%">
+        <stop offset="0%" stop-color="currentColor" stop-opacity="0.24"></stop>
+        <stop offset="50%" stop-color="currentColor" stop-opacity="0.12"></stop>
+        <stop offset="100%" stop-color="currentColor" stop-opacity="0.28"></stop>
+      </linearGradient>
+    </defs>
+
+    <circle cx="12" cy="12" r="8.8" fill="url(#coinFill)"></circle>
+    <circle cx="12" cy="12" r="8.8" fill="none"></circle>
+    <circle cx="12" cy="12" r="6.1" fill="none"></circle>
+
+    <path d="M8.5 8.2c1-1.1 2.2-1.7 3.5-1.7 1.7 0 3 .9 3 2.3 0 1.5-1.2 2.1-3 2.5-1.7.4-3 .8-3 2.3 0 1.3 1.2 2.2 2.9 2.2 1.3 0 2.5-.5 3.4-1.4" fill="none"></path>
+    <path d="M12 6.8v10.4" fill="none"></path>
+
+    <path d="M16.9 7.1l.8-.8" fill="none"></path>
+    <path d="M7.1 16.9l-.8.8" fill="none"></path>
+  </svg>
+  </span>
+  <div>
+    <strong>Live Tools</strong>
+    <small>Real-time market and conversion tools</small>
+  </div>
+</a>
+
+    </section>
+
+    <section class="section" id="start-here">
+      <h2>Start here</h2>
+      <p class="section-lead">
+        If you are new, these are the tools that give the fastest real value.
+      </p>
+
+      <div class="quick-links">
+        <a class="quick-link" href="compound-interest-calculator.html">Compound Interest Calculator</a>
+        <a class="quick-link" href="position-size-calculator.html">Position Size Calculator</a>
+        <a class="quick-link" href="risk-reward-calculator.html">Risk Reward Calculator</a>
+        <a class="quick-link" href="roi-calculator.html">ROI Calculator</a>
+        <a class="quick-link" href="stop-loss-calculator.html">Stop Loss Calculator</a>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="controls">
+        <div class="search-wrap">
+          <input id="search" aria-label="Search calculators and live tools" placeholder="Search calculators and live tools, e.g. risk, fees, ROI, BTC dominance...">
+          <div id="suggestions"></div>
+        </div>
+
+        <div class="filter-row">
+          <div class="chip-row">
+            <button class="chip active" data-filter="all">All</button>
+            <button class="chip" data-filter="trading">Trading</button>
+            <button class="chip" data-filter="investing">Investing</button>
+            <button class="chip" data-filter="loans">Loans & Savings</button>
+            <button class="chip" data-filter="live">Live tools</button>
+          </div>
+
+          <div class="sort-wrap">
+            <span>Sort</span>
+            <select id="sortSelect" class="sort-select">
+              <option value="featured">Featured first</option>
+              <option value="az">A–Z</option>
+              <option value="za">Z–A</option>
+            </select>
+            <button class="reset-btn" onclick="resetFilters()">Reset</button>
+          </div>
+        </div>
+
+        <p class="search-meta">
+          <span id="toolCountMeta">33</span> calculators ready to use.
+        </p>
+      </div>
+    </section>
+
+    <section class="section" id="all-calculators">
+      <h2>All calculators</h2>
+      <p class="section-lead">
+        Search by name, filter by category, or sort by featured tools first.
+      </p>
+
+      <div class="card-grid" id="toolGrid">
+        <div class="tool-card featured" data-title="Position Size Calculator" data-category="trading" data-featured="1">
+          <div class="card-top"><span class="badge">Trading</span><span class="badge badge-featured">Featured</span></div>
+          <h3>Position Size Calculator</h3>
+          <p>Manage your risk per trade with proper sizing.</p>
+          <a class="card-link" href="position-size-calculator.html">Open</a>
+        </div>
+
+        <div class="tool-card featured" data-title="Risk Reward Calculator" data-category="trading" data-featured="1">
+          <div class="card-top"><span class="badge">Trading</span><span class="badge badge-featured">Featured</span></div>
+          <h3>Risk Reward Calculator</h3>
+          <p>Compare downside with potential upside.</p>
+          <a class="card-link" href="risk-reward-calculator.html">Open</a>
+        </div>
+
+        <div class="tool-card featured" data-title="Stop Loss Calculator" data-category="trading" data-featured="1">
+          <div class="card-top"><span class="badge">Trading</span><span class="badge badge-featured">Featured</span></div>
+          <h3>Stop Loss Calculator</h3>
+          <p>Calculate your stop loss level instantly.</p>
+          <a class="card-link" href="stop-loss-calculator.html">Open</a>
+        </div>
+
+        <div class="tool-card featured" data-title="Compound Interest Calculator" data-category="investing" data-featured="1">
+          <div class="card-top"><span class="badge">Investing</span><span class="badge badge-featured">Featured</span></div>
+          <h3>Compound Interest Calculator</h3>
+          <p>Track long-term investment growth.</p>
+          <a class="card-link" href="compound-interest-calculator.html">Open</a>
+        </div>
+
+        <div class="tool-card featured" data-title="ROI Calculator" data-category="investing" data-featured="1">
+          <div class="card-top"><span class="badge">Investing</span><span class="badge badge-featured">Featured</span></div>
+          <h3>ROI Calculator</h3>
+          <p>Calculate your investment return and annual growth.</p>
+          <a class="card-link" href="roi-calculator.html">Open</a>
+        </div>
+
+        <div class="tool-card" data-title="Risk of Ruin Calculator" data-category="trading" data-featured="0">
+          <div class="card-top"><span class="badge">Trading</span></div>
+          <h3>Risk of Ruin Calculator</h3>
+          <p>Measure your strategy’s survival probability.</p>
+          <a class="card-link" href="risk-of-ruin-calculator.html">Open</a>
+        </div>
+
+        <div class="tool-card" data-title="Drawdown Calculator" data-category="trading" data-featured="0">
+          <div class="card-top"><span class="badge">Trading</span></div>
+          <h3>Drawdown Calculator</h3>
+          <p>Understand losses and required recovery percentage.</p>
+          <a class="card-link" href="drawdown-calculator.html">Open</a>
+        </div>
+
+        <div class="tool-card" data-title="Break Even Calculator" data-category="trading" data-featured="0">
+          <div class="card-top"><span class="badge">Trading</span></div>
+          <h3>Break Even Calculator</h3>
+          <p>Recover from losses and find your break-even point.</p>
+          <a class="card-link" href="break-even-calculator.html">Open</a>
+        </div>
+
+        <div class="tool-card" data-title="Pip Calculator (Forex)" data-category="trading" data-featured="0">
+          <div class="card-top"><span class="badge">Trading</span></div>
+          <h3>Pip Calculator (Forex)</h3>
+          <p>Calculate pip value instantly for forex trades.</p>
+          <a class="card-link" href="pip-calculator-forex.html">Open</a>
+        </div>
+
+        <div class="tool-card" data-title="Lot Size Calculator (Forex)" data-category="trading" data-featured="0">
+          <div class="card-top"><span class="badge">Trading</span></div>
+          <h3>Lot Size Calculator (Forex)</h3>
+          <p>Find the right lot size based on risk.</p>
+          <a class="card-link" href="lot-size-calculator-forex.html">Open</a>
+        </div>
+
+        <div class="tool-card" data-title="Margin Calculator" data-category="trading" data-featured="0">
+          <div class="card-top"><span class="badge">Trading</span></div>
+          <h3>Margin Calculator</h3>
+          <p>Calculate required margin, leverage impact, and free balance.</p>
+          <a class="card-link" href="margin-calculator.html">Open</a>
+        </div>
+
+        <div class="tool-card" data-title="Leverage Calculator" data-category="trading" data-featured="0">
+          <div class="card-top"><span class="badge">Trading</span></div>
+          <h3>Leverage Calculator</h3>
+          <p>See how leverage affects your trade.</p>
+          <a class="card-link" href="leverage-calculator.html">Open</a>
+        </div>
+
+        <div class="tool-card" data-title="Liquidation Price Calculator" data-category="trading" data-featured="0">
+          <div class="card-top"><span class="badge">Trading</span></div>
+          <h3>Liquidation Price Calculator</h3>
+          <p>Estimate your liquidation level.</p>
+          <a class="card-link" href="liquidation-price-calculator.html">Open</a>
+        </div>
+
+        <div class="tool-card" data-title="Crypto Profit Calculator" data-category="trading" data-featured="0">
+          <div class="card-top"><span class="badge">Trading</span></div>
+          <h3>Crypto Profit Calculator</h3>
+          <p>Calculate crypto profit, loss, and fees instantly.</p>
+          <a class="card-link" href="crypto-profit-calculator.html">Open</a>
+        </div>
+
+        <div class="tool-card" data-title="Expectancy Calculator" data-category="trading" data-featured="0">
+          <div class="card-top"><span class="badge">Trading</span></div>
+          <h3>Expectancy Calculator</h3>
+          <p>Estimate profit potential from your trading system.</p>
+          <a class="card-link" href="expectancy-calculator.html">Open</a>
+        </div>
+
+        <div class="tool-card" data-title="Profit Loss Calculator" data-category="trading" data-featured="0">
+          <div class="card-top"><span class="badge">Trading</span></div>
+          <h3>Profit Loss Calculator</h3>
+          <p>See your trade outcome after entry and exit.</p>
+          <a class="card-link" href="profit-loss-calculator.html">Open</a>
+        </div>
+
+        <div class="tool-card" data-title="Trading Fees Calculator" data-category="trading" data-featured="0">
+          <div class="card-top"><span class="badge">Trading</span></div>
+          <h3>Trading Fees Calculator</h3>
+          <p>Estimate fee drag and round-trip trading costs.</p>
+          <a class="card-link" href="trading-fees-calculator.html">Open</a>
+        </div>
+
+        <div class="tool-card" data-title="DCA vs. Lump Sum Calculator" data-category="investing" data-featured="0">
+          <div class="card-top"><span class="badge">Investing</span></div>
+          <h3>DCA vs. Lump Sum Calculator</h3>
+          <p>Compare DCA and lump sum investing returns.</p>
+          <a class="card-link" href="dca-vs-lump-sum-calculator.html">Open</a>
+        </div>
+
+        <div class="tool-card" data-title="IRA Calculator" data-category="investing" data-featured="0">
+          <div class="card-top"><span class="badge">Investing</span></div>
+          <h3>IRA Calculator</h3>
+          <p>Plan retirement growth with Roth & Traditional IRA projections.</p>
+          <a class="card-link" href="ira-calculator.html">Open</a>
+        </div>
+
+        <div class="tool-card" data-title="401(k) Calculator" data-category="investing" data-featured="0">
+          <div class="card-top"><span class="badge">Investing</span></div>
+          <h3>401(k) Calculator</h3>
+          <p>401k retirement savings calculator with employer match.</p>
+          <a class="card-link" href="401k-calculator.html">Open</a>
+        </div>
+
+        <div class="tool-card" data-title="CAGR Calculator" data-category="investing" data-featured="0">
+          <div class="card-top"><span class="badge">Investing</span></div>
+          <h3>CAGR Calculator</h3>
+          <p>Compound annual growth rate for investments and businesses.</p>
+          <a class="card-link" href="cagr-calculator.html">Open</a>
+        </div>
+
+        <div class="tool-card" data-title="Investment Growth Calculator" data-category="investing" data-featured="0">
+          <div class="card-top"><span class="badge">Investing</span></div>
+          <h3>Investment Growth Calculator</h3>
+          <p>Investment growth calculator for smarter financial planning.</p>
+          <a class="card-link" href="investment-growth-calculator.html">Open</a>
+        </div>
+
+        <div class="tool-card" data-title="Inflation Calculator" data-category="investing" data-featured="0">
+          <div class="card-top"><span class="badge">Investing</span></div>
+          <h3>Inflation Calculator</h3>
+          <p>Calculate future value of money with inflation.</p>
+          <a class="card-link" href="inflation-calculator.html">Open</a>
+        </div>
+
+        <div class="tool-card" data-title="Coast FIRE Calculator" data-category="investing" data-featured="0">
+          <div class="card-top"><span class="badge">Investing</span></div>
+          <h3>Coast FIRE Calculator</h3>
+          <p>Calculate your Coast FIRE number and timeline.</p>
+          <a class="card-link" href="coast-fire-calculator.html">Open</a>
+        </div>
+
+        <div class="tool-card" data-title="Retirement Calculator" data-category="investing" data-featured="0">
+          <div class="card-top"><span class="badge">Investing</span></div>
+          <h3>Retirement Calculator</h3>
+          <p>Clean retirement planning with savings, returns, inflation included.</p>
+          <a class="card-link" href="retirement-calculator.html">Open</a>
+        </div>
+
+        <div class="tool-card" data-title="Average Price Calculator" data-category="investing" data-featured="0">
+          <div class="card-top"><span class="badge">Investing</span></div>
+          <h3>Average Price Calculator</h3>
+          <p>Calculate the average of multiple buys.</p>
+          <a class="card-link" href="average-price-calculator.html">Open</a>
+        </div>
+
+        <div class="tool-card" data-title="DCA Calculator" data-category="investing" data-featured="0">
+          <div class="card-top"><span class="badge">Investing</span></div>
+          <h3>DCA Calculator</h3>
+          <p>Average your entry price with recurring buys.</p>
+          <a class="card-link" href="dca-calculator.html">Open</a>
+        </div>
+
+        <div class="tool-card" data-title="Future Value Calculator" data-category="investing" data-featured="0">
+          <div class="card-top"><span class="badge">Investing</span></div>
+          <h3>Future Value Calculator</h3>
+          <p>Estimate future value of savings and investments.</p>
+          <a class="card-link" href="future-value-calculator.html">Open</a>
+        </div>
+
+        <div class="tool-card" data-title="Savings Calculator" data-category="loans" data-featured="0">
+          <div class="card-top"><span class="badge">Loans & Savings</span></div>
+          <h3>Savings Calculator</h3>
+          <p>Project savings growth with interest and monthly contributions.</p>
+          <a class="card-link" href="savings-calculator.html">Open</a>
+        </div>
+
+        <div class="tool-card" data-title="Amortization Calculator" data-category="loans" data-featured="0">
+          <div class="card-top"><span class="badge">Loans & Savings</span></div>
+          <h3>Amortization Calculator</h3>
+          <p>Track loan payments and interest over time.</p>
+          <a class="card-link" href="amortization-calculator.html">Open</a>
+        </div>
+
+        <div class="tool-card" data-title="APR / Interest Rate Calculator" data-category="loans" data-featured="0">
+          <div class="card-top"><span class="badge">Loans & Savings</span></div>
+          <h3>APR / Interest Rate Calculator</h3>
+          <p>Estimate APR or loan payments instantly.</p>
+          <a class="card-link" href="apr-interest-rate-calculator.html">Open</a>
+        </div>
+
+        <div class="tool-card" data-title="Loan Calculator" data-category="loans" data-featured="0">
+          <div class="card-top"><span class="badge">Loans & Savings</span></div>
+          <h3>Loan Calculator</h3>
+          <p>Estimate payments, interest, and total loan cost.</p>
+          <a class="card-link" href="loan-calculator.html">Open</a>
+        </div>
+
+        <div class="tool-card" data-title="Mortgage Calculator" data-category="loans" data-featured="0">
+          <div class="card-top"><span class="badge">Loans & Savings</span></div>
+          <h3>Mortgage Calculator</h3>
+          <p>Estimate mortgage payments and total loan cost.</p>
+          <a class="card-link" href="mortgage-calculator.html">Open</a>
+        </div>
+      </div>
+
+      <div id="noResult" class="no-result" style="display:none;">
+        No calculator found.
+        <div><button class="reset-btn" onclick="resetFilters()">Clear filters</button></div>
+      </div>
+    </section>
+
+    <section class="section" id="live-tools">
+      <h2>Live tools</h2>
+      <p class="section-lead">
+        Real-time tools that work from live market data instead of fixed formulas.
+      </p>
+
+      <div class="live-grid">
+        <article class="live-card featured-live live-item" data-title="Currency Converter" data-category="live">
+          <div>
+            <div class="live-badges">
+              <span class="badge">Live dashboard</span>
+              <span class="badge badge-featured">Real-time data</span>
+            </div>
+
+            <h3>Currency Converter</h3>
+            <p>
+              Edit one currency and instantly update the rest from the same rate snapshot.
+              Useful for travel budgets, pricing checks, and forex-style comparisons.
+            </p>
+
+            <div class="live-mini-grid">
+              <div class="live-mini"><strong>USD</strong><span>Base currency</span></div>
+              <div class="live-mini"><strong>EUR</strong><span>Auto updates</span></div>
+              <div class="live-mini"><strong>TRY</strong><span>Auto updates</span></div>
+              <div class="live-mini"><strong>GBP</strong><span>Auto updates</span></div>
+            </div>
+
+            <div class="live-actions">
+              <a class="hero-btn primary" href="currency-converter.html">Open Live Converter</a>
+            </div>
+          </div>
+        </article>
+
+        <article class="live-card featured-live live-item" data-title="Fear & Greed Index" data-category="live">
+          <div>
+            <div class="live-badges">
+              <span class="badge">Live sentiment</span>
+              <span class="badge badge-featured">Market context</span>
+            </div>
+
+            <h3>Fear & Greed Index</h3>
+            <p>
+              Track live crypto market sentiment with a daily updated index.
+              Use it to read market emotion, compare recent momentum, and add context before making a trade.
+            </p>
+
+            <div class="live-mini-grid">
+              <div class="live-mini"><strong>0–100</strong><span>Sentiment scale</span></div>
+              <div class="live-mini"><strong>Daily</strong><span>Fresh reading</span></div>
+              <div class="live-mini"><strong>Trend</strong><span>Historical context</span></div>
+              <div class="live-mini"><strong>Context</strong><span>Not a signal</span></div>
+            </div>
+
+            <div class="live-actions">
+              <a class="hero-btn primary" href="fear-and-greed-index.html">Open Fear & Greed Index</a>
+            </div>
+          </div>
+        </article>
+
+        <article class="live-card live-item" data-title="Purchasing Power Calculator" data-category="live">
+          <div>
+            <div class="live-badges">
+              <span class="badge">Live comparison</span>
+              <span class="badge badge-featured">Purchasing power</span>
+            </div>
+
+            <h3>Purchasing Power Calculator</h3>
+            <p>
+              Compare real purchasing power between countries using live exchange rates and local cost levels.
+              Useful for salaries, travel planning, relocation, and global income comparisons.
+            </p>
+
+            <div class="live-mini-grid">
+              <div class="live-mini"><strong>Rates</strong><span>Live conversion</span></div>
+              <div class="live-mini"><strong>Costs</strong><span>Relative value</span></div>
+              <div class="live-mini"><strong>Income</strong><span>Real comparison</span></div>
+              <div class="live-mini"><strong>Travel</strong><span>Budget check</span></div>
+            </div>
+
+            <div class="live-actions">
+              <a class="hero-btn primary" href="purchasing-power-calculator.html">Open Purchasing Power Tool</a>
+            </div>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <section class="section" id="faq">
+      <h2>Frequently Asked Questions</h2>
+      <p class="section-lead">
+        Quick answers for people trying to find the right calculator fast.
+      </p>
+
+      <div class="faq">
+        <div class="faq-item">
+          <button class="faq-question" type="button">
+            Which calculator should I use first?
+            <span class="arrow">▼</span>
+          </button>
+          <div class="faq-answer">
+            <p>Start with Risk Reward, Position Size, and Stop Loss. Those three give you the fastest improvement in trade planning.</p>
+          </div>
+        </div>
+
+        <div class="faq-item">
+          <button class="faq-question" type="button">
+            Are these calculators free?
+            <span class="arrow">▼</span>
+          </button>
+          <div class="faq-answer">
+            <p>Yes. The calculators on this site are free to use.</p>
+          </div>
+        </div>
+
+        <div class="faq-item">
+          <button class="faq-question" type="button">
+            Can I use them on mobile?
+            <span class="arrow">▼</span>
+          </button>
+          <div class="faq-answer">
+            <p>Yes. The site is designed to work on mobile, tablet, and desktop screens.</p>
+          </div>
+        </div>
+
+        <div class="faq-item">
+          <button class="faq-question" type="button">
+            Do these tools work for crypto, forex, and stocks?
+            <span class="arrow">▼</span>
+          </button>
+          <div class="faq-answer">
+            <p>Yes. Many tools are built for trading across crypto, forex, stocks, and broader investing use cases.</p>
+          </div>
+        </div>
+
+        <div class="faq-item">
+          <button class="faq-question" type="button">
+            How do I find a calculator quickly?
+            <span class="arrow">▼</span>
+          </button>
+          <div class="faq-answer">
+            <p>Use the search bar above, then filter by Trading, Investing, Loans & Savings, or Live tools. You can also sort featured tools first.</p>
+          </div>
+        </div>
+
+        <div class="faq-item">
+          <button class="faq-question" type="button">
+            Why are there so many calculators?
+            <span class="arrow">▼</span>
+          </button>
+          <div class="faq-answer">
+            <p>Different decisions need different tools. Risk, profit, fees, and long-term returns are related, but they should not be forced into one calculator.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <footer class="footer">
+      <div>
+        <strong>Disclaimer:</strong> The calculators on this website are provided for informational and educational purposes only.
+        All results are estimates based on the values entered and do not constitute financial, investment, or trading advice.
+        Always conduct your own research before making financial decisions.
+      </div>
+
+      <div class="footer-links">
+        <a href="#start-here">Start here</a>
+        <a href="#all-calculators">All calculators</a>
+        <a href="#live-tools">Live tools</a>
+        <a href="#faq">FAQ</a>
+      </div>
+
+      <small>Nova Invest Tools</small>
+    </footer>
+  </div>
+
+  <script src="footer.js"></script>
+  <script>
+    const cards = Array.from(document.querySelectorAll(".tool-card"));
+    const liveCards = Array.from(document.querySelectorAll(".live-item"));
+    const searchItems = [...cards, ...liveCards];
+
+    const searchInput = document.getElementById("search");
+    const suggestionsBox = document.getElementById("suggestions");
+    const sortSelect = document.getElementById("sortSelect");
+    const toolCountHero = document.getElementById("toolCountHero");
+    const toolCountMeta = document.getElementById("toolCountMeta");
+    const noResult = document.getElementById("noResult");
+    const filterButtons = Array.from(document.querySelectorAll(".chip"));
+
+    const menuBtn = document.getElementById("menuBtn");
+    const drawerPanel = document.getElementById("drawerPanel");
+    const drawerOverlay = document.getElementById("drawerOverlay");
+    const drawerCloseBtn = document.getElementById("drawerCloseBtn");
+
+    let currentCategory = "all";
+
+    toolCountHero.textContent = cards.length;
+    toolCountMeta.textContent = cards.length;
+
+    function openDrawer(){
+      drawerPanel.classList.add("open");
+      drawerOverlay.classList.add("show");
+      menuBtn.setAttribute("aria-expanded", "true");
+      drawerPanel.setAttribute("aria-hidden", "false");
+    }
+
+    function closeDrawer(){
+      drawerPanel.classList.remove("open");
+      drawerOverlay.classList.remove("show");
+      menuBtn.setAttribute("aria-expanded", "false");
+      drawerPanel.setAttribute("aria-hidden", "true");
+    }
+
+    function normalizeText(text){
+      return String(text)
+        .toLowerCase()
+        .replace(/[()\.,\-\/]/g, " ")
+        .replace(/\s+/g, " ")
+        .trim();
+    }
+
+    function setActiveCategory(category){
+      currentCategory = category;
+      filterButtons.forEach(btn => {
+        btn.classList.toggle("active", btn.dataset.filter === category);
+      });
+      applyFilters();
+    }
+
+    function resetFilters(){
+      searchInput.value = "";
+      currentCategory = "all";
+      sortSelect.value = "featured";
+      filterButtons.forEach(btn => btn.classList.toggle("active", btn.dataset.filter === "all"));
+      suggestionsBox.innerHTML = "";
+      applyFilters();
+      searchInput.focus();
+    }
+
+    function sortVisibleCards(){
+      const sortMode = sortSelect.value;
+
+      const visibleCards = cards.filter(card => card.style.display !== "none");
+      visibleCards.sort((a, b) => {
+        const aTitle = a.dataset.title || "";
+        const bTitle = b.dataset.title || "";
+        const aFeatured = Number(a.dataset.featured || 0);
+        const bFeatured = Number(b.dataset.featured || 0);
+
+        if (sortMode === "featured") {
+          if (bFeatured !== aFeatured) return bFeatured - aFeatured;
+          return aTitle.localeCompare(bTitle);
+        }
+        if (sortMode === "az") return aTitle.localeCompare(bTitle);
+        if (sortMode === "za") return bTitle.localeCompare(aTitle);
+        return 0;
+      });
+
+      visibleCards.forEach((card, index) => {
+        card.style.order = index;
+      });
+
+      const visibleLiveCards = liveCards.filter(card => card.style.display !== "none");
+      visibleLiveCards.forEach((card, index) => {
+        card.style.order = index;
+      });
+
+      cards.filter(card => card.style.display === "none").forEach(card => {
+        card.style.order = 999;
+      });
+
+      liveCards.filter(card => card.style.display === "none").forEach(card => {
+        card.style.order = 999;
+      });
+    }
+
+    function applyFilters(){
+      const query = normalizeText(searchInput.value);
+      let visibleCount = 0;
+
+      cards.forEach(card => {
+        const title = normalizeText(card.dataset.title || "");
+        const matchesCategory = currentCategory === "all" || card.dataset.category === currentCategory;
+        const matchesSearch = !query || title.includes(query);
+        const show = matchesCategory && matchesSearch;
+        card.style.display = show ? "flex" : "none";
+        if (show) visibleCount++;
+      });
+
+      liveCards.forEach(card => {
+        const title = normalizeText(card.dataset.title || "");
+        const matchesCategory = currentCategory === "all" || currentCategory === "live";
+        const matchesSearch = !query || title.includes(query);
+        const show = matchesCategory && matchesSearch;
+        card.style.display = show ? "grid" : "none";
+        if (show) visibleCount++;
+      });
+
+      sortVisibleCards();
+
+      if (visibleCount === 0) {
+        noResult.style.display = "block";
+        noResult.firstChild.textContent = query ? "No calculator or live tool found." : "No calculators in this category.";
+      } else {
+        noResult.style.display = "none";
+      }
+
+      renderSuggestions();
+    }
+
+    function renderSuggestions(){
+      const query = normalizeText(searchInput.value);
+      suggestionsBox.innerHTML = "";
+
+      if (!query) return;
+
+      const visibleMatches = searchItems
+        .filter(card => currentCategory === "all" || card.dataset.category === currentCategory || card.dataset.category === "live")
+        .filter(card => normalizeText(card.dataset.title || "").includes(query))
+        .slice(0, 8);
+
+      if (visibleMatches.length === 0) {
+        suggestionsBox.innerHTML = "<div class='suggestion-item'><span class='suggestion-name'>No result</span><span class='suggestion-cat'>Try another keyword</span></div>";
+        return;
+      }
+
+      visibleMatches.forEach(card => {
+        const item = document.createElement("div");
+        item.className = "suggestion-item";
+        item.innerHTML = `
+          <span class="suggestion-name">${card.dataset.title}</span>
+          <span class="suggestion-cat">${card.dataset.category}</span>
+        `;
+
+        item.addEventListener("click", () => {
+          searchInput.value = card.dataset.title;
+          suggestionsBox.innerHTML = "";
+          applyFilters();
+          const targetId = card.dataset.category === "live" ? "live-tools" : "all-calculators";
+          document.getElementById(targetId).scrollIntoView({ behavior: "smooth", block: "start" });
+        });
+
+        suggestionsBox.appendChild(item);
+      });
+    }
+
+    searchInput.addEventListener("input", applyFilters);
+    sortSelect.addEventListener("change", applyFilters);
+
+    filterButtons.forEach(btn => {
+      btn.addEventListener("click", () => setActiveCategory(btn.dataset.filter));
+    });
+
+    document.addEventListener("click", (e) => {
+      if (!e.target.closest(".search-wrap")) {
+        suggestionsBox.innerHTML = "";
+      }
+
+      if (!e.target.closest(".drawer") && !e.target.closest("#menuBtn")) {
+        closeDrawer();
+      }
+    });
+
+    menuBtn.addEventListener("click", openDrawer);
+    drawerCloseBtn.addEventListener("click", closeDrawer);
+    drawerOverlay.addEventListener("click", closeDrawer);
+
+    document.querySelectorAll(".drawer a").forEach(link => {
+      link.addEventListener("click", closeDrawer);
+    });
+
+    document.addEventListener("keydown", (e) => {
+      if (e.key === "Escape") {
+        closeDrawer();
+      }
+    });
+
+    document.querySelectorAll(".faq-question").forEach(btn => {
+      btn.addEventListener("click", () => {
+        const item = btn.parentElement;
+        document.querySelectorAll(".faq-item").forEach(i => {
+          if (i !== item) i.classList.remove("active");
+        });
+        item.classList.toggle("active");
+      });
+    });
+
+    applyFilters();
+  </script>
+</body>
+  </html>
