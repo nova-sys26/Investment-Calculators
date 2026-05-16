@@ -976,6 +976,33 @@
       </div>
     </section>
 
+    <section class="section">
+      <div class="controls">
+        <div class="search-wrap">
+          <input id="search" aria-label="Search calculators and live tools" placeholder="Search calculators and live tools, e.g. risk, fees, ROI, BTC dominance...">
+          <div id="suggestions"></div>
+        </div>
+
+        <div class="filter-row">
+          <div class="chip-row">
+            <button class="chip active" data-filter="all">All</button>
+            <button class="chip" data-filter="trading">Trading</button>
+            <button class="chip" data-filter="investing">Investing</button>
+            <button class="chip" data-filter="loans">Loans & Savings</button>
+            <button class="chip" data-filter="live">Live tools</button>
+          </div>
+
+          <div class="sort-wrap">
+            <span>Sort</span>
+            <select id="sortSelect" class="sort-select">
+              <option value="featured">Featured first</option>
+              <option value="az">A–Z</option>
+              <option value="za">Z–A</option>
+            </select>
+            <button class="reset-btn" onclick="resetFilters()">Reset</button>
+          </div>
+        </div>
+        
     <section class="tool-switcher">
       <a href="#all-calculators" class="switch-card calc">
         <div class="switch-badge">CALCULATORS</div>
@@ -1015,32 +1042,7 @@
       </div>
     </section>
 
-    <section class="section">
-      <div class="controls">
-        <div class="search-wrap">
-          <input id="search" aria-label="Search calculators and live tools" placeholder="Search calculators and live tools, e.g. risk, fees, ROI, BTC dominance...">
-          <div id="suggestions"></div>
-        </div>
-
-        <div class="filter-row">
-          <div class="chip-row">
-            <button class="chip active" data-filter="all">All</button>
-            <button class="chip" data-filter="trading">Trading</button>
-            <button class="chip" data-filter="investing">Investing</button>
-            <button class="chip" data-filter="loans">Loans & Savings</button>
-            <button class="chip" data-filter="live">Live tools</button>
-          </div>
-
-          <div class="sort-wrap">
-            <span>Sort</span>
-            <select id="sortSelect" class="sort-select">
-              <option value="featured">Featured first</option>
-              <option value="az">A–Z</option>
-              <option value="za">Z–A</option>
-            </select>
-            <button class="reset-btn" onclick="resetFilters()">Reset</button>
-          </div>
-        </div>
+    
 
         <p class="search-meta">
           <span id="toolCountMeta">33</span> calculators ready to use.
