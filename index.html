@@ -312,17 +312,23 @@
       background:rgba(30,41,59,0.88);
     }
 
-    .quick-access-ico{
-      width:42px;
-      height:42px;
-      border-radius:14px;
-      display:flex;
-      align-items:center;
-      justify-content:center;
-      font-size:20px;
-      background:rgba(255,255,255,0.06);
-      flex:0 0 auto;
-    }
+    .quick-access-ico svg{
+  width:22px;
+  height:22px;
+  fill:none;
+  stroke:currentColor;
+  stroke-width:1.8;
+  stroke-linecap:round;
+  stroke-linejoin:round;
+}
+
+.ico-calc{
+  color:rgba(59,130,246,0.75);
+}
+
+.ico-live{
+  color:rgba(34,197,94,0.75);
+      }
 
     .quick-access-card strong{
       display:block;
@@ -839,23 +845,42 @@
         </div>
       </div>
 
-      <div class="quick-access" aria-label="Quick access to main sections">
-        <a href="#all-calculators" class="quick-access-card">
-          <span class="quick-access-ico">📊</span>
-          <div>
-            <strong>All Calculators</strong>
-            <small>Trading, investing, and loan tools</small>
-          </div>
-        </a>
+      <a href="#all-calculators" class="quick-access-card">
+  <span class="quick-access-ico ico-calc">
+    <svg viewBox="0 0 24 24" aria-hidden="true">
+      <rect x="4" y="3" width="16" height="18" rx="3" ry="3"></rect>
+      <line x1="8" y1="7" x2="16" y2="7"></line>
+      <line x1="8" y1="12" x2="8" y2="12"></line>
+      <line x1="12" y1="12" x2="12" y2="12"></line>
+      <line x1="16" y1="12" x2="16" y2="12"></line>
+      <line x1="8" y1="16" x2="8" y2="16"></line>
+      <line x1="12" y1="16" x2="12" y2="16"></line>
+      <line x1="16" y1="16" x2="16" y2="16"></line>
+    </svg>
+  </span>
+  <div>
+    <strong>All Calculators</strong>
+    <small>Trading, investing, and loan tools</small>
+  </div>
+</a>
 
-        <a href="#live-tools" class="quick-access-card">
-          <span class="quick-access-ico">⚡</span>
-          <div>
-            <strong>Live Tools</strong>
-            <small>Real-time market and conversion tools</small>
-          </div>
-        </a>
-      </div>
+<a href="#live-tools" class="quick-access-card">
+  <span class="quick-access-ico ico-live">
+    <svg viewBox="0 0 24 24" aria-hidden="true">
+      <circle cx="12" cy="12" r="8"></circle>
+      <circle cx="12" cy="12" r="3"></circle>
+      <path d="M12 4v2"></path>
+      <path d="M12 18v2"></path>
+      <path d="M4 12h2"></path>
+      <path d="M18 12h2"></path>
+    </svg>
+  </span>
+  <div>
+    <strong>Live Tools</strong>
+    <small>Real-time market and conversion tools</small>
+  </div>
+</a>
+
     </section>
 
     <section class="section" id="start-here">
@@ -1540,4 +1565,4 @@
     applyFilters();
   </script>
 </body>
-          </html>
+  </html>
