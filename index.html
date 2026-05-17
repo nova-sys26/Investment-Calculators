@@ -903,51 +903,58 @@
 
 <a href="#live-tools" class="quick-access-card">
 <span class="quick-access-ico ico-live">
-<svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
-  <!-- dış halka -->
-  <circle
-    cx="12"
-    cy="12"
-    r="9"
-    stroke="currentColor"
-    stroke-width="1.6"
-  />
+  <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+    <defs>
+      <linearGradient id="liveGradient" x1="4" y1="20" x2="20" y2="4" gradientUnits="userSpaceOnUse">
+        <stop offset="0%" stop-color="#0f2a1d"></stop>
+        <stop offset="55%" stop-color="#16a34a"></stop>
+        <stop offset="100%" stop-color="#86efac"></stop>
+      </linearGradient>
+    </defs>
 
-  <!-- iç halka -->
-  <circle
-    cx="12"
-    cy="12"
-    r="6.5"
-    stroke="currentColor"
-    stroke-width="1"
-  />
+    <!-- dış halka -->
+    <circle
+      cx="12"
+      cy="12"
+      r="9"
+      stroke="url(#liveGradient)"
+      stroke-width="1.6"
+    />
 
-  <!-- dik çizgi -->
-  <path
-    d="M12 7V17"
-    stroke="currentColor"
-    stroke-width="1"
-    stroke-linecap="round"
-  />
+    <!-- iç halka -->
+    <circle
+      cx="12"
+      cy="12"
+      r="6.5"
+      stroke="url(#liveGradient)"
+      stroke-width="1"
+    />
 
-  <!-- düzgün S -->
-  <path
-    d="
-      M14.2 8.4
-      C13.7 7.7 12.9 7.4 12 7.4
-      C10.6 7.4 9.6 8.2 9.6 9.4
-      C9.6 10.5 10.4 11 12 11.3
-      C13.7 11.7 14.5 12.3 14.5 13.6
-      C14.5 14.9 13.4 15.7 12 15.7
-      C10.8 15.7 9.9 15.2 9.4 14.3
-    "
-    stroke="currentColor"
-    stroke-width="1"
-    stroke-linecap="round"
-    stroke-linejoin="round"
-  />
-</svg>
+    <!-- dik çizgi -->
+    <path
+      d="M12 7V17"
+      stroke="url(#liveGradient)"
+      stroke-width="1"
+      stroke-linecap="round"
+    />
 
+    <!-- düzgün S -->
+    <path
+      d="
+        M14.2 8.4
+        C13.7 7.7 12.9 7.4 12 7.4
+        C10.6 7.4 9.6 8.2 9.6 9.4
+        C9.6 10.5 10.4 11 12 11.3
+        C13.7 11.7 14.5 12.3 14.5 13.6
+        C14.5 14.9 13.4 15.7 12 15.7
+        C10.8 15.7 9.9 15.2 9.4 14.3
+      "
+      stroke="url(#liveGradient)"
+      stroke-width="1"
+      stroke-linecap="round"
+      stroke-linejoin="round"
+    />
+  </svg>
 </span>
   <div>
     <strong>Live Tools</strong>
