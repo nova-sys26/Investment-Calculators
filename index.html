@@ -312,18 +312,20 @@
       background:rgba(30,41,59,0.88);
     }
 
-    .quick-access-ico svg{
-  width:22px;
-  height:22px;
-  fill:none;
-  stroke:currentColor;
-  stroke-width:1.8;
-  stroke-linecap:round;
-  stroke-linejoin:round;
+    .quick-access-ico{
+  width:44px;
+  height:44px;
+  display:grid;
+  place-items:center;
+  border-radius:14px;
+  background:rgba(255,255,255,0.03);
+  border:1px solid rgba(255,255,255,0.06);
 }
 
-.ico-calc{
-  color:rgba(59,130,246,0.75);
+.quick-access-ico svg{
+  width:24px;
+  height:24px;
+  color:#60a5fa;
 }
 
 .ico-live{
@@ -846,18 +848,49 @@
       </div>
 
       <a href="#all-calculators" class="quick-access-card">
-  <span class="quick-access-ico ico-calc">
-    <svg viewBox="0 0 24 24" aria-hidden="true">
-      <rect x="4" y="3" width="16" height="18" rx="3" ry="3"></rect>
-      <line x1="8" y1="7" x2="16" y2="7"></line>
-      <line x1="8" y1="12" x2="8" y2="12"></line>
-      <line x1="12" y1="12" x2="12" y2="12"></line>
-      <line x1="16" y1="12" x2="16" y2="12"></line>
-      <line x1="8" y1="16" x2="8" y2="16"></line>
-      <line x1="12" y1="16" x2="12" y2="16"></line>
-      <line x1="16" y1="16" x2="16" y2="16"></line>
-    </svg>
-  </span>
+<div class="quick-access-ico ico-calc">
+<svg viewBox="0 0 24 24" fill="none">
+
+  <!-- dış kasa -->
+  <rect
+    x="4"
+    y="3"
+    width="16"
+    height="18"
+    rx="3"
+    stroke="currentColor"
+    stroke-width="1.7"
+  />
+
+  <!-- ekran -->
+  <rect
+    x="7"
+    y="6"
+    width="10"
+    height="3"
+    rx="1"
+    stroke="currentColor"
+    stroke-width="1.5"
+  />
+
+  <!-- + -->
+  <path d="M8 12h3" stroke="currentColor" stroke-width="1.6"/>
+  <path d="M9.5 10.5v3" stroke="currentColor" stroke-width="1.6"/>
+
+  <!-- - -->
+  <path d="M13 12h3" stroke="currentColor" stroke-width="1.6"/>
+
+  <!-- × -->
+  <path d="M8 16l3 3" stroke="currentColor" stroke-width="1.6"/>
+  <path d="M11 16l-3 3" stroke="currentColor" stroke-width="1.6"/>
+
+  <!-- ÷ -->
+  <path d="M13 17h3" stroke="currentColor" stroke-width="1.6"/>
+  <circle cx="14.5" cy="15.7" r="0.4" fill="currentColor"/>
+  <circle cx="14.5" cy="18.3" r="0.4" fill="currentColor"/>
+
+</svg>
+</div>
   <div>
     <strong>All Calculators</strong>
     <small>Trading, investing, and loan tools</small>
