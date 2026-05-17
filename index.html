@@ -22,7 +22,7 @@
   <script async src="https://www.googletagmanager.com/gtag/js?id=G-ZPCXDVE8C5"></script>
   <script>
     window.dataLayer = window.dataLayer || [];
-    function gtag(){dataLayer.push(arguments);} 
+    function gtag(){dataLayer.push(arguments);}
     gtag('js', new Date());
     gtag('config', 'G-ZPCXDVE8C5');
   </script>
@@ -288,15 +288,15 @@
     .quick-access{
       display:grid;
       grid-template-columns:repeat(2, minmax(0, 1fr));
-      gap:12px;
-      margin-top:18px;
+      gap:16px;
+      margin-top:28px;
     }
 
     .quick-access-card{
       display:flex;
       align-items:center;
-      gap:14px;
-      padding:15px 16px;
+      gap:16px;
+      padding:18px 18px;
       border-radius:18px;
       text-decoration:none;
       color:white;
@@ -304,6 +304,7 @@
       border:1px solid rgba(255,255,255,0.08);
       backdrop-filter:blur(12px);
       transition:0.22s ease;
+      min-height:86px;
     }
 
     .quick-access-card:hover{
@@ -313,26 +314,27 @@
     }
 
     .quick-access-ico{
-  width:44px;
-  height:44px;
-  display:grid;
-  place-items:center;
-  border-radius:14px;
-  background:rgba(255,255,255,0.03);
-  border:1px solid rgba(255,255,255,0.06);
-}
+      width:48px;
+      height:48px;
+      display:grid;
+      place-items:center;
+      border-radius:14px;
+      background:rgba(255,255,255,0.03);
+      border:1px solid rgba(255,255,255,0.06);
+      flex:0 0 48px;
+    }
 
-.quick-access-ico svg{
-  width:24px;
-  height:24px;
-  stroke:currentColor;
-}
-.ico-calc{
-  color:#60a5fa;
-}
-.ico-live{
-  color:#4ade80;
-}
+    .quick-access-ico svg{
+      width:26px;
+      height:26px;
+      display:block;
+      stroke:currentColor;
+      fill:none;
+    }
+
+    .ico-calc{ color:#60a5fa; }
+    .ico-live{ color:#4ade80; }
+
     .quick-access-card strong{
       display:block;
       font-size:15px;
@@ -346,7 +348,7 @@
       line-height:1.4;
     }
 
-    .section{ margin:26px 0 0; }
+    .section{ margin:30px 0 0; }
 
     .section h2{
       margin:0 0 10px;
@@ -470,7 +472,7 @@
       background:rgba(59,130,246,0.16);
     }
 
-    .controls{
+    .tool-panel{
       margin-top:16px;
       background:rgba(30,41,59,0.56);
       border:1px solid rgba(255,255,255,0.08);
@@ -669,10 +671,11 @@
     .no-result{
       margin-top:18px;
       padding:16px;
-      background:rgba(239,68,68,0.08);
-      border:1px solid rgba(239,68,68,0.16);
+      background:rgba(15,23,42,0.74);
+      border:1px solid rgba(255,255,255,0.08);
       border-radius:14px;
-      color:#fecaca;
+      color:#cbd5e1;
+      line-height:1.6;
     }
 
     .no-result button{ margin-top:10px; }
@@ -846,121 +849,83 @@
           <span>built for trading and investing decisions</span>
         </div>
       </div>
-<a href="#all-calculators" class="quick-access-card">
-  <span class="quick-access-ico ico-calc">
-    <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
-      <defs>
-        <linearGradient id="calcGradient" x1="4" y1="20" x2="20" y2="4" gradientUnits="userSpaceOnUse">
-          <stop offset="0%" stop-color="#2563eb"></stop>
-          <stop offset="55%" stop-color="#3b82f6"></stop>
-          <stop offset="100%" stop-color="#7dd3fc"></stop>
-        </linearGradient>
-      </defs>
 
-      <g transform="translate(0 -1)">
-        <rect
-          x="4"
-          y="2"
-          width="16"
-          height="20"
-          rx="3"
-          stroke="url(#calcGradient)"
-          stroke-width="1.6"
-        />
+      <div class="quick-access">
+        <a href="#all-calculators" class="quick-access-card">
+          <span class="quick-access-ico ico-calc" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+              <defs>
+                <linearGradient id="calcGradientHero" x1="4" y1="20" x2="20" y2="4" gradientUnits="userSpaceOnUse">
+                  <stop offset="0%" stop-color="#2563eb"></stop>
+                  <stop offset="55%" stop-color="#3b82f6"></stop>
+                  <stop offset="100%" stop-color="#7dd3fc"></stop>
+                </linearGradient>
+              </defs>
 
-        <rect
-          x="7"
-          y="5"
-          width="10"
-          height="3.5"
-          rx="1"
-          stroke="url(#calcGradient)"
-          stroke-width="1.3"
-        />
+              <g transform="translate(0 -1)">
+                <rect x="4" y="2" width="16" height="20" rx="3" stroke="url(#calcGradientHero)" stroke-width="1.6"/>
+                <rect x="7" y="5" width="10" height="3.5" rx="1" stroke="url(#calcGradientHero)" stroke-width="1.3"/>
 
-        <path d="M8 12.4h3" stroke="url(#calcGradient)" stroke-width="1.05" stroke-linecap="round"/>
-        <path d="M9.5 10.9v3" stroke="url(#calcGradient)" stroke-width="1.05" stroke-linecap="round"/>
+                <path d="M8 12.4h3" stroke="url(#calcGradientHero)" stroke-width="1.05" stroke-linecap="round"/>
+                <path d="M9.5 10.9v3" stroke="url(#calcGradientHero)" stroke-width="1.05" stroke-linecap="round"/>
+                <path d="M13 12.4h3" stroke="url(#calcGradientHero)" stroke-width="1.05" stroke-linecap="round"/>
 
-        <path d="M13 12.4h3" stroke="url(#calcGradient)" stroke-width="1.05" stroke-linecap="round"/>
+                <path d="M8 15.5l3 3" stroke="url(#calcGradientHero)" stroke-width="1.05" stroke-linecap="round"/>
+                <path d="M11 15.5l-3 3" stroke="url(#calcGradientHero)" stroke-width="1.05" stroke-linecap="round"/>
 
-        <path d="M8 15.5l3 3" stroke="url(#calcGradient)" stroke-width="1.05" stroke-linecap="round"/>
-        <path d="M11 15.5l-3 3" stroke="url(#calcGradient)" stroke-width="1.05" stroke-linecap="round"/>
+                <path d="M13 16.9h3" stroke="url(#calcGradientHero)" stroke-width="1.05" stroke-linecap="round"/>
+                <circle cx="14.5" cy="15.75" r="0.14" fill="url(#calcGradientHero)"/>
+                <circle cx="14.5" cy="18.15" r="0.14" fill="url(#calcGradientHero)"/>
+              </g>
+            </svg>
+          </span>
 
-        <path d="M13 16.9h3" stroke="url(#calcGradient)" stroke-width="1.05" stroke-linecap="round"/>
-        <circle cx="14.5" cy="15.75" r="0.14" fill="url(#calcGradient)"/>
-        <circle cx="14.5" cy="18.15" r="0.14" fill="url(#calcGradient)"/>
-      </g>
-    </svg>
-  </span>
+          <div>
+            <strong>All Calculators</strong>
+            <small>Trading, investing, and loan tools</small>
+          </div>
+        </a>
 
-  <div>
-    <strong>All Calculators</strong>
-    <small>Trading, investing, and loan tools</small>
-  </div>
-          </a>
-      
+        <a href="#live-tools" class="quick-access-card">
+          <span class="quick-access-ico ico-live" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+              <defs>
+                <linearGradient id="liveGradientHero" x1="4" y1="20" x2="20" y2="4" gradientUnits="userSpaceOnUse">
+                  <stop offset="0%" stop-color="#0f2a1d"></stop>
+                  <stop offset="55%" stop-color="#16a34a"></stop>
+                  <stop offset="100%" stop-color="#86efac"></stop>
+                </linearGradient>
+              </defs>
 
-<a href="#live-tools" class="quick-access-card">
-<span class="quick-access-ico ico-live">
-  <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
-    <defs>
-      <linearGradient id="liveGradient" x1="4" y1="20" x2="20" y2="4" gradientUnits="userSpaceOnUse">
-        <stop offset="0%" stop-color="#0f2a1d"></stop>
-        <stop offset="55%" stop-color="#16a34a"></stop>
-        <stop offset="100%" stop-color="#86efac"></stop>
-      </linearGradient>
-    </defs>
+              <circle cx="12" cy="12" r="9" stroke="url(#liveGradientHero)" stroke-width="1.6"/>
+              <circle cx="12" cy="12" r="6.5" stroke="url(#liveGradientHero)" stroke-width="1"/>
 
-    <!-- dış halka -->
-    <circle
-      cx="12"
-      cy="12"
-      r="9"
-      stroke="url(#liveGradient)"
-      stroke-width="1.6"
-    />
+              <path d="M12 7V17" stroke="url(#liveGradientHero)" stroke-width="1" stroke-linecap="round"/>
 
-    <!-- iç halka -->
-    <circle
-      cx="12"
-      cy="12"
-      r="6.5"
-      stroke="url(#liveGradient)"
-      stroke-width="1"
-    />
+              <path
+                d="
+                  M14.2 8.4
+                  C13.7 7.7 12.9 7.4 12 7.4
+                  C10.6 7.4 9.6 8.2 9.6 9.4
+                  C9.6 10.5 10.4 11 12 11.3
+                  C13.7 11.7 14.5 12.3 14.5 13.6
+                  C14.5 14.9 13.4 15.7 12 15.7
+                  C10.8 15.7 9.9 15.2 9.4 14.3
+                "
+                stroke="url(#liveGradientHero)"
+                stroke-width="1"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              />
+            </svg>
+          </span>
 
-    <!-- dik çizgi -->
-    <path
-      d="M12 7V17"
-      stroke="url(#liveGradient)"
-      stroke-width="1"
-      stroke-linecap="round"
-    />
-
-    <!-- düzgün S -->
-    <path
-      d="
-        M14.2 8.4
-        C13.7 7.7 12.9 7.4 12 7.4
-        C10.6 7.4 9.6 8.2 9.6 9.4
-        C9.6 10.5 10.4 11 12 11.3
-        C13.7 11.7 14.5 12.3 14.5 13.6
-        C14.5 14.9 13.4 15.7 12 15.7
-        C10.8 15.7 9.9 15.2 9.4 14.3
-      "
-      stroke="url(#liveGradient)"
-      stroke-width="1"
-      stroke-linecap="round"
-      stroke-linejoin="round"
-    />
-  </svg>
-</span>
-  <div>
-    <strong>Live Tools</strong>
-    <small>Real-time market and conversion tools</small>
-  </div>
-</a>
-
+          <div>
+            <strong>Live Tools</strong>
+            <small>Real-time market and conversion tools</small>
+          </div>
+        </a>
+      </div>
     </section>
 
     <section class="section" id="start-here">
@@ -979,7 +944,7 @@
     </section>
 
     <section class="section">
-      <div class="controls">
+      <div class="tool-panel">
         <div class="search-wrap">
           <input id="search" aria-label="Search calculators and live tools" placeholder="Search calculators and live tools, e.g. risk, fees, ROI, BTC dominance...">
           <div id="suggestions"></div>
@@ -987,11 +952,11 @@
 
         <div class="filter-row">
           <div class="chip-row">
-            <button class="chip active" data-filter="all">All</button>
-            <button class="chip" data-filter="trading">Trading</button>
-            <button class="chip" data-filter="investing">Investing</button>
-            <button class="chip" data-filter="loans">Loans & Savings</button>
-            <button class="chip" data-filter="live">Live tools</button>
+            <button class="chip active" data-filter="all" type="button">All</button>
+            <button class="chip" data-filter="trading" type="button">Trading</button>
+            <button class="chip" data-filter="investing" type="button">Investing</button>
+            <button class="chip" data-filter="loans" type="button">Loans & Savings</button>
+            <button class="chip" data-filter="live" type="button">Live tools</button>
           </div>
 
           <div class="sort-wrap">
@@ -1001,7 +966,7 @@
               <option value="az">A–Z</option>
               <option value="za">Z–A</option>
             </select>
-            <button class="reset-btn" onclick="resetFilters()">Reset</button>
+            <button class="reset-btn" onclick="resetFilters()" type="button">Reset</button>
           </div>
         </div>
 
@@ -1017,242 +982,244 @@
         Search by name, filter by category, or sort by featured tools first.
       </p>
 
-      <div class="card-grid" id="toolGrid">
-        <div class="tool-card featured" data-title="Position Size Calculator" data-category="trading" data-featured="1">
-          <div class="card-top"><span class="badge">Trading</span><span class="badge badge-featured">Featured</span></div>
-          <h3>Position Size Calculator</h3>
-          <p>Manage your risk per trade with proper sizing.</p>
-          <a class="card-link" href="position-size-calculator.html">Open</a>
+      <div class="tool-panel">
+        <div class="card-grid" id="toolGrid">
+          <div class="tool-card featured" data-title="Position Size Calculator" data-search="position size calculator trading risk account balance units lots" data-category="trading" data-featured="1">
+            <div class="card-top"><span class="badge">Trading</span><span class="badge badge-featured">Featured</span></div>
+            <h3>Position Size Calculator</h3>
+            <p>Manage your risk per trade with proper sizing.</p>
+            <a class="card-link" href="position-size-calculator.html">Open</a>
+          </div>
+
+          <div class="tool-card featured" data-title="Risk Reward Calculator" data-search="risk reward calculator ratio trading profit loss entry stop take" data-category="trading" data-featured="1">
+            <div class="card-top"><span class="badge">Trading</span><span class="badge badge-featured">Featured</span></div>
+            <h3>Risk Reward Calculator</h3>
+            <p>Compare downside with potential upside.</p>
+            <a class="card-link" href="risk-reward-calculator.html">Open</a>
+          </div>
+
+          <div class="tool-card featured" data-title="Stop Loss Calculator" data-search="stop loss calculator trading risk price exit long short" data-category="trading" data-featured="1">
+            <div class="card-top"><span class="badge">Trading</span><span class="badge badge-featured">Featured</span></div>
+            <h3>Stop Loss Calculator</h3>
+            <p>Calculate your stop loss level instantly.</p>
+            <a class="card-link" href="stop-loss-calculator.html">Open</a>
+          </div>
+
+          <div class="tool-card featured" data-title="Compound Interest Calculator" data-search="compound interest calculator long-term growth savings investment" data-category="investing" data-featured="1">
+            <div class="card-top"><span class="badge">Investing</span><span class="badge badge-featured">Featured</span></div>
+            <h3>Compound Interest Calculator</h3>
+            <p>Track long-term investment growth.</p>
+            <a class="card-link" href="compound-interest-calculator.html">Open</a>
+          </div>
+
+          <div class="tool-card featured" data-title="ROI Calculator" data-search="roi calculator return on investment investment returns annual roi" data-category="investing" data-featured="1">
+            <div class="card-top"><span class="badge">Investing</span><span class="badge badge-featured">Featured</span></div>
+            <h3>ROI Calculator</h3>
+            <p>Calculate your investment return and annual growth.</p>
+            <a class="card-link" href="roi-calculator.html">Open</a>
+          </div>
+
+          <div class="tool-card" data-title="Risk of Ruin Calculator" data-search="risk of ruin calculator trading survival probability win rate risk reward drawdown" data-category="trading" data-featured="0">
+            <div class="card-top"><span class="badge">Trading</span></div>
+            <h3>Risk of Ruin Calculator</h3>
+            <p>Measure your strategy’s survival probability.</p>
+            <a class="card-link" href="risk-of-ruin-calculator.html">Open</a>
+          </div>
+
+          <div class="tool-card" data-title="Drawdown Calculator" data-search="drawdown calculator recovery loss percentage trading portfolio equity" data-category="trading" data-featured="0">
+            <div class="card-top"><span class="badge">Trading</span></div>
+            <h3>Drawdown Calculator</h3>
+            <p>Understand losses and required recovery percentage.</p>
+            <a class="card-link" href="drawdown-calculator.html">Open</a>
+          </div>
+
+          <div class="tool-card" data-title="Break Even Calculator" data-search="break even calculator recover from losses price trading profit no loss" data-category="trading" data-featured="0">
+            <div class="card-top"><span class="badge">Trading</span></div>
+            <h3>Break Even Calculator</h3>
+            <p>Recover from losses and find your break-even point.</p>
+            <a class="card-link" href="break-even-calculator.html">Open</a>
+          </div>
+
+          <div class="tool-card" data-title="Pip Calculator (Forex)" data-search="pip calculator forex pip value lot size current price risk reward trading" data-category="trading" data-featured="0">
+            <div class="card-top"><span class="badge">Trading</span></div>
+            <h3>Pip Calculator (Forex)</h3>
+            <p>Calculate pip value instantly for forex trades.</p>
+            <a class="card-link" href="pip-calculator-forex.html">Open</a>
+          </div>
+
+          <div class="tool-card" data-title="Lot Size Calculator (Forex)" data-search="lot size calculator forex risk stop loss pip value position size" data-category="trading" data-featured="0">
+            <div class="card-top"><span class="badge">Trading</span></div>
+            <h3>Lot Size Calculator (Forex)</h3>
+            <p>Find the right lot size based on risk.</p>
+            <a class="card-link" href="lot-size-calculator-forex.html">Open</a>
+          </div>
+
+          <div class="tool-card" data-title="Margin Calculator" data-search="margin calculator required margin leverage impact free margin trading leverage position value liquidation risk forex crypto futures" data-category="trading" data-featured="0">
+            <div class="card-top"><span class="badge">Trading</span></div>
+            <h3>Margin Calculator</h3>
+            <p>Calculate required margin, leverage impact, and free balance.</p>
+            <a class="card-link" href="margin-calculator.html">Open</a>
+          </div>
+
+          <div class="tool-card" data-title="Leverage Calculator" data-search="leverage calculator trading crypto forex liquidation margin risk" data-category="trading" data-featured="0">
+            <div class="card-top"><span class="badge">Trading</span></div>
+            <h3>Leverage Calculator</h3>
+            <p>See how leverage affects your trade.</p>
+            <a class="card-link" href="leverage-calculator.html">Open</a>
+          </div>
+
+          <div class="tool-card" data-title="Liquidation Price Calculator" data-search="liquidation price calculator leverage margin crypto futures trading" data-category="trading" data-featured="0">
+            <div class="card-top"><span class="badge">Trading</span></div>
+            <h3>Liquidation Price Calculator</h3>
+            <p>Estimate your liquidation level.</p>
+            <a class="card-link" href="liquidation-price-calculator.html">Open</a>
+          </div>
+
+          <div class="tool-card" data-title="Crypto Profit Calculator" data-search="crypto profit calculator bitcoin ethereum fees trade outcome" data-category="trading" data-featured="0">
+            <div class="card-top"><span class="badge">Trading</span></div>
+            <h3>Crypto Profit Calculator</h3>
+            <p>Calculate crypto profit, loss, and fees instantly.</p>
+            <a class="card-link" href="crypto-profit-calculator.html">Open</a>
+          </div>
+
+          <div class="tool-card" data-title="Expectancy Calculator" data-search="expectancy calculator trading expectancy calculator trading edge expected profit per trade win rate average win average loss break even win rate strategy expectancy risk reward edge calculator" data-category="trading" data-featured="0">
+            <div class="card-top"><span class="badge">Trading</span></div>
+            <h3>Expectancy Calculator</h3>
+            <p>Estimate profit potential from your trading system.</p>
+            <a class="card-link" href="expectancy-calculator.html">Open</a>
+          </div>
+
+          <div class="tool-card" data-title="Profit Loss Calculator" data-search="profit loss calculator trade outcome stock crypto forex net profit gross profit" data-category="trading" data-featured="0">
+            <div class="card-top"><span class="badge">Trading</span></div>
+            <h3>Profit Loss Calculator</h3>
+            <p>See your trade outcome after entry and exit.</p>
+            <a class="card-link" href="profit-loss-calculator.html">Open</a>
+          </div>
+
+          <div class="tool-card" data-title="Trading Fees Calculator" data-search="trading fees calculator maker taker fee drag round trip costs crypto forex stocks" data-category="trading" data-featured="0">
+            <div class="card-top"><span class="badge">Trading</span></div>
+            <h3>Trading Fees Calculator</h3>
+            <p>Estimate fee drag and round-trip trading costs.</p>
+            <a class="card-link" href="trading-fees-calculator.html">Open</a>
+          </div>
+
+          <div class="tool-card" data-title="DCA vs. Lump Sum Calculator" data-search="dca vs lump sum investment calculator return comparison" data-category="investing" data-featured="0">
+            <div class="card-top"><span class="badge">Investing</span></div>
+            <h3>DCA vs. Lump Sum Calculator</h3>
+            <p>Compare DCA and lump sum investing returns.</p>
+            <a class="card-link" href="dca-vs-lump-sum-calculator.html">Open</a>
+          </div>
+
+          <div class="tool-card" data-title="IRA Calculator" data-search="ira calculator retirement calculator ira savings calculator retirement savings growth calculator compound interest retirement future value calculator ira contribution calculator retirement planning calculator retirement account projection ira balance calculator inflation adjusted retirement calculator annual contribution growth retirement nest egg calculator long term savings calculator retirement income planning ira investment growth calculator" data-category="investing" data-featured="0">
+            <div class="card-top"><span class="badge">Investing</span></div>
+            <h3>IRA Calculator</h3>
+            <p>Plan retirement growth with Roth & Traditional IRA projections.</p>
+            <a class="card-link" href="ira-calculator.html">Open</a>
+          </div>
+
+          <div class="tool-card" data-title="401(k) Calculator" data-search="401k calculator retirement calculator 401k retirement savings 401k growth calculator 401k contribution calculator employer match calculator retirement savings calculator compound interest retirement 401k future value calculator 401k investment growth retirement planning calculator how much will my 401k be worth 401k return calculator retirement income planning 401k compound growth estimator long term investment calculator retirement fund calculator 401k savings projection retirement portfolio growth calculator retirement planning tool investment growth over time 401k contribution match estimator retirement nest egg calculator compound returns retirement calculator" data-category="investing" data-featured="0">
+            <div class="card-top"><span class="badge">Investing</span></div>
+            <h3>401(k) Calculator</h3>
+            <p>401k retirement savings calculator with employer match.</p>
+            <a class="card-link" href="401k-calculator.html">Open</a>
+          </div>
+
+          <div class="tool-card" data-title="CAGR Calculator" data-search="cagr calculator compound annual growth rate annualized return investment growth rate long term return yearly growth rate finance calculator portfolio growth business revenue growth stock performance crypto return future value annual growth calculator" data-category="investing" data-featured="0">
+            <div class="card-top"><span class="badge">Investing</span></div>
+            <h3>CAGR Calculator</h3>
+            <p>Compound annual growth rate for investments and businesses.</p>
+            <a class="card-link" href="cagr-calculator.html">Open</a>
+          </div>
+
+          <div class="tool-card" data-title="Investment Growth Calculator" data-search="calculate investment growth and returns understand compound interest plan financial future compare investment scenarios track portfolio performance" data-category="investing" data-featured="0">
+            <div class="card-top"><span class="badge">Investing</span></div>
+            <h3>Investment Growth Calculator</h3>
+            <p>Investment growth calculator for smarter financial planning.</p>
+            <a class="card-link" href="investment-growth-calculator.html">Open</a>
+          </div>
+
+          <div class="tool-card" data-title="Inflation Calculator" data-search="inflation calculator future value money purchasing power inflation rate" data-category="investing" data-featured="0">
+            <div class="card-top"><span class="badge">Investing</span></div>
+            <h3>Inflation Calculator</h3>
+            <p>Calculate future value of money with inflation.</p>
+            <a class="card-link" href="inflation-calculator.html">Open</a>
+          </div>
+
+          <div class="tool-card" data-title="Coast FIRE Calculator" data-search="coast fire calculator fire calculator financial independence calculator retirement investing calculator investment growth calculator compound growth projection" data-category="investing" data-featured="0">
+            <div class="card-top"><span class="badge">Investing</span></div>
+            <h3>Coast FIRE Calculator</h3>
+            <p>Calculate your Coast FIRE number and timeline.</p>
+            <a class="card-link" href="coast-fire-calculator.html">Open</a>
+          </div>
+
+          <div class="tool-card" data-title="Retirement Calculator" data-search="retirement calculator retirement savings retirement planning pension income future value compound growth inflation adjusted balance monthly contribution retirement income financial independence fire calculator" data-category="investing" data-featured="0">
+            <div class="card-top"><span class="badge">Investing</span></div>
+            <h3>Retirement Calculator</h3>
+            <p>Clean retirement planning with savings, returns, inflation included.</p>
+            <a class="card-link" href="retirement-calculator.html">Open</a>
+          </div>
+
+          <div class="tool-card" data-title="Average Price Calculator" data-search="average price calculator average buy price multiple buys investment" data-category="investing" data-featured="0">
+            <div class="card-top"><span class="badge">Investing</span></div>
+            <h3>Average Price Calculator</h3>
+            <p>Calculate the average of multiple buys.</p>
+            <a class="card-link" href="average-price-calculator.html">Open</a>
+          </div>
+
+          <div class="tool-card" data-title="DCA Calculator" data-search="dca calculator dollar cost averaging recurring buys average entry price" data-category="investing" data-featured="0">
+            <div class="card-top"><span class="badge">Investing</span></div>
+            <h3>DCA Calculator</h3>
+            <p>Average your entry price with recurring buys.</p>
+            <a class="card-link" href="dca-calculator.html">Open</a>
+          </div>
+
+          <div class="tool-card" data-title="Future Value Calculator" data-search="future value calculator investment growth compound interest calculator savings projection monthly contributions investment growth over time future value formula compound returns calculator long term investment calculator savings growth calculator retirement projection inflation adjusted future value financial planning calculator portfolio growth estimator investment projection tool" data-category="investing" data-featured="0">
+            <div class="card-top"><span class="badge">Investing</span></div>
+            <h3>Future Value Calculator</h3>
+            <p>Estimate future value of savings and investments.</p>
+            <a class="card-link" href="future-value-calculator.html">Open</a>
+          </div>
+
+          <div class="tool-card" data-title="Savings Calculator" data-search="savings calculator savings growth calculator compound interest savings monthly contributions future value savings goal emergency fund retirement savings savings account growth savings projection" data-category="loans" data-featured="0">
+            <div class="card-top"><span class="badge">Loans & Savings</span></div>
+            <h3>Savings Calculator</h3>
+            <p>Project savings growth with interest and monthly contributions.</p>
+            <a class="card-link" href="savings-calculator.html">Open</a>
+          </div>
+
+          <div class="tool-card" data-title="Amortization Calculator" data-search="amortization calculator loan payments interest schedule monthly payment" data-category="loans" data-featured="0">
+            <div class="card-top"><span class="badge">Loans & Savings</span></div>
+            <h3>Amortization Calculator</h3>
+            <p>Track loan payments and interest over time.</p>
+            <a class="card-link" href="amortization-calculator.html">Open</a>
+          </div>
+
+          <div class="tool-card" data-title="APR / Interest Rate Calculator" data-search="apr interest rate calculator loan payments annual percentage rate" data-category="loans" data-featured="0">
+            <div class="card-top"><span class="badge">Loans & Savings</span></div>
+            <h3>APR / Interest Rate Calculator</h3>
+            <p>Estimate APR or loan payments instantly.</p>
+            <a class="card-link" href="apr-interest-rate-calculator.html">Open</a>
+          </div>
+
+          <div class="tool-card" data-title="Loan Calculator" data-search="loan calculator payments interest total cost monthly payment" data-category="loans" data-featured="0">
+            <div class="card-top"><span class="badge">Loans & Savings</span></div>
+            <h3>Loan Calculator</h3>
+            <p>Estimate payments, interest, and total loan cost.</p>
+            <a class="card-link" href="loan-calculator.html">Open</a>
+          </div>
+
+          <div class="tool-card" data-title="Mortgage Calculator" data-search="mortgage calculator monthly payment home loan interest extra payments" data-category="loans" data-featured="0">
+            <div class="card-top"><span class="badge">Loans & Savings</span></div>
+            <h3>Mortgage Calculator</h3>
+            <p>Estimate mortgage payments and total loan cost.</p>
+            <a class="card-link" href="mortgage-calculator.html">Open</a>
+          </div>
         </div>
 
-        <div class="tool-card featured" data-title="Risk Reward Calculator" data-category="trading" data-featured="1">
-          <div class="card-top"><span class="badge">Trading</span><span class="badge badge-featured">Featured</span></div>
-          <h3>Risk Reward Calculator</h3>
-          <p>Compare downside with potential upside.</p>
-          <a class="card-link" href="risk-reward-calculator.html">Open</a>
+        <div id="noResult" class="no-result" style="display:none;">
+          No calculator found.
+          <div><button class="reset-btn" onclick="resetFilters()" type="button">Clear filters</button></div>
         </div>
-
-        <div class="tool-card featured" data-title="Stop Loss Calculator" data-category="trading" data-featured="1">
-          <div class="card-top"><span class="badge">Trading</span><span class="badge badge-featured">Featured</span></div>
-          <h3>Stop Loss Calculator</h3>
-          <p>Calculate your stop loss level instantly.</p>
-          <a class="card-link" href="stop-loss-calculator.html">Open</a>
-        </div>
-
-        <div class="tool-card featured" data-title="Compound Interest Calculator" data-category="investing" data-featured="1">
-          <div class="card-top"><span class="badge">Investing</span><span class="badge badge-featured">Featured</span></div>
-          <h3>Compound Interest Calculator</h3>
-          <p>Track long-term investment growth.</p>
-          <a class="card-link" href="compound-interest-calculator.html">Open</a>
-        </div>
-
-        <div class="tool-card featured" data-title="ROI Calculator" data-category="investing" data-featured="1">
-          <div class="card-top"><span class="badge">Investing</span><span class="badge badge-featured">Featured</span></div>
-          <h3>ROI Calculator</h3>
-          <p>Calculate your investment return and annual growth.</p>
-          <a class="card-link" href="roi-calculator.html">Open</a>
-        </div>
-
-        <div class="tool-card" data-title="Risk of Ruin Calculator" data-category="trading" data-featured="0">
-          <div class="card-top"><span class="badge">Trading</span></div>
-          <h3>Risk of Ruin Calculator</h3>
-          <p>Measure your strategy’s survival probability.</p>
-          <a class="card-link" href="risk-of-ruin-calculator.html">Open</a>
-        </div>
-
-        <div class="tool-card" data-title="Drawdown Calculator" data-category="trading" data-featured="0">
-          <div class="card-top"><span class="badge">Trading</span></div>
-          <h3>Drawdown Calculator</h3>
-          <p>Understand losses and required recovery percentage.</p>
-          <a class="card-link" href="drawdown-calculator.html">Open</a>
-        </div>
-
-        <div class="tool-card" data-title="Break Even Calculator" data-category="trading" data-featured="0">
-          <div class="card-top"><span class="badge">Trading</span></div>
-          <h3>Break Even Calculator</h3>
-          <p>Recover from losses and find your break-even point.</p>
-          <a class="card-link" href="break-even-calculator.html">Open</a>
-        </div>
-
-        <div class="tool-card" data-title="Pip Calculator (Forex)" data-category="trading" data-featured="0">
-          <div class="card-top"><span class="badge">Trading</span></div>
-          <h3>Pip Calculator (Forex)</h3>
-          <p>Calculate pip value instantly for forex trades.</p>
-          <a class="card-link" href="pip-calculator-forex.html">Open</a>
-        </div>
-
-        <div class="tool-card" data-title="Lot Size Calculator (Forex)" data-category="trading" data-featured="0">
-          <div class="card-top"><span class="badge">Trading</span></div>
-          <h3>Lot Size Calculator (Forex)</h3>
-          <p>Find the right lot size based on risk.</p>
-          <a class="card-link" href="lot-size-calculator-forex.html">Open</a>
-        </div>
-
-        <div class="tool-card" data-title="Margin Calculator" data-category="trading" data-featured="0">
-          <div class="card-top"><span class="badge">Trading</span></div>
-          <h3>Margin Calculator</h3>
-          <p>Calculate required margin, leverage impact, and free balance.</p>
-          <a class="card-link" href="margin-calculator.html">Open</a>
-        </div>
-
-        <div class="tool-card" data-title="Leverage Calculator" data-category="trading" data-featured="0">
-          <div class="card-top"><span class="badge">Trading</span></div>
-          <h3>Leverage Calculator</h3>
-          <p>See how leverage affects your trade.</p>
-          <a class="card-link" href="leverage-calculator.html">Open</a>
-        </div>
-
-        <div class="tool-card" data-title="Liquidation Price Calculator" data-category="trading" data-featured="0">
-          <div class="card-top"><span class="badge">Trading</span></div>
-          <h3>Liquidation Price Calculator</h3>
-          <p>Estimate your liquidation level.</p>
-          <a class="card-link" href="liquidation-price-calculator.html">Open</a>
-        </div>
-
-        <div class="tool-card" data-title="Crypto Profit Calculator" data-category="trading" data-featured="0">
-          <div class="card-top"><span class="badge">Trading</span></div>
-          <h3>Crypto Profit Calculator</h3>
-          <p>Calculate crypto profit, loss, and fees instantly.</p>
-          <a class="card-link" href="crypto-profit-calculator.html">Open</a>
-        </div>
-
-        <div class="tool-card" data-title="Expectancy Calculator" data-category="trading" data-featured="0">
-          <div class="card-top"><span class="badge">Trading</span></div>
-          <h3>Expectancy Calculator</h3>
-          <p>Estimate profit potential from your trading system.</p>
-          <a class="card-link" href="expectancy-calculator.html">Open</a>
-        </div>
-
-        <div class="tool-card" data-title="Profit Loss Calculator" data-category="trading" data-featured="0">
-          <div class="card-top"><span class="badge">Trading</span></div>
-          <h3>Profit Loss Calculator</h3>
-          <p>See your trade outcome after entry and exit.</p>
-          <a class="card-link" href="profit-loss-calculator.html">Open</a>
-        </div>
-
-        <div class="tool-card" data-title="Trading Fees Calculator" data-category="trading" data-featured="0">
-          <div class="card-top"><span class="badge">Trading</span></div>
-          <h3>Trading Fees Calculator</h3>
-          <p>Estimate fee drag and round-trip trading costs.</p>
-          <a class="card-link" href="trading-fees-calculator.html">Open</a>
-        </div>
-
-        <div class="tool-card" data-title="DCA vs. Lump Sum Calculator" data-category="investing" data-featured="0">
-          <div class="card-top"><span class="badge">Investing</span></div>
-          <h3>DCA vs. Lump Sum Calculator</h3>
-          <p>Compare DCA and lump sum investing returns.</p>
-          <a class="card-link" href="dca-vs-lump-sum-calculator.html">Open</a>
-        </div>
-
-        <div class="tool-card" data-title="IRA Calculator" data-category="investing" data-featured="0">
-          <div class="card-top"><span class="badge">Investing</span></div>
-          <h3>IRA Calculator</h3>
-          <p>Plan retirement growth with Roth & Traditional IRA projections.</p>
-          <a class="card-link" href="ira-calculator.html">Open</a>
-        </div>
-
-        <div class="tool-card" data-title="401(k) Calculator" data-category="investing" data-featured="0">
-          <div class="card-top"><span class="badge">Investing</span></div>
-          <h3>401(k) Calculator</h3>
-          <p>401k retirement savings calculator with employer match.</p>
-          <a class="card-link" href="401k-calculator.html">Open</a>
-        </div>
-
-        <div class="tool-card" data-title="CAGR Calculator" data-category="investing" data-featured="0">
-          <div class="card-top"><span class="badge">Investing</span></div>
-          <h3>CAGR Calculator</h3>
-          <p>Compound annual growth rate for investments and businesses.</p>
-          <a class="card-link" href="cagr-calculator.html">Open</a>
-        </div>
-
-        <div class="tool-card" data-title="Investment Growth Calculator" data-category="investing" data-featured="0">
-          <div class="card-top"><span class="badge">Investing</span></div>
-          <h3>Investment Growth Calculator</h3>
-          <p>Investment growth calculator for smarter financial planning.</p>
-          <a class="card-link" href="investment-growth-calculator.html">Open</a>
-        </div>
-
-        <div class="tool-card" data-title="Inflation Calculator" data-category="investing" data-featured="0">
-          <div class="card-top"><span class="badge">Investing</span></div>
-          <h3>Inflation Calculator</h3>
-          <p>Calculate future value of money with inflation.</p>
-          <a class="card-link" href="inflation-calculator.html">Open</a>
-        </div>
-
-        <div class="tool-card" data-title="Coast FIRE Calculator" data-category="investing" data-featured="0">
-          <div class="card-top"><span class="badge">Investing</span></div>
-          <h3>Coast FIRE Calculator</h3>
-          <p>Calculate your Coast FIRE number and timeline.</p>
-          <a class="card-link" href="coast-fire-calculator.html">Open</a>
-        </div>
-
-        <div class="tool-card" data-title="Retirement Calculator" data-category="investing" data-featured="0">
-          <div class="card-top"><span class="badge">Investing</span></div>
-          <h3>Retirement Calculator</h3>
-          <p>Clean retirement planning with savings, returns, inflation included.</p>
-          <a class="card-link" href="retirement-calculator.html">Open</a>
-        </div>
-
-        <div class="tool-card" data-title="Average Price Calculator" data-category="investing" data-featured="0">
-          <div class="card-top"><span class="badge">Investing</span></div>
-          <h3>Average Price Calculator</h3>
-          <p>Calculate the average of multiple buys.</p>
-          <a class="card-link" href="average-price-calculator.html">Open</a>
-        </div>
-
-        <div class="tool-card" data-title="DCA Calculator" data-category="investing" data-featured="0">
-          <div class="card-top"><span class="badge">Investing</span></div>
-          <h3>DCA Calculator</h3>
-          <p>Average your entry price with recurring buys.</p>
-          <a class="card-link" href="dca-calculator.html">Open</a>
-        </div>
-
-        <div class="tool-card" data-title="Future Value Calculator" data-category="investing" data-featured="0">
-          <div class="card-top"><span class="badge">Investing</span></div>
-          <h3>Future Value Calculator</h3>
-          <p>Estimate future value of savings and investments.</p>
-          <a class="card-link" href="future-value-calculator.html">Open</a>
-        </div>
-
-        <div class="tool-card" data-title="Savings Calculator" data-category="loans" data-featured="0">
-          <div class="card-top"><span class="badge">Loans & Savings</span></div>
-          <h3>Savings Calculator</h3>
-          <p>Project savings growth with interest and monthly contributions.</p>
-          <a class="card-link" href="savings-calculator.html">Open</a>
-        </div>
-
-        <div class="tool-card" data-title="Amortization Calculator" data-category="loans" data-featured="0">
-          <div class="card-top"><span class="badge">Loans & Savings</span></div>
-          <h3>Amortization Calculator</h3>
-          <p>Track loan payments and interest over time.</p>
-          <a class="card-link" href="amortization-calculator.html">Open</a>
-        </div>
-
-        <div class="tool-card" data-title="APR / Interest Rate Calculator" data-category="loans" data-featured="0">
-          <div class="card-top"><span class="badge">Loans & Savings</span></div>
-          <h3>APR / Interest Rate Calculator</h3>
-          <p>Estimate APR or loan payments instantly.</p>
-          <a class="card-link" href="apr-interest-rate-calculator.html">Open</a>
-        </div>
-
-        <div class="tool-card" data-title="Loan Calculator" data-category="loans" data-featured="0">
-          <div class="card-top"><span class="badge">Loans & Savings</span></div>
-          <h3>Loan Calculator</h3>
-          <p>Estimate payments, interest, and total loan cost.</p>
-          <a class="card-link" href="loan-calculator.html">Open</a>
-        </div>
-
-        <div class="tool-card" data-title="Mortgage Calculator" data-category="loans" data-featured="0">
-          <div class="card-top"><span class="badge">Loans & Savings</span></div>
-          <h3>Mortgage Calculator</h3>
-          <p>Estimate mortgage payments and total loan cost.</p>
-          <a class="card-link" href="mortgage-calculator.html">Open</a>
-        </div>
-      </div>
-
-      <div id="noResult" class="no-result" style="display:none;">
-        No calculator found.
-        <div><button class="reset-btn" onclick="resetFilters()">Clear filters</button></div>
       </div>
     </section>
 
@@ -1263,7 +1230,7 @@
       </p>
 
       <div class="live-grid">
-        <article class="live-card featured-live live-item" data-title="Currency Converter" data-category="live">
+        <article class="live-card featured-live live-item" data-title="Currency Converter" data-search="currency converter live exchange rates forex travel" data-category="live" data-featured="1">
           <div>
             <div class="live-badges">
               <span class="badge">Live dashboard</span>
@@ -1289,7 +1256,7 @@
           </div>
         </article>
 
-        <article class="live-card featured-live live-item" data-title="Fear & Greed Index" data-category="live">
+        <article class="live-card featured-live live-item" data-title="Fear & Greed Index" data-search="fear greed index crypto sentiment market context live" data-category="live" data-featured="1">
           <div>
             <div class="live-badges">
               <span class="badge">Live sentiment</span>
@@ -1315,7 +1282,7 @@
           </div>
         </article>
 
-        <article class="live-card live-item" data-title="Purchasing Power Calculator" data-category="live">
+        <article class="live-card live-item" data-title="Purchasing Power Calculator" data-search="purchasing power calculator live exchange rates country comparison travel salary" data-category="live" data-featured="0">
           <div>
             <div class="live-badges">
               <span class="badge">Live comparison</span>
@@ -1494,11 +1461,9 @@
       searchInput.focus();
     }
 
-    function sortVisibleCards(){
+    function sortVisibleItems(items){
       const sortMode = sortSelect.value;
-
-      const visibleCards = cards.filter(card => card.style.display !== "none");
-      visibleCards.sort((a, b) => {
+      items.sort((a, b) => {
         const aTitle = a.dataset.title || "";
         const bTitle = b.dataset.title || "";
         const aFeatured = Number(a.dataset.featured || 0);
@@ -1508,26 +1473,10 @@
           if (bFeatured !== aFeatured) return bFeatured - aFeatured;
           return aTitle.localeCompare(bTitle);
         }
+
         if (sortMode === "az") return aTitle.localeCompare(bTitle);
         if (sortMode === "za") return bTitle.localeCompare(aTitle);
         return 0;
-      });
-
-      visibleCards.forEach((card, index) => {
-        card.style.order = index;
-      });
-
-      const visibleLiveCards = liveCards.filter(card => card.style.display !== "none");
-      visibleLiveCards.forEach((card, index) => {
-        card.style.order = index;
-      });
-
-      cards.filter(card => card.style.display === "none").forEach(card => {
-        card.style.order = 999;
-      });
-
-      liveCards.filter(card => card.style.display === "none").forEach(card => {
-        card.style.order = 999;
       });
     }
 
@@ -1537,8 +1486,10 @@
 
       cards.forEach(card => {
         const title = normalizeText(card.dataset.title || "");
+        const extra = normalizeText(card.dataset.search || "");
+        const searchText = `${title} ${extra}`;
         const matchesCategory = currentCategory === "all" || card.dataset.category === currentCategory;
-        const matchesSearch = !query || title.includes(query);
+        const matchesSearch = !query || searchText.includes(query);
         const show = matchesCategory && matchesSearch;
         card.style.display = show ? "flex" : "none";
         if (show) visibleCount++;
@@ -1546,18 +1497,33 @@
 
       liveCards.forEach(card => {
         const title = normalizeText(card.dataset.title || "");
+        const extra = normalizeText(card.dataset.search || "");
+        const searchText = `${title} ${extra}`;
         const matchesCategory = currentCategory === "all" || currentCategory === "live";
-        const matchesSearch = !query || title.includes(query);
+        const matchesSearch = !query || searchText.includes(query);
         const show = matchesCategory && matchesSearch;
         card.style.display = show ? "grid" : "none";
         if (show) visibleCount++;
       });
 
-      sortVisibleCards();
+      sortVisibleItems(cards.filter(card => card.style.display !== "none"));
+      sortVisibleItems(liveCards.filter(card => card.style.display !== "none"));
+
+      cards.filter(card => card.style.display === "none").forEach(card => {
+        card.style.order = 999;
+      });
+
+      liveCards.filter(card => card.style.display === "none").forEach(card => {
+        card.style.order = 999;
+      });
 
       if (visibleCount === 0) {
         noResult.style.display = "block";
-        noResult.firstChild.textContent = query ? "No calculator or live tool found." : "No calculators in this category.";
+        if (currentCategory === "live") {
+          noResult.firstChild.textContent = query ? "No live tool found." : "No live tools in this category.";
+        } else {
+          noResult.firstChild.textContent = query ? "No calculator or live tool found." : "No calculators in this category.";
+        }
       } else {
         noResult.style.display = "none";
       }
@@ -1572,8 +1538,15 @@
       if (!query) return;
 
       const visibleMatches = searchItems
-        .filter(card => currentCategory === "all" || card.dataset.category === currentCategory || card.dataset.category === "live")
-        .filter(card => normalizeText(card.dataset.title || "").includes(query))
+        .filter(card => {
+          if (currentCategory === "all") return true;
+          return card.dataset.category === currentCategory || (currentCategory === "live" && card.dataset.category === "live");
+        })
+        .filter(card => {
+          const title = normalizeText(card.dataset.title || "");
+          const extra = normalizeText(card.dataset.search || "");
+          return `${title} ${extra}`.includes(query);
+        })
         .slice(0, 8);
 
       if (visibleMatches.length === 0) {
@@ -1593,6 +1566,7 @@
           searchInput.value = card.dataset.title;
           suggestionsBox.innerHTML = "";
           applyFilters();
+
           const targetId = card.dataset.category === "live" ? "live-tools" : "all-calculators";
           document.getElementById(targetId).scrollIntoView({ behavior: "smooth", block: "start" });
         });
