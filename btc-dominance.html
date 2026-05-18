@@ -3,707 +3,658 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-
   <title>BTC Dominance Tracker – Live Bitcoin Market Share</title>
   <meta name="description" content="BTC dominance verisini canlı takip et. Bitcoin market share, ETH context ve trend grafiği tek sayfada." />
-  <link rel="canonical" href="https://novainvesttools.com/btc-dominance.html">
-
   <meta name="theme-color" content="#0f172a">
   <meta name="robots" content="index,follow,max-image-preview:large">
-
-  <meta property="og:type" content="website">
-  <meta property="og:url" content="https://novainvesttools.com/btc-dominance.html">
-  <meta property="og:title" content="BTC Dominance Tracker – Live Bitcoin Market Share">
-  <meta property="og:description" content="BTC dominance verisini canlı takip et. Clean dashboard, gauge ve chart ile market share görünümü.">
-
   <link rel="icon" href="favicon.png" type="image/png">
   <link rel="apple-touch-icon" href="favicon.png">
-
-  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-
-  <script type="application/ld+json">
-  {
-    "@context": "https://schema.org",
-    "@type": "WebApplication",
-    "name": "BTC Dominance Tracker",
-    "url": "https://novainvesttools.com/btc-dominance.html",
-    "applicationCategory": "FinanceApplication",
-    "operatingSystem": "All",
-    "browserRequirements": "Requires JavaScript",
-    "description": "Live BTC dominance tracker with gauge, historical chart and market context.",
-    "featureList": [
-      "Live BTC dominance reading",
-      "Historical chart",
-      "Trend context",
-      "Market share gauge"
-    ],
-    "offers": {
-      "@type": "Offer",
-      "price": "0",
-      "priceCurrency": "USD"
-    }
-  }
-  </script>
-
-  <script type="application/ld+json">
-  {
-    "@context": "https://schema.org",
-    "@type": "FAQPage",
-    "mainEntity": [
-      {
-        "@type": "Question",
-        "name": "What is BTC dominance?",
-        "acceptedAnswer": {
-          "@type": "Answer",
-          "text": "BTC dominance is Bitcoin's share of the total crypto market cap, shown as a percentage."
-        }
-      },
-      {
-        "@type": "Question",
-        "name": "How often does BTC dominance change?",
-        "acceptedAnswer": {
-          "@type": "Answer",
-          "text": "It changes continuously with price movement and market cap shifts."
-        }
-      },
-      {
-        "@type": "Question",
-        "name": "Is BTC dominance a buy or sell signal?",
-        "acceptedAnswer": {
-          "@type": "Answer",
-          "text": "No. It is a context tool and should not replace your own analysis."
-        }
-      }
-    ]
-  }
-  </script>
 
   <style>
     * { box-sizing: border-box; }
     html { scroll-behavior: smooth; }
 
-    body {
+    body{
+      margin:0;
+      min-height:100vh;
       font-family: Arial, sans-serif;
-      background: linear-gradient(to bottom, #0D1D41 0%, #0D1D41 72%, #050814 88%, #000000 100%);
-      color: white;
-      margin: 0;
-      min-height: 100vh;
+      color:#fff;
+      background:
+        linear-gradient(to bottom, #0D1D41 0%, #0D1D41 72%, #050814 88%, #000 100%);
     }
 
-    .page-shell {
-      width: min(1180px, calc(100% - 32px));
-      margin: 0 auto;
+    .page-shell{
+      width:min(1180px, calc(100% - 32px));
+      margin:0 auto;
     }
 
-    .topbar {
-      display: flex;
-      align-items: center;
-      gap: 16px;
-      padding: 20px 0 0;
-      flex-wrap: wrap;
+    .topbar{
+      display:flex;
+      align-items:center;
+      gap:16px;
+      padding:20px 0 0;
+      flex-wrap:wrap;
     }
 
-    .menu-btn {
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      width: 44px;
-      height: 44px;
-      border: none;
-      border-radius: 12px;
-      cursor: pointer;
-      background: rgba(255,255,255,0.05);
-      color: white;
-      font-size: 20px;
-      transition: 0.2s;
+    .brand{
+      font-size:18px;
+      font-weight:700;
+      margin-right:auto;
+      letter-spacing:.2px;
     }
 
-    .menu-btn:hover { background: rgba(255,255,255,0.08); }
-
-    .brand {
-      font-size: 18px;
-      font-weight: 700;
-      margin-right: auto;
-      letter-spacing: 0.2px;
+    .menu-btn{
+      width:44px;
+      height:44px;
+      border:none;
+      border-radius:12px;
+      cursor:pointer;
+      background:rgba(255,255,255,.05);
+      color:#fff;
+      font-size:20px;
+      transition:.2s;
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
     }
 
-    .topnav {
-      display: flex;
-      gap: 14px;
-      flex-wrap: wrap;
+    .menu-btn:hover{ background:rgba(255,255,255,.09); }
+
+    .topnav{
+      display:flex;
+      gap:14px;
+      flex-wrap:wrap;
     }
 
-    .topnav a {
-      color: #cbd5e1;
-      text-decoration: none;
-      font-size: 14px;
+    .topnav a, .footer-links a, .related a{
+      color:#93c5fd;
+      text-decoration:none;
     }
 
-    .topnav a:hover { color: white; }
+    .topnav a:hover, .footer-links a:hover, .related a:hover{ text-decoration:underline; }
 
-    .drawer-overlay {
-      position: fixed;
-      inset: 0;
-      background: rgba(2,6,23,0.50);
-      backdrop-filter: blur(1px);
-      opacity: 0;
-      pointer-events: none;
-      transition: 0.2s;
-      z-index: 80;
+    .drawer-overlay{
+      position:fixed;
+      inset:0;
+      background:rgba(2,6,23,.5);
+      backdrop-filter:blur(1px);
+      opacity:0;
+      pointer-events:none;
+      transition:.2s;
+      z-index:80;
     }
 
-    .drawer-overlay.show {
-      opacity: 1;
-      pointer-events: auto;
+    .drawer-overlay.show{
+      opacity:1;
+      pointer-events:auto;
     }
 
-    .drawer {
-      position: fixed;
-      top: 0;
-      left: 0;
-      height: 100%;
-      width: min(360px, 88vw);
-      background: #0f172a;
-      border-right: 1px solid rgba(255,255,255,0.08);
-      box-shadow: 12px 0 28px rgba(0,0,0,0.22);
-      transform: translateX(-102%);
-      transition: 0.22s ease;
-      z-index: 90;
-      padding: 18px;
-      overflow: auto;
+    .drawer{
+      position:fixed;
+      top:0;
+      left:0;
+      height:100%;
+      width:min(360px, 88vw);
+      background:#0f172a;
+      border-right:1px solid rgba(255,255,255,.08);
+      box-shadow:12px 0 28px rgba(0,0,0,.22);
+      transform:translateX(-102%);
+      transition:.22s ease;
+      z-index:90;
+      padding:18px;
+      overflow:auto;
     }
 
-    .drawer.open { transform: translateX(0); }
+    .drawer.open{ transform:translateX(0); }
 
-    .drawer-head {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 10px;
-      margin-bottom: 18px;
+    .drawer-head{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:10px;
+      margin-bottom:18px;
     }
 
-    .drawer-close {
-      width: 40px;
-      height: 40px;
-      border: none;
-      border-radius: 10px;
-      cursor: pointer;
-      background: rgba(255,255,255,0.05);
-      color: white;
-      font-size: 22px;
-      line-height: 1;
+    .drawer-close{
+      width:40px;
+      height:40px;
+      border:none;
+      border-radius:10px;
+      cursor:pointer;
+      background:rgba(255,255,255,.05);
+      color:white;
+      font-size:22px;
+      line-height:1;
     }
 
-    .drawer-section { margin: 16px 0 18px; }
+    .drawer-section{ margin:16px 0 18px; }
 
-    .drawer-section h4 {
-      margin: 0 0 10px;
-      font-size: 13px;
-      color: #94a3b8;
-      text-transform: uppercase;
-      letter-spacing: 0.08em;
+    .drawer-section h4{
+      margin:0 0 10px;
+      font-size:13px;
+      color:#94a3b8;
+      text-transform:uppercase;
+      letter-spacing:.08em;
     }
 
-    .drawer-links {
-      display: flex;
-      flex-direction: column;
-      gap: 8px;
+    .drawer-links{
+      display:flex;
+      flex-direction:column;
+      gap:8px;
     }
 
-    .drawer-links a {
-      display: block;
-      padding: 11px 12px;
-      border-radius: 12px;
-      color: white;
-      text-decoration: none;
-      background: rgba(255,255,255,0.035);
-      border: 1px solid rgba(255,255,255,0.05);
+    .drawer-links a{
+      display:block;
+      padding:11px 12px;
+      border-radius:12px;
+      color:white;
+      text-decoration:none;
+      background:rgba(255,255,255,.035);
+      border:1px solid rgba(255,255,255,.05);
     }
 
-    .drawer-links a:hover {
-      background: rgba(59,130,246,0.12);
-      border-color: rgba(59,130,246,0.24);
+    .drawer-links a:hover{
+      background:rgba(59,130,246,.12);
+      border-color:rgba(59,130,246,.24);
     }
 
-    .hero { padding: 42px 0 18px; }
+    .hero{ padding:42px 0 18px; }
 
-    .eyebrow {
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-      padding: 7px 12px;
-      border-radius: 999px;
-      background: rgba(59,130,246,0.10);
-      border: 1px solid rgba(59,130,246,0.20);
-      color: #bfdbfe;
-      font-size: 13px;
-      font-weight: 700;
-      margin-bottom: 14px;
+    .eyebrow{
+      display:inline-flex;
+      align-items:center;
+      gap:8px;
+      padding:7px 12px;
+      border-radius:999px;
+      background:rgba(59,130,246,.10);
+      border:1px solid rgba(59,130,246,.20);
+      color:#bfdbfe;
+      font-size:13px;
+      font-weight:700;
+      margin-bottom:14px;
     }
 
-    .hero h1 {
-      margin: 0;
-      font-size: clamp(36px, 6vw, 62px);
-      line-height: 1.02;
-      max-width: 900px;
-      background: linear-gradient(90deg,#e2e8f0 10%, #93c5fd 45%, #86efac 95%);
-      -webkit-background-clip: text;
-      background-clip: text;
-      color: transparent;
+    h1{
+      margin:0;
+      font-size:clamp(36px, 6vw, 62px);
+      line-height:1.02;
+      max-width:900px;
+      background:linear-gradient(90deg,#e2e8f0 10%, #93c5fd 45%, #86efac 95%);
+      -webkit-background-clip:text;
+      background-clip:text;
+      color:transparent;
     }
 
-    .hero p {
-      margin: 16px 0 0;
-      max-width: 840px;
-      color: #94a3b8;
-      font-size: 18px;
-      line-height: 1.7;
+    .hero p{
+      margin:16px 0 0;
+      max-width:840px;
+      color:#94a3b8;
+      font-size:18px;
+      line-height:1.7;
     }
 
-    .hero-actions {
-      display: flex;
-      gap: 12px;
-      flex-wrap: wrap;
-      margin: 24px 0 0;
+    .hero-actions{
+      display:flex;
+      gap:12px;
+      flex-wrap:wrap;
+      margin:24px 0 0;
     }
 
-    .hero-btn {
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      padding: 12px 18px;
-      border-radius: 12px;
-      text-decoration: none;
-      font-weight: 700;
-      transition: 0.2s;
+    .hero-btn{
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      padding:12px 18px;
+      border-radius:12px;
+      text-decoration:none;
+      font-weight:700;
+      transition:.2s;
     }
 
-    .hero-btn.primary {
-      background: linear-gradient(135deg,#3b82f6,#2563eb);
-      color: white;
-      box-shadow: 0 8px 16px rgba(37,99,235,0.16);
+    .hero-btn.primary{
+      background:linear-gradient(135deg,#3b82f6,#2563eb);
+      color:white;
+      box-shadow:0 8px 16px rgba(37,99,235,.16);
     }
 
-    .hero-btn.secondary {
-      background: rgba(255,255,255,0.04);
-      color: white;
-      border: 1px solid rgba(255,255,255,0.07);
+    .hero-btn.secondary{
+      background:rgba(255,255,255,.04);
+      color:white;
+      border:1px solid rgba(255,255,255,.07);
     }
 
-    .hero-btn:hover { transform: translateY(-1px); }
+    .hero-btn:hover{ transform:translateY(-1px); }
 
-    .stats {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
-      gap: 12px;
-      margin-top: 20px;
+    .stats{
+      display:grid;
+      grid-template-columns:repeat(auto-fit, minmax(180px, 1fr));
+      gap:12px;
+      margin-top:20px;
     }
 
-    .stat {
-      background: rgba(30,41,59,0.45);
-      border: 1px solid rgba(255,255,255,0.05);
-      border-radius: 14px;
-      padding: 12px 14px;
+    .stat{
+      background:rgba(30,41,59,.45);
+      border:1px solid rgba(255,255,255,.05);
+      border-radius:14px;
+      padding:12px 14px;
     }
 
-    .stat strong {
-      display: block;
-      font-size: 20px;
-      margin-bottom: 4px;
+    .stat strong{
+      display:block;
+      font-size:20px;
+      margin-bottom:4px;
     }
 
-    .stat span {
-      color: #94a3b8;
-      font-size: 12px;
-      line-height: 1.35;
+    .stat span{
+      color:#94a3b8;
+      font-size:12px;
+      line-height:1.35;
     }
 
-    .tool-panel {
-      margin-top: 18px;
-      background: rgba(30,41,59,0.50);
-      border: 1px solid rgba(255,255,255,0.06);
-      border-radius: 20px;
-      padding: 18px;
+    .tool-panel{
+      margin-top:18px;
+      background:rgba(30,41,59,.50);
+      border:1px solid rgba(255,255,255,.06);
+      border-radius:20px;
+      padding:18px;
     }
 
     .loading-state,
-    .error-state {
-      margin-top: 14px;
-      padding: 16px;
-      border-radius: 14px;
-      background: rgba(255,255,255,0.04);
-      border: 1px solid rgba(255,255,255,0.06);
-      color: #cbd5e1;
-      line-height: 1.6;
-      font-size: 14px;
+    .error-state,
+    .info-state{
+      margin-top:14px;
+      padding:16px;
+      border-radius:14px;
+      background:rgba(255,255,255,.04);
+      border:1px solid rgba(255,255,255,.06);
+      color:#cbd5e1;
+      line-height:1.6;
+      font-size:14px;
     }
 
-    .error-state {
-      border-color: rgba(239,68,68,0.22);
-      background: rgba(239,68,68,0.08);
-      color: #fecaca;
+    .error-state{
+      border-color:rgba(239,68,68,.22);
+      background:rgba(239,68,68,.08);
+      color:#fecaca;
     }
 
-    .badge-row {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 8px;
-      margin: 14px 0 12px;
+    .badge-row{
+      display:flex;
+      flex-wrap:wrap;
+      gap:8px;
+      margin:14px 0 12px;
     }
 
-    .badge {
-      display: inline-flex;
-      padding: 5px 10px;
-      border-radius: 999px;
-      font-size: 12px;
-      font-weight: 700;
-      background: rgba(59,130,246,0.12);
-      color: #bfdbfe;
-      border: 1px solid rgba(59,130,246,0.22);
+    .badge{
+      display:inline-flex;
+      padding:5px 10px;
+      border-radius:999px;
+      font-size:12px;
+      font-weight:700;
+      background:rgba(59,130,246,.12);
+      color:#bfdbfe;
+      border:1px solid rgba(59,130,246,.22);
     }
 
-    .badge.soft {
-      background: rgba(255,255,255,0.05);
-      border-color: rgba(255,255,255,0.08);
-      color: #dbeafe;
+    .badge.soft{
+      background:rgba(255,255,255,.05);
+      border-color:rgba(255,255,255,.08);
+      color:#dbeafe;
     }
 
-    .dashboard {
-      display: grid;
-      grid-template-columns: 220px 1fr;
-      gap: 18px;
-      align-items: center;
-      margin-top: 18px;
+    .dashboard{
+      display:grid;
+      grid-template-columns:220px 1fr;
+      gap:18px;
+      align-items:center;
+      margin-top:18px;
     }
 
-    .gauge-wrap {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 14px;
+    .gauge-wrap{
+      display:flex;
+      flex-direction:column;
+      align-items:center;
+      gap:14px;
     }
 
-    .gauge {
-      width: 180px;
-      height: 180px;
-      border-radius: 50%;
-      background: conic-gradient(
+    .gauge{
+      width:180px;
+      height:180px;
+      border-radius:50%;
+      background:conic-gradient(
         #22c55e 0deg 72deg,
         #3b82f6 72deg 150deg,
         #facc15 150deg 225deg,
         #ef4444 225deg 360deg
       );
-      position: relative;
-      box-shadow: 0 0 0 1px rgba(255,255,255,0.04) inset;
+      position:relative;
+      box-shadow:0 0 0 1px rgba(255,255,255,.04) inset;
     }
 
-    .gauge::after {
-      content: "";
-      position: absolute;
-      inset: 16px;
-      border-radius: 50%;
-      background: #0f172a;
-      box-shadow: inset 0 0 0 1px rgba(255,255,255,0.05);
+    .gauge::after{
+      content:"";
+      position:absolute;
+      inset:16px;
+      border-radius:50%;
+      background:#0f172a;
+      box-shadow:inset 0 0 0 1px rgba(255,255,255,.05);
     }
 
-    .needle {
-      position: absolute;
-      left: 50%;
-      top: 50%;
-      width: 3px;
-      height: 74px;
-      background: #e2e8f0;
-      transform-origin: bottom center;
-      transform: translate(-50%, -100%) rotate(-90deg);
-      border-radius: 999px;
-      z-index: 2;
-      box-shadow: 0 0 10px rgba(255,255,255,0.12);
+    .needle{
+      position:absolute;
+      left:50%;
+      top:50%;
+      width:3px;
+      height:74px;
+      background:#e2e8f0;
+      transform-origin:bottom center;
+      transform:translate(-50%, -100%) rotate(-90deg);
+      border-radius:999px;
+      z-index:2;
+      box-shadow:0 0 10px rgba(255,255,255,.12);
     }
 
-    .needle::before {
-      content: "";
-      position: absolute;
-      left: 50%;
-      top: -8px;
-      width: 12px;
-      height: 12px;
-      transform: translateX(-50%);
-      border-radius: 50%;
-      background: #e2e8f0;
+    .needle::before{
+      content:"";
+      position:absolute;
+      left:50%;
+      top:-8px;
+      width:12px;
+      height:12px;
+      transform:translateX(-50%);
+      border-radius:50%;
+      background:#e2e8f0;
     }
 
-    .score-box {
-      position: absolute;
-      inset: 0;
-      z-index: 3;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      flex-direction: column;
-      text-align: center;
-      padding: 24px;
+    .score-box{
+      position:absolute;
+      inset:0;
+      z-index:3;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      flex-direction:column;
+      text-align:center;
+      padding:24px;
     }
 
-    .score-value {
-      font-size: 44px;
-      line-height: 1;
-      font-weight: 800;
-      color: #fff;
+    .score-value{
+      font-size:44px;
+      line-height:1;
+      font-weight:800;
+      color:#fff;
     }
 
-    .score-label {
-      margin-top: 8px;
-      font-size: 14px;
-      color: #cbd5e1;
-      font-weight: 700;
-      text-transform: uppercase;
-      letter-spacing: 0.08em;
+    .score-label{
+      margin-top:8px;
+      font-size:14px;
+      color:#cbd5e1;
+      font-weight:700;
+      text-transform:uppercase;
+      letter-spacing:.08em;
     }
 
-    .score-sub {
-      margin-top: 5px;
-      font-size: 12px;
-      color: #94a3b8;
+    .score-sub{
+      margin-top:5px;
+      font-size:12px;
+      color:#94a3b8;
     }
 
-    .summary-grid {
-      display: grid;
-      grid-template-columns: repeat(2, minmax(0, 1fr));
-      gap: 12px;
+    .summary-grid{
+      display:grid;
+      grid-template-columns:repeat(2, minmax(0, 1fr));
+      gap:12px;
     }
 
-    .summary-card {
-      background: rgba(15,23,42,0.72);
-      border: 1px solid rgba(255,255,255,0.06);
-      border-radius: 16px;
-      padding: 16px;
-      min-height: 86px;
+    .summary-card{
+      background:rgba(15,23,42,.72);
+      border:1px solid rgba(255,255,255,.06);
+      border-radius:16px;
+      padding:16px;
+      min-height:86px;
     }
 
-    .summary-card span {
-      display: block;
-      font-size: 12px;
-      color: #94a3b8;
-      text-transform: uppercase;
-      letter-spacing: 0.08em;
-      margin-bottom: 8px;
-      font-weight: 700;
+    .summary-card span{
+      display:block;
+      font-size:12px;
+      color:#94a3b8;
+      text-transform:uppercase;
+      letter-spacing:.08em;
+      margin-bottom:8px;
+      font-weight:700;
     }
 
-    .summary-card strong {
-      font-size: 18px;
-      line-height: 1.25;
+    .summary-card strong{
+      font-size:18px;
+      line-height:1.25;
     }
 
-    .summary-card p {
-      margin: 6px 0 0;
-      color: #cbd5e1;
-      font-size: 13px;
-      line-height: 1.55;
+    .summary-card p{
+      margin:6px 0 0;
+      color:#cbd5e1;
+      font-size:13px;
+      line-height:1.55;
     }
 
-    .text-section {
-      margin-top: 22px;
-      display: grid;
-      gap: 12px;
+    .text-section{
+      margin-top:22px;
+      display:grid;
+      gap:12px;
     }
 
-    .note-box {
-      padding: 16px 18px;
-      border-radius: 14px;
-      background: rgba(255,255,255,0.04);
-      border: 1px solid rgba(255,255,255,0.06);
-      color: #cbd5e1;
-      line-height: 1.65;
-      font-size: 14px;
+    .note-box{
+      padding:16px 18px;
+      border-radius:14px;
+      background:rgba(255,255,255,.04);
+      border:1px solid rgba(255,255,255,.06);
+      color:#cbd5e1;
+      line-height:1.65;
+      font-size:14px;
     }
 
-    .note-box strong {
-      display: block;
-      margin-bottom: 4px;
-      color: #e2e8f0;
-      font-size: 14px;
+    .note-box strong{
+      display:block;
+      margin-bottom:4px;
+      color:#e2e8f0;
+      font-size:14px;
     }
 
-    .meta-row {
-      display: grid;
-      grid-template-columns: repeat(3, minmax(0, 1fr));
-      gap: 12px;
-      margin-top: 16px;
+    .meta-row{
+      display:grid;
+      grid-template-columns:repeat(3, minmax(0, 1fr));
+      gap:12px;
+      margin-top:16px;
     }
 
-    .meta-card {
-      background: rgba(15,23,42,0.72);
-      border: 1px solid rgba(255,255,255,0.06);
-      border-radius: 14px;
-      padding: 14px 16px;
+    .meta-card{
+      background:rgba(15,23,42,.72);
+      border:1px solid rgba(255,255,255,.06);
+      border-radius:14px;
+      padding:14px 16px;
     }
 
-    .meta-card span {
-      display: block;
-      color: #94a3b8;
-      font-size: 12px;
-      text-transform: uppercase;
-      letter-spacing: 0.08em;
-      font-weight: 700;
-      margin-bottom: 6px;
+    .meta-card span{
+      display:block;
+      color:#94a3b8;
+      font-size:12px;
+      text-transform:uppercase;
+      letter-spacing:.08em;
+      font-weight:700;
+      margin-bottom:6px;
     }
 
-    .meta-card strong {
-      font-size: 16px;
-      line-height: 1.3;
+    .meta-card strong{
+      font-size:16px;
+      line-height:1.3;
     }
 
-    .chart-wrap { margin-top: 24px; }
+    .chart-wrap{ margin-top:24px; }
 
-    .chart-title {
-      margin: 0 0 8px;
-      font-size: 26px;
+    .chart-title{
+      margin:0 0 8px;
+      font-size:26px;
     }
 
-    .source-line {
-      margin-top: 12px;
-      color: #94a3b8;
-      font-size: 12px;
-      line-height: 1.6;
+    .chart-toolbar{
+      display:flex;
+      gap:10px;
+      flex-wrap:wrap;
+      align-items:center;
+      margin-bottom:12px;
     }
 
-    .content {
-      width: 90%;
-      max-width: 900px;
-      margin-top: 34px;
+    .small-btn{
+      border:none;
+      border-radius:10px;
+      cursor:pointer;
+      padding:10px 14px;
+      font-weight:700;
+      background:#334155;
+      color:#fff;
+      transition:.2s;
     }
 
-    .content h2 {
-      margin-top: 34px;
-      margin-bottom: 10px;
-      font-size: 28px;
+    .small-btn:hover{ background:#475569; }
+
+    .small-btn.primary{
+      background:#2563eb;
+    }
+
+    .chart-box{
+      background:rgba(15,23,42,.68);
+      border:1px solid rgba(255,255,255,.06);
+      border-radius:16px;
+      padding:14px;
+    }
+
+    canvas{
+      width:100%;
+      height:280px;
+      display:block;
+    }
+
+    .source-line{
+      margin-top:12px;
+      color:#94a3b8;
+      font-size:12px;
+      line-height:1.6;
+    }
+
+    .content{
+      width:90%;
+      max-width:900px;
+      margin-top:34px;
+    }
+
+    .content h2{
+      margin-top:34px;
+      margin-bottom:10px;
+      font-size:28px;
     }
 
     .content p,
-    .content li {
-      color: #cbd5e1;
-      line-height: 1.7;
-      font-size: 15px;
+    .content li{
+      color:#cbd5e1;
+      line-height:1.7;
+      font-size:15px;
     }
 
-    .content ul {
-      padding-left: 20px;
+    .content ul{
+      padding-left:20px;
     }
 
-    .formula {
-      background: rgba(255,255,255,0.05);
-      border: 1px solid rgba(255,255,255,0.08);
-      padding: 14px 16px;
-      border-radius: 12px;
-      margin: 12px 0;
-      color: #e2e8f0;
-      overflow: auto;
-      line-height: 1.7;
+    .formula{
+      background:rgba(255,255,255,.05);
+      border:1px solid rgba(255,255,255,.08);
+      padding:14px 16px;
+      border-radius:12px;
+      margin:12px 0;
+      color:#e2e8f0;
+      overflow:auto;
+      line-height:1.7;
     }
 
-    .faq {
-      margin-top: 14px;
+    .faq{
+      margin-top:14px;
+      display:grid;
+      gap:10px;
     }
 
-    .faq-item {
-      border-bottom: 1px solid rgba(255,255,255,0.08);
+    details{
+      border-bottom:1px solid rgba(255,255,255,.08);
+      padding-bottom:10px;
     }
 
-    .faq-question {
-      width: 100%;
-      background: none;
-      border: none;
-      color: white;
-      text-align: left;
-      padding: 14px 8px;
-      font-size: 15px;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      cursor: pointer;
+    summary{
+      list-style:none;
+      cursor:pointer;
+      padding:14px 8px;
+      font-size:15px;
+      font-weight:700;
+      color:#fff;
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
     }
 
-    .faq-question:hover { color: #93c5fd; }
+    summary::-webkit-details-marker{ display:none; }
 
-    .arrow { transition: 0.25s; }
+    summary:hover{ color:#93c5fd; }
 
-    .faq-item.active .arrow {
-      transform: rotate(180deg);
+    details[open] summary{
+      color:#93c5fd;
     }
 
-    .faq-answer {
-      max-height: 0;
-      overflow: hidden;
-      transition: max-height 0.28s ease;
-      color: #cbd5e1;
-      font-size: 14px;
-      padding: 0 8px;
+    .faq-answer{
+      padding:0 8px 8px;
+      color:#cbd5e1;
+      font-size:14px;
+      line-height:1.65;
     }
 
-    .faq-item.active .faq-answer {
-      max-height: 260px;
-      padding-bottom: 12px;
+    .related{
+      width:90%;
+      max-width:900px;
+      margin-top:34px;
     }
 
-    .related {
-      width: 90%;
-      max-width: 900px;
-      margin-top: 34px;
+    .disclaimer{
+      margin-top:40px;
+      padding-top:20px;
+      border-top:1px solid rgba(255,255,255,.1);
+      font-size:13px;
+      color:#9ca3af;
+      max-width:900px;
+      text-align:center;
+      line-height:1.6;
+      width:90%;
     }
 
-    .related a {
-      color: #93c5fd;
-      text-decoration: none;
+    .is-hidden{ display:none !important; }
+
+    @media (max-width:900px){
+      .topnav{ display:none; }
+      .dashboard{ grid-template-columns:1fr; }
+      .meta-row{ grid-template-columns:1fr; }
     }
 
-    .related a:hover {
-      text-decoration: underline;
+    @media (max-width:760px){
+      .hero{ padding-top:30px; }
+      .hero p{ font-size:16px; }
+      .topbar{ padding-top:16px; }
+      .summary-grid{ grid-template-columns:1fr; }
+      .tool-panel{ padding:18px; }
+      .gauge{ width:160px; height:160px; }
+      .score-value{ font-size:38px; }
+      canvas{ height:240px; }
     }
 
-    .disclaimer {
-      margin-top: 40px;
-      padding-top: 20px;
-      border-top: 1px solid rgba(255,255,255,0.1);
-      font-size: 13px;
-      color: #9ca3af;
-      max-width: 900px;
-      text-align: center;
-      line-height: 1.6;
-      width: 90%;
-    }
-
-    .is-hidden { display: none !important; }
-
-    @media (max-width: 900px) {
-      .topnav { display: none; }
-      .dashboard { grid-template-columns: 1fr; }
-      .meta-row { grid-template-columns: 1fr; }
-    }
-
-    @media (max-width: 760px) {
-      .hero { padding-top: 30px; }
-      .hero p { font-size: 16px; }
-      .topbar { padding-top: 16px; }
-      .summary-grid { grid-template-columns: 1fr; }
-      .tool-panel { padding: 18px; }
-      .gauge {
-        width: 160px;
-        height: 160px;
-      }
-      .score-value { font-size: 38px; }
-    }
-
-    @media (max-width: 560px) {
-      .page-shell {
-        width: min(1180px, calc(100% - 20px));
-      }
-
-      .hero-btn { width: 100%; }
-      .menu-btn {
-        width: 42px;
-        height: 42px;
+    @media (max-width:560px){
+      .page-shell{ width:min(1180px, calc(100% - 20px)); }
+      .hero-btn{ width:100%; }
+      .menu-btn{
+        width:42px;
+        height:42px;
       }
     }
   </style>
@@ -751,8 +702,8 @@
       <div class="eyebrow">Live crypto market sentiment</div>
       <h1>BTC Dominance Tracker</h1>
       <p>
-        Bitcoin dominansını doğrudan API üzerinden gösteren hızlı ve temiz bir dashboard.
-        CoinGecko’dan çekilen verilerle güncel market share, ETH context ve trend görünümü sunar.
+        Bitcoin dominansını doğrudan API üzerinden gösteren hızlı bir dashboard.
+        Veri gelirse canlı gösterir, gelmezse sayfa bozulmaz.
       </p>
 
       <div class="hero-actions">
@@ -767,7 +718,7 @@
         </div>
         <div class="stat">
           <strong id="statEth">—</strong>
-          <span>ETH dominance context</span>
+          <span>ETH context</span>
         </div>
         <div class="stat">
           <strong id="statUpdated">—</strong>
@@ -780,12 +731,16 @@
       <div class="tool-panel">
         <div class="badge-row">
           <span class="badge">Live dashboard</span>
-          <span class="badge soft">Auto refresh 5 min</span>
           <span class="badge soft">Direct API</span>
+          <span class="badge soft">Local history chart</span>
         </div>
 
         <div class="loading-state" id="loadingState">Loading live BTC dominance data…</div>
         <div class="error-state is-hidden" id="errorState"></div>
+
+        <div class="info-state">
+          CoinGecko public API ile doğrudan istek atılır. Eğer CORS veya rate limit çıkarsa sadece canlı veri kısmı etkilenir; FAQ ve sayfa etkileşimleri çalışmaya devam eder.
+        </div>
 
         <div id="dashboard" class="is-hidden">
           <div class="dashboard">
@@ -855,9 +810,15 @@
 
           <div class="chart-wrap" id="live-section">
             <h2 class="chart-title">Dominance Trend</h2>
-            <canvas id="btcChart"></canvas>
+            <div class="chart-toolbar">
+              <button class="small-btn primary" id="refreshBtn" type="button">Refresh now</button>
+              <button class="small-btn" id="clearHistoryBtn" type="button">Clear local history</button>
+            </div>
+            <div class="chart-box">
+              <canvas id="trendChart" width="1000" height="320"></canvas>
+            </div>
             <div class="source-line">
-              Veriler doğrudan CoinGecko API’den çekilir. Tarayıcı tarafı CORS engeli yaşarsa, aynı endpoint’i kendi backend’ine taşıman gerekir.
+              Chart, bu tarayıcıda tutulan son okumalardan oluşturulur. İlk açılışta veri geldikten sonra dolmaya başlar.
             </div>
           </div>
         </div>
@@ -872,7 +833,7 @@
 
       <h2>How this page works</h2>
       <p>
-        Sayfa doğrudan CoinGecko API çağrısı yapar. Cloudflare Worker, ekstra proxy ya da ayrı backend yoktur.
+        Sayfa doğrudan CoinGecko API çağrısı yapar. Ek proxy, Cloudflare Worker ya da ayrı backend yoktur.
       </p>
 
       <div class="formula">
@@ -889,35 +850,26 @@
 
       <h2>Frequently Asked Questions</h2>
       <div class="faq" id="faq">
-        <div class="faq-item">
-          <button class="faq-question" type="button">
-            What does a higher BTC dominance mean?
-            <span class="arrow">▼</span>
-          </button>
+        <details>
+          <summary>What does a higher BTC dominance mean?</summary>
           <div class="faq-answer">
-            <p>A higher reading means Bitcoin is taking a larger share of the crypto market cap. That often happens when traders are more defensive.</p>
+            A higher reading means Bitcoin is taking a larger share of the crypto market cap. That often happens when traders are more defensive.
           </div>
-        </div>
+        </details>
 
-        <div class="faq-item">
-          <button class="faq-question" type="button">
-            Is BTC dominance a buy or sell signal?
-            <span class="arrow">▼</span>
-          </button>
+        <details>
+          <summary>Is BTC dominance a buy or sell signal?</summary>
           <div class="faq-answer">
-            <p>No. It is a market context indicator, not a standalone trade signal.</p>
+            No. It is a market context indicator, not a standalone trade signal.
           </div>
-        </div>
+        </details>
 
-        <div class="faq-item">
-          <button class="faq-question" type="button">
-            Why use direct API instead of Cloudflare Worker?
-            <span class="arrow">▼</span>
-          </button>
+        <details>
+          <summary>Why use direct API instead of Cloudflare Worker?</summary>
           <div class="faq-answer">
-            <p>It is simpler to deploy. The downside is rate limits or CORS issues can happen depending on the API.</p>
+            It is simpler to deploy. The downside is that CORS or rate limit issues can still happen depending on the API and hosting setup.
           </div>
-        </div>
+        </details>
       </div>
     </section>
 
@@ -933,6 +885,11 @@
 
     <footer class="disclaimer">
       <div><strong>Disclaimer:</strong> This page is provided for informational and educational purposes only. It does not constitute financial or investment advice.</div>
+      <div class="footer-links" style="margin-top:12px;">
+        <a href="#start-here">Start here</a>
+        <a href="#live-section">Live summary</a>
+        <a href="#faq">FAQ</a>
+      </div>
       <div style="margin-top:10px;">Nova Investment Tools</div>
     </footer>
   </div>
@@ -940,6 +897,7 @@
   <script>
     const API_GLOBAL = "https://api.coingecko.com/api/v3/global";
     const API_ETH = "https://api.coingecko.com/api/v3/coins/ethereum?localization=false&tickers=false&market_data=true&community_data=false&developer_data=false&sparkline=false";
+    const HISTORY_KEY = "btc_dominance_history_v1";
 
     const menuBtn = document.getElementById("menuBtn");
     const drawerPanel = document.getElementById("drawerPanel");
@@ -966,33 +924,33 @@
     const statUpdated = document.getElementById("statUpdated");
     const needle = document.getElementById("needle");
     const trendHint = document.getElementById("trendHint");
+    const chartCanvas = document.getElementById("trendChart");
+    const refreshBtn = document.getElementById("refreshBtn");
+    const clearHistoryBtn = document.getElementById("clearHistoryBtn");
 
-    const btcBtn = document.getElementById("btcBtn");
-    const contextBtn = document.getElementById("contextBtn");
-
-    let chart = null;
-    let autoRefreshTimer = null;
     let previousData = null;
+    let refreshTimer = null;
 
-    function openDrawer() {
+    function openDrawer(){
       drawerPanel.classList.add("open");
       drawerOverlay.classList.add("show");
       menuBtn.setAttribute("aria-expanded", "true");
       drawerPanel.setAttribute("aria-hidden", "false");
     }
 
-    function closeDrawer() {
+    function closeDrawer(){
       drawerPanel.classList.remove("open");
       drawerOverlay.classList.remove("show");
       menuBtn.setAttribute("aria-expanded", "false");
       drawerPanel.setAttribute("aria-hidden", "true");
     }
 
-    function fmtPercent(value) {
-      return `${Number(value).toFixed(2)}%`;
+    function fmtPercent(value){
+      const n = Number(value);
+      return Number.isFinite(n) ? `${n.toFixed(2)}%` : "—";
     }
 
-    function fmtMoney(value) {
+    function fmtMoney(value){
       const num = Number(value);
       if (!Number.isFinite(num)) return "—";
       if (num >= 1e12) return `$${(num / 1e12).toFixed(2)}T`;
@@ -1001,123 +959,158 @@
       return `$${num.toLocaleString(undefined, { maximumFractionDigits: 2 })}`;
     }
 
-    function fmtTime(ts) {
+    function fmtTime(ts){
       const d = new Date(Number(ts));
       return d.toLocaleString(undefined, {
-        year: "numeric",
-        month: "short",
-        day: "numeric",
-        hour: "2-digit",
-        minute: "2-digit"
+        year:"numeric",
+        month:"short",
+        day:"numeric",
+        hour:"2-digit",
+        minute:"2-digit"
       });
     }
 
-    function classifyDominance(v) {
+    function classifyDominance(v){
       const value = Number(v);
-      if (value >= 60) return { label: "BTC Strong", note: "Bitcoin is taking a larger share of crypto market cap." };
-      if (value >= 50) return { label: "BTC Firm", note: "Bitcoin is holding a strong share of the market." };
-      if (value >= 40) return { label: "Balanced", note: "Market share is more balanced between BTC and alts." };
-      return { label: "Altcoin Strength", note: "Bitcoin dominance is weaker and altcoins are taking share." };
+      if (value >= 60) return { label:"BTC Strong", note:"Bitcoin is taking a larger share of crypto market cap." };
+      if (value >= 50) return { label:"BTC Firm", note:"Bitcoin is holding a strong share of the market." };
+      if (value >= 40) return { label:"Balanced", note:"Market share is more balanced between BTC and alts." };
+      return { label:"Altcoin Strength", note:"Bitcoin dominance is weaker and altcoins are taking share." };
     }
 
-    function setNeedle(value) {
+    function setNeedle(value){
       const v = Math.max(0, Math.min(100, Number(value)));
       const angle = (v / 100) * 180 - 90;
       needle.style.transform = `translate(-50%, -100%) rotate(${angle}deg)`;
-
-      const hue = v >= 60 ? "#22c55e" : v >= 50 ? "#93c5fd" : v >= 40 ? "#facc15" : "#f97316";
-      btcValue.style.color = hue;
+      btcValue.style.color = v >= 60 ? "#22c55e" : v >= 50 ? "#93c5fd" : v >= 40 ? "#facc15" : "#f97316";
     }
 
-    function drawChart(points) {
-      const ctx = document.getElementById("btcChart").getContext("2d");
-      if (chart) chart.destroy();
+    function loadHistory(){
+      try{
+        const raw = localStorage.getItem(HISTORY_KEY);
+        const parsed = raw ? JSON.parse(raw) : [];
+        return Array.isArray(parsed) ? parsed : [];
+      }catch{
+        return [];
+      }
+    }
 
-      const labels = points.map(p => p.label);
-      const values = points.map(p => p.value);
+    function saveHistoryPoint(point){
+      const history = loadHistory();
+      history.push(point);
+      const trimmed = history.slice(-60);
+      localStorage.setItem(HISTORY_KEY, JSON.stringify(trimmed));
+      return trimmed;
+    }
 
-      chart = new Chart(ctx, {
-        type: "line",
-        data: {
-          labels,
-          datasets: [{
-            label: "BTC Dominance",
-            data: values,
-            borderColor: "#60a5fa",
-            backgroundColor: "rgba(96,165,250,0.14)",
-            fill: true,
-            tension: 0.28,
-            pointRadius: 2,
-            pointHoverRadius: 5
-          }]
-        },
-        options: {
-          responsive: true,
-          plugins: {
-            legend: { labels: { color: "white" } },
-            tooltip: {
-              callbacks: {
-                label: function(context) {
-                  return ` ${Number(context.parsed.y).toFixed(2)}%`;
-                }
-              }
-            }
-          },
-          scales: {
-            x: {
-              ticks: { color: "white", maxRotation: 0, autoSkip: true },
-              grid: { color: "rgba(255,255,255,0.06)" }
-            },
-            y: {
-              min: 0,
-              max: 100,
-              ticks: { color: "white" },
-              grid: { color: "rgba(255,255,255,0.06)" }
-            }
-          }
-        }
+    function clearHistory(){
+      localStorage.removeItem(HISTORY_KEY);
+      drawChart([]);
+    }
+
+    function drawChart(points){
+      const canvas = chartCanvas;
+      const ctx = canvas.getContext("2d");
+      const dpr = window.devicePixelRatio || 1;
+
+      const cssWidth = canvas.clientWidth || 1000;
+      const cssHeight = canvas.clientHeight || 320;
+
+      canvas.width = Math.floor(cssWidth * dpr);
+      canvas.height = Math.floor(cssHeight * dpr);
+      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+
+      ctx.clearRect(0, 0, cssWidth, cssHeight);
+
+      const pad = { left: 48, right: 18, top: 18, bottom: 34 };
+      const w = cssWidth - pad.left - pad.right;
+      const h = cssHeight - pad.top - pad.bottom;
+
+      ctx.fillStyle = "#0f172a";
+      ctx.fillRect(0, 0, cssWidth, cssHeight);
+
+      // grid
+      ctx.strokeStyle = "rgba(255,255,255,0.08)";
+      ctx.lineWidth = 1;
+      for (let i = 0; i <= 4; i++){
+        const y = pad.top + (h / 4) * i;
+        ctx.beginPath();
+        ctx.moveTo(pad.left, y);
+        ctx.lineTo(pad.left + w, y);
+        ctx.stroke();
+      }
+
+      ctx.fillStyle = "#94a3b8";
+      ctx.font = "12px Arial";
+      ctx.textAlign = "right";
+      ctx.textBaseline = "middle";
+
+      [70, 60, 50, 40, 30].forEach((label, i) => {
+        const y = pad.top + (h / 4) * i;
+        ctx.fillText(`${label}%`, pad.left - 8, y);
       });
-    }
 
-    function buildChartSeries(current, historyPoints = 20) {
-      const value = Number(current);
-      const points = [];
-      const drift = [0.00, -0.18, 0.14, -0.10, 0.22, -0.12, 0.08, -0.16, 0.09, -0.05];
-
-      for (let i = historyPoints - 1; i >= 1; i--) {
-        const offset = drift[i % drift.length] + ((i % 3) * 0.05);
-        points.push({
-          label: `${i}d ago`,
-          value: Math.max(0, Math.min(100, value - offset))
-        });
+      if (!points || points.length < 2){
+        ctx.textAlign = "center";
+        ctx.textBaseline = "middle";
+        ctx.fillStyle = "#94a3b8";
+        ctx.fillText("No local history yet. Load data a few times.", cssWidth / 2, cssHeight / 2);
+        return;
       }
 
-      points.push({ label: "Now", value });
-      return points;
+      const values = points.map(p => Number(p.btc)).filter(n => Number.isFinite(n));
+      const min = Math.max(0, Math.min(...values) - 1);
+      const max = Math.min(100, Math.max(...values) + 1);
+      const span = Math.max(1, max - min);
+
+      const xFor = (i) => pad.left + (w * i / (points.length - 1));
+      const yFor = (v) => pad.top + h - ((v - min) / span) * h;
+
+      // line
+      ctx.strokeStyle = "#60a5fa";
+      ctx.lineWidth = 2.5;
+      ctx.beginPath();
+      points.forEach((p, i) => {
+        const x = xFor(i);
+        const y = yFor(Number(p.btc));
+        if (i === 0) ctx.moveTo(x, y);
+        else ctx.lineTo(x, y);
+      });
+      ctx.stroke();
+
+      // fill
+      ctx.lineTo(pad.left + w, pad.top + h);
+      ctx.lineTo(pad.left, pad.top + h);
+      ctx.closePath();
+      const grad = ctx.createLinearGradient(0, pad.top, 0, pad.top + h);
+      grad.addColorStop(0, "rgba(96,165,250,0.18)");
+      grad.addColorStop(1, "rgba(96,165,250,0.00)");
+      ctx.fillStyle = grad;
+      ctx.fill();
+
+      // points
+      points.forEach((p, i) => {
+        const x = xFor(i);
+        const y = yFor(Number(p.btc));
+        ctx.beginPath();
+        ctx.arc(x, y, i === points.length - 1 ? 4 : 3, 0, Math.PI * 2);
+        ctx.fillStyle = i === points.length - 1 ? "#e2e8f0" : "#93c5fd";
+        ctx.fill();
+      });
+
+      // labels
+      ctx.fillStyle = "#94a3b8";
+      ctx.font = "12px Arial";
+      ctx.textAlign = "left";
+      ctx.textBaseline = "top";
+      const first = points[0];
+      const last = points[points.length - 1];
+      ctx.fillText(first.label, pad.left, cssHeight - 22);
+      ctx.textAlign = "right";
+      ctx.fillText(last.label, pad.left + w, cssHeight - 22);
     }
 
-    async function fetchJSON(url, timeoutMs = 12000) {
-      const controller = new AbortController();
-      const timer = setTimeout(() => controller.abort(), timeoutMs);
-
-      try {
-        const res = await fetch(url, {
-          method: "GET",
-          headers: { "Accept": "application/json" },
-          signal: controller.signal
-        });
-
-        if (!res.ok) {
-          throw new Error(`Request failed with status ${res.status}`);
-        }
-
-        return await res.json();
-      } finally {
-        clearTimeout(timer);
-      }
-    }
-
-    function updateUI(data) {
+    function updateUI(data){
       const btc = Number(data.btcDominance);
       const eth = Number(data.ethDominance);
       const totalCap = Number(data.totalMarketCap);
@@ -1128,25 +1121,25 @@
       btcLabel.textContent = info.label;
       currentReading.textContent = fmtPercent(btc);
       currentNote.textContent = info.note;
-      ethReading.textContent = fmtPercent(eth);
-      ethNote.textContent = "ETH context helps you read whether BTC is leading or losing share.";
+      ethReading.textContent = Number.isFinite(eth) ? fmtPercent(eth) : "Unavailable";
+      ethNote.textContent = Number.isFinite(eth)
+        ? "ETH context helps you read whether BTC is leading or losing share."
+        : "ETH fetch failed, so this part is unavailable right now.";
       marketCapValue.textContent = fmtMoney(totalCap);
 
       statBtc.textContent = fmtPercent(btc);
-      statEth.textContent = fmtPercent(eth);
+      statEth.textContent = Number.isFinite(eth) ? fmtPercent(eth) : "—";
       statUpdated.textContent = fmtTime(data.updatedAt);
 
       trendHint.textContent = info.note;
 
-      if (previousData) {
+      if (previousData){
         const diff = btc - Number(previousData.btcDominance);
         momentumReading.textContent = `${diff >= 0 ? "+" : ""}${diff.toFixed(2)}%`;
         momentumNote.textContent = diff > 0 ? "Dominance improved vs previous update." : diff < 0 ? "Dominance cooled vs previous update." : "No change vs previous update.";
-
-        const trend = diff >= 0 ? "Positive short-term momentum." : "Negative short-term momentum.";
-        trendBias.textContent = diff >= 0 ? "Bullish" : "Bearish";
-        trendBiasNote.textContent = trend;
-      } else {
+        trendBias.textContent = diff > 0 ? "Bullish" : diff < 0 ? "Bearish" : "Flat";
+        trendBiasNote.textContent = diff > 0 ? "Positive short-term momentum." : diff < 0 ? "Negative short-term momentum." : "No change in the last reading.";
+      }else{
         momentumReading.textContent = "—";
         momentumNote.textContent = "Waiting for the next update.";
         trendBias.textContent = "—";
@@ -1154,35 +1147,63 @@
       }
 
       setNeedle(btc);
-      drawChart(buildChartSeries(btc, 20));
+
+      const history = saveHistoryPoint({
+        ts: data.updatedAt,
+        btc
+      });
+      drawChart(history);
 
       previousData = data;
     }
 
-    async function loadBTCDominance() {
-      try {
-        loadingState.classList.remove("is-hidden");
-        errorState.classList.add("is-hidden");
-        dashboard.classList.add("is-hidden");
+    async function fetchJSON(url, timeoutMs = 12000){
+      const controller = new AbortController();
+      const timer = setTimeout(() => controller.abort(), timeoutMs);
 
-        const [globalData, ethData] = await Promise.all([
+      try{
+        const res = await fetch(url, {
+          method: "GET",
+          headers: { "Accept": "application/json" },
+          signal: controller.signal
+        });
+
+        if (!res.ok) throw new Error(`Request failed with status ${res.status}`);
+        return await res.json();
+      }finally{
+        clearTimeout(timer);
+      }
+    }
+
+    async function loadBTCDominance(){
+      loadingState.classList.remove("is-hidden");
+      errorState.classList.add("is-hidden");
+
+      try{
+        const [globalRes, ethRes] = await Promise.allSettled([
           fetchJSON(API_GLOBAL),
           fetchJSON(API_ETH)
         ]);
 
-        const totalMarketCap = globalData?.data?.total_market_cap?.usd;
-        const btcDominance = globalData?.data?.market_cap_percentage?.btc;
-        const ethMarketCap = ethData?.market_data?.market_cap?.usd;
-
-        if (
-          typeof totalMarketCap === "undefined" ||
-          typeof btcDominance === "undefined" ||
-          typeof ethMarketCap === "undefined"
-        ) {
-          throw new Error("API response missing required fields.");
+        if (globalRes.status !== "fulfilled") {
+          throw globalRes.reason || new Error("Global API request failed.");
         }
 
-        const ethDominance = (Number(ethMarketCap) / Number(totalMarketCap)) * 100;
+        const globalData = globalRes.value;
+        const totalMarketCap = globalData?.data?.total_market_cap?.usd;
+        const btcDominance = globalData?.data?.market_cap_percentage?.btc;
+
+        if (typeof totalMarketCap === "undefined" || typeof btcDominance === "undefined") {
+          throw new Error("API response missing required BTC fields.");
+        }
+
+        let ethDominance = NaN;
+        if (ethRes.status === "fulfilled") {
+          const ethMarketCap = ethRes.value?.market_data?.market_cap?.usd;
+          if (typeof ethMarketCap !== "undefined") {
+            ethDominance = (Number(ethMarketCap) / Number(totalMarketCap)) * 100;
+          }
+        }
 
         updateUI({
           btcDominance,
@@ -1191,57 +1212,54 @@
           updatedAt: Date.now()
         });
 
-        loadingState.classList.add("is-hidden");
         dashboard.classList.remove("is-hidden");
-      } catch (err) {
-        loadingState.classList.add("is-hidden");
+      }catch(err){
         errorState.textContent = `Live data could not be loaded right now. ${err.message}`;
         errorState.classList.remove("is-hidden");
+        dashboard.classList.remove("is-hidden");
+
+        const history = loadHistory();
+        drawChart(history);
+      }finally{
+        loadingState.classList.add("is-hidden");
       }
     }
 
-    btcBtn.addEventListener("click", () => {
-      btcBtn.classList.add("active");
-      contextBtn.classList.remove("active");
-      document.getElementById("live-section").scrollIntoView({ behavior: "smooth", block: "start" });
-    });
+    function initDrawer(){
+      menuBtn.addEventListener("click", openDrawer);
+      drawerCloseBtn.addEventListener("click", closeDrawer);
+      drawerOverlay.addEventListener("click", closeDrawer);
 
-    contextBtn.addEventListener("click", () => {
-      contextBtn.classList.add("active");
-      btcBtn.classList.remove("active");
-      document.getElementById("faq").scrollIntoView({ behavior: "smooth", block: "start" });
-    });
-
-    menuBtn.addEventListener("click", openDrawer);
-    drawerCloseBtn.addEventListener("click", closeDrawer);
-    drawerOverlay.addEventListener("click", closeDrawer);
-
-    document.querySelectorAll(".drawer a").forEach(link => {
-      link.addEventListener("click", closeDrawer);
-    });
-
-    document.addEventListener("click", (e) => {
-      if (!e.target.closest(".drawer") && !e.target.closest("#menuBtn")) {
-        closeDrawer();
-      }
-    });
-
-    document.addEventListener("keydown", (e) => {
-      if (e.key === "Escape") closeDrawer();
-    });
-
-    document.querySelectorAll(".faq-question").forEach(btn => {
-      btn.addEventListener("click", () => {
-        const item = btn.parentElement;
-        document.querySelectorAll(".faq-item").forEach(i => {
-          if (i !== item) i.classList.remove("active");
-        });
-        item.classList.toggle("active");
+      document.querySelectorAll(".drawer a").forEach(link => {
+        link.addEventListener("click", closeDrawer);
       });
-    });
 
-    loadBTCDominance();
-    autoRefreshTimer = setInterval(loadBTCDominance, 300000);
+      document.addEventListener("keydown", (e) => {
+        if (e.key === "Escape") closeDrawer();
+      });
+    }
+
+    function initButtons(){
+      refreshBtn.addEventListener("click", loadBTCDominance);
+      clearHistoryBtn.addEventListener("click", () => {
+        clearHistory();
+        drawChart([]);
+      });
+    }
+
+    function init(){
+      initDrawer();
+      initButtons();
+
+      window.addEventListener("resize", () => {
+        drawChart(loadHistory());
+      });
+
+      loadBTCDominance();
+      refreshTimer = setInterval(loadBTCDominance, 300000);
+    }
+
+    document.addEventListener("DOMContentLoaded", init);
   </script>
 </body>
   </html>
