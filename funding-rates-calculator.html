@@ -1,21 +1,37 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="canonical" href="https://novainvesttools.com/funding-rates-calculator.html">
+
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-ZPCXDVE8C5"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-ZPCXDVE8C5');
+  </script>
+
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Funding Rates Calculator – Estimate Perpetual Futures Costs</title>
-  <meta name="description" content="Calculate perpetual futures funding cost, annualized funding rate, margin impact, and break-even price effect for long and short positions." />
+  <meta name="description" content="Calculate perpetual futures funding cost, annualized funding rate, margin impact, and break-even price effect for long and short positions.">
   <meta name="theme-color" content="#0f172a">
   <meta name="robots" content="index,follow,max-image-preview:large">
-  <link rel="canonical" href="https://novainvesttools.com/funding-rates-calculator.html">
 
   <meta property="og:type" content="website">
   <meta property="og:url" content="https://novainvesttools.com/funding-rates-calculator.html">
   <meta property="og:title" content="Funding Rates Calculator – Estimate Perpetual Futures Costs">
   <meta property="og:description" content="Calculate perpetual futures funding cost, annualized funding rate, margin impact, and break-even price effect for long and short positions.">
 
+  <link rel="preconnect" href="https://cdn.jsdelivr.net">
+  <link rel="dns-prefetch" href="https://cdn.jsdelivr.net">
+
+  <link rel="stylesheet" href="style.css">
   <link rel="icon" href="favicon.png" type="image/png">
   <link rel="apple-touch-icon" href="favicon.png">
+
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
   <script type="application/ld+json">
   {
@@ -26,12 +42,12 @@
     "applicationCategory": "FinanceApplication",
     "operatingSystem": "All",
     "browserRequirements": "Requires JavaScript",
-    "description": "Estimate funding payments, annualized funding rate, margin impact, and break-even price effect for perpetual futures positions.",
+    "description": "Calculate funding payments, annualized funding rate, margin impact, and price effect for perpetual futures positions.",
     "featureList": [
       "Funding payment calculation",
       "Annualized funding rate",
       "Margin impact estimate",
-      "Break-even price effect",
+      "Price effect estimate",
       "Long and short support"
     ],
     "offers": {
@@ -76,314 +92,154 @@
   </script>
 
   <style>
-    * { box-sizing: border-box; }
-    html { scroll-behavior: smooth; }
+    *{
+      box-sizing:border-box;
+    }
 
     body{
-      margin:0;
-      min-height:100vh;
       font-family: Arial, sans-serif;
-      background:
-        linear-gradient(to bottom, #0D1D41 0%, #0D1D41 72%, #050814 88%, #000000 100%);
-      color:#fff;
-    }
-
-    .page-shell{
-      width:min(1180px, calc(100% - 32px));
-      margin:0 auto;
-      padding:20px 0 40px;
-    }
-
-    .topbar{
+      background:#0b1a33;
+      color:white;
       display:flex;
+      justify-content:center;
       align-items:center;
-      justify-content:space-between;
-      gap:14px;
-      flex-wrap:wrap;
-      margin-bottom:22px;
+      flex-direction:column;
+      min-height:100vh;
+      margin:0;
+      padding:24px 0;
     }
 
-    .brand{
-      font-size:18px;
-      font-weight:700;
-      letter-spacing:.2px;
-    }
-
-    .nav{
-      display:flex;
-      gap:14px;
-      flex-wrap:wrap;
-    }
-
-    .nav a{
-      color:#cbd5e1;
-      text-decoration:none;
+    .toptext{
       font-size:14px;
+      color:#6b7a99;
+      margin-bottom:5px;
     }
 
-    .nav a:hover{ color:#fff; }
-
-    .hero{
-      padding:18px 0 20px;
+    .menu{
+      margin-bottom:25px;
     }
 
-    .eyebrow{
-      display:inline-flex;
-      align-items:center;
-      gap:8px;
-      padding:7px 12px;
-      border-radius:999px;
-      background:rgba(59,130,246,0.10);
-      border:1px solid rgba(59,130,246,0.20);
-      color:#bfdbfe;
-      font-size:13px;
-      font-weight:700;
-      margin-bottom:14px;
+    .menu a{
+      color:#3b82f6;
+      margin:10px;
+      text-decoration:none;
+      font-weight:600;
+    }
+
+    .container{
+      background:#1e293b;
+      padding:30px;
+      border-radius:16px;
+      width:90%;
+      max-width:520px;
+      box-shadow:0 10px 25px rgba(0,0,0,0.35);
     }
 
     h1{
-      margin:0;
-      max-width:920px;
-      font-size:clamp(36px, 6vw, 64px);
-      line-height:1.02;
-      background:linear-gradient(90deg,#e2e8f0 8%, #93c5fd 45%, #86efac 95%);
-      -webkit-background-clip:text;
-      background-clip:text;
-      color:transparent;
+      margin-top:0;
+      margin-bottom:10px;
+      font-size:32px;
+      line-height:1.15;
     }
 
-    .hero p{
-      margin:14px 0 0;
-      max-width:860px;
+    .subhead{
       color:#94a3b8;
-      font-size:18px;
-      line-height:1.7;
-    }
-
-    .hero-actions{
-      display:flex;
-      flex-wrap:wrap;
-      gap:12px;
-      margin-top:24px;
-    }
-
-    .btn{
-      display:inline-flex;
-      align-items:center;
-      justify-content:center;
-      padding:12px 18px;
-      border-radius:12px;
-      border:none;
-      text-decoration:none;
-      font-weight:700;
-      transition:.2s;
-      cursor:pointer;
-      font-size:14px;
-    }
-
-    .btn.primary{
-      background:linear-gradient(135deg,#3b82f6,#2563eb);
-      color:#fff;
-      box-shadow:0 8px 16px rgba(37,99,235,.16);
-    }
-
-    .btn.secondary{
-      background:rgba(255,255,255,.04);
-      color:#fff;
-      border:1px solid rgba(255,255,255,.07);
-    }
-
-    .btn:hover{ transform:translateY(-1px); }
-
-    .layout{
-      display:grid;
-      grid-template-columns: 1.05fr .95fr;
-      gap:18px;
-      align-items:start;
-      margin-top:22px;
-    }
-
-    .panel{
-      background:rgba(30,41,59,.50);
-      border:1px solid rgba(255,255,255,.06);
-      border-radius:20px;
-      padding:18px;
-      box-shadow:0 10px 24px rgba(0,0,0,.20);
-    }
-
-    .panel h2{
-      margin:0 0 10px;
-      font-size:24px;
-    }
-
-    .sub{
-      margin:0 0 16px;
-      color:#94a3b8;
+      font-size:15px;
       line-height:1.6;
-      font-size:14px;
+      margin-bottom:18px;
     }
 
-    .grid{
-      display:grid;
-      grid-template-columns:1fr 1fr;
-      gap:12px;
-    }
-
-    .field{
-      display:flex;
-      flex-direction:column;
-      gap:7px;
-    }
-
-    .field.full{ grid-column:1 / -1; }
-
-    label{
-      font-size:13px;
-      color:#cbd5e1;
-      font-weight:700;
-      letter-spacing:.01em;
+    .quick-answer{
+      background: rgba(59,130,246,0.12);
+      border: 1px solid rgba(59,130,246,0.25);
+      padding: 12px 14px;
+      border-radius: 10px;
+      font-size: 15px;
+      line-height: 1.6;
+      color: #e2e8f0;
+      margin-bottom: 18px;
     }
 
     input, select{
       width:100%;
-      padding:13px 14px;
-      border-radius:12px;
-      border:1px solid rgba(255,255,255,.08);
+      padding:14px;
+      margin:12px 0;
+      border-radius:10px;
+      border:none;
       background:#e5e7eb;
-      color:#111827;
-      font-size:15px;
+      font-size:16px;
       outline:none;
     }
 
     input:focus, select:focus{
-      box-shadow:0 0 0 3px rgba(59,130,246,.18);
+      box-shadow:0 0 0 3px rgba(59,130,246,0.18);
     }
 
-    .quick{
-      padding:12px 14px;
-      border-radius:12px;
-      background:rgba(59,130,246,.12);
-      border:1px solid rgba(59,130,246,.22);
-      color:#e2e8f0;
-      line-height:1.6;
-      font-size:14px;
-      margin:0 0 16px;
+    button{
+      padding:14px;
+      background:#3b82f6;
+      border:none;
+      border-radius:10px;
+      color:white;
+      cursor:pointer;
+      margin-top:10px;
+      width:100%;
+      font-size:16px;
+      font-weight:700;
+      transition:0.2s;
     }
 
-    .actions{
-      display:flex;
-      gap:12px;
-      flex-wrap:wrap;
-      margin-top:14px;
+    button:hover{
+      background:#2563eb;
+      transform:translateY(-1px);
     }
 
-    .actions .btn{
-      width:auto;
-      min-width:160px;
-    }
-
-    .result{
+    .result-card{
       margin-top:18px;
       padding:16px;
-      border-radius:16px;
-      background:rgba(255,255,255,.05);
-      border:1px solid rgba(255,255,255,.08);
+      border-radius:14px;
+      background:rgba(255,255,255,0.05);
+      border:1px solid rgba(255,255,255,0.08);
       display:none;
     }
 
-    .result-grid{
-      display:grid;
-      grid-template-columns:repeat(2, minmax(0, 1fr));
-      gap:12px;
+    .result-line{
+      margin:10px 0;
+      font-size:16px;
+      line-height:1.5;
+      color:#e5e7eb;
     }
 
-    .card{
-      background:rgba(15,23,42,.75);
-      border:1px solid rgba(255,255,255,.06);
-      border-radius:14px;
-      padding:14px;
+    .result-line strong{
+      color:#cbd5f5;
     }
 
-    .card span{
-      display:block;
-      font-size:12px;
-      color:#94a3b8;
-      text-transform:uppercase;
-      letter-spacing:.08em;
+    .insight-good{
+      color:#22c55e;
       font-weight:700;
-      margin-bottom:8px;
     }
 
-    .card strong{
-      display:block;
-      font-size:18px;
-      line-height:1.3;
-      margin-bottom:4px;
+    .insight-medium{
+      color:#facc15;
+      font-weight:700;
     }
 
-    .card p{
-      margin:0;
-      color:#cbd5e1;
-      font-size:13px;
-      line-height:1.55;
+    .insight-weak{
+      color:#ef4444;
+      font-weight:700;
     }
 
-    .tone-positive{ color:#22c55e; }
-    .tone-neutral{ color:#facc15; }
-    .tone-negative{ color:#ef4444; }
-
-    .mini-note{
-      margin-top:12px;
-      color:#94a3b8;
-      font-size:12px;
-      line-height:1.6;
-    }
-
-    .chart-box{
-      margin-top:16px;
-      background:rgba(15,23,42,.68);
-      border:1px solid rgba(255,255,255,.06);
-      border-radius:16px;
-      padding:14px;
-    }
+    .tone-positive{ color:#22c55e; font-weight:700; }
+    .tone-neutral{ color:#facc15; font-weight:700; }
+    .tone-negative{ color:#ef4444; font-weight:700; }
 
     canvas{
-      width:100%;
-      height:280px;
-      display:block;
-    }
-
-    .stats-row{
-      display:grid;
-      grid-template-columns:repeat(3, minmax(0, 1fr));
-      gap:12px;
-      margin-top:16px;
-    }
-
-    .stat{
-      background:rgba(15,23,42,.72);
-      border:1px solid rgba(255,255,255,.06);
-      border-radius:14px;
-      padding:14px 16px;
-    }
-
-    .stat span{
-      display:block;
-      color:#94a3b8;
-      font-size:12px;
-      text-transform:uppercase;
-      letter-spacing:.08em;
-      font-weight:700;
-      margin-bottom:6px;
-    }
-
-    .stat strong{
-      font-size:16px;
-      line-height:1.3;
+      margin-top:26px;
     }
 
     .content{
-      width:min(900px, 100%);
+      width:90%;
+      max-width:900px;
       margin-top:34px;
     }
 
@@ -405,8 +261,8 @@
     }
 
     .formula{
-      background:rgba(255,255,255,.05);
-      border:1px solid rgba(255,255,255,.08);
+      background:rgba(255,255,255,0.05);
+      border:1px solid rgba(255,255,255,0.08);
       padding:14px 16px;
       border-radius:12px;
       margin:12px 0;
@@ -417,40 +273,55 @@
 
     .faq{
       margin-top:14px;
-      display:grid;
-      gap:10px;
     }
 
-    details{
-      border-bottom:1px solid rgba(255,255,255,.08);
-      padding-bottom:10px;
+    .faq-item{
+      border-bottom:1px solid rgba(255,255,255,0.08);
     }
 
-    summary{
-      list-style:none;
-      cursor:pointer;
+    .faq-question{
+      width:100%;
+      background:none;
+      border:none;
+      color:white;
+      text-align:left;
       padding:14px 8px;
       font-size:15px;
-      font-weight:700;
-      color:#fff;
       display:flex;
       justify-content:space-between;
       align-items:center;
+      cursor:pointer;
     }
 
-    summary::-webkit-details-marker{ display:none; }
+    .faq-question:hover{
+      color:#93c5fd;
+    }
 
-    summary:hover{ color:#93c5fd; }
+    .arrow{
+      transition:0.25s;
+    }
+
+    .faq-item.active .arrow{
+      transform:rotate(180deg);
+    }
 
     .faq-answer{
-      padding:0 8px 8px;
+      max-height:0;
+      overflow:hidden;
+      transition:max-height 0.3s ease;
       color:#cbd5e1;
       font-size:14px;
-      line-height:1.65;
+      padding:0 8px;
+    }
+
+    .faq-item.active .faq-answer{
+      max-height:260px;
+      padding-bottom:12px;
     }
 
     .related{
-      width:min(900px, 100%);
+      width:90%;
+      max-width:900px;
       margin-top:34px;
     }
 
@@ -459,406 +330,253 @@
       text-decoration:none;
     }
 
-    .related a:hover{ text-decoration:underline; }
+    .related a:hover{
+      text-decoration:underline;
+    }
 
     .disclaimer{
       margin-top:40px;
       padding-top:20px;
-      border-top:1px solid rgba(255,255,255,.1);
+      border-top:1px solid rgba(255,255,255,0.1);
       font-size:13px;
       color:#9ca3af;
       max-width:900px;
       text-align:center;
       line-height:1.6;
-      width:min(900px, 100%);
-    }
-
-    .muted{
-      color:#94a3b8;
-    }
-
-    @media (max-width: 920px){
-      .layout{
-        grid-template-columns:1fr;
-      }
-      .stats-row{
-        grid-template-columns:1fr;
-      }
+      width:90%;
     }
 
     @media (max-width: 700px){
-      .grid, .result-grid{
-        grid-template-columns:1fr;
-      }
-
-      .panel{
-        padding:16px;
+      .container{
+        padding:22px;
       }
 
       h1{
-        font-size:clamp(32px, 11vw, 44px);
+        font-size:28px;
       }
 
       .content h2{
         font-size:24px;
-      }
-
-      canvas{
-        height:240px;
       }
     }
   </style>
 </head>
 
 <body>
-  <div class="page-shell">
-    <header class="topbar">
-      <div class="brand">Nova Investment Tools</div>
-      <nav class="nav">
-        <a href="#calculator">Calculator</a>
-        <a href="#faq">FAQ</a>
-        <a href="#guide">Guide</a>
-      </nav>
-    </header>
+  <p class="toptext">Explore more calculators</p>
 
-    <section class="hero">
-      <div class="eyebrow">Perpetual futures funding tool</div>
-      <h1>Funding Rates Calculator</h1>
-      <p>
-        Estimate how much funding you will pay or receive on a perpetual futures position.
-        See funding cost per interval, over your holding period, annualized rate, margin impact, and the break-even price effect.
-      </p>
-
-      <div class="hero-actions">
-        <a class="btn primary" href="#calculator">Open calculator</a>
-        <a class="btn secondary" href="#guide">Read guide</a>
-      </div>
-    </section>
-
-    <section class="layout" id="calculator">
-      <div class="panel">
-        <h2>Funding Calculator</h2>
-        <p class="sub">Use notional position size, not margin. Funding is based on the position’s total value, not leverage.</p>
-
-        <div class="quick" id="quickAnswer">
-          Enter your trade details to see estimated funding payment, annualized cost, and price impact.
-        </div>
-
-        <div class="grid">
-          <div class="field">
-            <label for="entryPrice">Entry Price (quote currency)</label>
-            <input id="entryPrice" type="number" step="any" min="0" placeholder="e.g. 65000">
-          </div>
-
-          <div class="field">
-            <label for="positionSize">Position Size / Notional (quote currency)</label>
-            <input id="positionSize" type="number" step="any" min="0" placeholder="e.g. 1000">
-          </div>
-
-          <div class="field">
-            <label for="fundingRate">Funding Rate per Interval (%)</label>
-            <input id="fundingRate" type="number" step="any" placeholder="e.g. 0.01 for 0.01%">
-          </div>
-
-          <div class="field">
-            <label for="side">Position Side</label>
-            <select id="side">
-              <option value="long">Long</option>
-              <option value="short">Short</option>
-            </select>
-          </div>
-
-          <div class="field">
-            <label for="holdingHours">Holding Time (hours)</label>
-            <input id="holdingHours" type="number" step="any" min="0" placeholder="e.g. 24">
-          </div>
-
-          <div class="field">
-            <label for="intervalHours">Funding Interval (hours)</label>
-            <input id="intervalHours" type="number" step="any" min="1" value="8">
-          </div>
-
-          <div class="field">
-            <label for="leverage">Leverage (optional)</label>
-            <input id="leverage" type="number" step="any" min="1" placeholder="e.g. 10">
-          </div>
-
-          <div class="field">
-            <label for="pnlDirection">Price Move Assumption</label>
-            <select id="pnlDirection">
-              <option value="neutral">Break-even only</option>
-              <option value="favor">Price move favors the position</option>
-              <option value="against">Price move moves against the position</option>
-            </select>
-          </div>
-
-          <div class="field full">
-            <label for="priceMovePercent">Optional Price Move During Holding Period (%)</label>
-            <input id="priceMovePercent" type="number" step="any" placeholder="e.g. 5">
-          </div>
-        </div>
-
-        <div class="actions">
-          <button class="btn primary" id="calcBtn" type="button">Calculate</button>
-          <button class="btn secondary" id="resetBtn" type="button">Reset</button>
-        </div>
-
-        <div class="result" id="resultCard">
-          <div class="result-grid">
-            <div class="card">
-              <span>Funding per interval</span>
-              <strong id="fundingPerInterval">—</strong>
-              <p id="fundingPerIntervalNote">—</p>
-            </div>
-
-            <div class="card">
-              <span>Total funding for holding period</span>
-              <strong id="fundingTotal">—</strong>
-              <p id="fundingTotalNote">—</p>
-            </div>
-
-            <div class="card">
-              <span>Annualized funding rate</span>
-              <strong id="annualizedRate">—</strong>
-              <p id="annualizedRateNote">—</p>
-            </div>
-
-            <div class="card">
-              <span>Margin impact</span>
-              <strong id="marginImpact">—</strong>
-              <p id="marginImpactNote">—</p>
-            </div>
-
-            <div class="card">
-              <span>Break-even price effect</span>
-              <strong id="priceEffect">—</strong>
-              <p id="priceEffectNote">—</p>
-            </div>
-
-            <div class="card">
-              <span>Position context</span>
-              <strong id="positionContext">—</strong>
-              <p id="positionContextNote">—</p>
-            </div>
-          </div>
-
-          <div class="chart-box">
-            <canvas id="fundingChart" width="1000" height="320"></canvas>
-            <div class="mini-note">
-              The chart shows cumulative funding cost across the holding period using your current inputs.
-            </div>
-          </div>
-        </div>
-
-        <div class="mini-note">
-          Positive funding means longs usually pay shorts. Negative funding means shorts usually pay longs.
-        </div>
-      </div>
-
-      <div class="panel">
-        <h2>Live Breakdown</h2>
-        <p class="sub">These values are recalculated instantly and give you a better read than a single funding number.</p>
-
-        <div class="stats-row">
-          <div class="stat">
-            <span>Notional</span>
-            <strong id="statNotional">—</strong>
-          </div>
-          <div class="stat">
-            <span>Estimated Margin</span>
-            <strong id="statMargin">—</strong>
-          </div>
-          <div class="stat">
-            <span>Effective Cost per Day</span>
-            <strong id="statDaily">—</strong>
-          </div>
-        </div>
-
-        <div class="formula">
-          Funding Payment = Notional × Funding Rate × Number of Intervals
-          <br>
-          Annualized Funding Rate = Funding Rate × (24 ÷ Interval Hours) × 365
-          <br>
-          Break-even Price Effect ≈ Total Funding ÷ Position Size
-        </div>
-
-        <div class="content" style="width:100%; margin-top:18px;">
-          <h2>How to read the result</h2>
-          <p>
-            Funding is charged on the position notional, not on leverage. A 10x position does not pay 10x more funding than a 1x position of the same size.
-            What leverage changes is the margin tied up, so funding can feel much heavier on your capital base.
-          </p>
-          <p>
-            If the annualized funding number is high, holding the position becomes expensive. If funding is negative, the position may earn carry instead of paying it.
-          </p>
-        </div>
-      </div>
-    </section>
-
-    <section class="content" id="guide">
-      <h2>What is Funding Rate?</h2>
-      <p>
-        Funding rate is a periodic payment mechanism used by perpetual futures contracts.
-        It helps keep the perpetual price near the spot market by transferring value between long and short traders.
-      </p>
-
-      <h2>Funding Formula</h2>
-      <div class="formula">
-        Funding Payment per Interval = Notional × Funding Rate
-        <br>
-        Total Funding = Notional × Funding Rate × (Holding Hours ÷ Interval Hours)
-      </div>
-
-      <p>
-        For a long position, positive funding usually means you pay. For a short position, positive funding usually means you receive.
-        Negative funding flips that relationship.
-      </p>
-
-      <h2>Why This Tool Matters</h2>
-      <ul>
-        <li>Shows real carrying cost of holding a futures position</li>
-        <li>Helps compare trade edge against funding drag</li>
-        <li>Makes leverage risk easier to understand</li>
-        <li>Useful for swing trades, basis trades, and position sizing</li>
-      </ul>
-
-      <h2>Frequently Asked Questions</h2>
-      <div class="faq" id="faq">
-        <details>
-          <summary>What does a positive funding rate mean?</summary>
-          <div class="faq-answer">
-            A positive funding rate usually means longs pay shorts. It often happens when the market is crowded on the long side.
-          </div>
-        </details>
-
-        <details>
-          <summary>Does leverage affect funding cost?</summary>
-          <div class="faq-answer">
-            Funding is charged on notional size, so leverage does not change the funding formula itself. It only changes how much margin you post.
-          </div>
-        </details>
-
-        <details>
-          <summary>Why is annualized funding useful?</summary>
-          <div class="faq-answer">
-            It lets you compare a single funding rate to a yearly carry cost, which is much easier to evaluate against expected trade returns.
-          </div>
-        </details>
-
-        <details>
-          <summary>Can funding be negative?</summary>
-          <div class="faq-answer">
-            Yes. Negative funding means the usual payment direction flips. In that case, the side that normally pays may receive funding instead.
-          </div>
-        </details>
-      </div>
-    </section>
-
-    <section class="related">
-      <h2>Related Calculators</h2>
-      <p>You may also find these tools useful:</p>
-      <ul>
-        <li><a href="break-even-calculator.html">Break Even Calculator</a></li>
-        <li><a href="drawdown-calculator.html">Drawdown Calculator</a></li>
-        <li><a href="margin-calculator.html">Margin Calculator</a></li>
-        <li><a href="profit-loss-calculator.html">Profit Loss Calculator</a></li>
-        <li><a href="roi-calculator.html">ROI Calculator</a></li>
-      </ul>
-    </section>
-
-    <footer class="disclaimer">
-      <p><strong>Disclaimer:</strong> This tool provides estimates and is not financial advice.</p>
-    </footer>
+  <div class="menu">
+    <a href="index.html">Home</a>
   </div>
 
+  <div class="container" data-search="funding rates calculator perpetual futures funding cost annualized funding margin impact trading risk">
+    <h1>Funding Rates Calculator</h1>
+    <p class="quick-answer" id="quickAnswer">
+      Enter your trade details to estimate funding payment, annualized carry, and price impact.
+    </p>
+    <p class="subhead">
+      Calculate funding cost or benefit for perpetual futures positions.
+      Useful for traders who want to understand carry, holding cost, and margin impact.
+    </p>
+
+    <input id="entryPrice" placeholder="Entry price ($)" type="number" step="any" min="0">
+    <input id="positionSize" placeholder="Position size / notional ($)" type="number" step="any" min="0">
+    <input id="fundingRate" placeholder="Funding rate per interval (%) — e.g. 0.01" type="number" step="any">
+    <select id="side">
+      <option value="long">Long</option>
+      <option value="short">Short</option>
+    </select>
+    <input id="holdingHours" placeholder="Holding time (hours)" type="number" step="any" min="0">
+    <input id="intervalHours" placeholder="Funding interval (hours)" type="number" step="any" min="1" value="8">
+    <input id="leverage" placeholder="Leverage (optional)" type="number" step="any" min="1">
+
+    <button type="button" onclick="calculate()">Calculate</button>
+
+    <div id="resultCard" class="result-card">
+      <div class="result-line"><strong>Funding per interval:</strong> <span id="fundingPerInterval">—</span></div>
+      <div class="result-line"><strong>Total funding:</strong> <span id="fundingTotal">—</span></div>
+      <div class="result-line"><strong>Annualized funding:</strong> <span id="annualizedRate">—</span></div>
+      <div class="result-line"><strong>Margin impact:</strong> <span id="marginImpact">—</span></div>
+      <div class="result-line"><strong>Price effect:</strong> <span id="priceEffect">—</span></div>
+      <div class="result-line"><strong>Insight:</strong> <span id="insightOut">—</span></div>
+    </div>
+
+    <canvas id="myChart"></canvas>
+  </div>
+
+  <div class="content">
+    <h2>What is Funding Rate?</h2>
+    <p>
+      Funding rate is a periodic payment mechanism used by perpetual futures contracts.
+      It helps keep the perpetual price near the spot market by transferring value between long and short traders.
+    </p>
+
+    <h2>Funding Formula</h2>
+    <p>The basic formulas are:</p>
+
+    <div class="formula">
+      Funding Payment per Interval = Notional × Funding Rate
+      <br>
+      Total Funding = Notional × Funding Rate × (Holding Hours ÷ Interval Hours)
+      <br>
+      Annualized Funding Rate = Funding Rate × (24 ÷ Interval Hours) × 365
+    </div>
+
+    <p>
+      Positive funding usually means longs pay shorts. Negative funding means shorts pay longs.
+      Funding is charged on position notional, not on leverage.
+    </p>
+
+    <h2>Why Funding Matters</h2>
+    <p>
+      Funding can quietly eat into trade edge if you hold long enough.
+      A strategy that looks good on entry can become poor once funding drag is included.
+    </p>
+
+    <ul>
+      <li>Shows real holding cost of perpetual positions</li>
+      <li>Helps compare trade edge against carry drag</li>
+      <li>Makes leverage risk easier to understand</li>
+      <li>Useful for swing trades and basis trades</li>
+    </ul>
+
+    <h2>How to Use This Calculator</h2>
+    <ul>
+      <li>Enter your entry price</li>
+      <li>Enter your position size / notional</li>
+      <li>Enter the funding rate per interval</li>
+      <li>Choose long or short</li>
+      <li>Enter holding time and interval length</li>
+      <li>Click calculate</li>
+    </ul>
+
+    <h2>Frequently Asked Questions</h2>
+
+    <div class="faq">
+      <div class="faq-item">
+        <button class="faq-question" type="button">
+          What does a positive funding rate mean?
+          <span class="arrow">▼</span>
+        </button>
+        <div class="faq-answer">
+          <p>
+            A positive funding rate usually means longs pay shorts. It often appears when the market is crowded on the long side.
+          </p>
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <button class="faq-question" type="button">
+          Does leverage affect funding cost?
+          <span class="arrow">▼</span>
+        </button>
+        <div class="faq-answer">
+          <p>
+            Funding is charged on notional size, so leverage does not change the funding formula itself. It only changes how much margin you post.
+          </p>
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <button class="faq-question" type="button">
+          Can funding be negative?
+          <span class="arrow">▼</span>
+        </button>
+        <div class="faq-answer">
+          <p>
+            Yes. Negative funding means the payment direction flips, so the side that normally pays may receive funding instead.
+          </p>
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <button class="faq-question" type="button">
+          Why is annualized funding useful?
+          <span class="arrow">▼</span>
+        </button>
+        <div class="faq-answer">
+          <p>
+            It converts a short interval rate into a yearly carry number, which makes it easier to compare against expected trade returns.
+          </p>
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <button class="faq-question" type="button">
+          What is the safest way to use funding in a trade?
+          <span class="arrow">▼</span>
+        </button>
+        <div class="faq-answer">
+          <p>
+            Focus on position size, holding time, and whether the trade edge can survive funding drag. Do not treat funding as a standalone signal.
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="related">
+    <h3>Related Calculators</h3>
+    <p>You may also find these tools useful:</p>
+    <ul>
+      <li><a href="break-even-calculator.html">Break Even Calculator</a></li>
+      <li><a href="drawdown-calculator.html">Drawdown Calculator</a></li>
+      <li><a href="margin-calculator.html">Margin Calculator</a></li>
+      <li><a href="profit-loss-calculator.html">Profit Loss Calculator</a></li>
+      <li><a href="roi-calculator.html">ROI Calculator</a></li>
+      <li><a href="trading-fees-calculator.html">Trading Fees Calculator</a></li>
+    </ul>
+  </div>
+
+  <div class="disclaimer">
+    <p>
+      <strong>Disclaimer:</strong> This tool provides estimates and is not financial advice.
+    </p>
+  </div>
+
+  <script src="footer.js"></script>
   <script>
-    const els = {
-      entryPrice: document.getElementById("entryPrice"),
-      positionSize: document.getElementById("positionSize"),
-      fundingRate: document.getElementById("fundingRate"),
-      side: document.getElementById("side"),
-      holdingHours: document.getElementById("holdingHours"),
-      intervalHours: document.getElementById("intervalHours"),
-      leverage: document.getElementById("leverage"),
-      pnlDirection: document.getElementById("pnlDirection"),
-      priceMovePercent: document.getElementById("priceMovePercent"),
+    let chart;
 
-      calcBtn: document.getElementById("calcBtn"),
-      resetBtn: document.getElementById("resetBtn"),
-
-      resultCard: document.getElementById("resultCard"),
-      quickAnswer: document.getElementById("quickAnswer"),
-
-      fundingPerInterval: document.getElementById("fundingPerInterval"),
-      fundingPerIntervalNote: document.getElementById("fundingPerIntervalNote"),
-      fundingTotal: document.getElementById("fundingTotal"),
-      fundingTotalNote: document.getElementById("fundingTotalNote"),
-      annualizedRate: document.getElementById("annualizedRate"),
-      annualizedRateNote: document.getElementById("annualizedRateNote"),
-      marginImpact: document.getElementById("marginImpact"),
-      marginImpactNote: document.getElementById("marginImpactNote"),
-      priceEffect: document.getElementById("priceEffect"),
-      priceEffectNote: document.getElementById("priceEffectNote"),
-      positionContext: document.getElementById("positionContext"),
-      positionContextNote: document.getElementById("positionContextNote"),
-
-      statNotional: document.getElementById("statNotional"),
-      statMargin: document.getElementById("statMargin"),
-      statDaily: document.getElementById("statDaily"),
-
-      chart: document.getElementById("fundingChart")
-    };
-
-    function parseValue(input){
-      const n = parseFloat(input.value);
-      return Number.isFinite(n) ? n : NaN;
+    function parseValue(id){
+      const value = parseFloat(document.getElementById(id).value);
+      return Number.isFinite(value) ? value : NaN;
     }
 
-    function money(v){
-      if (!Number.isFinite(v)) return "—";
-      const sign = v < 0 ? "-" : "";
-      const abs = Math.abs(v);
+    function formatMoney(value){
+      if (!Number.isFinite(value)) return "—";
+      const sign = value < 0 ? "-" : "";
+      const abs = Math.abs(value);
 
       if (abs >= 1e12) return `${sign}$${(abs / 1e12).toFixed(2)}T`;
       if (abs >= 1e9) return `${sign}$${(abs / 1e9).toFixed(2)}B`;
       if (abs >= 1e6) return `${sign}$${(abs / 1e6).toFixed(2)}M`;
-      if (abs >= 1e3) return `${sign}$${abs.toFixed(2)}`;
-
       return `${sign}$${abs.toFixed(2)}`;
     }
 
-    function pct(v, digits = 2){
-      if (!Number.isFinite(v)) return "—";
-      const sign = v < 0 ? "-" : "";
-      return `${sign}${Math.abs(v).toFixed(digits)}%`;
+    function formatPercent(value, digits = 2){
+      if (!Number.isFinite(value)) return "—";
+      const sign = value < 0 ? "-" : "";
+      return `${sign}${Math.abs(value).toFixed(digits)}%`;
     }
 
-    function num(v, digits = 4){
-      if (!Number.isFinite(v)) return "—";
-      return v.toFixed(digits);
-    }
-
-    function clearCanvas(ctx, canvas){
-      ctx.clearRect(0, 0, canvas.width, canvas.height);
-      ctx.fillStyle = "#0f172a";
-      ctx.fillRect(0, 0, canvas.width, canvas.height);
-    }
-
-    function drawChart(values, labels){
-      const canvas = els.chart;
-      const ctx = canvas.getContext("2d");
+    function drawChart(points){
+      const ctx = document.getElementById("myChart").getContext("2d");
+      const canvas = document.getElementById("myChart");
       const dpr = window.devicePixelRatio || 1;
 
       const cssWidth = canvas.clientWidth || 1000;
-      const cssHeight = canvas.clientHeight || 320;
+      const cssHeight = canvas.clientHeight || 280;
 
       canvas.width = Math.floor(cssWidth * dpr);
       canvas.height = Math.floor(cssHeight * dpr);
       ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
 
-      clearCanvas(ctx, canvas);
+      ctx.clearRect(0, 0, cssWidth, cssHeight);
+      ctx.fillStyle = "#0f172a";
+      ctx.fillRect(0, 0, cssWidth, cssHeight);
 
-      const pad = { left: 54, right: 18, top: 18, bottom: 42 };
+      const pad = { left: 54, right: 18, top: 18, bottom: 38 };
       const w = cssWidth - pad.left - pad.right;
       const h = cssHeight - pad.top - pad.bottom;
 
@@ -872,34 +590,45 @@
         ctx.stroke();
       }
 
+      if (!points || points.length < 2){
+        ctx.fillStyle = "#94a3b8";
+        ctx.font = "12px Arial";
+        ctx.textAlign = "center";
+        ctx.textBaseline = "middle";
+        ctx.fillText("No data yet. Fill the fields and calculate.", cssWidth / 2, cssHeight / 2);
+        return;
+      }
+
+      const values = points.map(p => p.value);
+      const maxValue = Math.max(...values, 0);
+      const minValue = Math.min(...values, 0);
+      const range = Math.max(1, maxValue - minValue);
+
       ctx.fillStyle = "#94a3b8";
       ctx.font = "12px Arial";
       ctx.textAlign = "right";
       ctx.textBaseline = "middle";
 
-      const maxValue = Math.max(...values, 0);
-      const minValue = Math.min(...values, 0);
-      const range = Math.max(1, maxValue - minValue);
-
-      const yTicks = 4;
-      for (let i = 0; i <= yTicks; i++){
-        const v = maxValue - (range * i / yTicks);
-        const y = pad.top + (h * i / yTicks);
-        ctx.fillText(money(v), pad.left - 8, y);
-      }
-
-      if (!values.length){
-        ctx.textAlign = "center";
-        ctx.textBaseline = "middle";
-        ctx.fillStyle = "#94a3b8";
-        ctx.fillText("No data yet. Fill the fields and calculate.", cssWidth / 2, cssHeight / 2);
-        return;
+      for (let i = 0; i <= 4; i++){
+        const v = maxValue - (range * i / 4);
+        const y = pad.top + (h * i / 4);
+        ctx.fillText(formatMoney(v), pad.left - 8, y);
       }
 
       const xFor = (i) => pad.left + (values.length === 1 ? w / 2 : (w * i / (values.length - 1)));
       const yFor = (v) => pad.top + h - ((v - minValue) / range) * h;
 
-      // area fill
+      ctx.beginPath();
+      values.forEach((v, i) => {
+        const x = xFor(i);
+        const y = yFor(v);
+        if (i === 0) ctx.moveTo(x, y);
+        else ctx.lineTo(x, y);
+      });
+      ctx.strokeStyle = "#60a5fa";
+      ctx.lineWidth = 2.75;
+      ctx.stroke();
+
       ctx.beginPath();
       values.forEach((v, i) => {
         const x = xFor(i);
@@ -916,19 +645,6 @@
       ctx.fillStyle = grad;
       ctx.fill();
 
-      // line
-      ctx.beginPath();
-      values.forEach((v, i) => {
-        const x = xFor(i);
-        const y = yFor(v);
-        if (i === 0) ctx.moveTo(x, y);
-        else ctx.lineTo(x, y);
-      });
-      ctx.strokeStyle = "#60a5fa";
-      ctx.lineWidth = 2.75;
-      ctx.stroke();
-
-      // points
       values.forEach((v, i) => {
         const x = xFor(i);
         const y = yFor(v);
@@ -938,222 +654,132 @@
         ctx.fill();
       });
 
-      // x labels
+      ctx.fillStyle = "#94a3b8";
+      ctx.font = "12px Arial";
       ctx.textAlign = "left";
       ctx.textBaseline = "top";
-      ctx.fillStyle = "#94a3b8";
-      ctx.fillText(labels[0], pad.left, cssHeight - 24);
+      ctx.fillText(points[0].label, pad.left, cssHeight - 22);
       ctx.textAlign = "right";
-      ctx.fillText(labels[labels.length - 1], pad.left + w, cssHeight - 24);
-    }
-
-    function validateInputs({ entryPrice, positionSize, fundingRate, holdingHours, intervalHours }){
-      if (!Number.isFinite(positionSize) || positionSize <= 0) return "Position size must be greater than zero.";
-      if (!Number.isFinite(fundingRate)) return "Funding rate is required.";
-      if (!Number.isFinite(holdingHours) || holdingHours < 0) return "Holding time must be zero or greater.";
-      if (!Number.isFinite(intervalHours) || intervalHours <= 0) return "Funding interval must be greater than zero.";
-      if (Number.isFinite(entryPrice) && entryPrice <= 0) return "Entry price must be greater than zero.";
-      return "";
-    }
-
-    function classifyCost(totalFunding, side, fundingRate){
-      const rate = Number(fundingRate);
-      if (rate === 0 || totalFunding === 0) {
-        return { label: "Neutral carry", tone: "tone-neutral", text: "No funding drag in this setup." };
-      }
-
-      const pays = totalFunding > 0;
-      if (pays) {
-        return side === "long"
-          ? { label: "Long pays", tone: "tone-negative", text: "Positive funding is a cost for longs." }
-          : { label: "Short pays", tone: "tone-negative", text: "Positive funding means shorts receive, but the sign depends on the rate direction." };
-      }
-
-      return side === "long"
-        ? { label: "Long receives", tone: "tone-positive", text: "Negative funding can offset some holding cost." }
-        : { label: "Short receives", tone: "tone-positive", text: "Negative funding can work in favor of the short side." };
+      ctx.fillText(points[points.length - 1].label, pad.left + w, cssHeight - 22);
     }
 
     function calculate(){
-      const entryPrice = parseValue(els.entryPrice);
-      const positionSize = parseValue(els.positionSize);
-      const fundingRatePct = parseValue(els.fundingRate);
-      const holdingHours = parseValue(els.holdingHours);
-      const intervalHours = parseValue(els.intervalHours);
-      const leverage = parseValue(els.leverage);
-      const side = els.side.value;
-      const priceMovePercent = parseValue(els.priceMovePercent);
+      const entryPrice = parseValue("entryPrice");
+      const positionSize = parseValue("positionSize");
+      const fundingRatePct = parseValue("fundingRate");
+      const holdingHours = parseValue("holdingHours");
+      const intervalHours = parseValue("intervalHours");
+      const leverage = parseValue("leverage");
+      const side = document.getElementById("side").value;
 
-      const error = validateInputs({ entryPrice, positionSize, fundingRate: fundingRatePct, holdingHours, intervalHours });
-      if (error){
+      const resultCard = document.getElementById("resultCard");
+      const quickAnswer = document.getElementById("quickAnswer");
+
+      const fundingPerIntervalOut = document.getElementById("fundingPerInterval");
+      const fundingTotalOut = document.getElementById("fundingTotal");
+      const annualizedRateOut = document.getElementById("annualizedRate");
+      const marginImpactOut = document.getElementById("marginImpact");
+      const priceEffectOut = document.getElementById("priceEffect");
+      const insightOut = document.getElementById("insightOut");
+
+      const error =
+        !Number.isFinite(positionSize) || positionSize <= 0 ? "Position size must be greater than zero." :
+        !Number.isFinite(fundingRatePct) ? "Funding rate is required." :
+        !Number.isFinite(holdingHours) || holdingHours < 0 ? "Holding time must be zero or greater." :
+        !Number.isFinite(intervalHours) || intervalHours <= 0 ? "Funding interval must be greater than zero." :
+        Number.isFinite(entryPrice) && entryPrice <= 0 ? "Entry price must be greater than zero." :
+        "";
+
+      if (error) {
         alert(error);
         return;
       }
 
       const fundingRate = fundingRatePct / 100;
       const intervals = holdingHours / intervalHours;
+
+      // From the trader's perspective:
+      // long + positive funding = cost
+      // short + positive funding = benefit
+      // long + negative funding = benefit
+      // short + negative funding = cost
       const sideSign = side === "long" ? 1 : -1;
 
       const fundingPerInterval = positionSize * fundingRate * sideSign;
       const totalFunding = fundingPerInterval * intervals;
-
-      const annualizedRatePct = fundingRate * (24 / intervalHours) * 365 * 100;
-      const signedAnnualizedPct = annualizedRatePct * sideSign;
+      const annualizedRate = fundingRate * (24 / intervalHours) * 365 * 100 * sideSign;
+      const dailyFunding = positionSize * fundingRate * sideSign * (24 / intervalHours);
 
       const margin = Number.isFinite(leverage) && leverage > 0 ? positionSize / leverage : NaN;
-      const fundingAsMarginPct = Number.isFinite(margin) ? (totalFunding / margin) * 100 : NaN;
+      const marginImpact = Number.isFinite(margin) ? (totalFunding / margin) * 100 : NaN;
 
-      const priceEffect = Number.isFinite(entryPrice) ? (entryPrice * fundingRate * intervals * sideSign) : NaN;
-      const perIntervalPriceEffect = Number.isFinite(entryPrice) ? (entryPrice * fundingRate * sideSign) : NaN;
+      const priceEffect = Number.isFinite(entryPrice) ? (totalFunding * entryPrice / positionSize) : NaN;
 
-      const movePct = Number.isFinite(priceMovePercent) ? priceMovePercent / 100 : NaN;
-      const pnlFromPriceMove = Number.isFinite(movePct) ? positionSize * movePct : NaN;
+      let insight = "";
+      let insightClass = "";
 
-      const dailyFunding = positionSize * fundingRate * sideSign * (24 / intervalHours);
-      const status = classifyCost(totalFunding, side, fundingRatePct);
+      if (totalFunding > 0) {
+        insight = side === "long"
+          ? "Positive funding is a cost for longs. Holding longer becomes more expensive."
+          : "Positive funding is usually a benefit for shorts.";
+        insightClass = "insight-weak";
+      } else if (totalFunding < 0) {
+        insight = side === "long"
+          ? "Negative funding can offset holding cost for longs."
+          : "Negative funding is a cost for shorts.";
+        insightClass = "insight-good";
+      } else {
+        insight = "Zero funding means no carry drag from funding in this setup.";
+        insightClass = "insight-medium";
+      }
 
-      els.resultCard.style.display = "block";
+      resultCard.style.display = "block";
 
-      els.fundingPerInterval.innerHTML = `${money(fundingPerInterval)}`;
-      els.fundingPerIntervalNote.textContent = side === "long"
-        ? `Per ${intervalHours}-hour interval, longs ${fundingPerInterval >= 0 ? "pay" : "receive"} funding.`
-        : `Per ${intervalHours}-hour interval, shorts ${fundingPerInterval >= 0 ? "pay" : "receive"} funding.`;
+      fundingPerIntervalOut.innerHTML = `${formatMoney(fundingPerInterval)}`;
+      fundingTotalOut.innerHTML = `${formatMoney(totalFunding)}`;
+      annualizedRateOut.innerHTML = `${formatPercent(annualizedRate, 2)}`;
+      marginImpactOut.innerHTML = Number.isFinite(marginImpact) ? `${formatPercent(marginImpact, 2)}` : "Add leverage";
+      priceEffectOut.innerHTML = Number.isFinite(priceEffect) ? `${formatMoney(priceEffect)}` : "Add entry price";
+      insightOut.innerHTML = `<span class="${insightClass}">${insight}</span>`;
 
-      els.fundingTotal.innerHTML = `${money(totalFunding)}`;
-      els.fundingTotalNote.textContent = `Estimated over ${num(holdingHours, 2)} hours (${num(intervals, 2)} intervals).`;
-
-      els.annualizedRate.innerHTML = `${pct(signedAnnualizedPct, 2)}`;
-      els.annualizedRateNote.textContent = `Market funding annualized from the interval rate.`;
-
-      els.marginImpact.innerHTML = Number.isFinite(fundingAsMarginPct) ? `${pct(fundingAsMarginPct, 2)}` : "Add leverage";
-      els.marginImpactNote.textContent = Number.isFinite(margin)
-        ? `Estimated margin: ${money(margin)}. Funding as a share of margin is often the number people miss.`
-        : "Enter leverage to see how funding compares against posted margin.";
-
-      els.priceEffect.innerHTML = Number.isFinite(priceEffect) ? `${money(priceEffect)}` : "Add entry price";
-      els.priceEffectNote.textContent = Number.isFinite(priceEffect)
-        ? `Approximate price move equivalent over the holding period: ${money(priceEffect)} per contract unit.`
-        : "Enter entry price to see how funding maps into price terms.";
-
-      els.positionContext.innerHTML = `${status.label}`;
-      els.positionContextNote.textContent = status.text;
-
-      els.statNotional.textContent = money(positionSize);
-      els.statMargin.textContent = Number.isFinite(margin) ? money(margin) : "—";
-      els.statDaily.textContent = money(dailyFunding);
-
-      const toneClass = status.tone;
-      els.quickAnswer.innerHTML = `
-        <span class="${toneClass}"><strong>${status.label}:</strong> ${status.text}</span>
-        <br>
-        Total funding over your holding period: <strong>${money(totalFunding)}</strong>
+      quickAnswer.innerHTML = `
+        <span class="${totalFunding >= 0 ? "tone-negative" : "tone-positive"}">
+          <strong>${side === "long" ? "Long" : "Short"} position:</strong>
+          ${totalFunding >= 0 ? "Funding cost" : "Funding benefit"} over your holding period is <strong>${formatMoney(totalFunding)}</strong>.
+        </span>
       `;
 
+      const intervalCount = Math.max(1, Math.ceil(intervals));
       const points = [];
-      const labels = [];
-      const steps = 6;
-      for (let i = 1; i <= steps; i++){
-        const t = (intervals / steps) * i;
-        points.push(fundingPerInterval * t);
-        labels.push(`${Math.round((i / steps) * 100)}%`);
+      for (let i = 1; i <= intervalCount; i++){
+        points.push({
+          label: `${i}x`,
+          value: fundingPerInterval * i
+        });
       }
 
-      drawChart(points, labels);
+      drawChart(points);
     }
 
-    function resetAll(){
-      ["entryPrice","positionSize","fundingRate","holdingHours","intervalHours","leverage","priceMovePercent"].forEach(id => {
-        const el = document.getElementById(id);
-        if (id === "intervalHours") el.value = "8";
-        else if (id === "side") el.value = "long";
-        else if (id === "pnlDirection") el.value = "neutral";
-        else el.value = "";
-      });
-
-      els.resultCard.style.display = "none";
-      els.quickAnswer.innerHTML = "Enter your trade details to see estimated funding payment, annualized cost, and price impact.";
-
-      drawChart([], []);
-      els.statNotional.textContent = "—";
-      els.statMargin.textContent = "—";
-      els.statDaily.textContent = "—";
+    function drawEmptyChart(){
+      drawChart([]);
     }
 
-    function bindLiveUpdates(){
-      const inputs = [
-        els.entryPrice,
-        els.positionSize,
-        els.fundingRate,
-        els.side,
-        els.holdingHours,
-        els.intervalHours,
-        els.leverage,
-        els.priceMovePercent,
-        els.pnlDirection
-      ];
+    document.addEventListener("DOMContentLoaded", function(){
+      document.querySelectorAll(".faq-question").forEach(btn => {
+        btn.addEventListener("click", () => {
+          const item = btn.parentElement;
 
-      inputs.forEach(input => {
-        input.addEventListener("input", () => {
-          // only auto-calc when core fields are available
-          const hasCore =
-            parseValue(els.positionSize) > 0 &&
-            Number.isFinite(parseValue(els.fundingRate)) &&
-            parseValue(els.holdingHours) >= 0 &&
-            parseValue(els.intervalHours) > 0;
+          document.querySelectorAll(".faq-item").forEach(i => {
+            if(i !== item) i.classList.remove("active");
+          });
 
-          if (hasCore) calculate();
-        });
-        input.addEventListener("change", () => {
-          const hasCore =
-            parseValue(els.positionSize) > 0 &&
-            Number.isFinite(parseValue(els.fundingRate)) &&
-            parseValue(els.holdingHours) >= 0 &&
-            parseValue(els.intervalHours) > 0;
-
-          if (hasCore) calculate();
+          item.classList.toggle("active");
         });
       });
-    }
 
-    els.calcBtn.addEventListener("click", calculate);
-    els.resetBtn.addEventListener("click", resetAll);
-
-    window.addEventListener("resize", () => {
-      if (els.resultCard.style.display === "block"){
-        const entryPrice = parseValue(els.entryPrice);
-        const positionSize = parseValue(els.positionSize);
-        const fundingRatePct = parseValue(els.fundingRate);
-        const holdingHours = parseValue(els.holdingHours);
-        const intervalHours = parseValue(els.intervalHours);
-
-        if (
-          Number.isFinite(positionSize) &&
-          Number.isFinite(fundingRatePct) &&
-          Number.isFinite(holdingHours) &&
-          Number.isFinite(intervalHours)
-        ){
-          const fundingRate = fundingRatePct / 100;
-          const intervals = holdingHours / intervalHours;
-          const sideSign = els.side.value === "long" ? 1 : -1;
-          const fundingPerInterval = positionSize * fundingRate * sideSign;
-
-          const points = [];
-          const labels = [];
-          const steps = 6;
-          for (let i = 1; i <= steps; i++){
-            const t = (intervals / steps) * i;
-            points.push(fundingPerInterval * t);
-            labels.push(`${Math.round((i / steps) * 100)}%`);
-          }
-          drawChart(points, labels);
-        }
-      } else {
-        drawChart([], []);
-      }
+      drawEmptyChart();
     });
-
-    bindLiveUpdates();
-    drawChart([], []);
   </script>
 </body>
   </html>
