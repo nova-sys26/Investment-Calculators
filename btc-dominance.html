@@ -1,11 +1,11 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="tr">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
   <title>BTC Dominance Tracker – Live Bitcoin Market Share</title>
-  <meta name="description" content="Track BTC dominance live with a clean Bitcoin dominance chart, market share gauge, trend context, and quick market notes." />
+  <meta name="description" content="BTC dominance verisini canlı takip et. Bitcoin market share, ETH context ve trend grafiği tek sayfada." />
   <link rel="canonical" href="https://novainvesttools.com/btc-dominance.html">
 
   <meta name="theme-color" content="#0f172a">
@@ -14,18 +14,10 @@
   <meta property="og:type" content="website">
   <meta property="og:url" content="https://novainvesttools.com/btc-dominance.html">
   <meta property="og:title" content="BTC Dominance Tracker – Live Bitcoin Market Share">
-  <meta property="og:description" content="Track BTC dominance live with a clean market share gauge, trend chart, and context notes.">
+  <meta property="og:description" content="BTC dominance verisini canlı takip et. Clean dashboard, gauge ve chart ile market share görünümü.">
 
   <link rel="icon" href="favicon.png" type="image/png">
   <link rel="apple-touch-icon" href="favicon.png">
-
-  <script async src="https://www.googletagmanager.com/gtag/js?id=G-ZPCXDVE8C5"></script>
-  <script>
-    window.dataLayer = window.dataLayer || [];
-    function gtag(){dataLayer.push(arguments);}
-    gtag('js', new Date());
-    gtag('config', 'G-ZPCXDVE8C5');
-  </script>
 
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
@@ -38,7 +30,7 @@
     "applicationCategory": "FinanceApplication",
     "operatingSystem": "All",
     "browserRequirements": "Requires JavaScript",
-    "description": "Track live BTC dominance with a market share gauge, historical chart, and trend context.",
+    "description": "Live BTC dominance tracker with gauge, historical chart and market context.",
     "featureList": [
       "Live BTC dominance reading",
       "Historical chart",
@@ -71,7 +63,7 @@
         "name": "How often does BTC dominance change?",
         "acceptedAnswer": {
           "@type": "Answer",
-          "text": "It changes continuously with price movement and market cap shifts. The page updates using a cached live endpoint."
+          "text": "It changes continuously with price movement and market cap shifts."
         }
       },
       {
@@ -79,7 +71,7 @@
         "name": "Is BTC dominance a buy or sell signal?",
         "acceptedAnswer": {
           "@type": "Answer",
-          "text": "No. It is a context tool. It helps read market structure, but it should not replace your own analysis."
+          "text": "No. It is a context tool and should not replace your own analysis."
         }
       }
     ]
@@ -87,787 +79,631 @@
   </script>
 
   <style>
-    *{ box-sizing:border-box; }
-    html{ scroll-behavior:smooth; }
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
 
-    body{
+    body {
       font-family: Arial, sans-serif;
-      background:
-        linear-gradient(
-          to bottom,
-          #0D1D41 0%,
-          #0D1D41 72%,
-          #050814 88%,
-          #000000 100%
-        );
-      color:white;
-      margin:0;
-      min-height:100vh;
+      background: linear-gradient(to bottom, #0D1D41 0%, #0D1D41 72%, #050814 88%, #000000 100%);
+      color: white;
+      margin: 0;
+      min-height: 100vh;
     }
 
-    .page-shell{
-      width:min(1180px, calc(100% - 32px));
-      margin:0 auto;
+    .page-shell {
+      width: min(1180px, calc(100% - 32px));
+      margin: 0 auto;
     }
 
-    .topbar{
-      display:flex;
-      align-items:center;
-      gap:16px;
-      padding:20px 0 0;
-      flex-wrap:wrap;
+    .topbar {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      padding: 20px 0 0;
+      flex-wrap: wrap;
     }
 
-    .menu-btn{
-      display:inline-flex;
-      align-items:center;
-      justify-content:center;
-      width:44px;
-      height:44px;
-      border:none;
-      border-radius:12px;
-      cursor:pointer;
-      background:rgba(255,255,255,0.05);
-      color:white;
-      font-size:20px;
-      transition:0.2s;
+    .menu-btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 44px;
+      height: 44px;
+      border: none;
+      border-radius: 12px;
+      cursor: pointer;
+      background: rgba(255,255,255,0.05);
+      color: white;
+      font-size: 20px;
+      transition: 0.2s;
     }
 
-    .menu-btn:hover{ background:rgba(255,255,255,0.08); }
+    .menu-btn:hover { background: rgba(255,255,255,0.08); }
 
-    .brand{
-      font-size:18px;
-      font-weight:700;
-      margin-right:auto;
-      letter-spacing:0.2px;
+    .brand {
+      font-size: 18px;
+      font-weight: 700;
+      margin-right: auto;
+      letter-spacing: 0.2px;
     }
 
-    .topnav{
-      display:flex;
-      gap:14px;
-      flex-wrap:wrap;
+    .topnav {
+      display: flex;
+      gap: 14px;
+      flex-wrap: wrap;
     }
 
-    .topnav a{
-      color:#cbd5e1;
-      text-decoration:none;
-      font-size:14px;
+    .topnav a {
+      color: #cbd5e1;
+      text-decoration: none;
+      font-size: 14px;
     }
 
-    .topnav a:hover{ color:white; }
+    .topnav a:hover { color: white; }
 
-    .drawer-overlay{
-      position:fixed;
-      inset:0;
-      background:rgba(2,6,23,0.50);
-      backdrop-filter:blur(1px);
-      opacity:0;
-      pointer-events:none;
-      transition:0.2s;
-      z-index:80;
+    .drawer-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(2,6,23,0.50);
+      backdrop-filter: blur(1px);
+      opacity: 0;
+      pointer-events: none;
+      transition: 0.2s;
+      z-index: 80;
     }
 
-    .drawer-overlay.show{
-      opacity:1;
-      pointer-events:auto;
+    .drawer-overlay.show {
+      opacity: 1;
+      pointer-events: auto;
     }
 
-    .drawer{
-      position:fixed;
-      top:0;
-      left:0;
-      height:100%;
-      width:min(360px, 88vw);
-      background:#0f172a;
-      border-right:1px solid rgba(255,255,255,0.08);
-      box-shadow:12px 0 28px rgba(0,0,0,0.22);
-      transform:translateX(-102%);
-      transition:0.22s ease;
-      z-index:90;
-      padding:18px;
-      overflow:auto;
+    .drawer {
+      position: fixed;
+      top: 0;
+      left: 0;
+      height: 100%;
+      width: min(360px, 88vw);
+      background: #0f172a;
+      border-right: 1px solid rgba(255,255,255,0.08);
+      box-shadow: 12px 0 28px rgba(0,0,0,0.22);
+      transform: translateX(-102%);
+      transition: 0.22s ease;
+      z-index: 90;
+      padding: 18px;
+      overflow: auto;
     }
 
-    .drawer.open{ transform:translateX(0); }
+    .drawer.open { transform: translateX(0); }
 
-    .drawer-head{
-      display:flex;
-      align-items:center;
-      justify-content:space-between;
-      gap:10px;
-      margin-bottom:18px;
+    .drawer-head {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      margin-bottom: 18px;
     }
 
-    .drawer-close{
-      width:40px;
-      height:40px;
-      border:none;
-      border-radius:10px;
-      cursor:pointer;
-      background:rgba(255,255,255,0.05);
-      color:white;
-      font-size:22px;
-      line-height:1;
+    .drawer-close {
+      width: 40px;
+      height: 40px;
+      border: none;
+      border-radius: 10px;
+      cursor: pointer;
+      background: rgba(255,255,255,0.05);
+      color: white;
+      font-size: 22px;
+      line-height: 1;
     }
 
-    .drawer-section{ margin:16px 0 18px; }
+    .drawer-section { margin: 16px 0 18px; }
 
-    .drawer-section h4{
-      margin:0 0 10px;
-      font-size:13px;
-      color:#94a3b8;
-      text-transform:uppercase;
-      letter-spacing:0.08em;
+    .drawer-section h4 {
+      margin: 0 0 10px;
+      font-size: 13px;
+      color: #94a3b8;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
     }
 
-    .drawer-links{
-      display:flex;
-      flex-direction:column;
-      gap:8px;
+    .drawer-links {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
     }
 
-    .drawer-links a{
-      display:block;
-      padding:11px 12px;
-      border-radius:12px;
-      color:white;
-      text-decoration:none;
-      background:rgba(255,255,255,0.035);
-      border:1px solid rgba(255,255,255,0.05);
+    .drawer-links a {
+      display: block;
+      padding: 11px 12px;
+      border-radius: 12px;
+      color: white;
+      text-decoration: none;
+      background: rgba(255,255,255,0.035);
+      border: 1px solid rgba(255,255,255,0.05);
     }
 
-    .drawer-links a:hover{
-      background:rgba(59,130,246,0.12);
-      border-color:rgba(59,130,246,0.24);
+    .drawer-links a:hover {
+      background: rgba(59,130,246,0.12);
+      border-color: rgba(59,130,246,0.24);
     }
 
-    .hero{
-      padding:42px 0 18px;
+    .hero { padding: 42px 0 18px; }
+
+    .eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 7px 12px;
+      border-radius: 999px;
+      background: rgba(59,130,246,0.10);
+      border: 1px solid rgba(59,130,246,0.20);
+      color: #bfdbfe;
+      font-size: 13px;
+      font-weight: 700;
+      margin-bottom: 14px;
     }
 
-    .eyebrow{
-      display:inline-flex;
-      align-items:center;
-      gap:8px;
-      padding:7px 12px;
-      border-radius:999px;
-      background:rgba(59,130,246,0.10);
-      border:1px solid rgba(59,130,246,0.20);
-      color:#bfdbfe;
-      font-size:13px;
-      font-weight:700;
-      margin-bottom:14px;
+    .hero h1 {
+      margin: 0;
+      font-size: clamp(36px, 6vw, 62px);
+      line-height: 1.02;
+      max-width: 900px;
+      background: linear-gradient(90deg,#e2e8f0 10%, #93c5fd 45%, #86efac 95%);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
     }
 
-    .hero h1{
-      margin:0;
-      font-size:clamp(36px, 6vw, 62px);
-      line-height:1.02;
-      max-width:900px;
-      background:linear-gradient(90deg,#e2e8f0 10%, #93c5fd 45%, #86efac 95%);
-      -webkit-background-clip:text;
-      background-clip:text;
-      color:transparent;
+    .hero p {
+      margin: 16px 0 0;
+      max-width: 840px;
+      color: #94a3b8;
+      font-size: 18px;
+      line-height: 1.7;
     }
 
-    .hero p{
-      margin:16px 0 0;
-      max-width:840px;
-      color:#94a3b8;
-      font-size:18px;
-      line-height:1.7;
+    .hero-actions {
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+      margin: 24px 0 0;
     }
 
-    .hero-actions{
-      display:flex;
-      gap:12px;
-      flex-wrap:wrap;
-      margin:24px 0 0;
+    .hero-btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      padding: 12px 18px;
+      border-radius: 12px;
+      text-decoration: none;
+      font-weight: 700;
+      transition: 0.2s;
     }
 
-    .hero-btn{
-      display:inline-flex;
-      align-items:center;
-      justify-content:center;
-      padding:12px 18px;
-      border-radius:12px;
-      text-decoration:none;
-      font-weight:700;
-      transition:0.2s;
+    .hero-btn.primary {
+      background: linear-gradient(135deg,#3b82f6,#2563eb);
+      color: white;
+      box-shadow: 0 8px 16px rgba(37,99,235,0.16);
     }
 
-    .hero-btn.primary{
-      background:linear-gradient(135deg,#3b82f6,#2563eb);
-      color:white;
-      box-shadow:0 8px 16px rgba(37,99,235,0.16);
+    .hero-btn.secondary {
+      background: rgba(255,255,255,0.04);
+      color: white;
+      border: 1px solid rgba(255,255,255,0.07);
     }
 
-    .hero-btn.secondary{
-      background:rgba(255,255,255,0.04);
-      color:white;
-      border:1px solid rgba(255,255,255,0.07);
+    .hero-btn:hover { transform: translateY(-1px); }
+
+    .stats {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+      gap: 12px;
+      margin-top: 20px;
     }
 
-    .hero-btn:hover{
-      transform:translateY(-1px);
+    .stat {
+      background: rgba(30,41,59,0.45);
+      border: 1px solid rgba(255,255,255,0.05);
+      border-radius: 14px;
+      padding: 12px 14px;
     }
 
-    .stats{
-      display:grid;
-      grid-template-columns:repeat(auto-fit, minmax(180px, 1fr));
-      gap:12px;
-      margin-top:20px;
+    .stat strong {
+      display: block;
+      font-size: 20px;
+      margin-bottom: 4px;
     }
 
-    .stat{
-      background:rgba(30,41,59,0.45);
-      border:1px solid rgba(255,255,255,0.05);
-      border-radius:14px;
-      padding:12px 14px;
+    .stat span {
+      color: #94a3b8;
+      font-size: 12px;
+      line-height: 1.35;
     }
 
-    .stat strong{
-      display:block;
-      font-size:20px;
-      margin-bottom:4px;
-    }
-
-    .stat span{
-      color:#94a3b8;
-      font-size:12px;
-      line-height:1.35;
-    }
-
-    .tool-panel{
-      margin-top:18px;
-      background:rgba(30,41,59,0.50);
-      border:1px solid rgba(255,255,255,0.06);
-      border-radius:20px;
-      padding:18px;
+    .tool-panel {
+      margin-top: 18px;
+      background: rgba(30,41,59,0.50);
+      border: 1px solid rgba(255,255,255,0.06);
+      border-radius: 20px;
+      padding: 18px;
     }
 
     .loading-state,
-    .error-state{
-      margin-top:14px;
-      padding:16px;
-      border-radius:14px;
-      background:rgba(255,255,255,0.04);
-      border:1px solid rgba(255,255,255,0.06);
-      color:#cbd5e1;
-      line-height:1.6;
-      font-size:14px;
+    .error-state {
+      margin-top: 14px;
+      padding: 16px;
+      border-radius: 14px;
+      background: rgba(255,255,255,0.04);
+      border: 1px solid rgba(255,255,255,0.06);
+      color: #cbd5e1;
+      line-height: 1.6;
+      font-size: 14px;
     }
 
-    .error-state{
-      border-color:rgba(239,68,68,0.22);
-      background:rgba(239,68,68,0.08);
-      color:#fecaca;
+    .error-state {
+      border-color: rgba(239,68,68,0.22);
+      background: rgba(239,68,68,0.08);
+      color: #fecaca;
     }
 
-    .badge-row{
-      display:flex;
-      flex-wrap:wrap;
-      gap:8px;
-      margin:14px 0 12px;
+    .badge-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin: 14px 0 12px;
     }
 
-    .badge{
-      display:inline-flex;
-      padding:5px 10px;
-      border-radius:999px;
-      font-size:12px;
-      font-weight:700;
-      background:rgba(59,130,246,0.12);
-      color:#bfdbfe;
-      border:1px solid rgba(59,130,246,0.22);
+    .badge {
+      display: inline-flex;
+      padding: 5px 10px;
+      border-radius: 999px;
+      font-size: 12px;
+      font-weight: 700;
+      background: rgba(59,130,246,0.12);
+      color: #bfdbfe;
+      border: 1px solid rgba(59,130,246,0.22);
     }
 
-    .badge.soft{
-      background:rgba(255,255,255,0.05);
-      border-color:rgba(255,255,255,0.08);
-      color:#dbeafe;
+    .badge.soft {
+      background: rgba(255,255,255,0.05);
+      border-color: rgba(255,255,255,0.08);
+      color: #dbeafe;
     }
 
-    .live-header{
-      display:flex;
-      justify-content:space-between;
-      gap:16px;
-      flex-wrap:wrap;
-      align-items:flex-start;
-      margin-top:6px;
+    .dashboard {
+      display: grid;
+      grid-template-columns: 220px 1fr;
+      gap: 18px;
+      align-items: center;
+      margin-top: 18px;
     }
 
-    .live-status{
-      color:#93c5fd;
-      font-size:13px;
-      font-weight:700;
-      letter-spacing:0.06em;
-      text-transform:uppercase;
+    .gauge-wrap {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 14px;
     }
 
-    .updated-at{
-      color:#94a3b8;
-      font-size:13px;
-      margin-top:6px;
-    }
-
-    .tiny{
-      font-size:12px;
-      color:#94a3b8;
-    }
-
-    .dashboard{
-      display:grid;
-      grid-template-columns:220px 1fr;
-      gap:18px;
-      align-items:center;
-      margin-top:18px;
-    }
-
-    .gauge-wrap{
-      display:flex;
-      flex-direction:column;
-      align-items:center;
-      gap:14px;
-    }
-
-    .gauge{
-      width:180px;
-      height:180px;
-      border-radius:50%;
-      background:conic-gradient(
+    .gauge {
+      width: 180px;
+      height: 180px;
+      border-radius: 50%;
+      background: conic-gradient(
         #22c55e 0deg 72deg,
         #3b82f6 72deg 150deg,
         #facc15 150deg 225deg,
         #ef4444 225deg 360deg
       );
-      position:relative;
-      box-shadow:0 0 0 1px rgba(255,255,255,0.04) inset;
+      position: relative;
+      box-shadow: 0 0 0 1px rgba(255,255,255,0.04) inset;
     }
 
-    .gauge::after{
-      content:"";
-      position:absolute;
-      inset:16px;
-      border-radius:50%;
-      background:#0f172a;
-      box-shadow:inset 0 0 0 1px rgba(255,255,255,0.05);
+    .gauge::after {
+      content: "";
+      position: absolute;
+      inset: 16px;
+      border-radius: 50%;
+      background: #0f172a;
+      box-shadow: inset 0 0 0 1px rgba(255,255,255,0.05);
     }
 
-    .needle{
-      position:absolute;
-      left:50%;
-      top:50%;
-      width:3px;
-      height:74px;
-      background:#e2e8f0;
-      transform-origin:bottom center;
-      transform:translate(-50%, -100%) rotate(-90deg);
-      border-radius:999px;
-      z-index:2;
-      box-shadow:0 0 10px rgba(255,255,255,0.12);
+    .needle {
+      position: absolute;
+      left: 50%;
+      top: 50%;
+      width: 3px;
+      height: 74px;
+      background: #e2e8f0;
+      transform-origin: bottom center;
+      transform: translate(-50%, -100%) rotate(-90deg);
+      border-radius: 999px;
+      z-index: 2;
+      box-shadow: 0 0 10px rgba(255,255,255,0.12);
     }
 
-    .needle::before{
-      content:"";
-      position:absolute;
-      left:50%;
-      top:-8px;
-      width:12px;
-      height:12px;
-      transform:translateX(-50%);
-      border-radius:50%;
-      background:#e2e8f0;
+    .needle::before {
+      content: "";
+      position: absolute;
+      left: 50%;
+      top: -8px;
+      width: 12px;
+      height: 12px;
+      transform: translateX(-50%);
+      border-radius: 50%;
+      background: #e2e8f0;
     }
 
-    .score-box{
-      position:absolute;
-      inset:0;
-      z-index:3;
-      display:flex;
-      align-items:center;
-      justify-content:center;
-      flex-direction:column;
-      text-align:center;
-      padding:24px;
+    .score-box {
+      position: absolute;
+      inset: 0;
+      z-index: 3;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-direction: column;
+      text-align: center;
+      padding: 24px;
     }
 
-    .score-value{
-      font-size:44px;
-      line-height:1;
-      font-weight:800;
-      color:#fff;
+    .score-value {
+      font-size: 44px;
+      line-height: 1;
+      font-weight: 800;
+      color: #fff;
     }
 
-    .score-label{
-      margin-top:8px;
-      font-size:14px;
-      color:#cbd5e1;
-      font-weight:700;
-      text-transform:uppercase;
-      letter-spacing:0.08em;
+    .score-label {
+      margin-top: 8px;
+      font-size: 14px;
+      color: #cbd5e1;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
     }
 
-    .score-sub{
-      margin-top:5px;
-      font-size:12px;
-      color:#94a3b8;
+    .score-sub {
+      margin-top: 5px;
+      font-size: 12px;
+      color: #94a3b8;
     }
 
-    .summary-grid{
-      display:grid;
-      grid-template-columns:repeat(2, minmax(0, 1fr));
-      gap:12px;
+    .summary-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 12px;
     }
 
-    .summary-card{
-      background:rgba(15,23,42,0.72);
-      border:1px solid rgba(255,255,255,0.06);
-      border-radius:16px;
-      padding:16px;
-      min-height:86px;
+    .summary-card {
+      background: rgba(15,23,42,0.72);
+      border: 1px solid rgba(255,255,255,0.06);
+      border-radius: 16px;
+      padding: 16px;
+      min-height: 86px;
     }
 
-    .summary-card span{
-      display:block;
-      font-size:12px;
-      color:#94a3b8;
-      text-transform:uppercase;
-      letter-spacing:0.08em;
-      margin-bottom:8px;
-      font-weight:700;
+    .summary-card span {
+      display: block;
+      font-size: 12px;
+      color: #94a3b8;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      margin-bottom: 8px;
+      font-weight: 700;
     }
 
-    .summary-card strong{
-      font-size:18px;
-      line-height:1.25;
+    .summary-card strong {
+      font-size: 18px;
+      line-height: 1.25;
     }
 
-    .summary-card p{
-      margin:6px 0 0;
-      color:#cbd5e1;
-      font-size:13px;
-      line-height:1.55;
+    .summary-card p {
+      margin: 6px 0 0;
+      color: #cbd5e1;
+      font-size: 13px;
+      line-height: 1.55;
     }
 
-    .text-section{
-      margin-top:22px;
-      display:grid;
-      gap:12px;
+    .text-section {
+      margin-top: 22px;
+      display: grid;
+      gap: 12px;
     }
 
-    .note-box{
-      padding:16px 18px;
-      border-radius:14px;
-      background:rgba(255,255,255,0.04);
-      border:1px solid rgba(255,255,255,0.06);
-      color:#cbd5e1;
-      line-height:1.65;
-      font-size:14px;
+    .note-box {
+      padding: 16px 18px;
+      border-radius: 14px;
+      background: rgba(255,255,255,0.04);
+      border: 1px solid rgba(255,255,255,0.06);
+      color: #cbd5e1;
+      line-height: 1.65;
+      font-size: 14px;
     }
 
-    .note-box strong{
-      display:block;
-      margin-bottom:4px;
-      color:#e2e8f0;
-      font-size:14px;
+    .note-box strong {
+      display: block;
+      margin-bottom: 4px;
+      color: #e2e8f0;
+      font-size: 14px;
     }
 
-    .meta-row{
-      display:grid;
-      grid-template-columns:repeat(3, minmax(0, 1fr));
-      gap:12px;
-      margin-top:16px;
+    .meta-row {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 12px;
+      margin-top: 16px;
     }
 
-    .meta-card{
-      background:rgba(15,23,42,0.72);
-      border:1px solid rgba(255,255,255,0.06);
-      border-radius:14px;
-      padding:14px 16px;
+    .meta-card {
+      background: rgba(15,23,42,0.72);
+      border: 1px solid rgba(255,255,255,0.06);
+      border-radius: 14px;
+      padding: 14px 16px;
     }
 
-    .meta-card span{
-      display:block;
-      color:#94a3b8;
-      font-size:12px;
-      text-transform:uppercase;
-      letter-spacing:0.08em;
-      font-weight:700;
-      margin-bottom:6px;
+    .meta-card span {
+      display: block;
+      color: #94a3b8;
+      font-size: 12px;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      font-weight: 700;
+      margin-bottom: 6px;
     }
 
-    .meta-card strong{
-      font-size:16px;
-      line-height:1.3;
+    .meta-card strong {
+      font-size: 16px;
+      line-height: 1.3;
     }
 
-    .chart-wrap{
-      margin-top:24px;
+    .chart-wrap { margin-top: 24px; }
+
+    .chart-title {
+      margin: 0 0 8px;
+      font-size: 26px;
     }
 
-    .chart-title{
-      margin:0 0 8px;
-      font-size:26px;
+    .source-line {
+      margin-top: 12px;
+      color: #94a3b8;
+      font-size: 12px;
+      line-height: 1.6;
     }
 
-    .source-line{
-      margin-top:12px;
-      color:#94a3b8;
-      font-size:12px;
-      line-height:1.6;
+    .content {
+      width: 90%;
+      max-width: 900px;
+      margin-top: 34px;
     }
 
-    .content{
-      width:90%;
-      max-width:900px;
-      margin-top:34px;
-    }
-
-    .content h2{
-      margin-top:34px;
-      margin-bottom:10px;
-      font-size:28px;
+    .content h2 {
+      margin-top: 34px;
+      margin-bottom: 10px;
+      font-size: 28px;
     }
 
     .content p,
-    .content li{
-      color:#cbd5e1;
-      line-height:1.7;
-      font-size:15px;
+    .content li {
+      color: #cbd5e1;
+      line-height: 1.7;
+      font-size: 15px;
     }
 
-    .content ul{
-      padding-left:20px;
+    .content ul {
+      padding-left: 20px;
     }
 
-    .formula{
-      background:rgba(255,255,255,0.05);
-      border:1px solid rgba(255,255,255,0.08);
-      padding:14px 16px;
-      border-radius:12px;
-      margin:12px 0;
-      color:#e2e8f0;
-      overflow:auto;
-      line-height:1.7;
+    .formula {
+      background: rgba(255,255,255,0.05);
+      border: 1px solid rgba(255,255,255,0.08);
+      padding: 14px 16px;
+      border-radius: 12px;
+      margin: 12px 0;
+      color: #e2e8f0;
+      overflow: auto;
+      line-height: 1.7;
     }
 
-    .faq{
-      margin-top:14px;
+    .faq {
+      margin-top: 14px;
     }
 
-    .faq-item{
-      border-bottom:1px solid rgba(255,255,255,0.08);
+    .faq-item {
+      border-bottom: 1px solid rgba(255,255,255,0.08);
     }
 
-    .faq-question{
-      width:100%;
-      background:none;
-      border:none;
-      color:white;
-      text-align:left;
-      padding:14px 8px;
-      font-size:15px;
-      display:flex;
-      justify-content:space-between;
-      align-items:center;
-      cursor:pointer;
+    .faq-question {
+      width: 100%;
+      background: none;
+      border: none;
+      color: white;
+      text-align: left;
+      padding: 14px 8px;
+      font-size: 15px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      cursor: pointer;
     }
 
-    .faq-question:hover{ color:#93c5fd; }
+    .faq-question:hover { color: #93c5fd; }
 
-    .arrow{ transition:0.25s; }
+    .arrow { transition: 0.25s; }
 
-    .faq-item.active .arrow{
-      transform:rotate(180deg);
+    .faq-item.active .arrow {
+      transform: rotate(180deg);
     }
 
-    .faq-answer{
-      max-height:0;
-      overflow:hidden;
-      transition:max-height 0.28s ease;
-      color:#cbd5e1;
-      font-size:14px;
-      padding:0 8px;
+    .faq-answer {
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height 0.28s ease;
+      color: #cbd5e1;
+      font-size: 14px;
+      padding: 0 8px;
     }
 
-    .faq-item.active .faq-answer{
-      max-height:260px;
-      padding-bottom:12px;
+    .faq-item.active .faq-answer {
+      max-height: 260px;
+      padding-bottom: 12px;
     }
 
-    .related{
-      width:90%;
-      max-width:900px;
-      margin-top:34px;
+    .related {
+      width: 90%;
+      max-width: 900px;
+      margin-top: 34px;
     }
 
-    .related a{
-      color:#93c5fd;
-      text-decoration:none;
+    .related a {
+      color: #93c5fd;
+      text-decoration: none;
     }
 
-    .related a:hover{
-      text-decoration:underline;
+    .related a:hover {
+      text-decoration: underline;
     }
 
-    .disclaimer{
-      margin-top:40px;
-      padding-top:20px;
-      border-top:1px solid rgba(255,255,255,0.1);
-      font-size:13px;
-      color:#9ca3af;
-      max-width:900px;
-      text-align:center;
-      line-height:1.6;
-      width:90%;
+    .disclaimer {
+      margin-top: 40px;
+      padding-top: 20px;
+      border-top: 1px solid rgba(255,255,255,0.1);
+      font-size: 13px;
+      color: #9ca3af;
+      max-width: 900px;
+      text-align: center;
+      line-height: 1.6;
+      width: 90%;
     }
 
-    .result-card{
-      margin-top:18px;
-      padding:16px;
-      border-radius:14px;
-      background:rgba(255,255,255,0.05);
-      border:1px solid rgba(255,255,255,0.08);
-      display:none;
+    .is-hidden { display: none !important; }
+
+    @media (max-width: 900px) {
+      .topnav { display: none; }
+      .dashboard { grid-template-columns: 1fr; }
+      .meta-row { grid-template-columns: 1fr; }
     }
 
-    .result-grid{
-      display:grid;
-      grid-template-columns:repeat(auto-fit, minmax(220px, 1fr));
-      gap:12px;
-    }
-
-    .result-box{
-      background:rgba(15,23,42,0.72);
-      border:1px solid rgba(255,255,255,0.06);
-      border-radius:14px;
-      padding:14px;
-    }
-
-    .result-label{
-      display:block;
-      color:#cbd5f5;
-      font-size:13px;
-      font-weight:700;
-      margin-bottom:4px;
-    }
-
-    .result-value{
-      font-size:18px;
-      font-weight:800;
-      color:#e5e7eb;
-    }
-
-    .result-value.up{ color:#22c55e; }
-    .result-value.down{ color:#f59e0b; }
-    .result-value.flat{ color:#93c5fd; }
-
-    .toggle{
-      display:flex;
-      margin:12px 0 14px;
-      gap:0;
-    }
-
-    .toggle button{
-      flex:1;
-      padding:12px;
-      border:none;
-      cursor:pointer;
-      background:#334155;
-      color:white;
-      transition:0.2s;
-      margin-top:0;
-      width:auto;
-      font-size:15px;
-      font-weight:700;
-    }
-
-    .toggle button:first-child{
-      border-radius:10px 0 0 10px;
-    }
-
-    .toggle button:last-child{
-      border-radius:0 10px 10px 0;
-    }
-
-    .toggle button.active{
-      background:#3b82f6;
-    }
-
-    .footer{
-      margin:36px 0 24px;
-      padding:20px 0 0;
-      border-top:1px solid rgba(255,255,255,0.08);
-      color:#94a3b8;
-      font-size:13px;
-      line-height:1.65;
-    }
-
-    .footer-links{
-      display:flex;
-      flex-wrap:wrap;
-      gap:12px;
-      margin-top:12px;
-    }
-
-    .footer-links a{
-      color:#93c5fd;
-      text-decoration:none;
-    }
-
-    .footer-links a:hover{
-      text-decoration:underline;
-    }
-
-    .footer small{
-      display:block;
-      margin-top:14px;
-      color:#64748b;
-    }
-
-    .is-hidden{ display:none !important; }
-
-    @media (max-width: 900px){
-      .topnav{ display:none; }
-      .dashboard{ grid-template-columns:1fr; }
-      .meta-row{ grid-template-columns:1fr; }
-    }
-
-    @media (max-width: 760px){
-      .hero{ padding-top:30px; }
-      .hero p{ font-size:16px; }
-      .sort-wrap{
-        width:100%;
-        margin-left:0;
-        justify-content:space-between;
+    @media (max-width: 760px) {
+      .hero { padding-top: 30px; }
+      .hero p { font-size: 16px; }
+      .topbar { padding-top: 16px; }
+      .summary-grid { grid-template-columns: 1fr; }
+      .tool-panel { padding: 18px; }
+      .gauge {
+        width: 160px;
+        height: 160px;
       }
-      .topbar{ padding-top:16px; }
-      .summary-grid{ grid-template-columns:1fr; }
-      .container, .tool-panel{
-        padding:18px;
-      }
-      .gauge{
-        width:160px;
-        height:160px;
-      }
-      .score-value{
-        font-size:38px;
-      }
+      .score-value { font-size: 38px; }
     }
 
-    @media (max-width: 560px){
-      .page-shell{
-        width:min(1180px, calc(100% - 20px));
+    @media (max-width: 560px) {
+      .page-shell {
+        width: min(1180px, calc(100% - 20px));
       }
 
-      .hero-btn{
-        width:100%;
-      }
-
-      .menu-btn{
-        width:42px;
-        height:42px;
+      .hero-btn { width: 100%; }
+      .menu-btn {
+        width: 42px;
+        height: 42px;
       }
     }
   </style>
@@ -915,8 +751,8 @@
       <div class="eyebrow">Live crypto market sentiment</div>
       <h1>BTC Dominance Tracker</h1>
       <p>
-        Track Bitcoin’s share of the total crypto market with a fast, clean, and SEO-friendly live tool.
-        Cached updates keep the page responsive while still staying close to real market conditions.
+        Bitcoin dominansını doğrudan API üzerinden gösteren hızlı ve temiz bir dashboard.
+        CoinGecko’dan çekilen verilerle güncel market share, ETH context ve trend görünümü sunar.
       </p>
 
       <div class="hero-actions">
@@ -944,17 +780,12 @@
       <div class="tool-panel">
         <div class="badge-row">
           <span class="badge">Live dashboard</span>
-          <span class="badge soft">Cached 2–3 min</span>
-          <span class="badge soft">Market cap share</span>
+          <span class="badge soft">Auto refresh 5 min</span>
+          <span class="badge soft">Direct API</span>
         </div>
 
-        <div class="toggle">
-          <button class="active" id="btcBtn" type="button">BTC Dominance</button>
-          <button id="contextBtn" type="button">Market Context</button>
-        </div>
-
-        <div id="loadingState" class="loading-state">Loading live BTC dominance data…</div>
-        <div id="errorState" class="error-state is-hidden"></div>
+        <div class="loading-state" id="loadingState">Loading live BTC dominance data…</div>
+        <div class="error-state is-hidden" id="errorState"></div>
 
         <div id="dashboard" class="is-hidden">
           <div class="dashboard">
@@ -967,7 +798,7 @@
                   <div class="score-sub">Bitcoin market share</div>
                 </div>
               </div>
-              <div class="tiny" id="trendHint">Dominance moves with total crypto market cap.</div>
+              <div class="score-sub" id="trendHint">Dominance moves with total crypto market cap.</div>
             </div>
 
             <div>
@@ -1000,12 +831,12 @@
                   <strong id="marketCapValue">—</strong>
                 </div>
                 <div class="meta-card">
-                  <span>Previous cache window</span>
-                  <strong>180 sec</strong>
+                  <span>Source</span>
+                  <strong>CoinGecko API</strong>
                 </div>
                 <div class="meta-card">
-                  <span>Source</span>
-                  <strong>Cloudflare Worker</strong>
+                  <span>Refresh interval</span>
+                  <strong>300 sec</strong>
                 </div>
               </div>
             </div>
@@ -1014,11 +845,11 @@
           <div class="text-section">
             <div class="note-box">
               <strong>How to read this</strong>
-              Higher BTC dominance usually means capital is concentrating in Bitcoin. Lower dominance usually means capital is flowing more into altcoins.
+              BTC dominance yükseliyorsa piyasa daha çok Bitcoin’e toplanıyor demektir. Düşüyorsa para altcoinlere kayıyor olabilir.
             </div>
             <div class="note-box">
               <strong>Use case</strong>
-              This is a context tool. It helps you read market structure, compare trend shifts, and frame altcoin conditions before making a decision.
+              Bu bir yön filtresi ve market structure aracıdır; tek başına al-sat sinyali değildir.
             </div>
           </div>
 
@@ -1026,7 +857,7 @@
             <h2 class="chart-title">Dominance Trend</h2>
             <canvas id="btcChart"></canvas>
             <div class="source-line">
-              Data is loaded from your Cloudflare Worker, which can cache the upstream CoinGecko response for 2–3 minutes.
+              Veriler doğrudan CoinGecko API’den çekilir. Tarayıcı tarafı CORS engeli yaşarsa, aynı endpoint’i kendi backend’ine taşıman gerekir.
             </div>
           </div>
         </div>
@@ -1041,7 +872,7 @@
 
       <h2>How this page works</h2>
       <p>
-        The page reads a cached live endpoint rather than calling CoinGecko directly in the browser. That keeps the page fast, reduces API pressure, and gives a more stable user experience.
+        Sayfa doğrudan CoinGecko API çağrısı yapar. Cloudflare Worker, ekstra proxy ya da ayrı backend yoktur.
       </p>
 
       <div class="formula">
@@ -1080,11 +911,11 @@
 
         <div class="faq-item">
           <button class="faq-question" type="button">
-            Why use a Cloudflare Worker?
+            Why use direct API instead of Cloudflare Worker?
             <span class="arrow">▼</span>
           </button>
           <div class="faq-answer">
-            <p>It keeps the page fast and lets you cache the upstream API response so visitors do not hammer the data source directly.</p>
+            <p>It is simpler to deploy. The downside is rate limits or CORS issues can happen depending on the API.</p>
           </div>
         </div>
       </div>
@@ -1100,25 +931,15 @@
       </ul>
     </section>
 
-    <footer class="footer">
-      <div>
-        <strong>Disclaimer:</strong> This page is provided for informational and educational purposes only.
-        It does not constitute financial or investment advice.
-      </div>
-
-      <div class="footer-links">
-        <a href="#start-here">Start here</a>
-        <a href="#live-section">Live summary</a>
-        <a href="#faq">FAQ</a>
-      </div>
-
-      <small>Nova Investment Tools</small>
+    <footer class="disclaimer">
+      <div><strong>Disclaimer:</strong> This page is provided for informational and educational purposes only. It does not constitute financial or investment advice.</div>
+      <div style="margin-top:10px;">Nova Investment Tools</div>
     </footer>
   </div>
 
-  <script src="footer.js"></script>
   <script>
-    const API_URL = "YOUR_WORKER_URL"; // örn: https://btc-dominance-api.yourname.workers.dev
+    const API_GLOBAL = "https://api.coingecko.com/api/v3/global";
+    const API_ETH = "https://api.coingecko.com/api/v3/coins/ethereum?localization=false&tickers=false&market_data=true&community_data=false&developer_data=false&sparkline=false";
 
     const menuBtn = document.getElementById("menuBtn");
     const drawerPanel = document.getElementById("drawerPanel");
@@ -1143,9 +964,7 @@
     const statBtc = document.getElementById("statBtc");
     const statEth = document.getElementById("statEth");
     const statUpdated = document.getElementById("statUpdated");
-    const updatedAtLabel = document.getElementById("updatedAt");
     const needle = document.getElementById("needle");
-    const gauge = document.getElementById("gauge");
     const trendHint = document.getElementById("trendHint");
 
     const btcBtn = document.getElementById("btcBtn");
@@ -1155,25 +974,25 @@
     let autoRefreshTimer = null;
     let previousData = null;
 
-    function openDrawer(){
+    function openDrawer() {
       drawerPanel.classList.add("open");
       drawerOverlay.classList.add("show");
       menuBtn.setAttribute("aria-expanded", "true");
       drawerPanel.setAttribute("aria-hidden", "false");
     }
 
-    function closeDrawer(){
+    function closeDrawer() {
       drawerPanel.classList.remove("open");
       drawerOverlay.classList.remove("show");
       menuBtn.setAttribute("aria-expanded", "false");
       drawerPanel.setAttribute("aria-hidden", "true");
     }
 
-    function fmtPercent(value){
+    function fmtPercent(value) {
       return `${Number(value).toFixed(2)}%`;
     }
 
-    function fmtMoney(value){
+    function fmtMoney(value) {
       const num = Number(value);
       if (!Number.isFinite(num)) return "—";
       if (num >= 1e12) return `$${(num / 1e12).toFixed(2)}T`;
@@ -1182,20 +1001,26 @@
       return `$${num.toLocaleString(undefined, { maximumFractionDigits: 2 })}`;
     }
 
-    function fmtTime(ts){
+    function fmtTime(ts) {
       const d = new Date(Number(ts));
-      return d.toLocaleString(undefined, { year: "numeric", month: "short", day: "numeric", hour: "2-digit", minute: "2-digit" });
+      return d.toLocaleString(undefined, {
+        year: "numeric",
+        month: "short",
+        day: "numeric",
+        hour: "2-digit",
+        minute: "2-digit"
+      });
     }
 
-    function classifyDominance(v){
+    function classifyDominance(v) {
       const value = Number(v);
-      if (value >= 60) return { label: "BTC Strong", tone: "up", note: "Bitcoin is taking a larger share of crypto market cap." };
-      if (value >= 50) return { label: "BTC Firm", tone: "flat", note: "Bitcoin is holding a strong share of the market." };
-      if (value >= 40) return { label: "Balanced", tone: "flat", note: "Market share is more balanced between BTC and alts." };
-      return { label: "Altcoin Strength", tone: "down", note: "Bitcoin dominance is weaker and altcoins are taking share." };
+      if (value >= 60) return { label: "BTC Strong", note: "Bitcoin is taking a larger share of crypto market cap." };
+      if (value >= 50) return { label: "BTC Firm", note: "Bitcoin is holding a strong share of the market." };
+      if (value >= 40) return { label: "Balanced", note: "Market share is more balanced between BTC and alts." };
+      return { label: "Altcoin Strength", note: "Bitcoin dominance is weaker and altcoins are taking share." };
     }
 
-    function setNeedle(value){
+    function setNeedle(value) {
       const v = Math.max(0, Math.min(100, Number(value)));
       const angle = (v / 100) * 180 - 90;
       needle.style.transform = `translate(-50%, -100%) rotate(${angle}deg)`;
@@ -1204,7 +1029,7 @@
       btcValue.style.color = hue;
     }
 
-    function drawChart(points){
+    function drawChart(points) {
       const ctx = document.getElementById("btcChart").getContext("2d");
       if (chart) chart.destroy();
 
@@ -1232,7 +1057,7 @@
             legend: { labels: { color: "white" } },
             tooltip: {
               callbacks: {
-                label: function(context){
+                label: function(context) {
                   return ` ${Number(context.parsed.y).toFixed(2)}%`;
                 }
               }
@@ -1254,12 +1079,12 @@
       });
     }
 
-    function buildChartSeries(current, historyDays = 20){
+    function buildChartSeries(current, historyPoints = 20) {
       const value = Number(current);
       const points = [];
       const drift = [0.00, -0.18, 0.14, -0.10, 0.22, -0.12, 0.08, -0.16, 0.09, -0.05];
 
-      for (let i = historyDays - 1; i >= 1; i--) {
+      for (let i = historyPoints - 1; i >= 1; i--) {
         const offset = drift[i % drift.length] + ((i % 3) * 0.05);
         points.push({
           label: `${i}d ago`,
@@ -1267,15 +1092,32 @@
         });
       }
 
-      points.push({
-        label: "Now",
-        value
-      });
-
+      points.push({ label: "Now", value });
       return points;
     }
 
-    function updateUI(data){
+    async function fetchJSON(url, timeoutMs = 12000) {
+      const controller = new AbortController();
+      const timer = setTimeout(() => controller.abort(), timeoutMs);
+
+      try {
+        const res = await fetch(url, {
+          method: "GET",
+          headers: { "Accept": "application/json" },
+          signal: controller.signal
+        });
+
+        if (!res.ok) {
+          throw new Error(`Request failed with status ${res.status}`);
+        }
+
+        return await res.json();
+      } finally {
+        clearTimeout(timer);
+      }
+    }
+
+    function updateUI(data) {
       const btc = Number(data.btcDominance);
       const eth = Number(data.ethDominance);
       const totalCap = Number(data.totalMarketCap);
@@ -1294,56 +1136,60 @@
       statEth.textContent = fmtPercent(eth);
       statUpdated.textContent = fmtTime(data.updatedAt);
 
-      updatedAtLabel.textContent = `Updated: ${fmtTime(data.updatedAt)}`;
       trendHint.textContent = info.note;
 
       if (previousData) {
         const diff = btc - Number(previousData.btcDominance);
         momentumReading.textContent = `${diff >= 0 ? "+" : ""}${diff.toFixed(2)}%`;
-        momentumNote.textContent = diff > 0 ? "Dominance improved vs previous cache window." : diff < 0 ? "Dominance cooled vs previous cache window." : "No change vs previous cache window.";
+        momentumNote.textContent = diff > 0 ? "Dominance improved vs previous update." : diff < 0 ? "Dominance cooled vs previous update." : "No change vs previous update.";
 
-        const weekLike = btc - (btc - 0.42);
-        trendBias.textContent = `${weekLike >= 0 ? "+" : ""}${weekLike.toFixed(2)}%`;
-        trendBiasNote.textContent = "Short-term trend remains the main thing to watch.";
+        const trend = diff >= 0 ? "Positive short-term momentum." : "Negative short-term momentum.";
+        trendBias.textContent = diff >= 0 ? "Bullish" : "Bearish";
+        trendBiasNote.textContent = trend;
       } else {
         momentumReading.textContent = "—";
-        momentumNote.textContent = "Waiting for the next cached comparison.";
+        momentumNote.textContent = "Waiting for the next update.";
         trendBias.textContent = "—";
         trendBiasNote.textContent = "Waiting for history.";
       }
 
       setNeedle(btc);
-
-      const series = buildChartSeries(btc, 20);
-      drawChart(series);
+      drawChart(buildChartSeries(btc, 20));
 
       previousData = data;
     }
 
-    async function loadBTCDominance(){
+    async function loadBTCDominance() {
       try {
         loadingState.classList.remove("is-hidden");
         errorState.classList.add("is-hidden");
         dashboard.classList.add("is-hidden");
 
-        const res = await fetch(API_URL, {
-          method: "GET",
-          headers: {
-            "Accept": "application/json"
-          }
+        const [globalData, ethData] = await Promise.all([
+          fetchJSON(API_GLOBAL),
+          fetchJSON(API_ETH)
+        ]);
+
+        const totalMarketCap = globalData?.data?.total_market_cap?.usd;
+        const btcDominance = globalData?.data?.market_cap_percentage?.btc;
+        const ethMarketCap = ethData?.market_data?.market_cap?.usd;
+
+        if (
+          typeof totalMarketCap === "undefined" ||
+          typeof btcDominance === "undefined" ||
+          typeof ethMarketCap === "undefined"
+        ) {
+          throw new Error("API response missing required fields.");
+        }
+
+        const ethDominance = (Number(ethMarketCap) / Number(totalMarketCap)) * 100;
+
+        updateUI({
+          btcDominance,
+          ethDominance,
+          totalMarketCap,
+          updatedAt: Date.now()
         });
-
-        if (!res.ok) {
-          throw new Error(`Request failed with status ${res.status}`);
-        }
-
-        const data = await res.json();
-
-        if (!data || typeof data.btcDominance === "undefined") {
-          throw new Error("Invalid response from API.");
-        }
-
-        updateUI(data);
 
         loadingState.classList.add("is-hidden");
         dashboard.classList.remove("is-hidden");
@@ -1370,7 +1216,9 @@
     drawerCloseBtn.addEventListener("click", closeDrawer);
     drawerOverlay.addEventListener("click", closeDrawer);
 
-    document.querySelectorAll(".drawer a").forEach(link => link.addEventListener("click", closeDrawer));
+    document.querySelectorAll(".drawer a").forEach(link => {
+      link.addEventListener("click", closeDrawer);
+    });
 
     document.addEventListener("click", (e) => {
       if (!e.target.closest(".drawer") && !e.target.closest("#menuBtn")) {
@@ -1393,7 +1241,7 @@
     });
 
     loadBTCDominance();
-    autoRefreshTimer = setInterval(loadBTCDominance, 180000);
+    autoRefreshTimer = setInterval(loadBTCDominance, 300000);
   </script>
 </body>
   </html>
