@@ -1,0 +1,1003 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <title>If You Invested in Bitcoin Calculator – Shareable BTC Growth Tool</title>
+  <meta name="description" content="See how much a Bitcoin investment would be worth today. Pick an amount and date, get a shareable result, and compare your return instantly." />
+  <link rel="canonical" href="https://novainvesttools.com/bitcoin-investment-calculator.html">
+
+  <meta name="theme-color" content="#0f172a">
+  <meta name="robots" content="index,follow,max-image-preview:large">
+
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://novainvesttools.com/bitcoin-investment-calculator.html">
+  <meta property="og:title" content="If You Invested in Bitcoin Calculator">
+  <meta property="og:description" content="Pick a date and amount, then see the value today with a shareable result card and growth chart.">
+
+  <link rel="icon" href="favicon.png" type="image/png">
+  <link rel="apple-touch-icon" href="favicon.png">
+
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-ZPCXDVE8C5"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-ZPCXDVE8C5');
+  </script>
+
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+  <style>
+    *{ box-sizing:border-box; }
+    html{ scroll-behavior:smooth; }
+
+    body{
+      margin:0;
+      min-height:100vh;
+      font-family:Arial, sans-serif;
+      color:#fff;
+      background:
+        linear-gradient(to bottom, #0d1d41 0%, #0d1d41 72%, #050814 88%, #000 100%);
+    }
+
+    .page{
+      width:min(1180px, calc(100% - 32px));
+      margin:0 auto;
+      padding:18px 0 40px;
+    }
+
+    .topbar{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:14px;
+      flex-wrap:wrap;
+      margin-bottom:18px;
+    }
+
+    .brand{
+      font-size:18px;
+      font-weight:800;
+      letter-spacing:.2px;
+    }
+
+    .nav a{
+      color:#cbd5e1;
+      text-decoration:none;
+      font-size:14px;
+      margin-left:12px;
+    }
+
+    .nav a:hover{ color:#fff; }
+
+    .hero{
+      display:grid;
+      grid-template-columns:1.1fr .9fr;
+      gap:18px;
+      align-items:stretch;
+      margin-top:8px;
+    }
+
+    .hero-copy,
+    .panel,
+    .card,
+    .faq-item,
+    .share-card,
+    .note{
+      background:rgba(30,41,59,0.52);
+      border:1px solid rgba(255,255,255,0.06);
+      border-radius:20px;
+    }
+
+    .hero-copy{
+      padding:26px;
+    }
+
+    .eyebrow{
+      display:inline-flex;
+      gap:8px;
+      align-items:center;
+      padding:7px 12px;
+      border-radius:999px;
+      background:rgba(59,130,246,0.12);
+      border:1px solid rgba(59,130,246,0.22);
+      color:#bfdbfe;
+      font-size:13px;
+      font-weight:700;
+      margin-bottom:14px;
+    }
+
+    h1{
+      margin:0;
+      font-size:clamp(34px, 5vw, 62px);
+      line-height:1.02;
+      letter-spacing:-0.02em;
+      background:linear-gradient(90deg,#e2e8f0 10%, #93c5fd 48%, #86efac 100%);
+      -webkit-background-clip:text;
+      background-clip:text;
+      color:transparent;
+    }
+
+    .lead{
+      margin:14px 0 0;
+      max-width:760px;
+      color:#94a3b8;
+      font-size:17px;
+      line-height:1.7;
+    }
+
+    .hero-stats{
+      display:grid;
+      grid-template-columns:repeat(3, minmax(0,1fr));
+      gap:10px;
+      margin-top:18px;
+    }
+
+    .mini{
+      padding:14px;
+      border-radius:16px;
+      background:rgba(15,23,42,0.72);
+      border:1px solid rgba(255,255,255,0.05);
+    }
+
+    .mini strong{
+      display:block;
+      font-size:18px;
+      margin-bottom:4px;
+    }
+
+    .mini span{
+      font-size:12px;
+      color:#94a3b8;
+      line-height:1.4;
+    }
+
+    .panel{
+      padding:22px;
+    }
+
+    .grid{
+      display:grid;
+      grid-template-columns:repeat(2, minmax(0,1fr));
+      gap:12px;
+    }
+
+    .field{
+      display:flex;
+      flex-direction:column;
+      gap:8px;
+    }
+
+    .field.full{ grid-column:1 / -1; }
+
+    label{
+      font-size:13px;
+      color:#cbd5e1;
+      font-weight:700;
+    }
+
+    input{
+      width:100%;
+      padding:14px 16px;
+      border-radius:14px;
+      border:1px solid rgba(255,255,255,0.10);
+      background:#0f172a;
+      color:#fff;
+      outline:none;
+      font-size:15px;
+    }
+
+    input:focus{
+      border-color:rgba(96,165,250,0.5);
+      box-shadow:0 0 0 4px rgba(59,130,246,0.12);
+    }
+
+    .chips{
+      display:flex;
+      flex-wrap:wrap;
+      gap:8px;
+    }
+
+    .chip{
+      border:none;
+      cursor:pointer;
+      padding:10px 13px;
+      border-radius:999px;
+      background:#334155;
+      color:#fff;
+      font-weight:700;
+      font-size:13px;
+      transition:.2s;
+    }
+
+    .chip:hover{ background:#475569; }
+    .chip.active{ background:#3b82f6; }
+
+    .actions{
+      display:flex;
+      flex-wrap:wrap;
+      gap:10px;
+      margin-top:14px;
+    }
+
+    .btn{
+      border:none;
+      cursor:pointer;
+      padding:12px 16px;
+      border-radius:12px;
+      font-weight:800;
+      font-size:14px;
+      transition:.2s;
+    }
+
+    .btn.primary{
+      color:#fff;
+      background:linear-gradient(135deg,#3b82f6,#2563eb);
+      box-shadow:0 8px 18px rgba(37,99,235,0.16);
+    }
+
+    .btn.secondary{
+      color:#fff;
+      background:rgba(255,255,255,0.05);
+      border:1px solid rgba(255,255,255,0.08);
+    }
+
+    .btn:hover{ transform:translateY(-1px); }
+
+    .status{
+      margin-top:14px;
+      font-size:14px;
+      color:#94a3b8;
+      line-height:1.6;
+    }
+
+    .result-wrap{
+      margin-top:18px;
+      display:none;
+    }
+
+    .result-card{
+      padding:22px;
+      border-radius:22px;
+      background:
+        radial-gradient(circle at top right, rgba(59,130,246,0.14), transparent 40%),
+        radial-gradient(circle at bottom left, rgba(34,197,94,0.10), transparent 38%),
+        rgba(15,23,42,0.82);
+      border:1px solid rgba(255,255,255,0.08);
+    }
+
+    .result-head{
+      display:flex;
+      justify-content:space-between;
+      gap:12px;
+      flex-wrap:wrap;
+      align-items:flex-start;
+    }
+
+    .result-kicker{
+      display:inline-flex;
+      padding:6px 10px;
+      border-radius:999px;
+      font-size:12px;
+      font-weight:800;
+      background:rgba(34,197,94,0.10);
+      color:#86efac;
+      border:1px solid rgba(34,197,94,0.20);
+      margin-bottom:12px;
+    }
+
+    .result-title{
+      margin:0;
+      font-size:clamp(26px, 3vw, 40px);
+      line-height:1.08;
+      max-width:760px;
+    }
+
+    .result-title span{
+      color:#60a5fa;
+    }
+
+    .result-sub{
+      margin:10px 0 0;
+      color:#cbd5e1;
+      line-height:1.7;
+      font-size:15px;
+    }
+
+    .result-grid{
+      display:grid;
+      grid-template-columns:repeat(4, minmax(0,1fr));
+      gap:10px;
+      margin-top:18px;
+    }
+
+    .metric{
+      padding:16px;
+      border-radius:16px;
+      background:rgba(15,23,42,0.72);
+      border:1px solid rgba(255,255,255,0.06);
+    }
+
+    .metric span{
+      display:block;
+      font-size:12px;
+      color:#94a3b8;
+      font-weight:700;
+      margin-bottom:6px;
+      text-transform:uppercase;
+      letter-spacing:.08em;
+    }
+
+    .metric strong{
+      font-size:18px;
+      line-height:1.2;
+    }
+
+    .metric.up strong{ color:#4ade80; }
+    .metric.down strong{ color:#f59e0b; }
+    .metric.flat strong{ color:#93c5fd; }
+
+    .share-card{
+      margin-top:14px;
+      padding:16px;
+    }
+
+    .share-text{
+      width:100%;
+      min-height:86px;
+      resize:vertical;
+      border-radius:14px;
+      background:#0f172a;
+      color:#fff;
+      border:1px solid rgba(255,255,255,0.08);
+      padding:14px 16px;
+      font-size:14px;
+      line-height:1.6;
+    }
+
+    .chart-wrap{
+      margin-top:18px;
+      padding-top:4px;
+    }
+
+    .section{
+      margin-top:34px;
+    }
+
+    .section h2{
+      margin:0 0 10px;
+      font-size:28px;
+    }
+
+    .section p,
+    .section li{
+      color:#cbd5e1;
+      line-height:1.75;
+      font-size:15px;
+    }
+
+    .section ul{ padding-left:20px; }
+
+    .note{
+      padding:16px 18px;
+      margin-top:12px;
+      color:#cbd5e1;
+      line-height:1.7;
+      font-size:14px;
+    }
+
+    .faq{
+      margin-top:12px;
+      display:grid;
+      gap:10px;
+    }
+
+    .faq-item{
+      overflow:hidden;
+    }
+
+    .faq-question{
+      width:100%;
+      border:none;
+      background:none;
+      color:#fff;
+      padding:14px 14px;
+      text-align:left;
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      cursor:pointer;
+      font-size:15px;
+      font-weight:700;
+    }
+
+    .faq-answer{
+      max-height:0;
+      overflow:hidden;
+      transition:max-height .28s ease;
+      padding:0 14px;
+      color:#cbd5e1;
+    }
+
+    .faq-item.active .faq-answer{
+      max-height:220px;
+      padding-bottom:14px;
+    }
+
+    .footer{
+      margin-top:34px;
+      padding-top:18px;
+      border-top:1px solid rgba(255,255,255,0.08);
+      color:#94a3b8;
+      font-size:13px;
+      line-height:1.65;
+    }
+
+    .footer-links{
+      display:flex;
+      flex-wrap:wrap;
+      gap:12px;
+      margin-top:12px;
+    }
+
+    .footer-links a{
+      color:#93c5fd;
+      text-decoration:none;
+    }
+
+    .footer-links a:hover{ text-decoration:underline; }
+
+    .is-hidden{ display:none !important; }
+
+    @media (max-width: 920px){
+      .hero{ grid-template-columns:1fr; }
+      .result-grid{ grid-template-columns:repeat(2, minmax(0,1fr)); }
+    }
+
+    @media (max-width: 640px){
+      .page{ width:min(1180px, calc(100% - 20px)); }
+      .grid,
+      .result-grid,
+      .hero-stats{ grid-template-columns:1fr; }
+      .nav{ display:none; }
+      .hero-copy, .panel, .result-card{ padding:18px; }
+      .result-title{ font-size:28px; }
+      .result-sub{ font-size:14px; }
+      .btn{ width:100%; }
+      .actions{ flex-direction:column; }
+    }
+  </style>
+</head>
+<body>
+  <div class="page">
+    <header class="topbar">
+      <div class="brand">Nova Invest Tools</div>
+      <nav class="nav">
+        <a href="#calculator">Calculator</a>
+        <a href="#result">Result</a>
+        <a href="#faq">FAQ</a>
+      </nav>
+    </header>
+
+    <section class="hero">
+      <div class="hero-copy">
+        <div class="eyebrow">Shareable BTC return visual</div>
+        <h1>If You Invested in Bitcoin Calculator</h1>
+        <p class="lead">
+          Pick an amount and a date. See what that Bitcoin investment would be worth today, how many BTC you would own, and the kind of return people actually post on social media.
+        </p>
+
+        <div class="hero-stats">
+          <div class="mini">
+            <strong id="heroCurrentValue">—</strong>
+            <span>current estimated value</span>
+          </div>
+          <div class="mini">
+            <strong id="heroMultiple">—</strong>
+            <span>return multiple</span>
+          </div>
+          <div class="mini">
+            <strong id="heroProfit">—</strong>
+            <span>profit estimate</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="panel" id="calculator">
+        <div class="grid">
+          <div class="field">
+            <label for="amount">Investment amount (USD)</label>
+            <input id="amount" type="number" min="1" step="1" value="100" />
+          </div>
+
+          <div class="field">
+            <label for="date">Investment date</label>
+            <input id="date" type="date" />
+          </div>
+
+          <div class="field full">
+            <label>Quick amounts</label>
+            <div class="chips" id="amountChips">
+              <button class="chip active" data-amount="100" type="button">$100</button>
+              <button class="chip" data-amount="500" type="button">$500</button>
+              <button class="chip" data-amount="1000" type="button">$1k</button>
+              <button class="chip" data-amount="5000" type="button">$5k</button>
+              <button class="chip" data-amount="10000" type="button">$10k</button>
+            </div>
+          </div>
+
+          <div class="field full">
+            <label>Quick dates</label>
+            <div class="chips" id="dateChips">
+              <button class="chip" data-years="1" type="button">1Y ago</button>
+              <button class="chip" data-years="3" type="button">3Y ago</button>
+              <button class="chip active" data-years="5" type="button">5Y ago</button>
+              <button class="chip" data-years="8" type="button">8Y ago</button>
+              <button class="chip" data-years="10" type="button">10Y ago</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="actions">
+          <button class="btn primary" id="calculateBtn" type="button">Calculate</button>
+          <button class="btn secondary" id="copyLinkBtn" type="button">Copy share link</button>
+        </div>
+
+        <div class="status" id="status">
+          Daily price data is used for the historical estimate. Exact intraday entries can differ a bit.
+        </div>
+      </div>
+    </section>
+
+    <section class="result-wrap" id="result">
+      <div class="result-card">
+        <div class="result-head">
+          <div>
+            <div class="result-kicker">Shareable result</div>
+            <h2 class="result-title" id="resultTitle">
+              If you invested <span>$100</span> in Bitcoin, this is what it would be worth.
+            </h2>
+            <p class="result-sub" id="resultSub">
+              —
+            </p>
+          </div>
+        </div>
+
+        <div class="result-grid">
+          <div class="metric up">
+            <span>Current value</span>
+            <strong id="valueNow">—</strong>
+          </div>
+          <div class="metric down">
+            <span>Profit</span>
+            <strong id="profitNow">—</strong>
+          </div>
+          <div class="metric flat">
+            <span>Return multiple</span>
+            <strong id="multipleNow">—</strong>
+          </div>
+          <div class="metric flat">
+            <span>Annualized</span>
+            <strong id="annualizedNow">—</strong>
+          </div>
+        </div>
+
+        <div class="result-grid" style="margin-top:10px;">
+          <div class="metric">
+            <span>BTC owned</span>
+            <strong id="btcOwned">—</strong>
+          </div>
+          <div class="metric">
+            <span>Start price</span>
+            <strong id="startPrice">—</strong>
+          </div>
+          <div class="metric">
+            <span>Current BTC price</span>
+            <strong id="currentPrice">—</strong>
+          </div>
+          <div class="metric">
+            <span>ROI</span>
+            <strong id="roiNow">—</strong>
+          </div>
+        </div>
+
+        <div class="share-card">
+          <label for="shareText" style="display:block;margin-bottom:8px;font-size:13px;color:#cbd5e1;font-weight:700;">Share text</label>
+          <textarea id="shareText" class="share-text" readonly></textarea>
+          <div class="actions" style="margin-top:10px;">
+            <button class="btn primary" id="copyTextBtn" type="button">Copy text</button>
+            <button class="btn secondary" id="shareBtn" type="button">Share</button>
+          </div>
+        </div>
+
+        <div class="chart-wrap">
+          <canvas id="growthChart" height="120"></canvas>
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <h2>Why this format gets shared</h2>
+      <p>
+        People share simple “what if” outcomes because they are instantly readable. The big number lands first, the date gives context, and the chart makes the story feel real.
+      </p>
+      <div class="note">
+        Best-performing formats are usually short, specific, and visual: “If you invested $100 in Bitcoin on [date], you would have $X today.”
+      </div>
+      <div class="note">
+        The page keeps the answer first, then gives the chart, then the explanation. That ordering is what makes it feel like a real product instead of a toy.
+      </div>
+    </section>
+
+    <section class="section" id="faq">
+      <h2>Frequently Asked Questions</h2>
+      <div class="faq">
+        <div class="faq-item card">
+          <button class="faq-question" type="button">
+            Is this exact to the cent?
+            <span>▼</span>
+          </button>
+          <div class="faq-answer">
+            <p>It is a close historical estimate based on daily price data. Exact intraday entry prices can differ a little.</p>
+          </div>
+        </div>
+
+        <div class="faq-item card">
+          <button class="faq-question" type="button">
+            Can I share the result link?
+            <span>▼</span>
+          </button>
+          <div class="faq-answer">
+            <p>Yes. The calculator updates the URL with your amount and date so you can copy and share the exact scenario.</p>
+          </div>
+        </div>
+
+        <div class="faq-item card">
+          <button class="faq-question" type="button">
+            Why use a Worker?
+            <span>▼</span>
+          </button>
+          <div class="faq-answer">
+            <p>It keeps the page fast and caches the upstream crypto data so the browser does not hit the API every time someone opens the page.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <footer class="footer">
+      <div>
+        <strong>Disclaimer:</strong> This calculator is for informational and educational purposes only. It is not financial advice.
+      </div>
+      <div class="footer-links">
+        <a href="#calculator">Calculator</a>
+        <a href="#result">Result</a>
+        <a href="#faq">FAQ</a>
+      </div>
+    </footer>
+  </div>
+
+  <script>
+    const API_URL = "https://YOUR-WORKER-URL.workers.dev/api/bitcoin-invest";
+
+    const amountInput = document.getElementById("amount");
+    const dateInput = document.getElementById("date");
+    const calculateBtn = document.getElementById("calculateBtn");
+    const copyLinkBtn = document.getElementById("copyLinkBtn");
+    const copyTextBtn = document.getElementById("copyTextBtn");
+    const shareBtn = document.getElementById("shareBtn");
+    const statusEl = document.getElementById("status");
+    const resultWrap = document.querySelector(".result-wrap");
+    const resultTitle = document.getElementById("resultTitle");
+    const resultSub = document.getElementById("resultSub");
+    const valueNow = document.getElementById("valueNow");
+    const profitNow = document.getElementById("profitNow");
+    const multipleNow = document.getElementById("multipleNow");
+    const annualizedNow = document.getElementById("annualizedNow");
+    const btcOwned = document.getElementById("btcOwned");
+    const startPrice = document.getElementById("startPrice");
+    const currentPrice = document.getElementById("currentPrice");
+    const roiNow = document.getElementById("roiNow");
+    const shareText = document.getElementById("shareText");
+    const heroCurrentValue = document.getElementById("heroCurrentValue");
+    const heroMultiple = document.getElementById("heroMultiple");
+    const heroProfit = document.getElementById("heroProfit");
+    const amountChips = Array.from(document.querySelectorAll("#amountChips .chip"));
+    const dateChips = Array.from(document.querySelectorAll("#dateChips .chip"));
+    const faqQuestions = Array.from(document.querySelectorAll(".faq-question"));
+
+    let chart = null;
+
+    function fmtUSD(n){
+      const value = Number(n);
+      if (!Number.isFinite(value)) return "—";
+      return value.toLocaleString(undefined, {
+        style: "currency",
+        currency: "USD",
+        maximumFractionDigits: value >= 1000 ? 0 : 2
+      });
+    }
+
+    function fmtBTC(n){
+      const value = Number(n);
+      if (!Number.isFinite(value)) return "—";
+      return value.toLocaleString(undefined, { maximumFractionDigits: 6 }) + " BTC";
+    }
+
+    function fmtPct(n){
+      const value = Number(n);
+      if (!Number.isFinite(value)) return "—";
+      return (value >= 0 ? "+" : "") + value.toFixed(2) + "%";
+    }
+
+    function fmtMultiple(n){
+      const value = Number(n);
+      if (!Number.isFinite(value)) return "—";
+      return value.toFixed(2) + "x";
+    }
+
+    function setDefaultDateYearsAgo(years){
+      const d = new Date();
+      d.setFullYear(d.getFullYear() - years);
+      dateInput.value = d.toISOString().slice(0, 10);
+    }
+
+    function setActiveChip(group, el){
+      const list = group === "amount" ? amountChips : dateChips;
+      list.forEach(btn => btn.classList.remove("active"));
+      el.classList.add("active");
+    }
+
+    function updateUrl(amount, date){
+      const url = new URL(window.location.href);
+      url.searchParams.set("amount", String(amount));
+      url.searchParams.set("date", date);
+      history.replaceState({}, "", url);
+    }
+
+    function setShareText(data){
+      const dateLabel = new Date(`${data.date}T00:00:00Z`).toLocaleDateString(undefined, {
+        year: "numeric",
+        month: "short",
+        day: "numeric"
+      });
+
+      const text =
+`If you invested ${fmtUSD(data.amount)} in Bitcoin on ${dateLabel}, you'd have ${fmtUSD(data.currentValue)} today.
+
+BTC bought: ${fmtBTC(data.btcUnits)}
+Profit: ${fmtUSD(data.profit)}
+Return: ${fmtMultiple(data.currentValue / data.amount)}
+ROI: ${fmtPct(data.roi)}
+
+Bitcoin investment calculator by Nova Invest Tools`;
+
+      shareText.value = text;
+      return text;
+    }
+
+    function renderChart(points){
+      const ctx = document.getElementById("growthChart").getContext("2d");
+      const labels = points.map(p => p.label);
+      const values = points.map(p => (p.price || 0));
+
+      if (chart) chart.destroy();
+
+      chart = new Chart(ctx, {
+        type: "line",
+        data: {
+          labels,
+          datasets: [{
+            label: "Bitcoin price",
+            data: values,
+            borderColor: "#60a5fa",
+            backgroundColor: "rgba(96,165,250,0.14)",
+            fill: true,
+            tension: 0.28,
+            pointRadius: 0,
+            pointHoverRadius: 4
+          }]
+        },
+        options: {
+          responsive: true,
+          plugins: {
+            legend: {
+              labels: { color: "#fff" }
+            },
+            tooltip: {
+              callbacks: {
+                label: (ctx) => ` ${fmtUSD(ctx.parsed.y)}`
+              }
+            }
+          },
+          scales: {
+            x: {
+              ticks: { color: "#fff", maxRotation: 0, autoSkip: true },
+              grid: { color: "rgba(255,255,255,0.06)" }
+            },
+            y: {
+              ticks: {
+                color: "#fff",
+                callback: (v) => fmtUSD(v)
+              },
+              grid: { color: "rgba(255,255,255,0.06)" }
+            }
+          }
+        }
+      });
+    }
+
+    function showResult(data){
+      const dateLabel = new Date(`${data.date}T00:00:00Z`).toLocaleDateString(undefined, {
+        year: "numeric",
+        month: "short",
+        day: "numeric"
+      });
+
+      const multiple = data.currentValue / data.amount;
+      const annualized = data.annualized;
+
+      resultTitle.innerHTML =
+        `If you invested <span>${fmtUSD(data.amount)}</span> in Bitcoin on ${dateLabel}, here's what it looks like today.`;
+
+      resultSub.textContent =
+        `That initial buy would have turned into ${fmtUSD(data.currentValue)}. The page uses daily historical BTC data plus a cached live price feed.`;
+
+      valueNow.textContent = fmtUSD(data.currentValue);
+      profitNow.textContent = fmtUSD(data.profit);
+      multipleNow.textContent = fmtMultiple(multiple);
+      annualizedNow.textContent = annualized == null ? "—" : fmtPct(annualized);
+      btcOwned.textContent = fmtBTC(data.btcUnits);
+      startPrice.textContent = fmtUSD(data.startPrice);
+      currentPrice.textContent = fmtUSD(data.currentPrice);
+      roiNow.textContent = fmtPct(data.roi);
+
+      heroCurrentValue.textContent = fmtUSD(data.currentValue);
+      heroMultiple.textContent = fmtMultiple(multiple);
+      heroProfit.textContent = fmtUSD(data.profit);
+
+      setShareText(data);
+      renderChart(data.points);
+
+      resultWrap.style.display = "block";
+      resultWrap.scrollIntoView({ behavior: "smooth", block: "start" });
+    }
+
+    async function calculate(){
+      const amount = Number(amountInput.value || 100);
+      const date = dateInput.value;
+
+      if (!date || Number.isNaN(new Date(`${date}T00:00:00Z`).getTime())) {
+        statusEl.textContent = "Pick a valid date.";
+        return;
+      }
+
+      if (!Number.isFinite(amount) || amount <= 0) {
+        statusEl.textContent = "Enter a valid investment amount.";
+        return;
+      }
+
+      statusEl.textContent = "Loading Bitcoin history and cached current price…";
+
+      updateUrl(amount, date);
+
+      const endpoint = `${API_URL}?amount=${encodeURIComponent(amount)}&date=${encodeURIComponent(date)}`;
+
+      try {
+        const res = await fetch(endpoint, {
+          headers: { Accept: "application/json" }
+        });
+
+        if (!res.ok) throw new Error(`Request failed with status ${res.status}`);
+
+        const data = await res.json();
+        if (!data || !data.points || !data.points.length) {
+          throw new Error("No data returned.");
+        }
+
+        showResult(data);
+        statusEl.textContent = `Updated successfully. Cached responses keep the page fast.`;
+      } catch (err) {
+        console.error(err);
+        statusEl.textContent = `Live data could not be loaded right now. ${err.message}`;
+      }
+    }
+
+    async function copyText(){
+      try {
+        await navigator.clipboard.writeText(shareText.value);
+        statusEl.textContent = "Share text copied.";
+      } catch {
+        statusEl.textContent = "Could not copy text.";
+      }
+    }
+
+    async function copyLink(){
+      const url = new URL(window.location.href);
+      url.searchParams.set("amount", amountInput.value || "100");
+      url.searchParams.set("date", dateInput.value);
+      try {
+        await navigator.clipboard.writeText(url.toString());
+        statusEl.textContent = "Share link copied.";
+      } catch {
+        statusEl.textContent = "Could not copy link.";
+      }
+    }
+
+    async function nativeShare(){
+      const text = shareText.value;
+      const url = new URL(window.location.href);
+      url.searchParams.set("amount", amountInput.value || "100");
+      url.searchParams.set("date", dateInput.value);
+
+      if (navigator.share) {
+        try {
+          await navigator.share({
+            title: document.title,
+            text,
+            url: url.toString()
+          });
+        } catch {}
+      } else {
+        await copyText();
+      }
+    }
+
+    amountChips.forEach(btn => {
+      btn.addEventListener("click", () => {
+        const amount = btn.dataset.amount;
+        amountInput.value = amount;
+        setActiveChip("amount", btn);
+        calculate();
+      });
+    });
+
+    dateChips.forEach(btn => {
+      btn.addEventListener("click", () => {
+        const years = Number(btn.dataset.years || 5);
+        setDefaultDateYearsAgo(years);
+        setActiveChip("date", btn);
+        calculate();
+      });
+    });
+
+    calculateBtn.addEventListener("click", calculate);
+    amountInput.addEventListener("change", calculate);
+    dateInput.addEventListener("change", calculate);
+    copyLinkBtn.addEventListener("click", copyLink);
+    copyTextBtn.addEventListener("click", copyText);
+    shareBtn.addEventListener("click", nativeShare);
+
+    faqQuestions.forEach(btn => {
+      btn.addEventListener("click", () => {
+        const item = btn.parentElement;
+        document.querySelectorAll(".faq-item").forEach(x => {
+          if (x !== item) x.classList.remove("active");
+        });
+        item.classList.toggle("active");
+      });
+    });
+
+    const params = new URLSearchParams(window.location.search);
+    const amountParam = Number(params.get("amount"));
+    const dateParam = params.get("date");
+
+    if (Number.isFinite(amountParam) && amountParam > 0) {
+      amountInput.value = amountParam;
+      amountChips.forEach(btn => btn.classList.toggle("active", Number(btn.dataset.amount) === amountParam));
+    } else {
+      amountInput.value = 100;
+    }
+
+    if (dateParam && !Number.isNaN(new Date(`${dateParam}T00:00:00Z`).getTime())) {
+      dateInput.value = dateParam;
+      dateChips.forEach(btn => btn.classList.remove("active"));
+    } else {
+      setDefaultDateYearsAgo(5);
+    }
+
+    calculate();
+  </script>
+</body>
+</html>
