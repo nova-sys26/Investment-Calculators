@@ -95,7 +95,19 @@
       scroll-behavior: smooth;
     }
 
-    
+    body {
+      font-family: Arial, sans-serif;
+      background:
+        radial-gradient(circle at top, rgba(59,130,246,0.18), transparent 35%),
+        radial-gradient(circle at bottom right, rgba(34,197,94,0.10), transparent 30%),
+        #020617;
+      color: white;
+      margin: 0;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
 
     .page-shell {
       width: min(1180px, calc(100% - 24px));
@@ -106,6 +118,16 @@
       font-size: 14px;
       color: #6b7a99;
       margin: 18px 0 6px;
+    }
+
+    .menu {
+      margin-bottom: 18px;
+    }
+
+    .menu a {
+      color: #3b82f6;
+      text-decoration: none;
+      font-weight: 600;
     }
 
     .container {
@@ -132,6 +154,38 @@
       margin: 0 0 8px;
       font-size: clamp(30px, 4vw, 42px);
       line-height: 1.08;
+    }
+
+    .subhead {
+      color: #94a3b8;
+      font-size: 15px;
+      line-height: 1.65;
+      margin: 0;
+      max-width: 760px;
+    }
+
+    .badge-row {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      margin-top: 10px;
+    }
+
+    .badge {
+      display: inline-flex;
+      padding: 5px 10px;
+      border-radius: 999px;
+      font-size: 12px;
+      font-weight: 700;
+      background: rgba(59,130,246,0.12);
+      color: #bfdbfe;
+      border: 1px solid rgba(59,130,246,0.22);
+    }
+
+    .badge.soft {
+      background: rgba(255,255,255,0.05);
+      border-color: rgba(255,255,255,0.08);
+      color: #dbeafe;
     }
 
     .status {
@@ -312,7 +366,34 @@
       border-color: rgba(59,130,246,0.35);
       color: #bfdbfe;
     }
-    
+
+    .related {
+      margin: 28px auto 0;
+      width: 90%;
+      max-width: 1100px;
+    }
+
+    .related a {
+      color: #93c5fd;
+      text-decoration: none;
+    }
+
+    .related a:hover {
+      text-decoration: underline;
+    }
+
+    .disclaimer {
+      margin-top: 40px;
+      padding: 20px 0 0;
+      border-top: 1px solid rgba(255,255,255,0.1);
+      font-size: 13px;
+      color: #9ca3af;
+      max-width: 1100px;
+      text-align: center;
+      line-height: 1.6;
+      width: 90%;
+    }
+
     @media (max-width: 720px) {
       .container {
         padding: 22px;
