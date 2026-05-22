@@ -164,6 +164,38 @@
       margin-bottom: 18px;
     }
 
+    .side-toggle{
+      display:flex;
+      gap:0;
+      margin:12px 0 8px;
+    }
+
+    .side-toggle button{
+      flex:1;
+      padding:12px;
+      border:none;
+      cursor:pointer;
+      background:#334155;
+      color:white;
+      transition:0.2s;
+      margin-top:0;
+      width:auto;
+      font-size:15px;
+      font-weight:700;
+    }
+
+    .side-toggle button:first-child{
+      border-radius:10px 0 0 10px;
+    }
+
+    .side-toggle button:last-child{
+      border-radius:0 10px 10px 0;
+    }
+
+    .side-toggle button.active{
+      background:#3b82f6;
+    }
+
     input, select{
       width:100%;
       padding:14px;
@@ -240,10 +272,11 @@
     .chart-shell{
       margin-top:22px;
       background:rgba(15,23,42,.72);
-      border:1px solid rgba(255,255,255,.08);
+      border:1px solid rgba(255,255,255,0.08);
       border-radius:16px;
       padding:14px;
       height:320px;
+      display:none;
     }
 
     .chart-header{
@@ -269,9 +302,15 @@
       line-height:1.5;
     }
 
-    canvas{
+    .chart-wrap{
       width:100%;
       height:250px;
+      position:relative;
+    }
+
+    canvas{
+      width:100%;
+      height:100%;
       display:block;
     }
 
@@ -384,6 +423,10 @@
       width:90%;
     }
 
+    .is-hidden{
+      display:none !important;
+    }
+
     @media (max-width: 700px){
       .container{
         padding:22px;
@@ -401,7 +444,7 @@
         height:300px;
       }
 
-      canvas{
+      .chart-wrap{
         height:220px;
       }
     }
@@ -425,18 +468,19 @@
       Useful for traders who want to understand carry, holding cost, and margin impact.
     </p>
 
+    <div class="side-toggle" role="tablist" aria-label="Position side">
+      <button id="longBtn" class="active" type="button">Long</button>
+      <button id="shortBtn" type="button">Short</button>
+    </div>
+
     <input id="entryPrice" placeholder="Entry price ($)" type="number" step="any" min="0">
     <input id="positionSize" placeholder="Position size / notional ($)" type="number" step="any" min="0">
     <input id="fundingRate" placeholder="Funding rate per interval (%) — e.g. 0.01" type="number" step="any">
-    <select id="side">
-      <option value="long">Long</option>
-      <option value="short">Short</option>
-    </select>
     <input id="holdingHours" placeholder="Holding time (hours)" type="number" step="any" min="0">
-    <input id="intervalHours" placeholder="Funding interval (hours)" type="number" step="any" min="1" value="8">
+    <input id="intervalHours" placeholder="Funding interval (hours)" type="number" step="any" min="1">
     <input id="leverage" placeholder="Leverage (optional)" type="number" step="any" min="1">
 
-    <button type="button" onclick="calculate()">Calculate</button>
+    <button type="button" id="calcBtn">Calculate</button>
 
     <div id="resultCard" class="result-card">
       <div class="result-line"><strong>Funding per interval:</strong> <span id="fundingPerInterval">—</span></div>
@@ -447,7 +491,7 @@
       <div class="result-line"><strong>Insight:</strong> <span id="insightOut">—</span></div>
     </div>
 
-    <div class="chart-shell">
+    <div id="chartShell" class="chart-shell">
       <div class="chart-header">
         <div>
           <h3 class="chart-title">Cumulative Funding Over Time</h3>
@@ -456,7 +500,9 @@
           </p>
         </div>
       </div>
-      <canvas id="myChart"></canvas>
+      <div class="chart-wrap">
+        <canvas id="myChart"></canvas>
+      </div>
     </div>
   </div>
 
@@ -592,28 +638,181 @@
 
   <script src="footer.js"></script>
   <script>
-    let chart;
+    let chart = null;
+    let selectedSide = "long";
+
+    const els = {
+      longBtn: document.getElementById("longBtn"),
+      shortBtn: document.getElementById("shortBtn"),
+      calcBtn: document.getElementById("calcBtn"),
+      chartShell: document.getElementById("chartShell"),
+      resultCard: document.getElementById("resultCard"),
+      quickAnswer: document.getElementById("quickAnswer"),
+      entryPrice: document.getElementById("entryPrice"),
+      positionSize: document.getElementById("positionSize"),
+      fundingRate: document.getElementById("fundingRate"),
+      holdingHours: document.getElementById("holdingHours"),
+      intervalHours: document.getElementById("intervalHours"),
+      leverage: document.getElementById("leverage"),
+      fundingPerInterval: document.getElementById("fundingPerInterval"),
+      fundingTotal: document.getElementById("fundingTotal"),
+      annualizedRate: document.getElementById("annualizedRate"),
+      marginImpact: document.getElementById("marginImpact"),
+      priceEffect: document.getElementById("priceEffect"),
+      insightOut: document.getElementById("insightOut")
+    };
+
+    function setSide(side){
+      selectedSide = side;
+      els.longBtn.classList.toggle("active", side === "long");
+      els.shortBtn.classList.toggle("active", side === "short");
+    }
+
+    function formatMoney(value){
+      if (!Number.isFinite(value)) return "—";
+      const sign = value < 0 ? "-" : "";
+      const abs = Math.abs(value);
+
+      if (abs >= 1e12) return `${sign}$${(abs / 1e12).toFixed(2)}T`;
+      if (abs >= 1e9) return `${sign}$${(abs / 1e9).toFixed(2)}B`;
+      if (abs >= 1e6) return `${sign}$${(abs / 1e6).toFixed(2)}M`;
+      return `${sign}$${abs.toFixed(2)}`;
+    }
+
+    function formatPercent(value, digits = 2){
+      if (!Number.isFinite(value)) return "—";
+      const sign = value < 0 ? "-" : "";
+      return `${sign}${Math.abs(value).toFixed(digits)}%`;
+    }
+
+    function buildFundingSeries(totalFunding, intervals, intervalHours){
+      const points = [];
+      const totalHours = Math.max(intervalHours, intervals * intervalHours);
+      const steps = Math.max(12, Math.min(30, Math.ceil(totalHours / Math.max(1, intervalHours / 2))));
+
+      for (let i = 0; i <= steps; i++){
+        const t = i / steps;
+        points.push({
+          x: totalHours * t,
+          y: totalFunding * t
+        });
+      }
+
+      return points;
+    }
+
+    function drawChart(series){
+      const canvas = document.getElementById("myChart");
+      const ctx = canvas.getContext("2d");
+      const dpr = window.devicePixelRatio || 1;
+
+      const cssWidth = canvas.clientWidth || 1000;
+      const cssHeight = canvas.clientHeight || 220;
+
+      canvas.width = Math.floor(cssWidth * dpr);
+      canvas.height = Math.floor(cssHeight * dpr);
+      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+
+      if (chart){
+        chart.destroy();
+      }
+
+      const values = series.map(p => p.y);
+      const positive = values[values.length - 1] >= 0;
+      const lineColor = positive ? "#3b82f6" : "#22c55e";
+      const fillColor = positive ? "rgba(59,130,246,0.16)" : "rgba(34,197,94,0.16)";
+
+      chart = new Chart(ctx, {
+        type: "line",
+        data: {
+          datasets: [{
+            label: "Cumulative funding",
+            data: series,
+            parsing: false,
+            borderColor: lineColor,
+            backgroundColor: fillColor,
+            fill: true,
+            tension: 0.32,
+            borderWidth: 3,
+            pointRadius: 0,
+            pointHoverRadius: 5,
+            pointHitRadius: 12
+          }]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          interaction: {
+            mode: "nearest",
+            intersect: false
+          },
+          plugins: {
+            legend: {
+              display: false
+            },
+            tooltip: {
+              backgroundColor: "#0f172a",
+              titleColor: "#fff",
+              bodyColor: "#e2e8f0",
+              borderColor: "rgba(255,255,255,0.08)",
+              borderWidth: 1,
+              padding: 12,
+              callbacks: {
+                title: function(context){
+                  const x = context[0].parsed.x;
+                  return `Hour ${x.toFixed(1)}`;
+                },
+                label: function(context){
+                  return ` ${formatMoney(context.parsed.y)}`;
+                }
+              }
+            }
+          },
+          scales: {
+            x: {
+              type: "linear",
+              min: 0,
+              ticks: {
+                color: "#cbd5e1",
+                callback: function(value){
+                  return `${Number(value).toFixed(0)}h`;
+                }
+              },
+              grid: {
+                color: "rgba(255,255,255,0.06)"
+              }
+            },
+            y: {
+              ticks: {
+                color: "#cbd5e1",
+                callback: function(value){
+                  return formatMoney(Number(value));
+                }
+              },
+              grid: {
+                color: "rgba(255,255,255,0.08)"
+              }
+            }
+          }
+        }
+      });
+    }
 
     function calculate(){
-      const entryPrice = parseFloat(document.getElementById("entryPrice").value);
-      const positionSize = parseFloat(document.getElementById("positionSize").value);
-      const fundingRatePct = parseFloat(document.getElementById("fundingRate").value);
-      const side = document.getElementById("side").value;
-      const holdingHours = parseFloat(document.getElementById("holdingHours").value);
-      const intervalHours = parseFloat(document.getElementById("intervalHours").value);
-      const leverage = parseFloat(document.getElementById("leverage").value);
+      const entryPrice = parseFloat(els.entryPrice.value);
+      const positionSize = parseFloat(els.positionSize.value);
+      const fundingRatePct = parseFloat(els.fundingRate.value);
+      const holdingHours = parseFloat(els.holdingHours.value);
+      const intervalHours = parseFloat(els.intervalHours.value);
+      const leverage = parseFloat(els.leverage.value);
 
-      const resultCard = document.getElementById("resultCard");
-      const breakAnswer = document.getElementById("quickAnswer");
-
-      const fundingPerIntervalOut = document.getElementById("fundingPerInterval");
-      const fundingTotalOut = document.getElementById("fundingTotal");
-      const annualizedRateOut = document.getElementById("annualizedRate");
-      const marginImpactOut = document.getElementById("marginImpact");
-      const priceEffectOut = document.getElementById("priceEffect");
-      const insightOut = document.getElementById("insightOut");
-
-      if (isNaN(entryPrice) || isNaN(positionSize) || isNaN(fundingRatePct) || isNaN(holdingHours) || isNaN(intervalHours)) {
+      if (
+        isNaN(entryPrice) ||
+        isNaN(positionSize) ||
+        isNaN(fundingRatePct) ||
+        isNaN(holdingHours) ||
+        isNaN(intervalHours)
+      ) {
         alert("Fill all fields");
         return;
       }
@@ -645,25 +844,25 @@
 
       const fundingRate = fundingRatePct / 100;
       const intervals = holdingHours / intervalHours;
-      const sideSign = side === "long" ? 1 : -1;
+      const sideSign = selectedSide === "long" ? 1 : -1;
 
       const fundingPerInterval = positionSize * fundingRate * sideSign;
       const totalFunding = fundingPerInterval * intervals;
       const annualizedRate = fundingRate * (24 / intervalHours) * 365 * 100 * sideSign;
       const margin = Number.isFinite(leverage) && leverage > 0 ? positionSize / leverage : NaN;
       const marginImpact = Number.isFinite(margin) ? (totalFunding / margin) * 100 : NaN;
-      const priceEffect = (totalFunding * entryPrice / positionSize);
+      const priceEffect = totalFunding * entryPrice / positionSize;
 
       let insight = "";
       let insightClass = "";
 
       if (totalFunding > 0) {
-        insight = side === "long"
+        insight = selectedSide === "long"
           ? "Funding cost is working against the long."
           : "Funding benefit is working for the short.";
         insightClass = "insight-weak";
       } else if (totalFunding < 0) {
-        insight = side === "long"
+        insight = selectedSide === "long"
           ? "Negative funding is helping the long."
           : "Negative funding is costing the short.";
         insightClass = "insight-good";
@@ -672,18 +871,19 @@
         insightClass = "insight-medium";
       }
 
-      resultCard.style.display = "block";
+      els.resultCard.style.display = "block";
+      els.chartShell.style.display = "block";
 
-      fundingPerIntervalOut.innerHTML = `${formatMoney(fundingPerInterval)}`;
-      fundingTotalOut.innerHTML = `${formatMoney(totalFunding)}`;
-      annualizedRateOut.innerHTML = `${formatPercent(annualizedRate, 2)}`;
-      marginImpactOut.innerHTML = Number.isFinite(marginImpact) ? `${formatPercent(marginImpact, 2)}` : "Add leverage";
-      priceEffectOut.innerHTML = `${formatMoney(priceEffect)}`;
-      insightOut.innerHTML = `<span class="${insightClass}">${insight}</span>`;
+      els.fundingPerInterval.innerHTML = formatMoney(fundingPerInterval);
+      els.fundingTotal.innerHTML = formatMoney(totalFunding);
+      els.annualizedRate.innerHTML = formatPercent(annualizedRate, 2);
+      els.marginImpact.innerHTML = Number.isFinite(marginImpact) ? formatPercent(marginImpact, 2) : "Add leverage";
+      els.priceEffect.innerHTML = formatMoney(priceEffect);
+      els.insightOut.innerHTML = `<span class="${insightClass}">${insight}</span>`;
 
-      breakAnswer.innerHTML = `
+      els.quickAnswer.innerHTML = `
         <span class="${totalFunding >= 0 ? "tone-negative" : "tone-positive"}">
-          <strong>${side === "long" ? "Long" : "Short"} position:</strong>
+          <strong>${selectedSide === "long" ? "Long" : "Short"} position:</strong>
           ${totalFunding >= 0 ? "Funding cost" : "Funding benefit"} over your holding period is <strong>${formatMoney(totalFunding)}</strong>.
         </span>
       `;
@@ -692,100 +892,11 @@
       drawChart(series);
     }
 
-    function drawChart(series){
-      const ctx = document.getElementById('myChart').getContext('2d');
-
-      if(chart){
-        chart.destroy();
-      }
-
-      const labels = series.map(p => `${p.hours.toFixed(0)}h`);
-
-      chart = new Chart(ctx,{
-        type:'line',
-        data:{
-          labels,
-          datasets:[{
-            label:'Cumulative funding',
-            data: series.map(p => p.value),
-            borderColor:'#3b82f6',
-            backgroundColor:'rgba(59,130,246,0.16)',
-            fill:true,
-            tension:0.28,
-            pointRadius:4,
-            pointHoverRadius:6,
-            pointBackgroundColor:'#60a5fa',
-            pointBorderColor:'#ffffff',
-            pointBorderWidth:2
-          }]
-        },
-        options:{
-          responsive:true,
-          maintainAspectRatio:false,
-          plugins:{
-            legend:{
-              labels:{ color:'white' }
-            },
-            tooltip:{
-              callbacks:{
-                label: function(context){
-                  return `${formatMoney(Number(context.parsed.y))}`;
-                }
-              }
-            }
-          },
-          scales:{
-            x:{
-              ticks:{ color:'white' },
-              grid:{ color:'rgba(255,255,255,0.08)' }
-            },
-            y:{
-              ticks:{
-                color:'white',
-                callback: function(value){
-                  return formatMoney(Number(value));
-                }
-              },
-              grid:{ color:'rgba(255,255,255,0.08)' }
-            }
-          }
-        }
-      });
-    }
-
-    function buildFundingSeries(totalFunding, intervals, intervalHours){
-      const points = [];
-      const steps = Math.max(8, Math.min(24, Math.ceil(intervals * 2)));
-
-      for (let i = 0; i <= steps; i++){
-        const t = i / steps;
-        points.push({
-          hours: t * intervals * intervalHours,
-          value: totalFunding * t
-        });
-      }
-
-      return points;
-    }
-
-    function formatMoney(value){
-      if (!Number.isFinite(value)) return "—";
-      const sign = value < 0 ? "-" : "";
-      const abs = Math.abs(value);
-
-      if (abs >= 1e12) return `${sign}$${(abs / 1e12).toFixed(2)}T`;
-      if (abs >= 1e9) return `${sign}$${(abs / 1e9).toFixed(2)}B`;
-      if (abs >= 1e6) return `${sign}$${(abs / 1e6).toFixed(2)}M`;
-      return `${sign}$${abs.toFixed(2)}`;
-    }
-
-    function formatPercent(value, digits = 2){
-      if (!Number.isFinite(value)) return "—";
-      const sign = value < 0 ? "-" : "";
-      return `${sign}${Math.abs(value).toFixed(digits)}%`;
-    }
-
     document.addEventListener("DOMContentLoaded", function(){
+      els.longBtn.addEventListener("click", () => setSide("long"));
+      els.shortBtn.addEventListener("click", () => setSide("short"));
+      els.calcBtn.addEventListener("click", calculate);
+
       document.querySelectorAll(".faq-question").forEach(btn => {
         btn.addEventListener("click", () => {
           const item = btn.parentElement;
@@ -797,7 +908,15 @@
           item.classList.toggle("active");
         });
       });
+
+      setSide("long");
+    });
+
+    window.addEventListener("resize", () => {
+      if (els.chartShell.style.display === "block" && chart){
+        drawChart(chart.data.datasets[0].data);
+      }
     });
   </script>
 </body>
-  </html>
+</html>
