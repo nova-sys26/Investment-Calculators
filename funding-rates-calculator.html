@@ -250,19 +250,91 @@
       color:#cbd5f5;
     }
 
-    .insight-good{
-      color:#22c55e;
-      font-weight:700;
+    .insight-banner{
+      margin-top:14px;
+      padding:16px;
+      border-radius:16px;
+      background:rgba(15,23,42,0.88);
+      border:1px solid rgba(255,255,255,0.08);
     }
 
-    .insight-medium{
-      color:#facc15;
-      font-weight:700;
+    .insight-banner.insight-good{
+      border-color:rgba(34,197,94,0.25);
+      background:rgba(34,197,94,0.08);
     }
 
-    .insight-weak{
-      color:#ef4444;
+    .insight-banner.insight-medium{
+      border-color:rgba(250,204,21,0.25);
+      background:rgba(250,204,21,0.08);
+    }
+
+    .insight-banner.insight-weak{
+      border-color:rgba(239,68,68,0.25);
+      background:rgba(239,68,68,0.08);
+    }
+
+    .insight-kicker{
+      display:inline-flex;
+      align-items:center;
+      padding:5px 10px;
+      border-radius:999px;
+      font-size:11px;
+      font-weight:800;
+      letter-spacing:0.08em;
+      text-transform:uppercase;
+      background:rgba(255,255,255,0.06);
+      color:#cbd5e1;
+    }
+
+    .insight-headline{
+      display:block;
+      margin-top:8px;
+      font-size:18px;
+      line-height:1.25;
+    }
+
+    .insight-body{
+      margin:8px 0 0;
+      color:#cbd5e1;
+      line-height:1.6;
+      font-size:14px;
+    }
+
+    .insight-grid{
+      display:grid;
+      grid-template-columns:repeat(auto-fit, minmax(180px, 1fr));
+      gap:12px;
+      margin-top:12px;
+    }
+
+    .insight-card{
+      background:rgba(15,23,42,0.72);
+      border:1px solid rgba(255,255,255,0.06);
+      border-radius:14px;
+      padding:14px;
+    }
+
+    .insight-card span{
+      display:block;
+      color:#94a3b8;
+      font-size:12px;
+      text-transform:uppercase;
+      letter-spacing:0.08em;
       font-weight:700;
+      margin-bottom:6px;
+    }
+
+    .insight-card strong{
+      display:block;
+      font-size:16px;
+      line-height:1.25;
+    }
+
+    .insight-card p{
+      margin:6px 0 0;
+      color:#cbd5e1;
+      font-size:13px;
+      line-height:1.55;
     }
 
     .tone-positive{ color:#22c55e; font-weight:700; }
@@ -460,9 +532,11 @@
 
   <div class="container" data-search="funding rates calculator perpetual futures funding cost annualized funding margin impact trading risk">
     <h1>Funding Rates Calculator</h1>
+
     <p class="quick-answer" id="quickAnswer">
-      Enter your trade details to estimate funding payment, annualized carry, and price impact.
+      Estimate perpetual futures funding cost, annualized carry, margin impact, and whether a long or short position is paying or receiving funding.
     </p>
+
     <p class="subhead">
       Calculate funding cost or benefit for perpetual futures positions.
       Useful for traders who want to understand carry, holding cost, and margin impact.
@@ -489,6 +563,35 @@
       <div class="result-line"><strong>Margin impact:</strong> <span id="marginImpact">—</span></div>
       <div class="result-line"><strong>Price effect:</strong> <span id="priceEffect">—</span></div>
       <div class="result-line"><strong>Insight:</strong> <span id="insightOut">—</span></div>
+
+      <div id="insightBanner" class="insight-banner is-hidden">
+        <span id="insightKicker" class="insight-kicker">—</span>
+        <strong id="insightHeadline" class="insight-headline">—</strong>
+        <p id="insightBody" class="insight-body">—</p>
+      </div>
+
+      <div class="insight-grid">
+        <div class="insight-card">
+          <span>Funding pressure</span>
+          <strong id="insightPressure">—</strong>
+          <p id="insightPressureNote">—</p>
+        </div>
+        <div class="insight-card">
+          <span>Hold-time impact</span>
+          <strong id="insightHold">—</strong>
+          <p id="insightHoldNote">—</p>
+        </div>
+        <div class="insight-card">
+          <span>Margin stress</span>
+          <strong id="insightMargin">—</strong>
+          <p id="insightMarginNote">—</p>
+        </div>
+        <div class="insight-card">
+          <span>Action</span>
+          <strong id="insightAction">—</strong>
+          <p id="insightActionNote">—</p>
+        </div>
+      </div>
     </div>
 
     <div id="chartShell" class="chart-shell">
@@ -590,19 +693,19 @@
           </p>
         </div>
       </div>
-      
-<div class="faq-item">
-  <button class="faq-question" type="button">
-    How often is funding charged?
-    <span class="arrow">▼</span>
-  </button>
-  <div class="faq-answer">
-    <p>
-      Funding is usually charged at fixed intervals, often every 8 hours on major perpetual futures markets, but the exact schedule depends on the exchange. This is why the interval input matters so much in the calculator.
-    </p>
-  </div>
-</div>
-      
+
+      <div class="faq-item">
+        <button class="faq-question" type="button">
+          How often is funding charged?
+          <span class="arrow">▼</span>
+        </button>
+        <div class="faq-answer">
+          <p>
+            Funding is usually charged at fixed intervals, often every 8 hours on major perpetual futures markets, but the exact schedule depends on the exchange. This is why the interval input matters so much in the calculator.
+          </p>
+        </div>
+      </div>
+
       <div class="faq-item">
         <button class="faq-question" type="button">
           Why is annualized funding useful?
@@ -652,6 +755,7 @@
   <script>
     let chart = null;
     let selectedSide = "long";
+    let lastSeries = null;
 
     const els = {
       longBtn: document.getElementById("longBtn"),
@@ -671,7 +775,19 @@
       annualizedRate: document.getElementById("annualizedRate"),
       marginImpact: document.getElementById("marginImpact"),
       priceEffect: document.getElementById("priceEffect"),
-      insightOut: document.getElementById("insightOut")
+      insightOut: document.getElementById("insightOut"),
+      insightBanner: document.getElementById("insightBanner"),
+      insightKicker: document.getElementById("insightKicker"),
+      insightHeadline: document.getElementById("insightHeadline"),
+      insightBody: document.getElementById("insightBody"),
+      insightPressure: document.getElementById("insightPressure"),
+      insightPressureNote: document.getElementById("insightPressureNote"),
+      insightHold: document.getElementById("insightHold"),
+      insightHoldNote: document.getElementById("insightHoldNote"),
+      insightMargin: document.getElementById("insightMargin"),
+      insightMarginNote: document.getElementById("insightMarginNote"),
+      insightAction: document.getElementById("insightAction"),
+      insightActionNote: document.getElementById("insightActionNote")
     };
 
     function setSide(side){
@@ -810,6 +926,136 @@
       });
     }
 
+    function getFundingInsight({
+      side,
+      fundingRatePct,
+      holdingHours,
+      intervalHours,
+      leverage,
+      totalFunding,
+      annualizedRate,
+      marginImpact,
+      priceEffect
+    }) {
+      const absFundingRate = Math.abs(fundingRatePct);
+      const intervals = holdingHours / intervalHours;
+      const holdRatio = intervalHours > 0 ? holdingHours / intervalHours : 0;
+
+      const pressureLevel =
+        absFundingRate < 0.01 ? "Very low" :
+        absFundingRate < 0.03 ? "Low" :
+        absFundingRate < 0.08 ? "Moderate" :
+        absFundingRate < 0.15 ? "High" : "Very high";
+
+      const timeLevel =
+        holdingHours < intervalHours ? "Very short hold" :
+        holdingHours <= intervalHours * 3 ? "Short hold" :
+        holdingHours <= intervalHours * 8 ? "Medium hold" : "Long hold";
+
+      const leverageLevel =
+        !Number.isFinite(leverage) ? "Unleveraged / unknown" :
+        leverage <= 3 ? "Low leverage" :
+        leverage <= 10 ? "Moderate leverage" :
+        leverage <= 20 ? "High leverage" : "Very high leverage";
+
+      const marginStress =
+        !Number.isFinite(marginImpact) ? "Unknown" :
+        Math.abs(marginImpact) < 1 ? "Very light" :
+        Math.abs(marginImpact) < 5 ? "Light" :
+        Math.abs(marginImpact) < 15 ? "Noticeable" :
+        Math.abs(marginImpact) < 30 ? "Heavy" : "Severe";
+
+      const totalAbs = Math.abs(totalFunding);
+      const annualAbs = Math.abs(annualizedRate);
+
+      let bannerClass = "insight-medium";
+      let kicker = "Balanced";
+      let headline = "Funding is manageable in this setup";
+      let body = "The carry effect exists, but the position does not look structurally overwhelmed by funding.";
+
+      if (totalAbs === 0) {
+        bannerClass = "insight-medium";
+        kicker = "Neutral";
+        headline = "No funding drag from this configuration";
+        body = "At this funding rate and holding period, the carry effect is effectively zero.";
+      } else if (absFundingRate >= 0.08 && holdingHours >= intervalHours * 3 && Math.abs(marginImpact) >= 10) {
+        bannerClass = "insight-weak";
+        kicker = "Heavy carry";
+        headline = "This trade is sensitive to funding";
+        body = `Your ${pressureLevel.toLowerCase()} funding rate and ${timeLevel.toLowerCase()} create meaningful carry drag. ${side === "long" ? "A long" : "A short"} position needs enough price edge to justify the cost.`;
+      } else if (Math.abs(marginImpact) >= 15) {
+        bannerClass = "insight-weak";
+        kicker = "Margin stress";
+        headline = "Funding is eating into your margin";
+        body = `The estimated funding impact is large relative to margin. With ${leverageLevel.toLowerCase()}, this position can feel much more expensive than notional alone suggests.`;
+      } else if (annualAbs >= 15 || absFundingRate >= 0.03) {
+        bannerClass = "insight-medium";
+        kicker = "Watchful";
+        headline = "Funding is noticeable";
+        body = `The ${pressureLevel.toLowerCase()} funding rate and ${timeLevel.toLowerCase()} mean carry is worth watching closely. ${side === "long" ? "Longs" : "Shorts"} need stronger trade conviction here.`;
+      } else if (totalAbs > 0 && absFundingRate < 0.03 && Math.abs(marginImpact) < 5) {
+        bannerClass = "insight-good";
+        kicker = "Light carry";
+        headline = "Funding drag is still mild";
+        body = `The current setup looks relatively light on carry. ${side === "long" ? "Longs" : "Shorts"} should still compare expected move versus funding, but the holding cost is not extreme.`;
+      } else {
+        bannerClass = "insight-medium";
+        kicker = "Context";
+        headline = "Funding matters, but it is not the whole trade";
+        body = `The funding cost is real, but its importance depends on hold time, leverage, and whether your expected move is large enough to absorb it.`;
+      }
+
+      const pressureText = pressureLevel;
+      const pressureNote = `${side === "long" ? "Long" : "Short"} side, ${fundingRatePct.toFixed(4)}% per interval, ${intervalHours.toFixed(2)}h intervals.`;
+
+      const holdText =
+        holdingHours < intervalHours ? "Less than 1 interval" :
+        `${intervals.toFixed(1)} intervals`;
+
+      const holdNote = `${timeLevel}. Holding for ${holdingHours.toFixed(2)} hours means funding compounds across ${holdRatio.toFixed(2)}x the interval.`;
+
+      const marginText = Number.isFinite(marginImpact)
+        ? `${Math.abs(marginImpact).toFixed(2)}%`
+        : "Add leverage";
+
+      const marginNote = Number.isFinite(marginImpact)
+        ? `${leverageLevel}. Estimated margin stress: ${marginStress}. Price effect: ${formatMoney(priceEffect)}.`
+        : "Enter leverage to see funding as a share of margin.";
+
+      const actionText =
+        totalAbs === 0
+          ? "Proceed only if price edge is strong"
+          : Math.abs(marginImpact) >= 15
+            ? "Consider smaller size or shorter hold"
+            : absFundingRate >= 0.08
+              ? "Compare carry against expected move"
+              : "Funding looks acceptable, but keep monitoring";
+
+      const actionNote =
+        totalAbs === 0
+          ? "No carry drag here, so the trade must stand on price edge alone."
+          : Math.abs(marginImpact) >= 15
+            ? "This setup can get expensive quickly if the move does not come through fast enough."
+            : absFundingRate >= 0.08
+              ? "High funding can quietly erase edge if the move is slow."
+              : "The funding layer is present, but it is not dominating the setup.";
+
+      return {
+        bannerClass,
+        kicker,
+        headline,
+        body,
+        pressureText,
+        pressureNote,
+        holdText,
+        holdNote,
+        marginText,
+        marginNote,
+        actionText,
+        actionNote
+      };
+    }
+
     function calculate(){
       const entryPrice = parseFloat(els.entryPrice.value);
       const positionSize = parseFloat(els.positionSize.value);
@@ -865,23 +1111,17 @@
       const marginImpact = Number.isFinite(margin) ? (totalFunding / margin) * 100 : NaN;
       const priceEffect = totalFunding * entryPrice / positionSize;
 
-      let insight = "";
-      let insightClass = "";
-
-      if (totalFunding > 0) {
-        insight = selectedSide === "long"
-          ? "Funding cost is working against the long."
-          : "Funding benefit is working for the short.";
-        insightClass = "insight-weak";
-      } else if (totalFunding < 0) {
-        insight = selectedSide === "long"
-          ? "Negative funding is helping the long."
-          : "Negative funding is costing the short.";
-        insightClass = "insight-good";
-      } else {
-        insight = "Zero funding means no carry drag in this setup.";
-        insightClass = "insight-medium";
-      }
+      const insight = getFundingInsight({
+        side: selectedSide,
+        fundingRatePct,
+        holdingHours,
+        intervalHours,
+        leverage,
+        totalFunding,
+        annualizedRate,
+        marginImpact,
+        priceEffect
+      });
 
       els.resultCard.style.display = "block";
       els.chartShell.style.display = "block";
@@ -891,10 +1131,47 @@
       els.annualizedRate.innerHTML = formatPercent(annualizedRate, 2);
       els.marginImpact.innerHTML = Number.isFinite(marginImpact) ? formatPercent(marginImpact, 2) : "Add leverage";
       els.priceEffect.innerHTML = formatMoney(priceEffect);
-      els.insightOut.innerHTML = `<span class="${insightClass}">${insight}</span>`;
 
+      let insightText = "";
+      let insightClass = "";
+
+      if (totalFunding > 0) {
+        insightText = selectedSide === "long"
+          ? "Funding cost is working against the long."
+          : "Funding benefit is working for the short.";
+        insightClass = "insight-weak";
+      } else if (totalFunding < 0) {
+        insightText = selectedSide === "long"
+          ? "Negative funding is helping the long."
+          : "Negative funding is costing the short.";
+        insightClass = "insight-good";
+      } else {
+        insightText = "Zero funding means no carry drag in this setup.";
+        insightClass = "insight-medium";
+      }
+
+      els.insightOut.innerHTML = `<span class="${insightClass}">${insightText}</span>`;
+
+      els.insightBanner.classList.remove("is-hidden");
+      els.insightBanner.className = `insight-banner ${insight.bannerClass}`;
+      els.insightKicker.textContent = insight.kicker;
+      els.insightHeadline.textContent = insight.headline;
+      els.insightBody.textContent = insight.body;
+
+      els.insightPressure.textContent = insight.pressureText;
+      els.insightPressureNote.textContent = insight.pressureNote;
+
+      els.insightHold.textContent = insight.holdText;
+      els.insightHoldNote.textContent = insight.holdNote;
+
+      els.insightMargin.textContent = insight.marginText;
+      els.insightMarginNote.textContent = insight.marginNote;
+
+      els.insightAction.textContent = insight.actionText;
+      els.insightActionNote.textContent = insight.actionNote;
 
       const series = buildFundingSeries(totalFunding, intervals, intervalHours);
+      lastSeries = series;
       drawChart(series);
     }
 
@@ -919,10 +1196,10 @@
     });
 
     window.addEventListener("resize", () => {
-      if (els.chartShell.style.display === "block" && chart){
-        drawChart(chart.data.datasets[0].data);
+      if (els.chartShell.style.display === "block" && lastSeries){
+        drawChart(lastSeries);
       }
     });
   </script>
 </body>
-</html>
+      </html>
