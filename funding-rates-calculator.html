@@ -893,12 +893,6 @@
       els.priceEffect.innerHTML = formatMoney(priceEffect);
       els.insightOut.innerHTML = `<span class="${insightClass}">${insight}</span>`;
 
-      els.quickAnswer.innerHTML = `
-        <span class="${totalFunding >= 0 ? "tone-negative" : "tone-positive"}">
-          <strong>${selectedSide === "long" ? "Long" : "Short"} position:</strong>
-          ${totalFunding >= 0 ? "Funding cost" : "Funding benefit"} over your holding period is <strong>${formatMoney(totalFunding)}</strong>.
-        </span>
-      `;
 
       const series = buildFundingSeries(totalFunding, intervals, intervalHours);
       drawChart(series);
