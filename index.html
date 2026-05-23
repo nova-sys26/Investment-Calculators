@@ -83,21 +83,21 @@ content="Fast and practical calculators and live tools for trading, investing, c
       display:inline-flex;
       align-items:center;
       justify-content:center;
-      width:44px;
-      height:44px;
+      width:42px;
+      height:42px;
       border:none;
       border-radius:12px;
       cursor:pointer;
       background:rgba(255,255,255,0.06);
       color:white;
-      font-size:20px;
+      font-size:19px;
       transition:0.2s;
     }
 
     .menu-btn:hover{ background:rgba(255,255,255,0.10); }
 
     .brand{
-      font-size:18px;
+      font-size:16px;
       font-weight:700;
       letter-spacing:0.2px;
       margin-right:auto;
@@ -138,14 +138,14 @@ content="Fast and practical calculators and live tools for trading, investing, c
       top:0;
       left:0;
       height:100%;
-      width:min(360px, 88vw);
+      width:min(320px, 86vw);
       background:#0f172a;
       border-right:1px solid rgba(255,255,255,0.08);
-      box-shadow:18px 0 40px rgba(0,0,0,0.35);
+      box-shadow:14px 0 32px rgba(0,0,0,0.30);
       transform:translateX(-102%);
       transition:0.25s ease;
       z-index:90;
-      padding:18px;
+      padding:16px;
       overflow:auto;
     }
 
@@ -159,17 +159,17 @@ content="Fast and practical calculators and live tools for trading, investing, c
       margin-bottom:18px;
     }
 
-    .drawer-head strong{ font-size:16px; }
+    .drawer-head strong{ font-size:15px; }
 
     .drawer-close{
-      width:40px;
-      height:40px;
+      width:38px;
+      height:38px;
       border:none;
       border-radius:10px;
       cursor:pointer;
       background:rgba(255,255,255,0.06);
       color:white;
-      font-size:22px;
+      font-size:20px;
       line-height:1;
     }
 
@@ -225,18 +225,25 @@ content="Fast and practical calculators and live tools for trading, investing, c
       font-size:clamp(36px, 6vw, 62px);
       line-height:1.02;
       max-width:900px;
-      background:linear-gradient(90deg,#e2e8f0 10%, #93c5fd 45%, #86efac 95%);
-      -webkit-background-clip:text;
-      background-clip:text;
-      color:transparent;
+      color:#f8fafc;
+      text-wrap:balance;
     }
 
-    .hero p{
+    .hero-copy{
       margin:16px 0 0;
       max-width:840px;
       color:#94a3b8;
       font-size:18px;
       line-height:1.7;
+    }
+
+    .accent-word{
+      background:linear-gradient(90deg, rgba(147,197,253,0.96) 0%, rgba(125,211,252,0.98) 52%, rgba(134,239,172,0.96) 100%);
+      -webkit-background-clip:text;
+      background-clip:text;
+      color:transparent;
+      font-weight:700;
+      text-shadow:0 0 14px rgba(125,211,252,0.10);
     }
 
     .hero-actions{
@@ -783,7 +790,7 @@ content="Fast and practical calculators and live tools for trading, investing, c
 
     @media (max-width: 760px){
       .hero{ padding-top:30px; }
-      .hero p{ font-size:16px; }
+      .hero-copy{ font-size:16px; }
       .sort-wrap{
         width:100%;
         margin-left:0;
@@ -799,7 +806,8 @@ content="Fast and practical calculators and live tools for trading, investing, c
       .hero-btn{ width:100%; }
       .quick-link{ width:100%; }
       .chip{ width:calc(50% - 4px); }
-      .menu-btn{ width:42px; height:42px; }
+      .menu-btn{ width:40px; height:40px; }
+      .brand{ font-size:15px; }
     }
   </style>
 </head>
@@ -856,10 +864,9 @@ content="Fast and practical calculators and live tools for trading, investing, c
 
     <section class="hero">
       <div class="eyebrow">Fast & simple trading tools</div>
-      <h1>Simple tools to manage risk, profit, fees, and strategy.</h1>
-      <p>
-        Calculate ROI, risk, fees, profit, stop loss, position size, liquidation, and more in seconds.
-        Built for traders and investors who want clear answers, not clutter.
+      <h1>Trading, Investing & Live Market Tools</h1>
+      <p class="hero-copy">
+        Calculate <span class="accent-word">ROI</span>, <span class="accent-word">risk</span>, <span class="accent-word">fees</span>, <span class="accent-word">profit</span>, <span class="accent-word">position size</span>, <span class="accent-word">leverage</span>, <span class="accent-word">liquidation</span>, and more in seconds. Built for traders and investors who want clear answers, not clutter.
       </p>
 
       <div class="hero-actions">
@@ -948,7 +955,7 @@ content="Fast and practical calculators and live tools for trading, investing, c
           </div>
         </a>
       </div>
-    </section>
+  </section>
 
     <section class="section">
       <div class="tool-panel">
