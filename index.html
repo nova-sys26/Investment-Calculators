@@ -1430,275 +1430,274 @@ content="Fast and practical calculators and live tools for trading, investing, c
     </footer>
   </div>
 
-  <script src="footer.js"></script>
-  <script>
-    const cards = Array.from(document.querySelectorAll(".tool-card"));
-    const liveCards = Array.from(document.querySelectorAll(".live-item"));
-    const searchItems = [...cards, ...liveCards];
+<script src="footer.js"></script>
+<script>
+  const cards = Array.from(document.querySelectorAll(".tool-card"));
+  const liveCards = Array.from(document.querySelectorAll(".live-item"));
+  const searchItems = [...cards, ...liveCards];
 
-    const toolGrid = document.getElementById("toolGrid");
-    const liveGrid = document.querySelector(".live-grid");
+  const toolGrid = document.getElementById("toolGrid");
+  const liveGrid = document.querySelector(".live-grid");
 
-    const searchInput = document.getElementById("search");
-    const suggestionsBox = document.getElementById("suggestions");
-    const sortSelect = document.getElementById("sortSelect");
-    const toolCountHero = document.getElementById("toolCountHero");
-    const toolCountMeta = document.getElementById("toolCountMeta");
-    const noResult = document.getElementById("noResult");
-    const filterButtons = Array.from(document.querySelectorAll(".chip"));
+  const searchInput = document.getElementById("search");
+  const suggestionsBox = document.getElementById("suggestions");
+  const sortSelect = document.getElementById("sortSelect");
+  const toolCountHero = document.getElementById("toolCountHero");
+  const toolCountMeta = document.getElementById("toolCountMeta");
+  const noResult = document.getElementById("noResult");
+  const filterButtons = Array.from(document.querySelectorAll(".chip"));
 
-    const menuBtn = document.getElementById("menuBtn");
-    const drawerPanel = document.getElementById("drawerPanel");
-    const drawerOverlay = document.getElementById("drawerOverlay");
-    const drawerCloseBtn = document.getElementById("drawerCloseBtn");
+  const menuBtn = document.getElementById("menuBtn");
+  const drawerPanel = document.getElementById("drawerPanel");
+  const drawerOverlay = document.getElementById("drawerOverlay");
+  const drawerCloseBtn = document.getElementById("drawerCloseBtn");
 
-    const allSection = document.getElementById("all-calculators");
-    const liveSection = document.getElementById("live-tools");
-    const allSectionTitle = document.getElementById("allSectionTitle");
-    const liveSectionTitle = document.getElementById("liveSectionTitle");
+  const allSection = document.getElementById("all-calculators");
+  const liveSection = document.getElementById("live-tools");
+  const allSectionTitle = document.getElementById("allSectionTitle");
+  const liveSectionTitle = document.getElementById("liveSectionTitle");
 
-    let currentCategory = "all";
+  let currentCategory = "all";
 
-    toolCountHero.textContent = cards.length;
-    toolCountMeta.textContent = cards.length;
+  toolCountHero.textContent = cards.length;
+  toolCountMeta.textContent = cards.length;
 
-    const collator = new Intl.Collator(undefined, {
-      numeric: true,
-      sensitivity: "base"
+  const collator = new Intl.Collator(undefined, {
+    numeric: true,
+    sensitivity: "base"
+  });
+
+  function openDrawer(){
+    drawerPanel.classList.add("open");
+    drawerOverlay.classList.add("show");
+    menuBtn.setAttribute("aria-expanded", "true");
+    drawerPanel.setAttribute("aria-hidden", "false");
+  }
+
+  function closeDrawer(){
+    drawerPanel.classList.remove("open");
+    drawerOverlay.classList.remove("show");
+    menuBtn.setAttribute("aria-expanded", "false");
+    drawerPanel.setAttribute("aria-hidden", "true");
+  }
+
+  function normalizeText(text){
+    return String(text || "")
+      .toLowerCase()
+      .replace(/[()\.,\-\/]/g, " ")
+      .replace(/\s+/g, " ")
+      .trim();
+  }
+
+  function sortKey(el){
+    return normalizeText(el.dataset.title || el.querySelector("h3")?.textContent || "");
+  }
+
+  function sortItems(items){
+    const mode = sortSelect.value;
+
+    return [...items].sort((a, b) => {
+      const aTitle = sortKey(a);
+      const bTitle = sortKey(b);
+      const aFeatured = Number(a.dataset.featured || 0);
+      const bFeatured = Number(b.dataset.featured || 0);
+
+      if (mode === "featured") {
+        if (bFeatured !== aFeatured) return bFeatured - aFeatured;
+        return collator.compare(aTitle, bTitle);
+      }
+
+      if (mode === "az") return collator.compare(aTitle, bTitle);
+      if (mode === "za") return collator.compare(bTitle, aTitle);
+      return 0;
     });
+  }
 
-    function openDrawer(){
-      drawerPanel.classList.add("open");
-      drawerOverlay.classList.add("show");
-      menuBtn.setAttribute("aria-expanded", "true");
-      drawerPanel.setAttribute("aria-hidden", "false");
+  function updateSectionTitles(){
+    const titleMap = {
+      all: "All Calculators",
+      trading: "Trading Calculators",
+      investing: "Investing Calculators",
+      loans: "Loans & Savings Calculators",
+      live: "Live Tools"
+    };
+
+    allSectionTitle.textContent = titleMap[currentCategory] || "All Calculators";
+    liveSectionTitle.textContent = "Live Tools";
+  }
+
+  function matchesByTitle(card, query){
+    if (!query) return true;
+    const title = sortKey(card);
+    return title.includes(query);
+  }
+
+  function renderSuggestions(items){
+    const query = normalizeText(searchInput.value);
+    suggestionsBox.innerHTML = "";
+
+    if (!query) return;
+
+    const matches = items
+      .filter(card => matchesByTitle(card, query))
+      .slice(0, 8);
+
+    if (!matches.length) {
+      suggestionsBox.innerHTML =
+        "<div class='suggestion-item'><span class='suggestion-name'>No result</span><span class='suggestion-cat'>Try another keyword</span></div>";
+      return;
     }
 
-    function closeDrawer(){
-      drawerPanel.classList.remove("open");
-      drawerOverlay.classList.remove("show");
-      menuBtn.setAttribute("aria-expanded", "false");
-      drawerPanel.setAttribute("aria-hidden", "true");
-    }
+    matches.forEach(card => {
+      const item = document.createElement("div");
+      item.className = "suggestion-item";
+      item.innerHTML = `
+        <span class="suggestion-name">${card.dataset.title}</span>
+        <span class="suggestion-cat">${card.dataset.category}</span>
+      `;
 
-    function normalizeText(text){
-      return String(text || "")
-        .toLowerCase()
-        .replace(/[()\.,\-\/]/g, " ")
-        .replace(/\s+/g, " ")
-        .trim();
-    }
-
-    function sortKey(el){
-      return normalizeText(el.dataset.title || el.querySelector("h3")?.textContent || "");
-    }
-
-    function sortItems(items){
-      const mode = sortSelect.value;
-
-      return [...items].sort((a, b) => {
-        const aTitle = sortKey(a);
-        const bTitle = sortKey(b);
-        const aFeatured = Number(a.dataset.featured || 0);
-        const bFeatured = Number(b.dataset.featured || 0);
-
-        if (mode === "featured") {
-          if (bFeatured !== aFeatured) return bFeatured - aFeatured;
-          return collator.compare(aTitle, bTitle);
-        }
-
-        if (mode === "az") return collator.compare(aTitle, bTitle);
-        if (mode === "za") return collator.compare(bTitle, aTitle);
-        return 0;
-      });
-    }
-
-    function updateSectionTitles(){
-      const titleMap = {
-        all: "All Calculators",
-        trading: "Trading Calculators",
-        investing: "Investing Calculators",
-        loans: "Loans & Savings Calculators",
-        live: "Live Tools"
-      };
-
-      allSectionTitle.textContent = titleMap[currentCategory] || "All Calculators";
-      liveSectionTitle.textContent = "Live Tools";
-    }
-
-    function renderSuggestions(items){
-      const query = normalizeText(searchInput.value);
-      suggestionsBox.innerHTML = "";
-
-      if (!query) return;
-
-      const matches = items
-        .filter(card => {
-          const title = sortKey(card);
-          const extra = normalizeText(card.dataset.search || "");
-          return `${title} ${extra}`.includes(query);
-        })
-        .slice(0, 8);
-
-      if (!matches.length) {
-        suggestionsBox.innerHTML =
-          "<div class='suggestion-item'><span class='suggestion-name'>No result</span><span class='suggestion-cat'>Try another keyword</span></div>";
-        return;
-      }
-
-      matches.forEach(card => {
-        const item = document.createElement("div");
-        item.className = "suggestion-item";
-        item.innerHTML = `
-          <span class="suggestion-name">${card.dataset.title}</span>
-          <span class="suggestion-cat">${card.dataset.category}</span>
-        `;
-
-        item.addEventListener("click", () => {
-          searchInput.value = card.dataset.title;
-          suggestionsBox.innerHTML = "";
-          applyFilters();
-          const targetId = card.dataset.category === "live" ? "live-tools" : "all-calculators";
-          document.getElementById(targetId).scrollIntoView({ behavior: "smooth", block: "start" });
-        });
-
-        suggestionsBox.appendChild(item);
-      });
-    }
-
-    function applyFilters(){
-      const query = normalizeText(searchInput.value);
-      let visibleCalculatorCount = 0;
-      let visibleLiveCount = 0;
-      let visibleTotal = 0;
-
-      const visibleCards = [];
-      const visibleLives = [];
-
-      cards.forEach(card => {
-        const title = sortKey(card);
-        const extra = normalizeText(card.dataset.search || "");
-        const matchesCategory = currentCategory === "all" || card.dataset.category === currentCategory;
-        const matchesSearch = !query || `${title} ${extra}`.includes(query);
-        const show = currentCategory !== "live" && matchesCategory && matchesSearch;
-
-        card.style.display = show ? "flex" : "none";
-        if (show) {
-          visibleCalculatorCount++;
-          visibleTotal++;
-          visibleCards.push(card);
-        }
-      });
-
-      liveCards.forEach(card => {
-        const title = sortKey(card);
-        const extra = normalizeText(card.dataset.search || "");
-        const matchesCategory = currentCategory === "all" || currentCategory === "live";
-        const matchesSearch = !query || `${title} ${extra}`.includes(query);
-        const show = matchesCategory && matchesSearch;
-
-        card.style.display = show ? "grid" : "none";
-        if (show) {
-          visibleLiveCount++;
-          visibleTotal++;
-          visibleLives.push(card);
-        }
-      });
-
-      const sortedCards = sortItems(visibleCards);
-      const sortedLives = sortItems(visibleLives);
-
-      sortedCards.forEach(card => toolGrid.appendChild(card));
-      sortedLives.forEach(card => liveGrid.appendChild(card));
-
-      updateSectionTitles();
-
-      if (currentCategory === "live") {
-        allSection.classList.add("is-hidden");
-        liveSection.classList.toggle("is-hidden", visibleLiveCount === 0);
-      } else if (currentCategory === "all") {
-        allSection.classList.toggle("is-hidden", visibleCalculatorCount === 0);
-        liveSection.classList.toggle("is-hidden", visibleLiveCount === 0);
-      } else {
-        allSection.classList.toggle("is-hidden", visibleCalculatorCount === 0);
-        liveSection.classList.add("is-hidden");
-      }
-
-      if (visibleTotal === 0) {
-        noResult.style.display = "block";
-        if (currentCategory === "live") {
-          noResult.firstChild.textContent = query ? "No live tool found." : "No live tools in this category.";
-        } else {
-          noResult.firstChild.textContent = query ? "No calculator or live tool found." : "No calculators in this category.";
-        }
-      } else {
-        noResult.style.display = "none";
-      }
-
-      toolCountMeta.textContent = visibleTotal;
-      renderSuggestions(searchItems);
-    }
-
-    function setActiveCategory(category){
-      currentCategory = category;
-      filterButtons.forEach(btn => {
-        btn.classList.toggle("active", btn.dataset.filter === category);
-      });
-      applyFilters();
-    }
-
-    function resetFilters(){
-      searchInput.value = "";
-      currentCategory = "all";
-      sortSelect.value = "featured";
-      filterButtons.forEach(btn => btn.classList.toggle("active", btn.dataset.filter === "all"));
-      suggestionsBox.innerHTML = "";
-      applyFilters();
-      searchInput.focus();
-    }
-
-    searchInput.addEventListener("input", applyFilters);
-    sortSelect.addEventListener("change", applyFilters);
-
-    filterButtons.forEach(btn => {
-      btn.addEventListener("click", () => setActiveCategory(btn.dataset.filter));
-    });
-
-    document.addEventListener("click", (e) => {
-      if (!e.target.closest(".search-wrap")) {
+      item.addEventListener("click", () => {
+        searchInput.value = card.dataset.title;
         suggestionsBox.innerHTML = "";
-      }
-
-      if (!e.target.closest(".drawer") && !e.target.closest("#menuBtn")) {
-        closeDrawer();
-      }
-    });
-
-    menuBtn.addEventListener("click", openDrawer);
-    drawerCloseBtn.addEventListener("click", closeDrawer);
-    drawerOverlay.addEventListener("click", closeDrawer);
-
-    document.querySelectorAll(".drawer a").forEach(link => {
-      link.addEventListener("click", closeDrawer);
-    });
-
-    document.addEventListener("keydown", (e) => {
-      if (e.key === "Escape") {
-        closeDrawer();
-      }
-    });
-
-    document.querySelectorAll(".faq-question").forEach(btn => {
-      btn.addEventListener("click", () => {
-        const item = btn.parentElement;
-        document.querySelectorAll(".faq-item").forEach(i => {
-          if (i !== item) i.classList.remove("active");
-        });
-        item.classList.toggle("active");
+        applyFilters();
+        const targetId = card.dataset.category === "live" ? "live-tools" : "all-calculators";
+        document.getElementById(targetId).scrollIntoView({ behavior: "smooth", block: "start" });
       });
+
+      suggestionsBox.appendChild(item);
+    });
+  }
+
+  function applyFilters(){
+    const query = normalizeText(searchInput.value);
+    let visibleCalculatorCount = 0;
+    let visibleLiveCount = 0;
+    let visibleTotal = 0;
+
+    const visibleCards = [];
+    const visibleLives = [];
+
+    cards.forEach(card => {
+      const title = sortKey(card);
+      const matchesCategory = currentCategory === "all" || card.dataset.category === currentCategory;
+      const matchesSearch = matchesByTitle(card, query);
+      const show = currentCategory !== "live" && matchesCategory && matchesSearch;
+
+      card.style.display = show ? "flex" : "none";
+      if (show) {
+        visibleCalculatorCount++;
+        visibleTotal++;
+        visibleCards.push(card);
+      }
     });
 
+    liveCards.forEach(card => {
+      const title = sortKey(card);
+      const matchesCategory = currentCategory === "all" || currentCategory === "live";
+      const matchesSearch = matchesByTitle(card, query);
+      const show = matchesCategory && matchesSearch;
+
+      card.style.display = show ? "grid" : "none";
+      if (show) {
+        visibleLiveCount++;
+        visibleTotal++;
+        visibleLives.push(card);
+      }
+    });
+
+    const sortedCards = sortItems(visibleCards);
+    const sortedLives = sortItems(visibleLives);
+
+    sortedCards.forEach(card => toolGrid.appendChild(card));
+    sortedLives.forEach(card => liveGrid.appendChild(card));
+
+    updateSectionTitles();
+
+    if (currentCategory === "live") {
+      allSection.classList.add("is-hidden");
+      liveSection.classList.toggle("is-hidden", visibleLiveCount === 0);
+    } else if (currentCategory === "all") {
+      allSection.classList.toggle("is-hidden", visibleCalculatorCount === 0);
+      liveSection.classList.toggle("is-hidden", visibleLiveCount === 0);
+    } else {
+      allSection.classList.toggle("is-hidden", visibleCalculatorCount === 0);
+      liveSection.classList.add("is-hidden");
+    }
+
+    if (visibleTotal === 0) {
+      noResult.style.display = "block";
+      if (currentCategory === "live") {
+        noResult.firstChild.textContent = query ? "No live tool found." : "No live tools in this category.";
+      } else {
+        noResult.firstChild.textContent = query ? "No calculator or live tool found." : "No calculators in this category.";
+      }
+    } else {
+      noResult.style.display = "none";
+    }
+
+    toolCountMeta.textContent = visibleTotal;
+    renderSuggestions(searchItems);
+  }
+
+  function setActiveCategory(category){
+    currentCategory = category;
+    filterButtons.forEach(btn => {
+      btn.classList.toggle("active", btn.dataset.filter === category);
+    });
     applyFilters();
-  </script>
-</body>
-  </html>
+  }
+
+  function resetFilters(){
+    searchInput.value = "";
+    currentCategory = "all";
+    sortSelect.value = "featured";
+    filterButtons.forEach(btn => btn.classList.toggle("active", btn.dataset.filter === "all"));
+    suggestionsBox.innerHTML = "";
+    applyFilters();
+    searchInput.focus();
+  }
+
+  searchInput.addEventListener("input", applyFilters);
+  sortSelect.addEventListener("change", applyFilters);
+
+  filterButtons.forEach(btn => {
+    btn.addEventListener("click", () => setActiveCategory(btn.dataset.filter));
+  });
+
+  document.addEventListener("click", (e) => {
+    if (!e.target.closest(".search-wrap")) {
+      suggestionsBox.innerHTML = "";
+    }
+
+    if (!e.target.closest(".drawer") && !e.target.closest("#menuBtn")) {
+      closeDrawer();
+    }
+  });
+
+  menuBtn.addEventListener("click", openDrawer);
+  drawerCloseBtn.addEventListener("click", closeDrawer);
+  drawerOverlay.addEventListener("click", closeDrawer);
+
+  document.querySelectorAll(".drawer a").forEach(link => {
+    link.addEventListener("click", closeDrawer);
+  });
+
+  document.addEventListener("keydown", (e) => {
+    if (e.key === "Escape") {
+      closeDrawer();
+    }
+  });
+
+  document.querySelectorAll(".faq-question").forEach(btn => {
+    btn.addEventListener("click", () => {
+      const item = btn.parentElement;
+      document.querySelectorAll(".faq-item").forEach(i => {
+        if (i !== item) i.classList.remove("active");
+      });
+      item.classList.toggle("active");
+    });
+  });
+
+  applyFilters();
+</script>
+
