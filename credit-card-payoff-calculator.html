@@ -3,7 +3,6 @@
 <head>
   <link rel="canonical" href="https://novainvesttools.com/credit-card-payoff-calculator.html">
 
-  <!-- Google tag (gtag.js) -->
   <script async src="https://www.googletagmanager.com/gtag/js?id=G-ZPCXDVE8C5"></script>
   <script>
     window.dataLayer = window.dataLayer || [];
@@ -213,16 +212,9 @@
       display:none;
     }
 
-    .result-sentence{
-      margin:0 0 14px;
-      font-size:16px;
-      line-height:1.6;
-      color:#e5e7eb;
-    }
-
     .result-grid{
       display:grid;
-      grid-template-columns:repeat(auto-fit, minmax(220px, 1fr));
+      grid-template-columns:repeat(auto-fit, minmax(170px, 1fr));
       gap:12px;
     }
 
@@ -247,6 +239,17 @@
       display:block;
       font-size:18px;
       line-height:1.25;
+    }
+
+    .mini-line{
+      margin-top:12px;
+      padding:12px 14px;
+      border-radius:12px;
+      background:rgba(15,23,42,0.72);
+      border:1px solid rgba(255,255,255,0.06);
+      color:#cbd5e1;
+      font-size:14px;
+      line-height:1.6;
     }
 
     .insight-banner{
@@ -357,8 +360,8 @@
     }
 
     canvas{
-      width:100%;
-      height:100%;
+      width:100% !important;
+      height:100% !important;
       display:block;
     }
 
@@ -485,11 +488,11 @@
       }
 
       .chart-shell{
-        height:300px;
+        height:280px;
       }
 
       .chart-wrap{
-        height:240px;
+        height:220px;
       }
     }
   </style>
@@ -528,14 +531,6 @@
     <button class="action-btn" id="calcBtn" type="button">Calculate</button>
 
     <div id="resultCard" class="result-card" aria-live="polite">
-      <p id="resultSentence" class="result-sentence">—</p>
-
-      <div id="insightBanner" class="insight-banner">
-        <span id="insightKicker" class="insight-kicker">—</span>
-        <strong id="insightHeadline" class="insight-headline">—</strong>
-        <p id="insightBody" class="insight-body">—</p>
-      </div>
-
       <div class="result-grid">
         <div class="result-box">
           <span>Payoff time</span>
@@ -549,10 +544,16 @@
           <span>Total paid</span>
           <strong id="totalPaid">—</strong>
         </div>
-        <div class="result-box">
-          <span>Monthly interest load</span>
-          <strong id="monthlyInterestLoad">—</strong>
-        </div>
+      </div>
+
+      <div class="mini-line">
+        Monthly interest load: <strong id="monthlyInterestLoad">—</strong>
+      </div>
+
+      <div class="insight-banner" id="insightBanner">
+        <span id="insightKicker" class="insight-kicker">—</span>
+        <strong id="insightHeadline" class="insight-headline">—</strong>
+        <p id="insightBody" class="insight-body">—</p>
       </div>
 
       <div class="insight-grid">
@@ -725,7 +726,7 @@
   <script src="footer.js"></script>
   <script>
     let chart = null;
-    let lastSeries = null;
+    let lastSchedule = null;
 
     const els = {
       calcBtn: document.getElementById("calcBtn"),
@@ -735,7 +736,6 @@
       extraPayment: document.getElementById("extraPayment"),
       resultCard: document.getElementById("resultCard"),
       chartShell: document.getElementById("chartShell"),
-      resultSentence: document.getElementById("resultSentence"),
       payoffTime: document.getElementById("payoffTime"),
       totalInterest: document.getElementById("totalInterest"),
       totalPaid: document.getElementById("totalPaid"),
@@ -765,12 +765,6 @@
       return `${sign}$${abs.toFixed(2)}`;
     }
 
-    function formatPercent(value, digits = 2){
-      if (!Number.isFinite(value)) return "—";
-      const sign = value < 0 ? "-" : "";
-      return `${sign}${Math.abs(value).toFixed(digits)}%`;
-    }
-
     function formatMonths(months){
       if (!Number.isFinite(months)) return "—";
       if (months < 12) return `${months.toFixed(1)} months`;
@@ -793,6 +787,7 @@
 
       while (current > 0.01 && month < maxMonths) {
         month += 1;
+
         const interest = current * monthlyRate;
         let principal = payment - interest;
 
@@ -841,7 +836,7 @@
       const dpr = window.devicePixelRatio || 1;
 
       const cssWidth = canvas.clientWidth || 1000;
-      const cssHeight = canvas.clientHeight || 320;
+      const cssHeight = canvas.clientHeight || 240;
 
       canvas.width = Math.floor(cssWidth * dpr);
       canvas.height = Math.floor(cssHeight * dpr);
@@ -947,18 +942,11 @@
       });
     }
 
-    function getInsight({
-      balance,
-      apr,
-      monthlyPayment,
-      extraPayment,
-      schedule
-    }){
+    function getInsight({ balance, apr, monthlyPayment, extraPayment, schedule }){
       const monthlyRate = apr / 100 / 12;
       const effectivePayment = monthlyPayment + extraPayment;
       const firstMonthInterest = balance * monthlyRate;
-      const paymentToInterest = effectivePayment / firstMonthInterest;
-      const paymentToBalance = effectivePayment / balance;
+      const paymentToInterest = firstMonthInterest > 0 ? effectivePayment / firstMonthInterest : Infinity;
 
       let bannerClass = "insight-medium";
       let kicker = "Balanced";
@@ -999,9 +987,9 @@
         "This payoff pace is too stretched.";
 
       const interestLevel =
-        firstMonthInterest < 25 ? "Low interest load" :
-        firstMonthInterest < 75 ? "Moderate interest load" :
-        firstMonthInterest < 150 ? "High interest load" : "Very high load";
+        firstMonthInterest < 25 ? "Low load" :
+        firstMonthInterest < 75 ? "Moderate load" :
+        firstMonthInterest < 150 ? "High load" : "Very high load";
 
       const interestNote =
         firstMonthInterest < 25 ? "Interest is not overwhelming your payment." :
@@ -1079,11 +1067,13 @@
       const effectivePayment = monthlyPayment + extraPayment;
       const monthlyRate = apr / 100 / 12;
       const firstMonthInterest = balance * monthlyRate;
+      const schedule = buildSchedule(balance, monthlyRate, effectivePayment);
 
-      if (monthlyRate > 0 && effectivePayment <= firstMonthInterest) {
-        els.resultCard.style.display = "block";
+      els.resultCard.style.display = "block";
+
+      if (!schedule.valid) {
         els.chartShell.style.display = "none";
-        els.resultSentence.textContent = "Your payment does not cover the monthly interest. The balance will not go down with this setup.";
+
         els.payoffTime.textContent = "—";
         els.totalInterest.textContent = "—";
         els.totalPaid.textContent = "—";
@@ -1093,22 +1083,20 @@
         els.insightKicker.textContent = "Problem";
         els.insightHeadline.textContent = "Payment is too low";
         els.insightBody.textContent = "Raise the monthly payment so it exceeds the monthly interest. Otherwise the debt can stagnate or grow.";
+
         els.speedLevel.textContent = "Too slow";
         els.speedNote.textContent = "The balance will not reduce.";
+
         els.interestLevel.textContent = "Very high load";
         els.interestNote.textContent = "Interest is consuming the entire payment.";
+
         els.paymentLevel.textContent = "Too low";
         els.paymentNote.textContent = "Increase the payment to start making real progress.";
+
         els.actionLevel.textContent = "Pay more";
         els.actionNote.textContent = "Even a small increase can change the outcome.";
-        els.insightOut.innerHTML = `<span class="insight-weak">Payment does not cover monthly interest.</span>`;
-        return;
-      }
 
-      const schedule = buildSchedule(balance, monthlyRate, effectivePayment);
-
-      if (!schedule.valid) {
-        alert(schedule.reason);
+        lastSchedule = null;
         return;
       }
 
@@ -1120,15 +1108,10 @@
         schedule
       });
 
-      els.resultCard.style.display = "block";
-      els.chartShell.style.display = "block";
-
       els.payoffTime.textContent = formatMonths(schedule.months);
       els.totalInterest.textContent = formatMoney(schedule.totalInterest);
       els.totalPaid.textContent = formatMoney(schedule.totalPaid);
       els.monthlyInterestLoad.textContent = formatMoney(firstMonthInterest);
-
-      els.resultSentence.textContent = `With a ${apr.toFixed(2)}% APR and a ${formatMoney(effectivePayment)} monthly payment, this balance should be paid off in about ${formatMonths(schedule.months)}.`;
 
       els.insightBanner.className = `insight-banner ${insight.bannerClass}`;
       els.insightKicker.textContent = insight.kicker;
@@ -1147,11 +1130,12 @@
       els.actionLevel.textContent = insight.actionLevel;
       els.actionNote.textContent = insight.actionNote;
 
-      els.insightOut.innerHTML = `<span class="${insight.bannerClass}">${insight.headline}</span>`;
+      els.chartShell.style.display = "block";
+      lastSchedule = schedule;
 
-      lastSeries = schedule;
-      drawChart(schedule);
-      document.getElementById("resultCard").scrollIntoView({ behavior: "smooth", block: "start" });
+      requestAnimationFrame(() => {
+        drawChart(schedule);
+      });
     }
 
     document.addEventListener("DOMContentLoaded", function(){
@@ -1160,19 +1144,17 @@
       document.querySelectorAll(".faq-question").forEach(btn => {
         btn.addEventListener("click", () => {
           const item = btn.parentElement;
-
           document.querySelectorAll(".faq-item").forEach(i => {
             if (i !== item) i.classList.remove("active");
           });
-
           item.classList.toggle("active");
         });
       });
     });
 
     window.addEventListener("resize", () => {
-      if (els.chartShell.style.display === "block" && lastSeries){
-        drawChart(lastSeries);
+      if (els.chartShell.style.display === "block" && lastSchedule){
+        drawChart(lastSchedule);
       }
     });
   </script>
