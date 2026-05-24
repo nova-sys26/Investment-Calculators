@@ -1099,7 +1099,7 @@
       const monthlyRate = apr / 100 / 12;
       const firstMonthInterest = balance * monthlyRate;
       const schedule = buildSchedule(balance, monthlyRate, effectivePayment);
-
+      
       els.resultCard.style.display = "block";
 
       if (!schedule.valid) {
@@ -1129,6 +1129,10 @@
 
         lastSchedule = null;
         return;
+
+        if (schedule.valid) {
+  document.getElementById("nextTool").style.display = "block";
+        }
       }
 
       const insight = getInsight({
