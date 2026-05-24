@@ -1128,13 +1128,11 @@
         els.actionNote.textContent = "Even a small increase can change the outcome.";
 
         lastSchedule = null;
-        return;
-
-        if (schedule.valid) {
-  document.getElementById("nextTool").style.display = "block";
-        }
+        return; 
       }
 
+      document.getElementById("nextTool").style.display = "block";
+      
       const insight = getInsight({
         balance,
         apr,
