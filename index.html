@@ -656,6 +656,39 @@ content="Fast and practical calculators and live tools for trading, investing, c
       flex-wrap:wrap;
     }
 
+    .card-right{
+  display:flex;
+  align-items:center;
+  gap:8px;
+  margin-left:auto;
+}
+
+.category-icon{
+  width:30px;
+  height:30px;
+  border-radius:999px;
+  display:grid;
+  place-items:center;
+  border:1px solid rgba(255,255,255,0.08);
+  background:rgba(255,255,255,0.04);
+  flex:0 0 30px;
+}
+
+.category-icon svg{
+  width:16px;
+  height:16px;
+  display:block;
+  stroke:currentColor;
+  fill:none;
+  stroke-width:1.9;
+  stroke-linecap:round;
+  stroke-linejoin:round;
+}
+
+.category-icon.trading{ color:#60a5fa; }
+.category-icon.investing{ color:#86efac; }
+.category-icon.loans{ color:#fbbf24; }
+    
     .tool-card h3{
       margin:2px 0 0;
       font-size:20px;
@@ -1067,7 +1100,13 @@ content="Fast and practical calculators and live tools for trading, investing, c
         </div>
 
         <div class="tool-card" data-title="Funding Rates Calculator" data-search="funding rates calculator perpetual futures carry funding cost" data-category="trading" data-featured="0">
-          <div class="card-top"><span class="badge">Trading</span></div>
+          <div class="card-top">
+            <span class="badge">Trading</span></div><span class="category-icon trading" aria-hidden="true">
+    <svg viewBox="0 0 24 24">
+      <path d="M4 16l5-5 4 4 7-7"></path>
+      <path d="M16 8h4v4"></path>
+    </svg>
+          </span>
           <h3>Funding Rates Calculator</h3>
           <p>Calculate perpetual futures funding cost and carry drag.</p>
           <a class="card-link" href="funding-rates-calculator.html">Calculate</a>
