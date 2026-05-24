@@ -1,0 +1,1180 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <link rel="canonical" href="https://novainvesttools.com/credit-card-payoff-calculator.html">
+
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-ZPCXDVE8C5"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-ZPCXDVE8C5');
+  </script>
+
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Credit Card Payoff Calculator – Estimate Debt Payoff Time & Interest</title>
+  <meta name="description" content="Estimate how long it takes to pay off credit card debt, how much interest you will pay, and how monthly payments affect your payoff timeline.">
+  <meta name="theme-color" content="#0f172a">
+  <meta name="robots" content="index,follow,max-image-preview:large">
+
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://novainvesttools.com/credit-card-payoff-calculator.html">
+  <meta property="og:title" content="Credit Card Payoff Calculator – Estimate Debt Payoff Time & Interest">
+  <meta property="og:description" content="Estimate how long it takes to pay off credit card debt, how much interest you will pay, and how monthly payments affect your payoff timeline.">
+
+  <link rel="preconnect" href="https://cdn.jsdelivr.net">
+  <link rel="dns-prefetch" href="https://cdn.jsdelivr.net">
+
+  <link rel="stylesheet" href="style.css">
+  <link rel="icon" href="favicon.png" type="image/png">
+  <link rel="apple-touch-icon" href="favicon.png">
+
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "WebApplication",
+    "name": "Credit Card Payoff Calculator",
+    "url": "https://novainvesttools.com/credit-card-payoff-calculator.html",
+    "applicationCategory": "FinanceApplication",
+    "operatingSystem": "All",
+    "browserRequirements": "Requires JavaScript",
+    "description": "Calculate how long it takes to pay off credit card debt and how much interest you will pay.",
+    "featureList": [
+      "Payoff time calculation",
+      "Interest cost estimation",
+      "Debt payoff projection",
+      "Amortization schedule chart"
+    ],
+    "offers": {
+      "@type": "Offer",
+      "price": "0",
+      "priceCurrency": "USD"
+    }
+  }
+  </script>
+
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": [
+      {
+        "@type": "Question",
+        "name": "What is a credit card payoff calculator?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "A credit card payoff calculator estimates how long it will take to pay off a card balance and how much interest you will pay based on your APR and monthly payment."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Why does paying more reduce interest so much?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Higher monthly payments reduce the balance faster, which lowers the amount of interest charged in future months."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "What happens if my payment is too low?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "If your monthly payment does not cover at least the monthly interest, the balance will not go down and the debt may grow instead."
+        }
+      }
+    ]
+  }
+  </script>
+
+  <style>
+    *{
+      box-sizing:border-box;
+    }
+
+    html{
+      scroll-behavior:smooth;
+    }
+
+    body{
+      font-family: Arial, sans-serif;
+      background:#0b1a33;
+      color:white;
+      display:flex;
+      justify-content:center;
+      align-items:center;
+      flex-direction:column;
+      min-height:100vh;
+      margin:0;
+      padding:24px 0;
+    }
+
+    .toptext{
+      font-size:14px;
+      color:#6b7a99;
+      margin-bottom:5px;
+    }
+
+    .menu{
+      margin-bottom:25px;
+    }
+
+    .menu a{
+      color:#3b82f6;
+      margin:10px;
+      text-decoration:none;
+      font-weight:600;
+    }
+
+    .container{
+      background:#1e293b;
+      padding:30px;
+      border-radius:16px;
+      width:90%;
+      max-width:560px;
+      box-shadow:0 10px 25px rgba(0,0,0,0.35);
+    }
+
+    h1{
+      margin-top:0;
+      margin-bottom:10px;
+      font-size:32px;
+      line-height:1.15;
+    }
+
+    .subhead{
+      color:#94a3b8;
+      font-size:15px;
+      line-height:1.6;
+      margin-bottom:18px;
+    }
+
+    .quick-answer{
+      background: rgba(59,130,246,0.12);
+      border: 1px solid rgba(59,130,246,0.25);
+      padding: 12px 14px;
+      border-radius: 10px;
+      font-size: 15px;
+      line-height: 1.6;
+      color: #e2e8f0;
+      margin-bottom: 18px;
+    }
+
+    .field-label{
+      display:block;
+      font-size:13px;
+      color:#cbd5e1;
+      font-weight:600;
+      margin:12px 0 6px;
+    }
+
+    input{
+      width:100%;
+      padding:14px;
+      border-radius:10px;
+      border:none;
+      background:#e5e7eb;
+      font-size:16px;
+      outline:none;
+    }
+
+    input:focus{
+      box-shadow:0 0 0 3px rgba(59,130,246,0.18);
+    }
+
+    .action-btn{
+      padding:14px;
+      background:#3b82f6;
+      border:none;
+      border-radius:10px;
+      color:white;
+      cursor:pointer;
+      margin-top:14px;
+      width:100%;
+      font-size:16px;
+      font-weight:700;
+      transition:0.2s;
+    }
+
+    .action-btn:hover{
+      background:#2563eb;
+      transform:translateY(-1px);
+    }
+
+    .result-card{
+      margin-top:18px;
+      padding:16px;
+      border-radius:14px;
+      background:rgba(255,255,255,0.05);
+      border:1px solid rgba(255,255,255,0.08);
+      display:none;
+    }
+
+    .result-sentence{
+      margin:0 0 14px;
+      font-size:16px;
+      line-height:1.6;
+      color:#e5e7eb;
+    }
+
+    .result-grid{
+      display:grid;
+      grid-template-columns:repeat(auto-fit, minmax(220px, 1fr));
+      gap:12px;
+    }
+
+    .result-box{
+      background:rgba(15,23,42,0.72);
+      border:1px solid rgba(255,255,255,0.06);
+      border-radius:14px;
+      padding:14px;
+    }
+
+    .result-box span{
+      display:block;
+      color:#94a3b8;
+      font-size:12px;
+      text-transform:uppercase;
+      letter-spacing:0.08em;
+      font-weight:700;
+      margin-bottom:6px;
+    }
+
+    .result-box strong{
+      display:block;
+      font-size:18px;
+      line-height:1.25;
+    }
+
+    .insight-banner{
+      margin-top:14px;
+      padding:16px;
+      border-radius:16px;
+      background:rgba(15,23,42,0.88);
+      border:1px solid rgba(255,255,255,0.08);
+    }
+
+    .insight-banner.insight-good{
+      border-color:rgba(34,197,94,0.25);
+      background:rgba(34,197,94,0.08);
+    }
+
+    .insight-banner.insight-medium{
+      border-color:rgba(250,204,21,0.25);
+      background:rgba(250,204,21,0.08);
+    }
+
+    .insight-banner.insight-weak{
+      border-color:rgba(239,68,68,0.25);
+      background:rgba(239,68,68,0.08);
+    }
+
+    .insight-kicker{
+      display:inline-flex;
+      align-items:center;
+      padding:5px 10px;
+      border-radius:999px;
+      font-size:11px;
+      font-weight:800;
+      letter-spacing:0.08em;
+      text-transform:uppercase;
+      background:rgba(255,255,255,0.06);
+      color:#cbd5e1;
+    }
+
+    .insight-headline{
+      display:block;
+      margin-top:8px;
+      font-size:18px;
+      line-height:1.25;
+    }
+
+    .insight-body{
+      margin:8px 0 0;
+      color:#cbd5e1;
+      line-height:1.6;
+      font-size:14px;
+    }
+
+    .insight-grid{
+      display:grid;
+      grid-template-columns:repeat(auto-fit, minmax(180px, 1fr));
+      gap:12px;
+      margin-top:12px;
+    }
+
+    .insight-card{
+      background:rgba(15,23,42,0.72);
+      border:1px solid rgba(255,255,255,0.06);
+      border-radius:14px;
+      padding:14px;
+    }
+
+    .insight-card span{
+      display:block;
+      color:#94a3b8;
+      font-size:12px;
+      text-transform:uppercase;
+      letter-spacing:0.08em;
+      font-weight:700;
+      margin-bottom:6px;
+    }
+
+    .insight-card strong{
+      display:block;
+      font-size:16px;
+      line-height:1.25;
+    }
+
+    .insight-card p{
+      margin:6px 0 0;
+      color:#cbd5e1;
+      font-size:13px;
+      line-height:1.55;
+    }
+
+    .chart-shell{
+      margin-top:18px;
+      padding:16px;
+      border-radius:16px;
+      background:rgba(255,255,255,0.04);
+      border:1px solid rgba(255,255,255,0.08);
+      display:none;
+    }
+
+    .chart-shell h3{
+      margin:0 0 8px;
+      font-size:16px;
+    }
+
+    .chart-wrap{
+      width:100%;
+      height:320px;
+      position:relative;
+    }
+
+    canvas{
+      width:100%;
+      height:100%;
+      display:block;
+    }
+
+    .content{
+      width:90%;
+      max-width:900px;
+      margin-top:34px;
+    }
+
+    .content h2{
+      margin-top:34px;
+      margin-bottom:10px;
+      font-size:28px;
+    }
+
+    .content p,
+    .content li{
+      color:#cbd5e1;
+      line-height:1.7;
+      font-size:15px;
+    }
+
+    .content ul{
+      padding-left:20px;
+    }
+
+    .formula{
+      background:rgba(255,255,255,0.05);
+      border:1px solid rgba(255,255,255,0.08);
+      padding:14px 16px;
+      border-radius:12px;
+      margin:12px 0;
+      color:#e2e8f0;
+      overflow:auto;
+      line-height:1.7;
+    }
+
+    .faq{
+      margin-top:14px;
+    }
+
+    .faq-item{
+      border-bottom:1px solid rgba(255,255,255,0.08);
+    }
+
+    .faq-question{
+      width:100%;
+      background:none;
+      border:none;
+      color:white;
+      text-align:left;
+      padding:14px 8px;
+      font-size:15px;
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      cursor:pointer;
+    }
+
+    .faq-question:hover{
+      color:#93c5fd;
+    }
+
+    .arrow{
+      transition:0.25s;
+    }
+
+    .faq-item.active .arrow{
+      transform:rotate(180deg);
+    }
+
+    .faq-answer{
+      max-height:0;
+      overflow:hidden;
+      transition:max-height 0.3s ease;
+      color:#cbd5e1;
+      font-size:14px;
+      padding:0 8px;
+    }
+
+    .faq-item.active .faq-answer{
+      max-height:260px;
+      padding-bottom:12px;
+    }
+
+    .related{
+      width:90%;
+      max-width:900px;
+      margin-top:34px;
+    }
+
+    .related a{
+      color:#93c5fd;
+      text-decoration:none;
+    }
+
+    .related a:hover{
+      text-decoration:underline;
+    }
+
+    .disclaimer{
+      margin-top:40px;
+      padding-top:20px;
+      border-top:1px solid rgba(255,255,255,0.1);
+      font-size:13px;
+      color:#9ca3af;
+      max-width:900px;
+      text-align:center;
+      line-height:1.6;
+      width:90%;
+    }
+
+    @media (max-width: 700px){
+      .container{
+        padding:22px;
+      }
+
+      h1{
+        font-size:28px;
+      }
+
+      .content h2{
+        font-size:24px;
+      }
+
+      .chart-shell{
+        height:300px;
+      }
+
+      .chart-wrap{
+        height:240px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <p class="toptext">Explore more calculators</p>
+
+  <div class="menu">
+    <a href="index.html">Home</a>
+  </div>
+
+  <div class="container" data-search="credit card payoff calculator debt payoff calculator credit card debt interest payoff timeline">
+    <h1>Credit Card Payoff Calculator</h1>
+
+    <p class="quick-answer">
+      Estimate how long it takes to pay off a credit card balance, how much interest you will pay, and how monthly payments change your payoff timeline.
+    </p>
+
+    <p class="subhead">
+      Use this calculator to plan a realistic payoff strategy, compare payment scenarios, and understand the true cost of carrying credit card debt.
+    </p>
+
+    <label class="field-label" for="balance">Credit Card Balance ($)</label>
+    <input id="balance" type="number" step="any" min="0" placeholder="e.g. 5000">
+
+    <label class="field-label" for="apr">APR (%)</label>
+    <input id="apr" type="number" step="any" min="0" placeholder="e.g. 24.99">
+
+    <label class="field-label" for="monthlyPayment">Monthly Payment ($)</label>
+    <input id="monthlyPayment" type="number" step="any" min="0" placeholder="e.g. 250">
+
+    <label class="field-label" for="extraPayment">Extra Monthly Payment ($) <span style="color:#94a3b8;">optional</span></label>
+    <input id="extraPayment" type="number" step="any" min="0" placeholder="e.g. 50">
+
+    <button class="action-btn" id="calcBtn" type="button">Calculate</button>
+
+    <div id="resultCard" class="result-card" aria-live="polite">
+      <p id="resultSentence" class="result-sentence">—</p>
+
+      <div id="insightBanner" class="insight-banner">
+        <span id="insightKicker" class="insight-kicker">—</span>
+        <strong id="insightHeadline" class="insight-headline">—</strong>
+        <p id="insightBody" class="insight-body">—</p>
+      </div>
+
+      <div class="result-grid">
+        <div class="result-box">
+          <span>Payoff time</span>
+          <strong id="payoffTime">—</strong>
+        </div>
+        <div class="result-box">
+          <span>Total interest</span>
+          <strong id="totalInterest">—</strong>
+        </div>
+        <div class="result-box">
+          <span>Total paid</span>
+          <strong id="totalPaid">—</strong>
+        </div>
+        <div class="result-box">
+          <span>Monthly interest load</span>
+          <strong id="monthlyInterestLoad">—</strong>
+        </div>
+      </div>
+
+      <div class="insight-grid">
+        <div class="insight-card">
+          <span>Payoff speed</span>
+          <strong id="speedLevel">—</strong>
+          <p id="speedNote">—</p>
+        </div>
+        <div class="insight-card">
+          <span>Interest pressure</span>
+          <strong id="interestLevel">—</strong>
+          <p id="interestNote">—</p>
+        </div>
+        <div class="insight-card">
+          <span>Payment stress</span>
+          <strong id="paymentLevel">—</strong>
+          <p id="paymentNote">—</p>
+        </div>
+        <div class="insight-card">
+          <span>Best move</span>
+          <strong id="actionLevel">—</strong>
+          <p id="actionNote">—</p>
+        </div>
+      </div>
+    </div>
+
+    <div id="chartShell" class="chart-shell">
+      <h3>Debt payoff schedule</h3>
+      <div class="chart-wrap">
+        <canvas id="myChart"></canvas>
+      </div>
+    </div>
+  </div>
+
+  <div class="content">
+    <h2>What is a Credit Card Payoff Calculator?</h2>
+    <p>
+      A credit card payoff calculator shows how long it will take to eliminate a balance based on your APR and monthly payment.
+      It also estimates the total interest cost so you can see the real price of carrying debt.
+    </p>
+
+    <p>
+      This is useful because credit card interest compounds quickly. Small monthly payments can stretch the payoff period and increase the total amount you end up paying.
+    </p>
+
+    <h2>How the payoff formula works</h2>
+    <div class="formula">
+      Monthly interest rate = APR ÷ 12<br>
+      Interest this month = Current balance × Monthly interest rate<br>
+      Principal paid = Monthly payment − Interest<br>
+      Remaining balance = Current balance − Principal paid
+    </div>
+
+    <p>
+      When the monthly payment is too low, the balance can shrink very slowly or even grow. Paying more each month usually reduces both the payoff time and the total interest.
+    </p>
+
+    <h2>Why this matters</h2>
+    <ul>
+      <li>See the true cost of carrying a credit card balance</li>
+      <li>Compare different payment plans before committing</li>
+      <li>Understand how extra payments affect interest</li>
+      <li>Plan a realistic debt payoff strategy</li>
+    </ul>
+
+    <h2>How to use this calculator</h2>
+    <ul>
+      <li>Enter your current balance</li>
+      <li>Enter your APR</li>
+      <li>Enter the monthly payment you can afford</li>
+      <li>Add an extra monthly payment if you want to see the effect of paying more</li>
+      <li>Click calculate to view the payoff timeline and interest cost</li>
+    </ul>
+
+    <h2>Frequently Asked Questions</h2>
+
+    <div class="faq">
+      <div class="faq-item">
+        <button class="faq-question" type="button">
+          Why does paying more save so much interest?
+          <span class="arrow">▼</span>
+        </button>
+        <div class="faq-answer">
+          <p>
+            Paying more lowers the balance faster, which means less interest is charged in future months. The effect compounds over time.
+          </p>
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <button class="faq-question" type="button">
+          What if my payment is too low?
+          <span class="arrow">▼</span>
+        </button>
+        <div class="faq-answer">
+          <p>
+            If your payment does not cover at least the monthly interest, the debt will not go down. In that case, the balance can stay flat or rise.
+          </p>
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <button class="faq-question" type="button">
+          Is APR the same as interest rate?
+          <span class="arrow">▼</span>
+        </button>
+        <div class="faq-answer">
+          <p>
+            APR is the annual cost of borrowing. For this calculator, it is used to estimate the monthly interest rate on your credit card balance.
+          </p>
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <button class="faq-question" type="button">
+          Can extra payments really help that much?
+          <span class="arrow">▼</span>
+        </button>
+        <div class="faq-answer">
+          <p>
+            Yes. Even small extra payments can shorten the payoff timeline and reduce total interest by cutting down the balance sooner.
+          </p>
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <button class="faq-question" type="button">
+          Should I pay this debt off before investing?
+          <span class="arrow">▼</span>
+        </button>
+        <div class="faq-answer">
+          <p>
+            High-interest debt is often expensive enough that paying it down first makes sense, but the right move depends on your full financial situation.
+          </p>
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <button class="faq-question" type="button">
+          Is the payoff chart exact?
+          <span class="arrow">▼</span>
+        </button>
+        <div class="faq-answer">
+          <p>
+            It is an estimate based on the inputs you enter. Real card statements can differ because of fees, variable APRs, and changing payment behavior.
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="related">
+    <h3>Related Calculators</h3>
+    <p>You may also find these tools useful:</p>
+    <ul>
+      <li><a href="debt-snowball-calculator.html">Debt Snowball Calculator</a></li>
+      <li><a href="debt-avalanche-calculator.html">Debt Avalanche Calculator</a></li>
+      <li><a href="amortization-calculator.html">Amortization Calculator</a></li>
+      <li><a href="loan-calculator.html">Loan Calculator</a></li>
+      <li><a href="savings-calculator.html">Savings Calculator</a></li>
+    </ul>
+  </div>
+
+  <div class="disclaimer">
+    <p>
+      <strong>Disclaimer:</strong> This tool provides estimates and is not financial advice.
+    </p>
+  </div>
+
+  <script src="footer.js"></script>
+  <script>
+    let chart = null;
+    let lastSeries = null;
+
+    const els = {
+      calcBtn: document.getElementById("calcBtn"),
+      balance: document.getElementById("balance"),
+      apr: document.getElementById("apr"),
+      monthlyPayment: document.getElementById("monthlyPayment"),
+      extraPayment: document.getElementById("extraPayment"),
+      resultCard: document.getElementById("resultCard"),
+      chartShell: document.getElementById("chartShell"),
+      resultSentence: document.getElementById("resultSentence"),
+      payoffTime: document.getElementById("payoffTime"),
+      totalInterest: document.getElementById("totalInterest"),
+      totalPaid: document.getElementById("totalPaid"),
+      monthlyInterestLoad: document.getElementById("monthlyInterestLoad"),
+      insightBanner: document.getElementById("insightBanner"),
+      insightKicker: document.getElementById("insightKicker"),
+      insightHeadline: document.getElementById("insightHeadline"),
+      insightBody: document.getElementById("insightBody"),
+      speedLevel: document.getElementById("speedLevel"),
+      speedNote: document.getElementById("speedNote"),
+      interestLevel: document.getElementById("interestLevel"),
+      interestNote: document.getElementById("interestNote"),
+      paymentLevel: document.getElementById("paymentLevel"),
+      paymentNote: document.getElementById("paymentNote"),
+      actionLevel: document.getElementById("actionLevel"),
+      actionNote: document.getElementById("actionNote")
+    };
+
+    function formatMoney(value){
+      if (!Number.isFinite(value)) return "—";
+      const sign = value < 0 ? "-" : "";
+      const abs = Math.abs(value);
+
+      if (abs >= 1e12) return `${sign}$${(abs / 1e12).toFixed(2)}T`;
+      if (abs >= 1e9) return `${sign}$${(abs / 1e9).toFixed(2)}B`;
+      if (abs >= 1e6) return `${sign}$${(abs / 1e6).toFixed(2)}M`;
+      return `${sign}$${abs.toFixed(2)}`;
+    }
+
+    function formatPercent(value, digits = 2){
+      if (!Number.isFinite(value)) return "—";
+      const sign = value < 0 ? "-" : "";
+      return `${sign}${Math.abs(value).toFixed(digits)}%`;
+    }
+
+    function formatMonths(months){
+      if (!Number.isFinite(months)) return "—";
+      if (months < 12) return `${months.toFixed(1)} months`;
+      const years = Math.floor(months / 12);
+      const rem = Math.round(months % 12);
+      if (rem === 0) return `${years} year${years === 1 ? "" : "s"}`;
+      return `${years} year${years === 1 ? "" : "s"} ${rem} mo`;
+    }
+
+    function buildSchedule(balance, monthlyRate, payment){
+      const labels = [];
+      const interestSeries = [];
+      const principalSeries = [];
+      const remainingSeries = [];
+
+      let current = balance;
+      let month = 0;
+      let totalInterest = 0;
+      const maxMonths = 600;
+
+      while (current > 0.01 && month < maxMonths) {
+        month += 1;
+        const interest = current * monthlyRate;
+        let principal = payment - interest;
+
+        if (principal <= 0) {
+          return {
+            valid: false,
+            reason: "Payment does not cover monthly interest."
+          };
+        }
+
+        if (principal > current) principal = current;
+
+        const endBalance = Math.max(0, current - principal);
+
+        labels.push(`M${month}`);
+        interestSeries.push(Number(interest.toFixed(2)));
+        principalSeries.push(Number(principal.toFixed(2)));
+        remainingSeries.push(Number(endBalance.toFixed(2)));
+
+        totalInterest += interest;
+        current = endBalance;
+      }
+
+      if (month >= maxMonths && current > 0.01) {
+        return {
+          valid: false,
+          reason: "Payoff schedule exceeds the supported range."
+        };
+      }
+
+      return {
+        valid: true,
+        months: month,
+        totalInterest,
+        totalPaid: balance + totalInterest,
+        labels,
+        interestSeries,
+        principalSeries,
+        remainingSeries
+      };
+    }
+
+    function drawChart(schedule){
+      const canvas = document.getElementById("myChart");
+      const ctx = canvas.getContext("2d");
+      const dpr = window.devicePixelRatio || 1;
+
+      const cssWidth = canvas.clientWidth || 1000;
+      const cssHeight = canvas.clientHeight || 320;
+
+      canvas.width = Math.floor(cssWidth * dpr);
+      canvas.height = Math.floor(cssHeight * dpr);
+      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+
+      if (chart){
+        chart.destroy();
+      }
+
+      chart = new Chart(ctx, {
+        type: "line",
+        data: {
+          labels: schedule.labels,
+          datasets: [
+            {
+              label: "Interest paid",
+              data: schedule.interestSeries,
+              borderColor: "#ef4444",
+              backgroundColor: "rgba(239,68,68,0.16)",
+              fill: true,
+              tension: 0.25,
+              pointRadius: 0,
+              borderWidth: 2,
+              yAxisID: "y"
+            },
+            {
+              label: "Principal paid",
+              data: schedule.principalSeries,
+              borderColor: "#22c55e",
+              backgroundColor: "rgba(34,197,94,0.16)",
+              fill: true,
+              tension: 0.25,
+              pointRadius: 0,
+              borderWidth: 2,
+              yAxisID: "y"
+            },
+            {
+              label: "Remaining balance",
+              data: schedule.remainingSeries,
+              borderColor: "#3b82f6",
+              backgroundColor: "rgba(59,130,246,0.02)",
+              fill: false,
+              tension: 0.25,
+              pointRadius: 0,
+              borderWidth: 2,
+              yAxisID: "y2"
+            }
+          ]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          plugins: {
+            legend: {
+              labels: { color: "white" }
+            },
+            tooltip: {
+              mode: "index",
+              intersect: false,
+              callbacks: {
+                label: function(context){
+                  return `${context.dataset.label}: ${formatMoney(context.parsed.y)}`;
+                }
+              }
+            }
+          },
+          interaction: {
+            mode: "index",
+            intersect: false
+          },
+          scales: {
+            x: {
+              stacked: true,
+              ticks: {
+                color: "white",
+                autoSkip: true,
+                maxTicksLimit: 10
+              },
+              grid: {
+                color: "rgba(255,255,255,0.06)"
+              }
+            },
+            y: {
+              stacked: true,
+              ticks: {
+                color: "white",
+                callback: value => formatMoney(Number(value))
+              },
+              grid: {
+                color: "rgba(255,255,255,0.08)"
+              }
+            },
+            y2: {
+              position: "right",
+              grid: { drawOnChartArea: false },
+              ticks: {
+                color: "white",
+                callback: value => formatMoney(Number(value))
+              }
+            }
+          }
+        }
+      });
+    }
+
+    function getInsight({
+      balance,
+      apr,
+      monthlyPayment,
+      extraPayment,
+      schedule
+    }){
+      const monthlyRate = apr / 100 / 12;
+      const effectivePayment = monthlyPayment + extraPayment;
+      const firstMonthInterest = balance * monthlyRate;
+      const paymentToInterest = effectivePayment / firstMonthInterest;
+      const paymentToBalance = effectivePayment / balance;
+
+      let bannerClass = "insight-medium";
+      let kicker = "Balanced";
+      let headline = "This payoff plan is workable";
+      let body = "The payment clears the monthly interest and the debt should go down over time, but the payoff speed still depends on how much you pay each month.";
+
+      if (!schedule.valid) {
+        bannerClass = "insight-weak";
+        kicker = "Problem";
+        headline = "Payment is too low";
+        body = "Your monthly payment does not cover the monthly interest. The balance will not move down properly until the payment is raised.";
+      } else if (schedule.months <= 12) {
+        bannerClass = "insight-good";
+        kicker = "Fast payoff";
+        headline = "This balance can disappear quickly";
+        body = "Your payment is strong enough to clear the balance in about a year or less. That is a much healthier debt profile.";
+      } else if (schedule.months <= 36) {
+        bannerClass = "insight-medium";
+        kicker = "Manageable";
+        headline = "The payoff timeline is reasonable";
+        body = "The debt is moving in the right direction, but the interest drag is still meaningful. Extra payments would shorten the timeline noticeably.";
+      } else {
+        bannerClass = "insight-weak";
+        kicker = "Heavy drag";
+        headline = "This debt is expensive to carry";
+        body = "The payoff period is long enough that interest is becoming a serious cost. Paying more each month would likely save a large amount of money.";
+      }
+
+      const speedLevel =
+        schedule.months <= 12 ? "Fast" :
+        schedule.months <= 24 ? "Moderate" :
+        schedule.months <= 48 ? "Slow" : "Very slow";
+
+      const speedNote =
+        schedule.months <= 12 ? "You are on a strong payoff track." :
+        schedule.months <= 24 ? "Good pace, but there is still room to improve." :
+        schedule.months <= 48 ? "The balance will take real time to clear." :
+        "This payoff pace is too stretched.";
+
+      const interestLevel =
+        firstMonthInterest < 25 ? "Low interest load" :
+        firstMonthInterest < 75 ? "Moderate interest load" :
+        firstMonthInterest < 150 ? "High interest load" : "Very high load";
+
+      const interestNote =
+        firstMonthInterest < 25 ? "Interest is not overwhelming your payment." :
+        firstMonthInterest < 75 ? "Interest is a real cost, but manageable." :
+        firstMonthInterest < 150 ? "Interest is eating a big part of each payment." :
+        "A large chunk of your payment goes to interest first.";
+
+      const paymentLevel =
+        paymentToInterest >= 3 ? "Strong" :
+        paymentToInterest >= 1.5 ? "Decent" :
+        paymentToInterest > 1 ? "Barely enough" : "Too low";
+
+      const paymentNote =
+        paymentToInterest >= 3 ? "Your payment is well above the monthly interest." :
+        paymentToInterest >= 1.5 ? "Your payment should make steady progress." :
+        paymentToInterest > 1 ? "You are clearing interest, but not by much." :
+        "The payment is not enough to reduce the balance properly.";
+
+      const actionLevel =
+        schedule.months <= 12 ? "Keep it steady" :
+        schedule.months <= 36 ? "Add extra payment" : "Raise payment now";
+
+      const actionNote =
+        schedule.months <= 12 ? "Avoid adding new debt and keep the plan consistent." :
+        schedule.months <= 36 ? "Even a small extra monthly amount can save real interest." :
+        "Higher payments or a short-term payoff plan would improve the outcome a lot.";
+
+      return {
+        bannerClass,
+        kicker,
+        headline,
+        body,
+        speedLevel,
+        speedNote,
+        interestLevel,
+        interestNote,
+        paymentLevel,
+        paymentNote,
+        actionLevel,
+        actionNote
+      };
+    }
+
+    function calculate(){
+      const balance = parseFloat(els.balance.value);
+      const apr = parseFloat(els.apr.value);
+      const monthlyPayment = parseFloat(els.monthlyPayment.value);
+      const extraPayment = parseFloat(els.extraPayment.value || 0);
+
+      if ([balance, apr, monthlyPayment].some(v => Number.isNaN(v))) {
+        alert("Fill all required fields");
+        return;
+      }
+
+      if (balance <= 0) {
+        alert("Balance must be greater than zero");
+        return;
+      }
+
+      if (apr < 0) {
+        alert("APR cannot be negative");
+        return;
+      }
+
+      if (monthlyPayment <= 0) {
+        alert("Monthly payment must be greater than zero");
+        return;
+      }
+
+      if (extraPayment < 0) {
+        alert("Extra payment cannot be negative");
+        return;
+      }
+
+      const effectivePayment = monthlyPayment + extraPayment;
+      const monthlyRate = apr / 100 / 12;
+      const firstMonthInterest = balance * monthlyRate;
+
+      if (monthlyRate > 0 && effectivePayment <= firstMonthInterest) {
+        els.resultCard.style.display = "block";
+        els.chartShell.style.display = "none";
+        els.resultSentence.textContent = "Your payment does not cover the monthly interest. The balance will not go down with this setup.";
+        els.payoffTime.textContent = "—";
+        els.totalInterest.textContent = "—";
+        els.totalPaid.textContent = "—";
+        els.monthlyInterestLoad.textContent = formatMoney(firstMonthInterest);
+
+        els.insightBanner.className = "insight-banner insight-weak";
+        els.insightKicker.textContent = "Problem";
+        els.insightHeadline.textContent = "Payment is too low";
+        els.insightBody.textContent = "Raise the monthly payment so it exceeds the monthly interest. Otherwise the debt can stagnate or grow.";
+        els.speedLevel.textContent = "Too slow";
+        els.speedNote.textContent = "The balance will not reduce.";
+        els.interestLevel.textContent = "Very high load";
+        els.interestNote.textContent = "Interest is consuming the entire payment.";
+        els.paymentLevel.textContent = "Too low";
+        els.paymentNote.textContent = "Increase the payment to start making real progress.";
+        els.actionLevel.textContent = "Pay more";
+        els.actionNote.textContent = "Even a small increase can change the outcome.";
+        els.insightOut.innerHTML = `<span class="insight-weak">Payment does not cover monthly interest.</span>`;
+        return;
+      }
+
+      const schedule = buildSchedule(balance, monthlyRate, effectivePayment);
+
+      if (!schedule.valid) {
+        alert(schedule.reason);
+        return;
+      }
+
+      const insight = getInsight({
+        balance,
+        apr,
+        monthlyPayment,
+        extraPayment,
+        schedule
+      });
+
+      els.resultCard.style.display = "block";
+      els.chartShell.style.display = "block";
+
+      els.payoffTime.textContent = formatMonths(schedule.months);
+      els.totalInterest.textContent = formatMoney(schedule.totalInterest);
+      els.totalPaid.textContent = formatMoney(schedule.totalPaid);
+      els.monthlyInterestLoad.textContent = formatMoney(firstMonthInterest);
+
+      els.resultSentence.textContent = `With a ${apr.toFixed(2)}% APR and a ${formatMoney(effectivePayment)} monthly payment, this balance should be paid off in about ${formatMonths(schedule.months)}.`;
+
+      els.insightBanner.className = `insight-banner ${insight.bannerClass}`;
+      els.insightKicker.textContent = insight.kicker;
+      els.insightHeadline.textContent = insight.headline;
+      els.insightBody.textContent = insight.body;
+
+      els.speedLevel.textContent = insight.speedLevel;
+      els.speedNote.textContent = insight.speedNote;
+
+      els.interestLevel.textContent = insight.interestLevel;
+      els.interestNote.textContent = insight.interestNote;
+
+      els.paymentLevel.textContent = insight.paymentLevel;
+      els.paymentNote.textContent = insight.paymentNote;
+
+      els.actionLevel.textContent = insight.actionLevel;
+      els.actionNote.textContent = insight.actionNote;
+
+      els.insightOut.innerHTML = `<span class="${insight.bannerClass}">${insight.headline}</span>`;
+
+      lastSeries = schedule;
+      drawChart(schedule);
+      document.getElementById("resultCard").scrollIntoView({ behavior: "smooth", block: "start" });
+    }
+
+    document.addEventListener("DOMContentLoaded", function(){
+      els.calcBtn.addEventListener("click", calculate);
+
+      document.querySelectorAll(".faq-question").forEach(btn => {
+        btn.addEventListener("click", () => {
+          const item = btn.parentElement;
+
+          document.querySelectorAll(".faq-item").forEach(i => {
+            if (i !== item) i.classList.remove("active");
+          });
+
+          item.classList.toggle("active");
+        });
+      });
+    });
+
+    window.addEventListener("resize", () => {
+      if (els.chartShell.style.display === "block" && lastSeries){
+        drawChart(lastSeries);
+      }
+    });
+  </script>
+</body>
+  </html>
