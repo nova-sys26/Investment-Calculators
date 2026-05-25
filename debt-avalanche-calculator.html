@@ -1436,10 +1436,7 @@
       els.actionLevel.textContent = insight.actionLevel;
       els.actionNote.textContent = insight.actionNote;
 
-      quickAnswer.textContent = avalanche.valid
-        ? `With this setup, you could be debt-free in about ${formatMonths(avalanche.months)} and save ${baseline.valid ? formatMoney(savings) : "a significant amount"} versus minimum payments alone.`
-        : "This payoff plan is too long for the supported range. Increase your extra payment or monthly minimums to shorten the path.";
-
+      
       drawChart(avalanche, baseline);
       document.getElementById("resultCard").scrollIntoView({ behavior: "smooth", block: "start" });
     }
