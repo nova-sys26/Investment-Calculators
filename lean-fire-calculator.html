@@ -431,28 +431,6 @@
       line-height:1.55;
     }
 
-    .next-tool{
-      display:none;
-      margin-top:18px;
-      padding:14px 16px;
-      border-radius:12px;
-      background:rgba(255,255,255,0.04);
-      border:1px solid rgba(255,255,255,0.08);
-      color:#cbd5e1;
-      font-size:14px;
-      line-height:1.6;
-    }
-
-    .next-tool a{
-      color:#93c5fd;
-      text-decoration:none;
-      font-weight:600;
-    }
-
-    .next-tool a:hover{
-      text-decoration:underline;
-    }
-
     .chart-shell{
       margin-top:18px;
       padding:16px;
@@ -520,45 +498,6 @@
       line-height:1.7;
     }
 
-    .fire-group{
-      margin-top:12px;
-      display:grid;
-      gap:12px;
-    }
-
-    .fire-link-card{
-      display:flex;
-      justify-content:space-between;
-      gap:12px;
-      align-items:flex-start;
-      padding:14px 16px;
-      border-radius:14px;
-      background:rgba(15,23,42,0.72);
-      border:1px solid rgba(255,255,255,0.06);
-      text-decoration:none;
-      color:white;
-      transition:0.2s;
-    }
-
-    .fire-link-card:hover{
-      transform:translateY(-2px);
-      border-color:rgba(59,130,246,0.28);
-      background:rgba(30,41,59,0.9);
-    }
-
-    .fire-link-card strong{
-      display:block;
-      font-size:16px;
-      margin-bottom:4px;
-    }
-
-    .fire-link-card span{
-      color:#cbd5e1;
-      font-size:13px;
-      line-height:1.5;
-      display:block;
-    }
-
     .faq{
       margin-top:14px;
     }
@@ -605,6 +544,46 @@
     .faq-item.active .faq-answer{
       max-height:260px;
       padding-bottom:12px;
+    }
+
+    .fire-group{
+      margin-top:12px;
+      display:grid;
+      gap:12px;
+    }
+
+    .fire-link-card{
+      display:flex;
+      justify-content:space-between;
+      gap:12px;
+      align-items:flex-start;
+      padding:14px 16px;
+      border-radius:14px;
+      background:rgba(15,23,42,0.72);
+      border:1px solid rgba(255,255,255,0.06);
+      text-decoration:none;
+      color:white;
+      transition:0.2s;
+    }
+
+    .fire-link-card:hover{
+      transform:translateY(-2px);
+      border-color:rgba(59,130,246,0.28);
+      background:rgba(30,41,59,0.9);
+    }
+
+    .fire-link-card strong{
+      display:block;
+      font-size:16px;
+      margin-bottom:4px;
+      color:#93c5fd;
+    }
+
+    .fire-link-card span{
+      color:#cbd5e1;
+      font-size:13px;
+      line-height:1.5;
+      display:block;
     }
 
     .related{
@@ -816,14 +795,6 @@
           <p id="actionNote">—</p>
         </div>
       </div>
-
-      <div id="nextTool" class="next-tool">
-        <p>
-          Want to compare a broader retirement target?
-          Compare this with the <a href="traditional-fire-calculator.html">Traditional FIRE Calculator</a>
-          to see how a higher spending target changes the path to financial independence.
-        </p>
-      </div>
     </div>
 
     <div id="chartShell" class="chart-shell">
@@ -891,30 +862,6 @@
       <li>Choose a safe withdrawal rate and expense growth rate</li>
       <li>Click calculate to see your Lean FIRE number and projection</li>
     </ul>
-
-    <div class="section-title">Other FIRE Calculators</div>
-    <div class="fire-group">
-      <a class="fire-link-card" href="traditional-fire-calculator.html">
-        <div>
-          <strong>Traditional FIRE Calculator</strong>
-          <span>For a broader retirement target with a higher spending assumption and a more flexible lifestyle plan.</span>
-        </div>
-      </a>
-
-      <a class="fire-link-card" href="coast-fire-calculator.html">
-        <div>
-          <strong>Coast FIRE Calculator</strong>
-          <span>For checking whether your current portfolio can grow on its own without additional future contributions.</span>
-        </div>
-      </a>
-
-      <a class="fire-link-card" href="retirement-calculator.html">
-        <div>
-          <strong>Retirement Calculator</strong>
-          <span>For general retirement planning that is not tied to a specific FIRE style.</span>
-        </div>
-      </a>
-    </div>
 
     <h2>Frequently Asked Questions</h2>
 
@@ -991,6 +938,30 @@
         </div>
       </div>
     </div>
+
+    <div class="section-title">Other FIRE Calculators</div>
+    <div class="fire-group">
+      <a class="fire-link-card" href="traditional-fire-calculator.html">
+        <div>
+          <strong>Traditional FIRE Calculator</strong>
+          <span>For a broader retirement target with a higher spending assumption and a more flexible lifestyle plan.</span>
+        </div>
+      </a>
+
+      <a class="fire-link-card" href="coast-fire-calculator.html">
+        <div>
+          <strong>Coast FIRE Calculator</strong>
+          <span>For checking whether your current portfolio can grow on its own without additional future contributions.</span>
+        </div>
+      </a>
+
+      <a class="fire-link-card" href="retirement-calculator.html">
+        <div>
+          <strong>Retirement Calculator</strong>
+          <span>For general retirement planning that is not tied to a specific FIRE style.</span>
+        </div>
+      </a>
+    </div>
   </div>
 
   <div class="related">
@@ -1029,7 +1000,6 @@
       calcBtn: document.getElementById("calcBtn"),
       resultCard: document.getElementById("resultCard"),
       chartShell: document.getElementById("chartShell"),
-      nextTool: document.getElementById("nextTool"),
       fireNumberOut: document.getElementById("fireNumberOut"),
       yearsOut: document.getElementById("yearsOut"),
       projectedOut: document.getElementById("projectedOut"),
@@ -1363,7 +1333,6 @@
 
       els.resultCard.style.display = "block";
       els.chartShell.style.display = "block";
-      els.nextTool.style.display = "block";
 
       els.fireNumberOut.textContent = formatMoney(fireNumber);
       els.yearsOut.textContent = Number.isFinite(yearsToFIRE) ? formatYears(yearsToFIRE) : "Over 100 years";
