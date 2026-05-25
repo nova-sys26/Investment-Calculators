@@ -453,6 +453,28 @@
       line-height:1.55;
     }
 
+    .next-tool{
+      display:none;
+      margin-top:18px;
+      padding:14px 16px;
+      border-radius:12px;
+      background:rgba(255,255,255,0.04);
+      border:1px solid rgba(255,255,255,0.08);
+      color:#cbd5e1;
+      font-size:14px;
+      line-height:1.6;
+    }
+
+    .next-tool a{
+      color:#93c5fd;
+      text-decoration:none;
+      font-weight:600;
+    }
+
+    .next-tool a:hover{
+      text-decoration:underline;
+    }
+
     .chart-shell{
       margin-top:18px;
       padding:16px;
@@ -484,28 +506,6 @@
       width:100% !important;
       height:100% !important;
       display:block;
-    }
-
-    .next-tool{
-      display:none;
-      margin-top:18px;
-      padding:14px 16px;
-      border-radius:12px;
-      background:rgba(255,255,255,0.04);
-      border:1px solid rgba(255,255,255,0.08);
-      color:#cbd5e1;
-      font-size:14px;
-      line-height:1.6;
-    }
-
-    .next-tool a{
-      color:#93c5fd;
-      text-decoration:none;
-      font-weight:600;
-    }
-
-    .next-tool a:hover{
-      text-decoration:underline;
     }
 
     .content{
@@ -810,29 +810,30 @@
 
     <h2>Debt Snowball vs. Debt Avalanche</h2>
 
-<p>
-  Debt snowball and debt avalanche use the same inputs because both methods analyze the same debt data:
-  balances, minimum payments, APRs, and extra monthly payments.
-  The difference is not the numbers themselves, but the payoff priority.
-</p>
-
-<p>
-  The debt snowball method sends extra payments to the smallest balance first.
-  Its goal is to create quicker psychological wins and build momentum early in the payoff journey.
-</p>
-    
-<p>
-  The debt avalanche method sends extra payments to the highest APR debt first.
-  Its goal is to minimize total interest and reduce the overall cost of debt faster.
-</p>
- 
-<p>
-  In other words, both strategies use the same debt information, but apply a different “which debt should be attacked first?” rule.
-  That is why the calculators look similar even though the payoff strategy is different.
-</p>
     <p>
-  This calculator simulates the real month-by-month snowball payoff path.
-  It tracks balance reduction, payoff timing, and how each cleared debt frees up more cash flow to accelerate the next payoff.
+      Debt snowball and debt avalanche use the same inputs because both methods analyze the same debt data:
+      balances, minimum payments, APRs, and extra monthly payments.
+      The difference is not the numbers themselves, but the payoff priority.
+    </p>
+
+    <p>
+      The debt snowball method sends extra payments to the smallest balance first.
+      Its goal is to create quicker psychological wins and build momentum early in the payoff journey.
+    </p>
+
+    <p>
+      The debt avalanche method sends extra payments to the highest APR debt first.
+      Its goal is to minimize total interest and reduce the overall cost of debt faster.
+    </p>
+
+    <p>
+      In other words, both strategies use the same debt information, but apply a different “which debt should be attacked first?” rule.
+      That is why the calculators look similar even though the payoff strategy is different.
+    </p>
+
+    <p>
+      This calculator simulates the real month-by-month snowball payoff path.
+      It tracks balance reduction, payoff timing, and how each cleared debt frees up more cash flow to accelerate the next payoff.
     </p>
 
     <h2>Why this matters</h2>
@@ -1446,11 +1447,7 @@
         ? `With this setup, you could be debt-free in about ${formatMonths(snowball.months)} and save ${baseline.valid ? formatMoney(savings) : "a significant amount"} versus minimum payments alone.`
         : "This payoff plan is too long for the supported range. Increase your extra payment or monthly minimums to shorten the path.";
 
-      if (snowball.valid && baseline.valid){
-        drawChart(snowball, baseline);
-      } else {
-        drawChart(snowball, baseline);
-      }
+      drawChart(snowball, baseline);
 
       document.getElementById("resultCard").scrollIntoView({ behavior: "smooth", block: "start" });
     }
