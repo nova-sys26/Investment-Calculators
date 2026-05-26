@@ -519,8 +519,21 @@
       overflow:auto;
       line-height:1.7;
     }
-    .fire-group{
-  margin-top:32px;
+
+  .section-title{
+  margin:34px 0 14px;
+  font-size:18px;
+  line-height:1.2;
+  font-weight:800;
+  letter-spacing:-0.02em;
+  color:#f8fafc;
+  text-transform:none;
+  padding-top:18px;
+  border-top:1px solid rgba(255,255,255,0.08);
+}
+
+  .fire-group{
+  margin-top:0px;
   display:grid;
   gap:14px;
 }
@@ -531,45 +544,53 @@
   gap:12px;
   align-items:flex-start;
   padding:16px 18px;
-
   border-radius:16px;
-  background:linear-gradient(180deg, rgba(2,6,23,0.96), rgba(15,23,42,0.86));
+  background:linear-gradient(180deg, rgba(15,23,42,0.82), rgba(15,23,42,0.68));
   border:1px solid rgba(255,255,255,0.08);
-
   text-decoration:none;
   color:white;
+  box-shadow:0 8px 20px rgba(0,0,0,0.16);
+  transition:background 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease, transform 0.2s ease;
+  position:relative;
+  overflow:hidden;
+}
 
-  box-shadow:0 10px 24px rgba(0,0,0,0.20);
-  transition:
-    transform 0.18s ease,
-    border-color 0.18s ease,
-    background 0.18s ease,
-    box-shadow 0.18s ease;
+.fire-link-card::before{
+  content:"";
+  position:absolute;
+  inset:0;
+  background:linear-gradient(135deg, rgba(96,165,250,0.10), transparent 45%);
+  opacity:0;
+  transition:opacity 0.2s ease;
+  pointer-events:none;
 }
 
 .fire-link-card:hover{
   transform:translateY(-1px);
-  border-color:rgba(148,163,184,0.22);
-  background:linear-gradient(180deg, rgba(10,15,30,0.98), rgba(17,24,39,0.90));
-  box-shadow:0 14px 28px rgba(0,0,0,0.28);
+  border-color:rgba(96,165,250,0.24);
+  background:linear-gradient(180deg, rgba(17,24,39,0.90), rgba(15,23,42,0.74));
+  box-shadow:0 12px 26px rgba(0,0,0,0.24);
+}
+
+.fire-link-card:hover::before{
+  opacity:1;
 }
 
 .fire-link-card strong{
   display:block;
   font-size:16px;
-  line-height:1.25;
   margin-bottom:5px;
-  color:#f8fafc;
-  font-weight:700;
+  color:#93c5fd;
+  letter-spacing:-0.01em;
 }
 
 .fire-link-card span{
-  display:block;
-  max-width:52ch;
-  color:#94a3b8;
+  color:#cbd5e1;
   font-size:13px;
   line-height:1.55;
-}
+  display:block;
+  max-width:52ch;
+    }
     .faq{
       margin-top:14px;
     }
