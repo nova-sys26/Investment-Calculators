@@ -1,0 +1,1426 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <link rel="canonical" href="https://novainvesttools.com/fat-fire-calculator.html">
+
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-ZPCXDVE8C5"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-ZPCXDVE8C5');
+  </script>
+
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>Fat FIRE Calculator – Project a More Flexible Retirement</title>
+  <meta name="description" content="Estimate your Fat FIRE number, years to financial independence, projected portfolio value, and gap to retirement using a higher spending target and flexible withdrawal assumptions.">
+  <meta name="theme-color" content="#0f172a">
+  <meta name="robots" content="index,follow,max-image-preview:large">
+
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://novainvesttools.com/fat-fire-calculator.html">
+  <meta property="og:title" content="Fat FIRE Calculator – Project a More Flexible Retirement">
+  <meta property="og:description" content="Estimate your Fat FIRE number, projected portfolio at retirement, years to FI, and gap or surplus using a higher spending target.">
+
+  <link rel="preconnect" href="https://cdn.jsdelivr.net">
+  <link rel="dns-prefetch" href="https://cdn.jsdelivr.net">
+
+  <link rel="stylesheet" href="style.css">
+  <link rel="icon" href="favicon.png" type="image/png">
+  <link rel="apple-touch-icon" href="favicon.png">
+
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "WebApplication",
+    "name": "Fat FIRE Calculator",
+    "url": "https://novainvesttools.com/fat-fire-calculator.html",
+    "applicationCategory": "FinanceApplication",
+    "operatingSystem": "All",
+    "browserRequirements": "Requires JavaScript",
+    "description": "Estimate your Fat FIRE number, years to financial independence, projected portfolio value, and retirement gap using contributions, spending, return assumptions, and safe withdrawal rate.",
+    "featureList": [
+      "Fat FIRE number calculation",
+      "Years to financial independence",
+      "Projected portfolio at retirement",
+      "Gap or surplus estimate",
+      "FIRE projection chart"
+    ],
+    "offers": {
+      "@type": "Offer",
+      "price": "0",
+      "priceCurrency": "USD"
+    }
+  }
+  </script>
+
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": [
+      {
+        "@type": "Question",
+        "name": "What is Fat FIRE?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Fat FIRE is a version of financial independence that targets a higher annual spending level, which usually means a larger portfolio target than Lean FIRE."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "How is the Fat FIRE number calculated?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "The Fat FIRE number is usually estimated by taking your expected annual retirement spending and dividing it by a safe withdrawal rate."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Why does Fat FIRE need a bigger target?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Fat FIRE assumes a more comfortable or flexible retirement lifestyle, so annual spending is higher and the portfolio needed to support it is also higher."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "How is Fat FIRE different from Lean FIRE?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Lean FIRE targets a lower-cost, more minimalist lifestyle, while Fat FIRE targets a more flexible, higher-spending retirement. That makes the Fat FIRE number much larger."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "How is Fat FIRE different from Coast FIRE?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Fat FIRE aims to reach full financial independence with a high spending target, while Coast FIRE is about having enough invested today so future growth can carry you to retirement."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Can this calculator predict the exact retirement date?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "No. It is a projection based on the inputs you enter, not a guarantee. Market returns, spending, and inflation can change."
+        }
+      }
+    ]
+  }
+  </script>
+
+  <style>
+    *{
+      box-sizing:border-box;
+    }
+
+    html{
+      scroll-behavior:smooth;
+    }
+
+    body{
+      font-family: Arial, sans-serif;
+      background:#0b1a33;
+      color:white;
+      display:flex;
+      justify-content:center;
+      align-items:center;
+      flex-direction:column;
+      min-height:100vh;
+      margin:0;
+      padding:24px 0;
+    }
+
+    .toptext{
+      font-size:14px;
+      color:#6b7a99;
+      margin-bottom:5px;
+    }
+
+    .menu{
+      margin-bottom:25px;
+    }
+
+    .menu a{
+      color:#3b82f6;
+      margin:10px;
+      text-decoration:none;
+      font-weight:600;
+    }
+
+    .container{
+      background:#1e293b;
+      padding:30px;
+      border-radius:16px;
+      width:90%;
+      max-width:720px;
+      box-shadow:0 10px 25px rgba(0,0,0,0.35);
+    }
+
+    h1{
+      margin-top:0;
+      margin-bottom:10px;
+      font-size:32px;
+      line-height:1.15;
+    }
+
+    .subhead{
+      color:#94a3b8;
+      font-size:15px;
+      line-height:1.6;
+      margin-bottom:18px;
+    }
+
+    .quick-answer{
+      background: rgba(59,130,246,0.12);
+      border: 1px solid rgba(59,130,246,0.25);
+      padding: 12px 14px;
+      border-radius: 10px;
+      font-size: 15px;
+      line-height: 1.6;
+      color: #e2e8f0;
+      margin-bottom: 18px;
+    }
+
+    .badge-row{
+      display:flex;
+      gap:10px;
+      flex-wrap:wrap;
+      margin:14px 0 8px;
+    }
+
+    .badge{
+      display:inline-flex;
+      padding:5px 10px;
+      border-radius:999px;
+      font-size:12px;
+      font-weight:700;
+      background:rgba(59,130,246,0.12);
+      color:#bfdbfe;
+      border:1px solid rgba(59,130,246,0.22);
+    }
+
+    .badge.soft{
+      background:rgba(255,255,255,0.05);
+      border-color:rgba(255,255,255,0.08);
+      color:#dbeafe;
+    }
+
+    .field-label{
+      display:block;
+      font-size:13px;
+      color:#cbd5e1;
+      font-weight:600;
+      margin:12px 0 6px;
+    }
+
+    .helper{
+      margin-top:6px;
+      color:#94a3b8;
+      font-size:12px;
+      line-height:1.5;
+    }
+
+    input{
+      width:100%;
+      padding:14px;
+      border-radius:10px;
+      border:none;
+      background:#e5e7eb;
+      font-size:16px;
+      outline:none;
+    }
+
+    input:focus{
+      box-shadow:0 0 0 3px rgba(59,130,246,0.18);
+    }
+
+    button{
+      padding:14px;
+      background:#3b82f6;
+      border:none;
+      border-radius:10px;
+      color:white;
+      cursor:pointer;
+      margin-top:10px;
+      width:100%;
+      font-size:16px;
+      font-weight:700;
+      transition:0.2s;
+    }
+
+    button:hover{
+      background:#2563eb;
+      transform:translateY(-1px);
+    }
+
+    .secondary-btn{
+      background:rgba(255,255,255,0.06);
+      border:1px solid rgba(255,255,255,0.08);
+    }
+
+    .secondary-btn:hover{
+      background:rgba(255,255,255,0.10);
+    }
+
+    .section-title{
+      margin:18px 0 8px;
+      font-size:16px;
+      color:#e2e8f0;
+      font-weight:700;
+    }
+
+    .grid{
+      display:grid;
+      grid-template-columns:1fr 1fr;
+      gap:12px;
+    }
+
+    .field{
+      margin:0;
+    }
+
+    .field label{
+      display:block;
+      font-size:13px;
+      color:#cbd5e1;
+      margin:0 0 6px;
+      font-weight:600;
+    }
+
+    .result-card{
+      margin-top:18px;
+      padding:16px;
+      border-radius:14px;
+      background:rgba(255,255,255,0.05);
+      border:1px solid rgba(255,255,255,0.08);
+      display:none;
+    }
+
+    .result-grid{
+      display:grid;
+      grid-template-columns:repeat(auto-fit, minmax(160px, 1fr));
+      gap:12px;
+    }
+
+    .result-box{
+      background:rgba(15,23,42,0.72);
+      border:1px solid rgba(255,255,255,0.06);
+      border-radius:14px;
+      padding:14px;
+    }
+
+    .result-box span{
+      display:block;
+      color:#94a3b8;
+      font-size:12px;
+      text-transform:uppercase;
+      letter-spacing:0.08em;
+      font-weight:700;
+      margin-bottom:6px;
+    }
+
+    .result-box strong{
+      display:block;
+      font-size:18px;
+      line-height:1.25;
+    }
+
+    .mini-line{
+      margin-top:12px;
+      padding:12px 14px;
+      border-radius:12px;
+      background:rgba(15,23,42,0.72);
+      border:1px solid rgba(255,255,255,0.06);
+      color:#cbd5e1;
+      font-size:14px;
+      line-height:1.6;
+    }
+
+    .insight-banner{
+      margin-top:14px;
+      padding:16px;
+      border-radius:16px;
+      background:rgba(15,23,42,0.88);
+      border:1px solid rgba(255,255,255,0.08);
+    }
+
+    .insight-banner.insight-good{
+      border-color:rgba(34,197,94,0.25);
+      background:rgba(34,197,94,0.08);
+    }
+
+    .insight-banner.insight-medium{
+      border-color:rgba(250,204,21,0.25);
+      background:rgba(250,204,21,0.08);
+    }
+
+    .insight-banner.insight-weak{
+      border-color:rgba(239,68,68,0.25);
+      background:rgba(239,68,68,0.08);
+    }
+
+    .insight-kicker{
+      display:inline-flex;
+      align-items:center;
+      padding:5px 10px;
+      border-radius:999px;
+      font-size:11px;
+      font-weight:800;
+      letter-spacing:0.08em;
+      text-transform:uppercase;
+      background:rgba(255,255,255,0.06);
+      color:#cbd5e1;
+    }
+
+    .insight-headline{
+      display:block;
+      margin-top:8px;
+      font-size:18px;
+      line-height:1.25;
+    }
+
+    .insight-body{
+      margin:8px 0 0;
+      color:#cbd5e1;
+      line-height:1.6;
+      font-size:14px;
+    }
+
+    .insight-grid{
+      display:grid;
+      grid-template-columns:repeat(auto-fit, minmax(180px, 1fr));
+      gap:12px;
+      margin-top:12px;
+    }
+
+    .insight-card{
+      background:rgba(15,23,42,0.72);
+      border:1px solid rgba(255,255,255,0.06);
+      border-radius:14px;
+      padding:14px;
+    }
+
+    .insight-card span{
+      display:block;
+      color:#94a3b8;
+      font-size:12px;
+      text-transform:uppercase;
+      letter-spacing:0.08em;
+      font-weight:700;
+      margin-bottom:6px;
+    }
+
+    .insight-card strong{
+      display:block;
+      font-size:16px;
+      line-height:1.25;
+    }
+
+    .insight-card p{
+      margin:6px 0 0;
+      color:#cbd5e1;
+      font-size:13px;
+      line-height:1.55;
+    }
+
+    .next-tool{
+      display:none;
+      margin-top:18px;
+      padding:14px 16px;
+      border-radius:12px;
+      background:rgba(255,255,255,0.04);
+      border:1px solid rgba(255,255,255,0.08);
+      color:#cbd5e1;
+      font-size:14px;
+      line-height:1.6;
+    }
+
+    .next-tool a{
+      color:#93c5fd;
+      text-decoration:none;
+      font-weight:600;
+    }
+
+    .next-tool a:hover{
+      text-decoration:underline;
+    }
+
+    .chart-shell{
+      margin-top:18px;
+      padding:16px;
+      border-radius:16px;
+      background:rgba(255,255,255,0.04);
+      border:1px solid rgba(255,255,255,0.08);
+      display:none;
+    }
+
+    .chart-shell h3{
+      margin:0 0 8px;
+      font-size:16px;
+    }
+
+    .chart-sub{
+      margin:0 0 12px;
+      color:#94a3b8;
+      font-size:12px;
+      line-height:1.5;
+    }
+
+    .chart-wrap{
+      width:100%;
+      height:320px;
+      position:relative;
+    }
+
+    canvas{
+      width:100% !important;
+      height:100% !important;
+      display:block;
+    }
+
+    .content{
+      width:90%;
+      max-width:900px;
+      margin-top:34px;
+    }
+
+    .content h2{
+      margin-top:34px;
+      margin-bottom:10px;
+      font-size:28px;
+    }
+
+    .content p,
+    .content li{
+      color:#cbd5e1;
+      line-height:1.7;
+      font-size:15px;
+    }
+
+    .content ul{
+      padding-left:20px;
+    }
+
+    .formula{
+      background:rgba(255,255,255,0.05);
+      border:1px solid rgba(255,255,255,0.08);
+      padding:14px 16px;
+      border-radius:12px;
+      margin:12px 0;
+      color:#e2e8f0;
+      overflow:auto;
+      line-height:1.7;
+    }
+
+    .fire-group{
+      margin-top:12px;
+      display:grid;
+      gap:12px;
+    }
+
+    .fire-link-card{
+      display:flex;
+      justify-content:space-between;
+      gap:12px;
+      align-items:flex-start;
+      padding:14px 16px;
+      border-radius:14px;
+      background:rgba(15,23,42,0.72);
+      border:1px solid rgba(255,255,255,0.06);
+      text-decoration:none;
+      color:white;
+      transition:0.2s;
+    }
+
+    .fire-link-card:hover{
+      transform:translateY(-2px);
+      border-color:rgba(59,130,246,0.28);
+      background:rgba(30,41,59,0.9);
+    }
+
+    .fire-link-card strong{
+      display:block;
+      font-size:16px;
+      margin-bottom:4px;
+      color:#60a5fa;
+    }
+
+    .fire-link-card span{
+      color:#cbd5e1;
+      font-size:13px;
+      line-height:1.5;
+      display:block;
+    }
+
+    .faq{
+      margin-top:14px;
+    }
+
+    .faq-item{
+      border-bottom:1px solid rgba(255,255,255,0.08);
+    }
+
+    .faq-question{
+      width:100%;
+      background:none;
+      border:none;
+      color:white;
+      text-align:left;
+      padding:14px 8px;
+      font-size:15px;
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      cursor:pointer;
+    }
+
+    .faq-question:hover{
+      color:#93c5fd;
+    }
+
+    .arrow{
+      transition:0.25s;
+    }
+
+    .faq-item.active .arrow{
+      transform:rotate(180deg);
+    }
+
+    .faq-answer{
+      max-height:0;
+      overflow:hidden;
+      transition:max-height 0.3s ease;
+      color:#cbd5e1;
+      font-size:14px;
+      padding:0 8px;
+    }
+
+    .faq-item.active .faq-answer{
+      max-height:260px;
+      padding-bottom:12px;
+    }
+
+    .related{
+      width:90%;
+      max-width:900px;
+      margin-top:34px;
+      background:rgba(30,41,59,0.62);
+      border:1px solid rgba(255,255,255,0.08);
+      border-radius:16px;
+      padding:22px;
+    }
+
+    .related h3{
+      margin-top:0;
+      margin-bottom:10px;
+    }
+
+    .related p,
+    .related li{
+      color:#cbd5e1;
+      line-height:1.7;
+      font-size:15px;
+    }
+
+    .related ul{
+      padding-left:18px;
+      margin-bottom:0;
+    }
+
+    .related a{
+      color:#93c5fd;
+      text-decoration:none;
+    }
+
+    .related a:hover{
+      text-decoration:underline;
+    }
+
+    .disclaimer{
+      margin-top:24px;
+      padding-top:20px;
+      border-top:1px solid rgba(255,255,255,0.1);
+      font-size:13px;
+      color:#9ca3af;
+      max-width:900px;
+      text-align:center;
+      line-height:1.6;
+      width:90%;
+    }
+
+    @media (max-width: 760px){
+      .container{
+        padding:22px;
+      }
+
+      h1{
+        font-size:28px;
+      }
+
+      .content h2{
+        font-size:24px;
+      }
+
+      .grid{
+        grid-template-columns:1fr;
+      }
+
+      .chart-shell{
+        height:300px;
+      }
+
+      .chart-wrap{
+        height:220px;
+      }
+    }
+
+    @media (max-width: 560px){
+      .page-shell{
+        width:min(1180px, calc(100% - 20px));
+      }
+
+      .menu-btn{
+        width:42px;
+        height:42px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <p class="toptext">Explore more calculators</p>
+
+  <div class="menu">
+    <a href="index.html">Home</a>
+  </div>
+
+  <div class="container">
+    <h1>Fat FIRE Calculator</h1>
+
+    <p id="quickAnswer" class="quick-answer">
+      Fat FIRE targets a higher spending level than Lean FIRE, so the portfolio needed for independence is usually larger and the retirement plan is built around more flexibility.
+    </p>
+
+    <p class="subhead" id="subheadText">
+      Project your Fat FIRE number, your expected portfolio at retirement, the years left until financial independence, and the gap or surplus versus your target.
+    </p>
+
+    <div class="badge-row">
+      <span class="badge">Fat FIRE</span>
+      <span class="badge soft">Higher spending target</span>
+      <span class="badge soft">Retirement planning</span>
+    </div>
+
+    <div class="section-title">Your details</div>
+
+    <div class="grid">
+      <div class="field">
+        <label for="currentAge">Current Age</label>
+        <input id="currentAge" type="number" min="0" step="1" placeholder="e.g. 30">
+      </div>
+
+      <div class="field">
+        <label for="retirementAge">Target Retirement Age</label>
+        <input id="retirementAge" type="number" min="0" step="1" placeholder="e.g. 55">
+      </div>
+
+      <div class="field">
+        <label for="currentPortfolio">Current Invested Assets ($)</label>
+        <input id="currentPortfolio" type="number" min="0" step="any" placeholder="e.g. 50000">
+      </div>
+
+      <div class="field">
+        <label for="annualContribution">Annual Contribution ($)</label>
+        <input id="annualContribution" type="number" min="0" step="any" placeholder="e.g. 12000">
+      </div>
+
+      <div class="field">
+        <label for="annualSpending">Annual Spending Need in Retirement ($)</label>
+        <input id="annualSpending" type="number" min="0" step="any" placeholder="e.g. 75000">
+      </div>
+
+      <div class="field">
+        <label for="expectedReturn">Expected Annual Return (%)</label>
+        <input id="expectedReturn" type="number" step="any" placeholder="e.g. 7">
+      </div>
+
+      <div class="field">
+        <label for="safeWithdrawalRate">Safe Withdrawal Rate (%)</label>
+        <input id="safeWithdrawalRate" type="number" step="any" value="4" placeholder="e.g. 4">
+      </div>
+
+      <div class="field">
+        <label for="expenseGrowth">Expense Growth / Inflation (%)</label>
+        <input id="expenseGrowth" type="number" step="any" value="2.5" placeholder="e.g. 2.5">
+      </div>
+    </div>
+
+    <button id="calcBtn" type="button">Calculate</button>
+
+    <div id="resultCard" class="result-card">
+      <div class="result-grid">
+        <div class="result-box">
+          <span>Fat FIRE number</span>
+          <strong id="fireNumberOut">—</strong>
+        </div>
+        <div class="result-box">
+          <span>Years to FIRE</span>
+          <strong id="yearsOut">—</strong>
+        </div>
+        <div class="result-box">
+          <span>Projected portfolio</span>
+          <strong id="projectedOut">—</strong>
+        </div>
+        <div class="result-box">
+          <span>Passive annual income</span>
+          <strong id="incomeOut">—</strong>
+        </div>
+      </div>
+
+      <div class="mini-line" id="gapLine">
+        Gap vs Fat FIRE target: <strong id="gapOut">—</strong>
+      </div>
+
+      <div id="insightBanner" class="insight-banner">
+        <span id="insightKicker" class="insight-kicker">—</span>
+        <strong id="insightHeadline" class="insight-headline">—</strong>
+        <p id="insightBody" class="insight-body">—</p>
+      </div>
+
+      <div class="insight-grid">
+        <div class="insight-card">
+          <span>Readiness</span>
+          <strong id="readinessLevel">—</strong>
+          <p id="readinessNote">—</p>
+        </div>
+        <div class="insight-card">
+          <span>Portfolio mix</span>
+          <strong id="mixLevel">—</strong>
+          <p id="mixNote">—</p>
+        </div>
+        <div class="insight-card">
+          <span>Inflation effect</span>
+          <strong id="inflationLevel">—</strong>
+          <p id="inflationNote">—</p>
+        </div>
+        <div class="insight-card">
+          <span>Best move</span>
+          <strong id="actionLevel">—</strong>
+          <p id="actionNote">—</p>
+        </div>
+      </div>
+    </div>
+
+    <div id="chartShell" class="chart-shell">
+      <h3>FIRE projection chart</h3>
+      <p class="chart-sub">The blue line shows your projected portfolio. The green line shows the Fat FIRE target.</p>
+      <div class="chart-wrap">
+        <canvas id="myChart"></canvas>
+      </div>
+    </div>
+  </div>
+
+  <div class="content">
+    <h2>What is Fat FIRE?</h2>
+    <p>
+      Fat FIRE is a version of financial independence designed for a more comfortable and flexible retirement lifestyle.
+      Instead of optimizing for the lowest possible spending level, Fat FIRE assumes a higher annual spending target and therefore a larger portfolio goal.
+    </p>
+
+    <p>
+      That makes Fat FIRE different from Lean FIRE in a very practical way: the target is not about getting by cheaply, but about funding a more spacious lifestyle with more room for travel, dining out, hobbies, or general flexibility.
+      Compared with Traditional FIRE, Fat FIRE is usually more ambitious on spending and therefore more demanding on portfolio size.
+    </p>
+
+    <p>
+      Fat FIRE is still full financial independence. The difference is the lifestyle it is built to support.
+      Lean FIRE compresses spending. Coast FIRE focuses on letting future compounding do the work. Fat FIRE assumes you want the portfolio itself to support a higher level of annual spending.
+    </p>
+
+    <h2>How the calculation works</h2>
+    <div class="formula">
+      Future retirement spending = annual spending × (1 + expense growth)^(years)<br>
+      Fat FIRE number = future retirement spending ÷ safe withdrawal rate<br>
+      Projected portfolio = current assets + compounded growth + annual contributions<br>
+      Gap or surplus = projected portfolio − Fat FIRE number
+    </div>
+
+    <p>
+      Inflation matters because a higher spending target usually rises over time, and that increases the amount of capital needed later.
+      A Fat FIRE plan should use a realistic expense growth assumption so the target is not understated.
+    </p>
+
+    <h2>Why Fat FIRE matters</h2>
+    <ul>
+      <li>Shows the portfolio size needed for a more flexible retirement</li>
+      <li>Lets you compare current progress against a realistic target</li>
+      <li>Makes contribution decisions easier to judge</li>
+      <li>Shows the effect of inflation on future spending power</li>
+      <li>Helps you see whether your plan is spacious, realistic, or too aggressive</li>
+    </ul>
+
+    <h2>How Fat FIRE differs from other FIRE paths</h2>
+    <p>
+      Fat FIRE sits at the higher-spending end of the FIRE spectrum. Lean FIRE is built around lower costs and a more minimalist lifestyle.
+      Traditional FIRE is usually a middle ground with a comfortable but not extravagant spending assumption.
+      Coast FIRE is not about reaching full independence right away; it is about reaching a point where future growth can carry you.
+      Barista FIRE mixes portfolio income with part-time work, while Fat FIRE aims for the portfolio to cover a more generous standard of living on its own.
+    </p>
+
+    <p>
+      In short, Fat FIRE is the right lens when the question is not “how cheaply can I retire?” but “how much capital do I need to retire comfortably without depending on work?”
+    </p>
+
+    <h2>How to use this calculator</h2>
+    <ul>
+      <li>Enter your current age and target retirement age</li>
+      <li>Add your current invested assets</li>
+      <li>Enter your annual contribution</li>
+      <li>Set your retirement spending target and expected return</li>
+      <li>Choose a safe withdrawal rate and expense growth rate</li>
+      <li>Click calculate to see your Fat FIRE number and projection</li>
+    </ul>
+
+    <div class="section-title">Other FIRE Calculators</div>
+    <div class="fire-group">
+      <a class="fire-link-card" href="lean-fire-calculator.html">
+        <div>
+          <strong>Lean FIRE Calculator</strong>
+          <span>Click to calculate a lower-spending retirement plan with a smaller target portfolio.</span>
+        </div>
+      </a>
+
+      <a class="fire-link-card" href="traditional-fire-calculator.html">
+        <div>
+          <strong>Traditional FIRE Calculator</strong>
+          <span>Click to calculate a flexible retirement target with broader spending assumptions.</span>
+        </div>
+      </a>
+
+      <a class="fire-link-card" href="barista-fire-calculator.html">
+        <div>
+          <strong>Barista FIRE Calculator</strong>
+          <span>Click to calculate a portfolio-plus-income plan where part-time work helps close the gap.</span>
+        </div>
+      </a>
+
+      <a class="fire-link-card" href="coast-fire-calculator.html">
+        <div>
+          <strong>Coast FIRE Calculator</strong>
+          <span>Click to check whether your current portfolio can grow on its own until retirement.</span>
+        </div>
+      </a>
+    </div>
+
+    <h2>Frequently Asked Questions</h2>
+
+    <div class="faq">
+      <div class="faq-item">
+        <button class="faq-question" type="button">
+          What does Fat FIRE mean?
+          <span class="arrow">▼</span>
+        </button>
+        <div class="faq-answer">
+          <p>
+            Fat FIRE means reaching financial independence with a higher annual spending target, which usually leads to a larger portfolio target than Lean FIRE or Traditional FIRE.
+          </p>
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <button class="faq-question" type="button">
+          Why is Fat FIRE usually larger than Lean FIRE?
+          <span class="arrow">▼</span>
+        </button>
+        <div class="faq-answer">
+          <p>
+            Because the target is based on spending. If your retirement spending is higher, the portfolio needed to support it is also higher.
+          </p>
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <button class="faq-question" type="button">
+          How is Fat FIRE different from Traditional FIRE?
+          <span class="arrow">▼</span>
+        </button>
+        <div class="faq-answer">
+          <p>
+            Traditional FIRE usually assumes a comfortable but balanced spending level. Fat FIRE pushes that target higher and is meant to support a more flexible lifestyle.
+          </p>
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <button class="faq-question" type="button">
+          How is Fat FIRE different from Coast FIRE?
+          <span class="arrow">▼</span>
+        </button>
+        <div class="faq-answer">
+          <p>
+            Coast FIRE means you have enough invested today that future growth can do the work. Fat FIRE means you are aiming for full independence with a higher spending target.
+          </p>
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <button class="faq-question" type="button">
+          Can I use this calculator if my contributions change later?
+          <span class="arrow">▼</span>
+        </button>
+        <div class="faq-answer">
+          <p>
+            Yes. You can update the annual contribution input or use it as a conservative estimate if your savings rate is not fixed.
+          </p>
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <button class="faq-question" type="button">
+          Can this calculator predict my exact retirement date?
+          <span class="arrow">▼</span>
+        </button>
+        <div class="faq-answer">
+          <p>
+            No. It gives an estimate based on the inputs you enter. Real market returns, savings changes, taxes, and inflation can change the outcome.
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="related">
+    <h3>Related Calculators</h3>
+    <p>You may also find these tools useful:</p>
+    <ul>
+      <li><a href="traditional-fire-calculator.html">Traditional FIRE Calculator</a></li>
+      <li><a href="lean-fire-calculator.html">Lean FIRE Calculator</a></li>
+      <li><a href="barista-fire-calculator.html">Barista FIRE Calculator</a></li>
+      <li><a href="coast-fire-calculator.html">Coast FIRE Calculator</a></li>
+      <li><a href="retirement-calculator.html">Retirement Calculator</a></li>
+      <li><a href="compound-interest-calculator.html">Compound Interest Calculator</a></li>
+      <li><a href="future-value-calculator.html">Future Value Calculator</a></li>
+      <li><a href="inflation-calculator.html">Inflation Calculator</a></li>
+    </ul>
+  </div>
+
+  <div class="disclaimer">
+    <p>
+      <strong>Disclaimer:</strong> This tool provides estimates and is not financial advice.
+      Actual FIRE outcomes depend on market returns, spending behavior, taxes, inflation, and personal circumstances.
+    </p>
+  </div>
+
+  <script src="footer.js"></script>
+  <script>
+    let chart = null;
+
+    const els = {
+      currentAge: document.getElementById("currentAge"),
+      retirementAge: document.getElementById("retirementAge"),
+      currentPortfolio: document.getElementById("currentPortfolio"),
+      annualContribution: document.getElementById("annualContribution"),
+      annualSpending: document.getElementById("annualSpending"),
+      expectedReturn: document.getElementById("expectedReturn"),
+      safeWithdrawalRate: document.getElementById("safeWithdrawalRate"),
+      expenseGrowth: document.getElementById("expenseGrowth"),
+      calcBtn: document.getElementById("calcBtn"),
+      resultCard: document.getElementById("resultCard"),
+      chartShell: document.getElementById("chartShell"),
+      fireNumberOut: document.getElementById("fireNumberOut"),
+      yearsOut: document.getElementById("yearsOut"),
+      projectedOut: document.getElementById("projectedOut"),
+      incomeOut: document.getElementById("incomeOut"),
+      gapOut: document.getElementById("gapOut"),
+      insightBanner: document.getElementById("insightBanner"),
+      insightKicker: document.getElementById("insightKicker"),
+      insightHeadline: document.getElementById("insightHeadline"),
+      insightBody: document.getElementById("insightBody"),
+      readinessLevel: document.getElementById("readinessLevel"),
+      readinessNote: document.getElementById("readinessNote"),
+      mixLevel: document.getElementById("mixLevel"),
+      mixNote: document.getElementById("mixNote"),
+      inflationLevel: document.getElementById("inflationLevel"),
+      inflationNote: document.getElementById("inflationNote"),
+      actionLevel: document.getElementById("actionLevel"),
+      actionNote: document.getElementById("actionNote")
+    };
+
+    function formatMoney(value){
+      if (!Number.isFinite(value)) return "—";
+      const sign = value < 0 ? "-" : "";
+      const abs = Math.abs(value);
+
+      if (abs >= 1e12) return `${sign}$${(abs / 1e12).toFixed(2)}T`;
+      if (abs >= 1e9) return `${sign}$${(abs / 1e9).toFixed(2)}B`;
+      if (abs >= 1e6) return `${sign}$${(abs / 1e6).toFixed(2)}M`;
+      return `${sign}$${abs.toFixed(2)}`;
+    }
+
+    function formatYears(value){
+      if (!Number.isFinite(value)) return "—";
+      if (value === 0) return "Now";
+      if (value < 1) return `${Math.round(value * 12)} mo`;
+      const years = Math.floor(value);
+      const months = Math.round((value - years) * 12);
+      if (months === 0) return `${years} yr${years === 1 ? "" : "s"}`;
+      return `${years} yr${years === 1 ? "" : "s"} ${months} mo`;
+    }
+
+    function projectBalance(balance0, annualContribution, annualReturnPct, months){
+      const monthlyReturn = Math.pow(1 + annualReturnPct / 100, 1 / 12) - 1;
+      const monthlyContribution = annualContribution / 12;
+      let balance = balance0;
+
+      for (let i = 0; i < months; i++){
+        balance = balance * (1 + monthlyReturn) + monthlyContribution;
+      }
+
+      return balance;
+    }
+
+    function buildProjectionSeries(balance0, annualContribution, annualReturnPct, targetMonths, fireNumber){
+      const labels = ["Now"];
+      const portfolio = [balance0];
+      const fireTarget = [fireNumber];
+
+      for (let m = 12; m <= targetMonths; m += 12){
+        labels.push(`${m / 12}Y`);
+        portfolio.push(projectBalance(balance0, annualContribution, annualReturnPct, m));
+        fireTarget.push(fireNumber);
+      }
+
+      if (targetMonths % 12 !== 0){
+        labels.push(`${(targetMonths / 12).toFixed(1)}Y`);
+        portfolio.push(projectBalance(balance0, annualContribution, annualReturnPct, targetMonths));
+        fireTarget.push(fireNumber);
+      }
+
+      return { labels, portfolio, fireTarget };
+    }
+
+    function findYearsToFIRE(balance0, annualContribution, annualReturnPct, fireNumber){
+      if (balance0 >= fireNumber) return 0;
+
+      const maxMonths = 1200;
+      const endValue = projectBalance(balance0, annualContribution, annualReturnPct, maxMonths);
+      if (endValue < fireNumber) return NaN;
+
+      let low = 0;
+      let high = maxMonths;
+
+      while (low < high){
+        const mid = Math.floor((low + high) / 2);
+        const value = projectBalance(balance0, annualContribution, annualReturnPct, mid);
+
+        if (value >= fireNumber) high = mid;
+        else low = mid + 1;
+      }
+
+      return low / 12;
+    }
+
+    function classifyReady(gap, fireNumber, yearsToFIRE){
+      const gapAbs = Math.abs(gap);
+      const gapPct = fireNumber > 0 ? (gapAbs / fireNumber) * 100 : 0;
+
+      if (gap >= 0){
+        if (yearsToFIRE === 0) return { label: "Already FI", tone: "insight-good", text: "Your current portfolio already clears the target. The main focus now is sustainability and withdrawal discipline." };
+        if (gapPct <= 5) return { label: "Very close", tone: "insight-good", text: "You are close enough that small changes in savings or returns can move the date materially." };
+        if (gapPct <= 20) return { label: "On track", tone: "insight-medium", text: "You are ahead of the target line, but consistency still matters if you want margin for error." };
+        return { label: "Ahead", tone: "insight-good", text: "Your projected portfolio clears the Fat FIRE number with room to spare at the target age." };
+      }
+
+      if (gapPct <= 5) return { label: "Close", tone: "insight-medium", text: "You are only a small step away from the target. A slightly higher contribution or a lower spending target could close the gap." };
+      if (gapPct <= 20) return { label: "Behind", tone: "insight-medium", text: "You are not far off, but the plan needs more contribution, more time, or lower spending." };
+      return { label: "Far behind", tone: "insight-weak", text: "The current plan leaves a large shortfall. The biggest lever is usually contribution rate or spending target." };
+    }
+
+    function buildInsight({ fireNumber, projected, gap, yearsToFIRE, annualContribution, annualSpending, expenseGrowth, expectedReturn, retirementAge }){
+      const readiness = classifyReady(gap, fireNumber, yearsToFIRE);
+      const contributionRate = annualSpending > 0 ? (annualContribution / annualSpending) * 100 : 0;
+
+      let kicker = "";
+      let headline = "";
+      let body = "";
+
+      if (gap >= 0 && yearsToFIRE === 0){
+        kicker = "FI achieved";
+        headline = "You are already at the Fat FIRE target";
+        body = "The projected portfolio already meets or exceeds the Fat FIRE number. From here, the focus is keeping the plan stable and protecting the portfolio.";
+      } else if (gap >= 0){
+        kicker = "On track";
+        headline = "The plan clears the target";
+        body = `At your target age, the projection reaches about ${formatMoney(projected)} against a Fat FIRE number of ${formatMoney(fireNumber)}. That gives you a buffer of ${formatMoney(gap)}.`;
+      } else if (Math.abs(gap) <= fireNumber * 0.05){
+        kicker = "Very close";
+        headline = "You are basically at the edge";
+        body = `The gap is only ${formatMoney(Math.abs(gap))}, so a small change in contributions, spending, or returns can change the result quickly.`;
+      } else if (Math.abs(gap) <= fireNumber * 0.20){
+        kicker = "Needs work";
+        headline = "You are close, but not there yet";
+        body = `The current plan falls short by ${formatMoney(Math.abs(gap))}. Increasing contributions or lowering the spending target would have a visible effect.`;
+      } else {
+        kicker = "Shortfall";
+        headline = "The target is still far away";
+        body = `The current projection misses the Fat FIRE number by ${formatMoney(Math.abs(gap))}. The main levers are higher savings, lower spending, or more time.`;
+      }
+
+      if (Number.isFinite(retirementAge) && retirementAge > 100){
+        body += " Retirement age above 100 is unusually far out, so the calculator is stretching the horizon a little there.";
+      }
+
+      const readinessLevel = readiness.label;
+      const readinessNote = readiness.text;
+
+      const mixLevel =
+        contributionRate >= 30 ? "Strong savings" :
+        contributionRate >= 15 ? "Balanced" : "Light savings";
+
+      const mixNote =
+        contributionRate >= 30 ? "Your annual contribution is doing a lot of the heavy lifting." :
+        contributionRate >= 15 ? "Both contributions and compounding matter here." :
+        "The projection relies heavily on compounding, so savings rate may need to rise.";
+
+      const inflationLevel =
+        expenseGrowth >= 4 ? "High inflation drag" :
+        expenseGrowth >= 2 ? "Moderate inflation drag" : "Low inflation drag";
+
+      const inflationNote =
+        expenseGrowth >= 4 ? "Future spending increases meaningfully, so the Fat FIRE target rises faster." :
+        expenseGrowth >= 2 ? "Inflation matters, but the target remains manageable if you stay consistent." :
+        "Spending growth is mild, so the target stays more stable over time.";
+
+      const actionLevel =
+        gap < 0 && contributionRate < 20 ? "Raise savings rate" :
+        gap < 0 && expectedReturn < 5 ? "Check assumptions" :
+        gap >= 0 ? "Stay consistent" : "Reduce spending";
+
+      const actionNote =
+        gap < 0 && contributionRate < 20 ? "A higher contribution rate usually moves the result more than chasing tiny return improvements." :
+        gap < 0 && expectedReturn < 5 ? "A very conservative return assumption can be fine, but make sure it is not too pessimistic." :
+        gap >= 0 ? "Protect the plan and keep contribution behavior steady." :
+        "Lowering the retirement spending target can shrink the Fat FIRE number quickly.";
+
+      return {
+        kicker,
+        headline,
+        body,
+        readinessLevel,
+        readinessNote,
+        mixLevel,
+        mixNote,
+        inflationLevel,
+        inflationNote,
+        actionLevel,
+        actionNote,
+        bannerClass: readiness.tone
+      };
+    }
+
+    function makeChart(labels, portfolio, fireTarget){
+      const canvas = document.getElementById("myChart");
+      const ctx = canvas.getContext("2d");
+
+      if (chart){
+        chart.destroy();
+      }
+
+      chart = new Chart(ctx, {
+        type: "line",
+        data: {
+          labels,
+          datasets: [
+            {
+              label: "Projected portfolio",
+              data: portfolio,
+              borderColor: "#3b82f6",
+              backgroundColor: "rgba(59,130,246,0.16)",
+              fill: true,
+              tension: 0.25,
+              pointRadius: 0,
+              pointHoverRadius: 5,
+              borderWidth: 2.5
+            },
+            {
+              label: "Fat FIRE target",
+              data: fireTarget,
+              borderColor: "#22c55e",
+              backgroundColor: "rgba(34,197,94,0.06)",
+              fill: false,
+              tension: 0,
+              pointRadius: 0,
+              pointHoverRadius: 4,
+              borderWidth: 2.5
+            }
+          ]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          plugins: {
+            legend: {
+              labels: { color: "white" }
+            },
+            tooltip: {
+              mode: "index",
+              intersect: false,
+              callbacks: {
+                label: function(context){
+                  return `${context.dataset.label}: ${formatMoney(context.parsed.y)}`;
+                }
+              }
+            }
+          },
+          interaction: {
+            mode: "index",
+            intersect: false
+          },
+          scales: {
+            x: {
+              ticks: {
+                color: "white",
+                autoSkip: true,
+                maxTicksLimit: 8
+              },
+              grid: {
+                color: "rgba(255,255,255,0.06)"
+              }
+            },
+            y: {
+              ticks: {
+                color: "white",
+                callback: value => formatMoney(Number(value))
+              },
+              grid: {
+                color: "rgba(255,255,255,0.08)"
+              }
+            }
+          }
+        }
+      });
+    }
+
+    function calculate(){
+      const currentAge = parseFloat(els.currentAge.value);
+      const retirementAge = parseFloat(els.retirementAge.value);
+      const currentPortfolio = parseFloat(els.currentPortfolio.value);
+      const annualContribution = parseFloat(els.annualContribution.value);
+      const annualSpending = parseFloat(els.annualSpending.value);
+      const expectedReturn = parseFloat(els.expectedReturn.value);
+      const safeWithdrawalRate = parseFloat(els.safeWithdrawalRate.value);
+      const expenseGrowth = parseFloat(els.expenseGrowth.value);
+
+      const required = [currentAge, retirementAge, currentPortfolio, annualContribution, annualSpending, expectedReturn, safeWithdrawalRate, expenseGrowth];
+      if (required.some(v => Number.isNaN(v))){
+        alert("Please fill in all fields.");
+        return;
+      }
+
+      if (currentAge < 0 || retirementAge < 0){
+        alert("Ages must be zero or greater.");
+        return;
+      }
+
+      if (retirementAge <= currentAge){
+        alert("Target retirement age must be greater than current age.");
+        return;
+      }
+
+      if (currentPortfolio < 0 || annualContribution < 0 || annualSpending <= 0){
+        alert("Portfolio, contribution, and spending values must be valid positive numbers.");
+        return;
+      }
+
+      if (expectedReturn <= -100 || safeWithdrawalRate <= 0 || safeWithdrawalRate >= 100 || expenseGrowth <= -100){
+        alert("Return, withdrawal rate, and expense growth must be valid percentages.");
+        return;
+      }
+
+      const yearsToTarget = retirementAge - currentAge;
+      const targetMonths = Math.round(yearsToTarget * 12);
+
+      const futureAnnualSpending = annualSpending * Math.pow(1 + (expenseGrowth / 100), yearsToTarget);
+      const fireNumber = futureAnnualSpending / (safeWithdrawalRate / 100);
+
+      const projectedPortfolio = projectBalance(currentPortfolio, annualContribution, expectedReturn, targetMonths);
+      const gap = projectedPortfolio - fireNumber;
+
+      const yearsToFIRE = findYearsToFIRE(currentPortfolio, annualContribution, expectedReturn, fireNumber);
+      const passiveIncome = projectedPortfolio * (safeWithdrawalRate / 100);
+
+      const insight = buildInsight({
+        fireNumber,
+        projected: projectedPortfolio,
+        gap,
+        yearsToFIRE,
+        annualContribution,
+        annualSpending,
+        expenseGrowth,
+        expectedReturn,
+        retirementAge
+      });
+
+      const series = buildProjectionSeries(currentPortfolio, annualContribution, expectedReturn, targetMonths, fireNumber);
+
+      els.resultCard.style.display = "block";
+      els.chartShell.style.display = "block";
+
+      els.fireNumberOut.textContent = formatMoney(fireNumber);
+      els.yearsOut.textContent = Number.isFinite(yearsToFIRE) ? formatYears(yearsToFIRE) : "Over 100 years";
+      els.projectedOut.textContent = formatMoney(projectedPortfolio);
+      els.incomeOut.textContent = formatMoney(passiveIncome);
+      els.gapOut.textContent = `${gap >= 0 ? "+" : "-"}${formatMoney(Math.abs(gap))}`;
+
+      els.insightBanner.className = `insight-banner ${insight.bannerClass}`;
+      els.insightKicker.textContent = insight.kicker;
+      els.insightHeadline.textContent = insight.headline;
+      els.insightBody.textContent = insight.body;
+
+      els.readinessLevel.textContent = insight.readinessLevel;
+      els.readinessNote.textContent = insight.readinessNote;
+
+      els.mixLevel.textContent = insight.mixLevel;
+      els.mixNote.textContent = insight.mixNote;
+
+      els.inflationLevel.textContent = insight.inflationLevel;
+      els.inflationNote.textContent = insight.inflationNote;
+
+      els.actionLevel.textContent = insight.actionLevel;
+      els.actionNote.textContent = insight.actionNote;
+
+      makeChart(series.labels, series.portfolio, series.fireTarget);
+
+      document.getElementById("resultCard").scrollIntoView({ behavior: "smooth", block: "start" });
+    }
+
+    document.addEventListener("DOMContentLoaded", function(){
+      els.calcBtn.addEventListener("click", calculate);
+
+      document.querySelectorAll(".faq-question").forEach(btn => {
+        btn.addEventListener("click", () => {
+          const item = btn.parentElement;
+          document.querySelectorAll(".faq-item").forEach(i => {
+            if (i !== item) i.classList.remove("active");
+          });
+          item.classList.toggle("active");
+        });
+      });
+    });
+
+    window.addEventListener("resize", () => {
+      if (chart){
+        chart.resize();
+      }
+    });
+  </script>
+</body>
+  </html>
