@@ -2022,7 +2022,7 @@
         .replace(/[()\.,\-\/]/g, " ")
         .replace(/\s+/g, " ")
         .trim();
-    }
+    } 
 
     function sortKey(el){
       return normalizeText(el.dataset.title || el.querySelector("h3")?.textContent || "");
