@@ -395,6 +395,79 @@
       padding-bottom:12px;
     }
 
+    .fire-heading{
+  margin-top:42px;
+  margin-bottom:18px;
+
+  font-size:22px;
+  font-weight:750;
+  letter-spacing:-0.02em;
+  line-height:1.15;
+
+  color:#cbd5e1;
+  text-shadow:0 0 10px rgba(148,163,184,0.16);
+      }
+  
+  .fire-group{
+  margin-top:0px;
+  display:grid;
+  gap:14px;
+}
+
+.fire-link-card{
+  display:flex;
+  justify-content:space-between;
+  gap:12px;
+  align-items:flex-start;
+  padding:16px 18px;
+  border-radius:16px;
+  background:linear-gradient(180deg, rgba(15,23,42,0.82), rgba(15,23,42,0.68));
+  border:1px solid rgba(255,255,255,0.08);
+  text-decoration:none;
+  color:white;
+  box-shadow:0 8px 20px rgba(0,0,0,0.16);
+  transition:background 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease, transform 0.2s ease;
+  position:relative;
+  overflow:hidden;
+}
+
+.fire-link-card::before{
+  content:"";
+  position:absolute;
+  inset:0;
+  background:linear-gradient(135deg, rgba(96,165,250,0.10), transparent 45%);
+  opacity:0;
+  transition:opacity 0.2s ease;
+  pointer-events:none;
+}
+
+.fire-link-card:hover{
+  transform:translateY(-1px);
+  border-color:rgba(96,165,250,0.24);
+  background:linear-gradient(180deg, rgba(17,24,39,0.90), rgba(15,23,42,0.74));
+  box-shadow:0 12px 26px rgba(0,0,0,0.24);
+}
+
+.fire-link-card:hover::before{
+  opacity:1;
+}
+
+.fire-link-card strong{
+  display:block;
+  font-size:16px;
+  margin-bottom:5px;
+  color:#93c5fd;
+  letter-spacing:-0.01em;
+}
+
+.fire-link-card span{
+  color:#cbd5e1;
+  font-size:13px;
+  line-height:1.55;
+  display:block;
+  max-width:52ch;
+    }
+    
     .related{
       width:90%;
       max-width:560px;
@@ -676,6 +749,38 @@
     </div>
   </div>
 
+  <div class="fire-heading">Other FIRE Calculators</div>
+    <div class="fire-group">
+      <a class="fire-link-card" href="lean-fire-calculator.html">
+        <div>
+          <strong>Lean FIRE Calculator</strong>
+          <span>Click to calculate a lower-spending retirement plan with a smaller target portfolio.</span>
+        </div>
+      </a>
+
+      <a class="fire-link-card" href="traditional-fire-calculator.html">
+        <div>
+          <strong>Traditional FIRE Calculator</strong>
+          <span>Click to calculate a flexible retirement target with broader spending assumptions.</span>
+        </div>
+      </a>
+
+      <a class="fire-link-card" href="barista-fire-calculator.html">
+        <div>
+          <strong>Barista FIRE Calculator</strong>
+          <span>Click to calculate a portfolio-plus-income plan where part-time work helps close the gap.</span>
+        </div>
+      </a>
+
+      <a class="fire-link-card" href="fat-fire-calculator.html">
+    <div>
+      <strong>Fat FIRE Calculator</strong>
+      <span>Click to calculate a higher-spending retirement target with a larger portfolio goal.</span>
+    </div>
+  </a>
+    </div>
+    </div>
+  
   <div class="related">
     <h3>Related Calculators</h3>
     <p>You may also find these tools useful:</p>
