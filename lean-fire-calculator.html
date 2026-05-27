@@ -546,45 +546,78 @@
       padding-bottom:12px;
     }
 
+    .fire-heading{
+  margin-top:42px;
+  margin-bottom:18px;
+
+  font-size:22px;
+  font-weight:750;
+  letter-spacing:-0.02em;
+  line-height:1.15;
+
+  color:#cbd5e1;
+  text-shadow:0 0 10px rgba(148,163,184,0.16);
+    }
+
     .fire-group{
-      margin-top:12px;
-      display:grid;
-      gap:12px;
-    }
+  margin-top:0px;
+  display:grid;
+  gap:14px;
+}
 
-    .fire-link-card{
-      display:flex;
-      justify-content:space-between;
-      gap:12px;
-      align-items:flex-start;
-      padding:14px 16px;
-      border-radius:14px;
-      background:rgba(15,23,42,0.72);
-      border:1px solid rgba(255,255,255,0.06);
-      text-decoration:none;
-      color:white;
-      transition:0.2s;
-    }
+.fire-link-card{
+  display:flex;
+  justify-content:space-between;
+  gap:12px;
+  align-items:flex-start;
+  padding:16px 18px;
+  border-radius:16px;
+  background:linear-gradient(180deg, rgba(15,23,42,0.82), rgba(15,23,42,0.68));
+  border:1px solid rgba(255,255,255,0.08);
+  text-decoration:none;
+  color:white;
+  box-shadow:0 8px 20px rgba(0,0,0,0.16);
+  transition:background 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease, transform 0.2s ease;
+  position:relative;
+  overflow:hidden;
+}
 
-    .fire-link-card:hover{
-      transform:translateY(-2px);
-      border-color:rgba(59,130,246,0.28);
-      background:rgba(30,41,59,0.9);
-    }
+.fire-link-card::before{
+  content:"";
+  position:absolute;
+  inset:0;
+  background:linear-gradient(135deg, rgba(96,165,250,0.10), transparent 45%);
+  opacity:0;
+  transition:opacity 0.2s ease;
+  pointer-events:none;
+}
 
-    .fire-link-card strong{
-      display:block;
-      font-size:16px;
-      margin-bottom:4px;
-      color:#93c5fd;
-    }
+.fire-link-card:hover{
+  transform:translateY(-1px);
+  border-color:rgba(96,165,250,0.24);
+  background:linear-gradient(180deg, rgba(17,24,39,0.90), rgba(15,23,42,0.74));
+  box-shadow:0 12px 26px rgba(0,0,0,0.24);
+}
 
-    .fire-link-card span{
-      color:#cbd5e1;
-      font-size:13px;
-      line-height:1.5;
-      display:block;
-    }
+.fire-link-card:hover::before{
+  opacity:1;
+}
+
+.fire-link-card strong{
+  display:block;
+  font-size:16px;
+  margin-bottom:5px;
+  color:#93c5fd;
+  letter-spacing:-0.01em;
+}
+
+.fire-link-card span{
+  color:#cbd5e1;
+  font-size:13px;
+  line-height:1.55;
+  display:block;
+  max-width:52ch;
+}
 
     .related{
       width:90%;
@@ -939,27 +972,33 @@
       </div>
     </div>
 
-    <div class="section-title">Other FIRE Calculators</div>
+    <div class="fire-heading">Other FIRE Calculators</div>
     <div class="fire-group">
       <a class="fire-link-card" href="traditional-fire-calculator.html">
         <div>
           <strong>Traditional FIRE Calculator</strong>
-          <span>For a broader retirement target with a higher spending assumption and a more flexible lifestyle plan.</span>
+          <span>Click to calculate a flexible retirement target with broader spending assumptions.</span>
+        </div>
+      </a>
+
+      <a class="fire-link-card" href="barista-fire-calculator.html">
+        <div>
+          <strong>Barista FIRE Calculator</strong>
+          <span>Click to calculate a portfolio-plus-income plan where part-time work helps close the gap.</span>
         </div>
       </a>
 
       <a class="fire-link-card" href="coast-fire-calculator.html">
         <div>
           <strong>Coast FIRE Calculator</strong>
-          <span>For checking whether your current portfolio can grow on its own without additional future contributions.</span>
+          <span>Click to check whether your current portfolio can grow on its own until retirement.</span>
         </div>
       </a>
-
-      <a class="fire-link-card" href="retirement-calculator.html">
-        <div>
-          <strong>Retirement Calculator</strong>
-          <span>For general retirement planning that is not tied to a specific FIRE style.</span>
-        </div>
+      <a class="fire-link-card" href="fat-fire-calculator.html">
+    <div>
+      <strong>Fat FIRE Calculator</strong>
+      <span>Click to calculate a higher-spending retirement target with a larger portfolio goal.</span>
+    </div>
       </a>
     </div>
   </div>
@@ -968,8 +1007,7 @@
     <h3>Related Calculators</h3>
     <p>You may also find these tools useful:</p>
     <ul>
-      <li><a href="traditional-fire-calculator.html">Traditional FIRE Calculator</a></li>
-      <li><a href="coast-fire-calculator.html">Coast FIRE Calculator</a></li>
+      <li><a href="investment-growth-calculator.html">Investment Growth Calculator</a></li>
       <li><a href="retirement-calculator.html">Retirement Calculator</a></li>
       <li><a href="compound-interest-calculator.html">Compound Interest Calculator</a></li>
       <li><a href="future-value-calculator.html">Future Value Calculator</a></li>
