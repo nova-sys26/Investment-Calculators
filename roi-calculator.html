@@ -95,6 +95,10 @@
       box-sizing:border-box;
     }
 
+    html{
+      scroll-behavior:smooth;
+    }
+
     body{
       font-family: Arial, sans-serif;
       background:#0f172a;
@@ -130,7 +134,7 @@
       padding:30px;
       border-radius:16px;
       width:90%;
-      max-width:520px;
+      max-width:560px;
       box-shadow:0 10px 25px rgba(0,0,0,0.35);
     }
 
@@ -203,44 +207,85 @@
     }
 
     .result-card{
-      background:#273449;
-      padding:20px 20px 20px 24px;
+      margin-top:18px;
+      padding:16px;
       border-radius:14px;
-      margin-top:20px;
-      position:relative;
+      background:rgba(255,255,255,0.05);
+      border:1px solid rgba(255,255,255,0.08);
       display:none;
     }
 
-    .result-card::before{
-      content:"";
-      position:absolute;
-      left:12px;
-      top:20px;
-      bottom:20px;
-      width:4px;
-      background:#22c55e;
-      border-radius:2px;
+    .result-grid{
+      display:grid;
+      grid-template-columns:repeat(auto-fit, minmax(170px, 1fr));
+      gap:12px;
     }
 
-    .result-line{
-      padding-left:18px;
-      margin:15px 0;
-      font-size:18px;
-      color:#e5e7eb;
-      line-height:1.4;
+    .result-box{
+      background:rgba(15,23,42,0.72);
+      border:1px solid rgba(255,255,255,0.06);
+      border-radius:14px;
+      padding:14px;
     }
 
-    .result-line strong{
-      color:#cbd5f5;
-    }
-
-    .result-value{
+    .result-box span{
+      display:block;
+      color:#94a3b8;
+      font-size:12px;
+      text-transform:uppercase;
+      letter-spacing:0.08em;
       font-weight:700;
+      margin-bottom:6px;
+    }
+
+    .result-box strong{
+      display:block;
+      font-size:18px;
+      line-height:1.25;
+    }
+
+    .mini-line{
+      margin-top:12px;
+      padding:12px 14px;
+      border-radius:12px;
+      background:rgba(15,23,42,0.72);
+      border:1px solid rgba(255,255,255,0.06);
+      color:#cbd5e1;
+      font-size:14px;
+      line-height:1.6;
+    }
+
+    .chart-shell{
+      margin-top:18px;
+      padding:16px;
+      border-radius:16px;
+      background:rgba(255,255,255,0.04);
+      border:1px solid rgba(255,255,255,0.08);
+      display:none;
+    }
+
+    .chart-shell h3{
+      margin:0 0 8px;
+      font-size:16px;
+    }
+
+    .chart-sub{
+      margin:0 0 12px;
+      color:#94a3b8;
+      font-size:12px;
+      line-height:1.5;
+    }
+
+    .chart-wrap{
+      width:100%;
+      height:300px;
+      position:relative;
     }
 
     canvas{
-      margin-top:24px;
-      max-width:100%;
+      width:100% !important;
+      height:100% !important;
+      display:block;
     }
 
     .content{
@@ -364,6 +409,14 @@
       .content h2{
         font-size:24px;
       }
+
+      .chart-shell{
+        height:290px;
+      }
+
+      .chart-wrap{
+        height:230px;
+      }
     }
   </style>
 </head>
@@ -397,28 +450,45 @@
     <button onclick="calculateROI()" type="button">Calculate ROI</button>
 
     <div id="resultCard" class="result-card">
-      <p class="result-line">
-        <strong>Profit:</strong>
-        <span id="profitOut" class="result-value">—</span>
-      </p>
+      <div class="result-grid">
+        <div class="result-box">
+          <span>Profit</span>
+          <strong id="profitOut">—</strong>
+        </div>
 
-      <p class="result-line">
-        <strong>ROI:</strong>
-        <span id="roiOut" class="result-value">—</span>
-      </p>
+        <div class="result-box">
+          <span>ROI</span>
+          <strong id="roiOut">—</strong>
+        </div>
 
-      <p class="result-line">
-        <strong>Fees Paid:</strong>
-        <span id="feesOut" class="result-value">—</span>
-      </p>
+        <div class="result-box">
+          <span>Fees paid</span>
+          <strong id="feesOut">—</strong>
+        </div>
 
-      <p class="result-line">
-        <strong>Annual ROI:</strong>
-        <span id="annualROIOut" class="result-value">—</span>
-      </p>
+        <div class="result-box">
+          <span>Annual ROI</span>
+          <strong id="annualROIOut">—</strong>
+        </div>
+
+        <div class="result-box">
+          <span>Net final value</span>
+          <strong id="netFinalOut">—</strong>
+        </div>
+      </div>
+
+      <div class="mini-line">
+        ROI is calculated from your starting investment and final value after fees.
+      </div>
     </div>
 
-    <canvas id="myChart"></canvas>
+    <div id="chartShell" class="chart-shell">
+      <h3>Investment comparison</h3>
+      <p class="chart-sub">A simple view of your initial investment, fee drag, and ending value.</p>
+      <div class="chart-wrap">
+        <canvas id="myChart"></canvas>
+      </div>
+    </div>
   </div>
 
   <div class="content">
@@ -578,13 +648,21 @@
   <script src="footer.js"></script>
 
   <script>
-    let chart;
+    let chart = null;
 
     function formatMoney(value){
-      return "$" + Number(value).toLocaleString(undefined, {
-        minimumFractionDigits: 2,
-        maximumFractionDigits: 2
-      });
+      const sign = value < 0 ? "-" : "";
+      const abs = Math.abs(value);
+
+      if (abs >= 1e12) return `${sign}$${(abs / 1e12).toFixed(2)}T`;
+      if (abs >= 1e9) return `${sign}$${(abs / 1e9).toFixed(2)}B`;
+      if (abs >= 1e6) return `${sign}$${(abs / 1e6).toFixed(2)}M`;
+      return `${sign}$${abs.toFixed(2)}`;
+    }
+
+    function formatPercent(value, digits = 2){
+      const sign = value < 0 ? "-" : "";
+      return `${sign}${Math.abs(value).toFixed(digits)}%`;
     }
 
     function calculateROI(){
@@ -605,65 +683,93 @@
 
       let annualROI = null;
       if (years > 0) {
-        annualROI = (Math.pow(finalValue / investment, 1 / years) - 1) * 100;
+        annualROI = (Math.pow(netFinal / investment, 1 / years) - 1) * 100;
       }
 
       document.getElementById("profitOut").innerText = formatMoney(profit);
-      document.getElementById("roiOut").innerText = roi.toFixed(2) + "%";
+      document.getElementById("roiOut").innerText = formatPercent(roi, 2);
       document.getElementById("feesOut").innerText = formatMoney(feeCost);
-      document.getElementById("annualROIOut").innerText = annualROI !== null ? annualROI.toFixed(2) + "%" : "—";
+      document.getElementById("annualROIOut").innerText = annualROI !== null ? formatPercent(annualROI, 2) : "—";
+      document.getElementById("netFinalOut").innerText = formatMoney(netFinal);
 
       document.getElementById("profitOut").style.color = profit >= 0 ? "#22c55e" : "#f87171";
       document.getElementById("roiOut").style.color = roi >= 0 ? "#22c55e" : "#f87171";
       document.getElementById("feesOut").style.color = "#cbd5e1";
       document.getElementById("annualROIOut").style.color = annualROI !== null && annualROI >= 0 ? "#22c55e" : "#cbd5e1";
+      document.getElementById("netFinalOut").style.color = netFinal >= investment ? "#22c55e" : "#f87171";
 
       document.getElementById("resultCard").style.display = "block";
-      drawChart(investment, netFinal);
+      document.getElementById("chartShell").style.display = "block";
+
+      drawChart(investment, feeCost, netFinal);
+      document.getElementById("resultCard").scrollIntoView({ behavior: "smooth", block: "start" });
     }
 
-    function drawChart(investment, netFinal){
+    function drawChart(investment, feeCost, netFinal){
       const ctx = document.getElementById('myChart').getContext('2d');
 
-      if(chart){
+      if (chart){
         chart.destroy();
       }
 
       const profit = netFinal - investment;
-      const finalColor = profit >= 0 ? '#22c55e' : '#ef4444';
+      const netColor = profit >= 0 ? '#22c55e' : '#ef4444';
 
-      chart = new Chart(ctx,{
-        type:'bar',
-        data:{
-          labels:['Investment','Final Value'],
-          datasets:[{
-            label:'Value',
-            data:[investment, netFinal],
-            backgroundColor:['#3b82f6', finalColor]
+      chart = new Chart(ctx, {
+        type: 'bar',
+        data: {
+          labels: ['Initial', 'Fees', 'Net Final'],
+          datasets: [{
+            label: 'Value',
+            data: [investment, feeCost, netFinal],
+            backgroundColor: ['#3b82f6', 'rgba(148,163,184,0.75)', netColor],
+            borderRadius: 10,
+            borderSkipped: false,
+            maxBarThickness: 56
           }]
         },
-        options:{
-          responsive:true,
-          plugins:{
-            legend:{
-              labels:{ color:'white' }
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          plugins: {
+            legend: {
+              display: false
             },
-            tooltip:{
-              callbacks:{
+            tooltip: {
+              backgroundColor: '#0f172a',
+              titleColor: '#fff',
+              bodyColor: '#e2e8f0',
+              borderColor: 'rgba(255,255,255,0.08)',
+              borderWidth: 1,
+              padding: 12,
+              callbacks: {
                 label: function(context){
-                  return "$" + Number(context.parsed.y).toFixed(2);
+                  return ` ${formatMoney(context.parsed.y)}`;
                 }
               }
             }
           },
-          scales:{
-            x:{
-              ticks:{ color:'white' },
-              grid:{ color:'rgba(255,255,255,0.08)' }
+          interaction: {
+            mode: 'nearest',
+            intersect: true
+          },
+          scales: {
+            x: {
+              ticks: {
+                color: '#cbd5e1'
+              },
+              grid: {
+                display: false
+              }
             },
-            y:{
-              ticks:{ color:'white' },
-              grid:{ color:'rgba(255,255,255,0.08)' }
+            y: {
+              ticks: {
+                color: '#cbd5e1',
+                callback: value => formatMoney(Number(value))
+              },
+              grid: {
+                color: 'rgba(255,255,255,0.06)'
+              }
             }
           }
         }
