@@ -1,0 +1,946 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <link rel="canonical" href="https://novainvesttools.com/net-worth-calculator.html">
+
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-ZPCXDVE8C5"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-ZPCXDVE8C5');
+  </script>
+
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>Net Worth Calculator – Track Assets, Debts, and Financial Position</title>
+  <meta name="description" content="Calculate your net worth by comparing total assets and liabilities. See your financial position clearly with a clean breakdown and visual chart.">
+  <meta name="theme-color" content="#0f172a">
+  <meta name="robots" content="index,follow,max-image-preview:large">
+
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://novainvesttools.com/net-worth-calculator.html">
+  <meta property="og:title" content="Net Worth Calculator – Track Assets, Debts, and Financial Position">
+  <meta property="og:description" content="Calculate your net worth by comparing total assets and liabilities. See your financial position clearly with a clean breakdown and visual chart.">
+
+  <link rel="preconnect" href="https://cdn.jsdelivr.net">
+  <link rel="dns-prefetch" href="https://cdn.jsdelivr.net">
+
+  <link rel="stylesheet" href="style.css">
+  <link rel="icon" href="favicon.png" type="image/png">
+  <link rel="apple-touch-icon" href="favicon.png">
+
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "WebApplication",
+    "name": "Net Worth Calculator",
+    "url": "https://novainvesttools.com/net-worth-calculator.html",
+    "applicationCategory": "FinanceApplication",
+    "operatingSystem": "All",
+    "browserRequirements": "Requires JavaScript",
+    "description": "Calculate net worth by comparing assets and liabilities with a visual breakdown chart.",
+    "featureList": [
+      "Net worth calculation",
+      "Assets and liabilities breakdown",
+      "Financial position tracking",
+      "Visual portfolio chart"
+    ],
+    "offers": {
+      "@type": "Offer",
+      "price": "0",
+      "priceCurrency": "USD"
+    }
+  }
+  </script>
+
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": [
+      {
+        "@type": "Question",
+        "name": "What is net worth?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Net worth is the value of everything you own minus everything you owe."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Can net worth be negative?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Yes. If your liabilities are greater than your assets, your net worth is negative."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Why does net worth matter?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Net worth gives a simple snapshot of your overall financial position and helps track long-term progress."
+        }
+      }
+    ]
+  }
+  </script>
+
+  <style>
+    *{
+      box-sizing:border-box;
+    }
+
+    html{
+      scroll-behavior:smooth;
+    }
+
+    body{
+      font-family: Arial, sans-serif;
+      background:#0b1a33;
+      color:white;
+      display:flex;
+      justify-content:center;
+      align-items:center;
+      flex-direction:column;
+      min-height:100vh;
+      margin:0;
+      padding:24px 0;
+    }
+
+    .toptext{
+      font-size:14px;
+      color:#6b7a99;
+      margin-bottom:5px;
+    }
+
+    .menu{
+      margin-bottom:25px;
+    }
+
+    .menu a{
+      color:#3b82f6;
+      margin:10px;
+      text-decoration:none;
+      font-weight:600;
+    }
+
+    .container{
+      background:#1e293b;
+      padding:30px;
+      border-radius:16px;
+      width:90%;
+      max-width:720px;
+      box-shadow:0 10px 25px rgba(0,0,0,0.35);
+    }
+
+    h1{
+      margin-top:0;
+      margin-bottom:10px;
+      font-size:32px;
+      line-height:1.15;
+    }
+
+    .quick-answer{
+      background: rgba(59,130,246,0.12);
+      border: 1px solid rgba(59,130,246,0.25);
+      padding: 12px 14px;
+      border-radius: 10px;
+      font-size: 15px;
+      line-height: 1.6;
+      color: #e2e8f0;
+      margin-bottom: 18px;
+    }
+
+    .subhead{
+      color:#94a3b8;
+      font-size:15px;
+      line-height:1.6;
+      margin-bottom:18px;
+    }
+
+    .section-title{
+      font-size:13px;
+      color:#94a3b8;
+      margin:14px 0 6px;
+      text-transform:uppercase;
+      letter-spacing:0.08em;
+      font-weight:700;
+    }
+
+    .grid{
+      display:grid;
+      grid-template-columns:1fr 1fr;
+      gap:12px;
+    }
+
+    .field{
+      margin:0;
+    }
+
+    .field label{
+      display:block;
+      font-size:13px;
+      color:#cbd5e1;
+      margin:0 0 6px;
+      font-weight:600;
+    }
+
+    input{
+      width:100%;
+      padding:14px;
+      margin:10px 0;
+      border-radius:10px;
+      border:none;
+      background:#e5e7eb;
+      font-size:16px;
+      outline:none;
+    }
+
+    input:focus{
+      box-shadow:0 0 0 3px rgba(59,130,246,0.18);
+    }
+
+    button{
+      padding:14px;
+      background:#3b82f6;
+      border:none;
+      border-radius:10px;
+      color:white;
+      cursor:pointer;
+      margin-top:10px;
+      width:100%;
+      font-size:16px;
+      font-weight:700;
+      transition:0.2s;
+    }
+
+    button:hover{
+      background:#2563eb;
+      transform:translateY(-1px);
+    }
+
+    .result-card{
+      background:#273449;
+      padding:20px 20px 20px 24px;
+      border-radius:14px;
+      margin-top:20px;
+      position:relative;
+      display:none;
+      overflow:hidden;
+    }
+
+    .result-card::before{
+      content:"";
+      position:absolute;
+      left:12px;
+      top:20px;
+      bottom:20px;
+      width:4px;
+      background:#22c55e;
+      border-radius:2px;
+    }
+
+    .result-card.negative::before{
+      background:#ef4444;
+    }
+
+    .result-card.neutral::before{
+      background:#facc15;
+    }
+
+    .result-line{
+      padding-left:18px;
+      margin:15px 0;
+      font-size:18px;
+      color:#e5e7eb;
+      line-height:1.4;
+    }
+
+    .result-line strong{
+      color:#cbd5f5;
+    }
+
+    .result-value{
+      font-weight:700;
+    }
+
+    .result-note{
+      padding-left:18px;
+      margin-top:8px;
+      color:#94a3b8;
+      font-size:13px;
+      line-height:1.5;
+    }
+
+    .chart-shell{
+      margin-top:18px;
+      padding:16px;
+      border-radius:16px;
+      background:rgba(255,255,255,0.04);
+      border:1px solid rgba(255,255,255,0.08);
+      display:none;
+    }
+
+    .chart-shell h3{
+      margin:0 0 8px;
+      font-size:16px;
+    }
+
+    .chart-sub{
+      margin:0 0 12px;
+      color:#94a3b8;
+      font-size:12px;
+      line-height:1.5;
+    }
+
+    .chart-wrap{
+      width:100%;
+      height:340px;
+      position:relative;
+    }
+
+    canvas{
+      width:100% !important;
+      height:100% !important;
+      display:block;
+    }
+
+    .content{
+      width:90%;
+      max-width:900px;
+      margin-top:34px;
+    }
+
+    .content h2{
+      margin-top:34px;
+      margin-bottom:10px;
+      font-size:28px;
+    }
+
+    .content p,
+    .content li{
+      color:#cbd5e1;
+      line-height:1.7;
+      font-size:15px;
+    }
+
+    .content ul{
+      padding-left:20px;
+    }
+
+    .formula{
+      background:rgba(255,255,255,0.05);
+      border:1px solid rgba(255,255,255,0.08);
+      padding:14px 16px;
+      border-radius:12px;
+      margin:12px 0;
+      color:#e2e8f0;
+      overflow:auto;
+      line-height:1.7;
+    }
+
+    .faq{
+      margin-top:24px;
+    }
+
+    .faq-item{
+      border-bottom:1px solid rgba(255,255,255,0.08);
+    }
+
+    .faq-question{
+      width:100%;
+      background:none;
+      border:none;
+      color:white;
+      text-align:left;
+      padding:14px 8px;
+      font-size:15px;
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      cursor:pointer;
+    }
+
+    .faq-question:hover{
+      color:#93c5fd;
+    }
+
+    .arrow{
+      transition:0.25s;
+    }
+
+    .faq-item.active .arrow{
+      transform:rotate(180deg);
+    }
+
+    .faq-answer{
+      max-height:0;
+      overflow:hidden;
+      transition:max-height 0.3s ease;
+      color:#cbd5e1;
+      font-size:14px;
+      padding:0 8px;
+    }
+
+    .faq-item.active .faq-answer{
+      max-height:240px;
+      padding-bottom:12px;
+    }
+
+    .related{
+      width:90%;
+      max-width:900px;
+      margin-top:34px;
+    }
+
+    .related a{
+      color:#93c5fd;
+      text-decoration:none;
+    }
+
+    .related a:hover{
+      text-decoration:underline;
+    }
+
+    .disclaimer{
+      margin-top:40px;
+      padding-top:20px;
+      border-top:1px solid rgba(255,255,255,0.1);
+      font-size:13px;
+      color:#9ca3af;
+      max-width:900px;
+      text-align:center;
+      line-height:1.6;
+      width:90%;
+    }
+
+    @media (max-width: 760px){
+      .container{
+        padding:22px;
+      }
+
+      h1{
+        font-size:28px;
+      }
+
+      .content h2{
+        font-size:24px;
+      }
+
+      .grid{
+        grid-template-columns:1fr;
+      }
+
+      .chart-shell{
+        height:320px;
+      }
+
+      .chart-wrap{
+        height:260px;
+      }
+    }
+
+    @media (max-width: 560px){
+      .page-shell{
+        width:min(1180px, calc(100% - 20px));
+      }
+
+      .menu-btn{
+        width:42px;
+        height:42px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <p class="toptext">Explore more calculators</p>
+
+  <div class="menu">
+    <a href="index.html">Home</a>
+  </div>
+
+  <div class="container">
+    <h1>Net Worth Calculator</h1>
+
+    <p class="quick-answer">
+      Net worth is the simplest snapshot of your finances: everything you own minus everything you owe.
+    </p>
+
+    <p class="subhead">
+      Add up your assets and liabilities to see your financial position clearly, with a visual breakdown that makes progress easier to track.
+    </p>
+
+    <div class="section-title">Assets</div>
+    <div class="grid">
+      <div class="field">
+        <label for="cash">Cash & Savings ($)</label>
+        <input id="cash" type="number" min="0" step="any" placeholder="e.g. 10000">
+      </div>
+
+      <div class="field">
+        <label for="investments">Investments ($)</label>
+        <input id="investments" type="number" min="0" step="any" placeholder="e.g. 25000">
+      </div>
+
+      <div class="field">
+        <label for="retirement">Retirement Accounts ($)</label>
+        <input id="retirement" type="number" min="0" step="any" placeholder="e.g. 60000">
+      </div>
+
+      <div class="field">
+        <label for="realEstate">Real Estate Equity ($)</label>
+        <input id="realEstate" type="number" min="0" step="any" placeholder="e.g. 120000">
+      </div>
+
+      <div class="field">
+        <label for="crypto">Crypto ($)</label>
+        <input id="crypto" type="number" min="0" step="any" placeholder="e.g. 5000">
+      </div>
+
+      <div class="field">
+        <label for="otherAssets">Other Assets ($)</label>
+        <input id="otherAssets" type="number" min="0" step="any" placeholder="e.g. 3000">
+      </div>
+    </div>
+
+    <div class="section-title">Liabilities</div>
+    <div class="grid">
+      <div class="field">
+        <label for="mortgage">Mortgage ($)</label>
+        <input id="mortgage" type="number" min="0" step="any" placeholder="e.g. 90000">
+      </div>
+
+      <div class="field">
+        <label for="studentLoans">Student Loans ($)</label>
+        <input id="studentLoans" type="number" min="0" step="any" placeholder="e.g. 15000">
+      </div>
+
+      <div class="field">
+        <label for="autoLoans">Auto Loans ($)</label>
+        <input id="autoLoans" type="number" min="0" step="any" placeholder="e.g. 12000">
+      </div>
+
+      <div class="field">
+        <label for="creditCards">Credit Card Debt ($)</label>
+        <input id="creditCards" type="number" min="0" step="any" placeholder="e.g. 4000">
+      </div>
+
+      <div class="field">
+        <label for="otherDebts">Other Debts ($)</label>
+        <input id="otherDebts" type="number" min="0" step="any" placeholder="e.g. 2000">
+      </div>
+    </div>
+
+    <button id="calcBtn" type="button">Calculate Net Worth</button>
+
+    <div id="resultCard" class="result-card" aria-live="polite">
+      <div class="result-line">
+        <strong>Total Assets:</strong> <span id="assetsOut" class="result-value">—</span>
+      </div>
+      <div class="result-line">
+        <strong>Total Liabilities:</strong> <span id="liabilitiesOut" class="result-value">—</span>
+      </div>
+      <div class="result-line">
+        <strong>Net Worth:</strong> <span id="netWorthOut" class="result-value">—</span>
+      </div>
+      <div class="result-note" id="formulaNote">
+        Net worth = assets − liabilities
+      </div>
+    </div>
+
+    <div id="chartShell" class="chart-shell">
+      <h3>Financial breakdown</h3>
+      <p class="chart-sub">Hover the chart for category details. Blue/green segments are assets, red/orange segments are liabilities.</p>
+      <div class="chart-wrap">
+        <canvas id="myChart"></canvas>
+      </div>
+    </div>
+  </div>
+
+  <div class="content">
+    <h2>What is net worth?</h2>
+    <p>
+      Net worth is the value of everything you own minus everything you owe.
+      It gives a quick, practical snapshot of your financial position and helps you see whether your balance sheet is growing or shrinking over time.
+    </p>
+
+    <p>
+      This calculator separates assets and liabilities so you can see where your money is sitting and what is still being financed.
+      That makes it easier to track progress, spot weak points, and make better long-term decisions.
+    </p>
+
+    <h2>Net worth formula</h2>
+    <div class="formula">
+      Total Assets = Cash + Investments + Retirement Accounts + Real Estate Equity + Crypto + Other Assets<br>
+      Total Liabilities = Mortgage + Student Loans + Auto Loans + Credit Card Debt + Other Debts<br>
+      Net Worth = Total Assets − Total Liabilities
+    </div>
+
+    <h2>Why net worth matters</h2>
+    <p>
+      Net worth matters because income alone does not tell the full story.
+      A high salary can still leave someone in a weak financial position if debt is also high, while a moderate income can build a strong balance sheet with discipline and consistency.
+    </p>
+
+    <ul>
+      <li>Track financial progress over time</li>
+      <li>See the effect of debt on your balance sheet</li>
+      <li>Measure whether assets are growing faster than liabilities</li>
+      <li>Compare your current position against future goals</li>
+    </ul>
+
+    <h2>How to use this calculator</h2>
+    <ul>
+      <li>Enter the value of your assets</li>
+      <li>Enter the value of your liabilities</li>
+      <li>Click calculate to see your total net worth</li>
+      <li>Use the chart to view the overall financial breakdown</li>
+    </ul>
+
+    <h2>Frequently Asked Questions</h2>
+
+    <div class="faq">
+      <div class="faq-item">
+        <button class="faq-question" type="button">
+          What is net worth?
+          <span class="arrow">▼</span>
+        </button>
+        <div class="faq-answer">
+          <p>
+            Net worth is the value of everything you own minus everything you owe. It is one of the clearest ways to measure your overall financial position.
+          </p>
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <button class="faq-question" type="button">
+          Can net worth be negative?
+          <span class="arrow">▼</span>
+        </button>
+        <div class="faq-answer">
+          <p>
+            Yes. If your liabilities are greater than your assets, your net worth is negative. That is common early in life or during heavy borrowing periods.
+          </p>
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <button class="faq-question" type="button">
+          Why does net worth matter?
+          <span class="arrow">▼</span>
+        </button>
+        <div class="faq-answer">
+          <p>
+            Net worth shows the real financial picture, not just income or spending. It helps you understand whether your assets are growing faster than your debts.
+          </p>
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <button class="faq-question" type="button">
+          Should retirement accounts be included?
+          <span class="arrow">▼</span>
+        </button>
+        <div class="faq-answer">
+          <p>
+            Yes. Retirement accounts are assets and should be included because they are part of your long-term financial position.
+          </p>
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <button class="faq-question" type="button">
+          What is the difference between net worth and cash flow?
+          <span class="arrow">▼</span>
+        </button>
+        <div class="faq-answer">
+          <p>
+            Net worth is a snapshot of what you own minus what you owe, while cash flow measures money moving in and out over time.
+          </p>
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <button class="faq-question" type="button">
+          How often should I check my net worth?
+          <span class="arrow">▼</span>
+        </button>
+        <div class="faq-answer">
+          <p>
+            Checking it monthly or quarterly is usually enough to track progress without getting distracted by short-term noise.
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="related">
+    <h3>Related Calculators</h3>
+    <p>You may also find these tools useful:</p>
+    <ul>
+      <li><a href="roi-calculator.html">ROI Calculator</a></li>
+      <li><a href="compound-interest-calculator.html">Compound Interest Calculator</a></li>
+      <li><a href="future-value-calculator.html">Future Value Calculator</a></li>
+      <li><a href="retirement-calculator.html">Retirement Calculator</a></li>
+      <li><a href="inflation-calculator.html">Inflation Calculator</a></li>
+    </ul>
+  </div>
+
+  <div class="disclaimer">
+    <p>
+      <strong>Disclaimer:</strong> This tool provides estimates and is not financial advice.
+      Results are based only on the values entered.
+    </p>
+  </div>
+
+  <script src="footer.js"></script>
+  <script>
+    let chart = null;
+
+    const els = {
+      cash: document.getElementById("cash"),
+      investments: document.getElementById("investments"),
+      retirement: document.getElementById("retirement"),
+      realEstate: document.getElementById("realEstate"),
+      crypto: document.getElementById("crypto"),
+      otherAssets: document.getElementById("otherAssets"),
+      mortgage: document.getElementById("mortgage"),
+      studentLoans: document.getElementById("studentLoans"),
+      autoLoans: document.getElementById("autoLoans"),
+      creditCards: document.getElementById("creditCards"),
+      otherDebts: document.getElementById("otherDebts"),
+      calcBtn: document.getElementById("calcBtn"),
+      resultCard: document.getElementById("resultCard"),
+      chartShell: document.getElementById("chartShell"),
+      assetsOut: document.getElementById("assetsOut"),
+      liabilitiesOut: document.getElementById("liabilitiesOut"),
+      netWorthOut: document.getElementById("netWorthOut")
+    };
+
+    function formatMoney(value){
+      if (!Number.isFinite(value)) return "—";
+      const sign = value < 0 ? "-" : "";
+      const abs = Math.abs(value);
+
+      if (abs >= 1e12) return `${sign}$${(abs / 1e12).toFixed(2)}T`;
+      if (abs >= 1e9) return `${sign}$${(abs / 1e9).toFixed(2)}B`;
+      if (abs >= 1e6) return `${sign}$${(abs / 1e6).toFixed(2)}M`;
+      return `${sign}$${abs.toFixed(2)}`;
+    }
+
+    function getVal(el){
+      const v = parseFloat(el.value);
+      return Number.isFinite(v) && v > 0 ? v : 0;
+    }
+
+    function centerTextPlugin(){
+      return {
+        id: "centerText",
+        afterDraw(chart){
+          const { ctx, chartArea } = chart;
+          if (!chartArea) return;
+
+          const totalAssets = chart.$netWorthData?.totalAssets ?? 0;
+          const totalLiabilities = chart.$netWorthData?.totalLiabilities ?? 0;
+          const netWorth = chart.$netWorthData?.netWorth ?? 0;
+
+          const x = (chartArea.left + chartArea.right) / 2;
+          const y = (chartArea.top + chartArea.bottom) / 2;
+
+          ctx.save();
+
+          ctx.textAlign = "center";
+          ctx.textBaseline = "middle";
+
+          ctx.fillStyle = "#cbd5e1";
+          ctx.font = "600 12px Arial";
+          ctx.fillText("Net Worth", x, y - 18);
+
+          ctx.fillStyle = netWorth >= 0 ? "#22c55e" : "#ef4444";
+          ctx.font = "700 24px Arial";
+          ctx.fillText(formatMoney(netWorth), x, y + 6);
+
+          ctx.fillStyle = "#94a3b8";
+          ctx.font = "12px Arial";
+          ctx.fillText(`${formatMoney(totalAssets)} assets • ${formatMoney(totalLiabilities)} liabilities`, x, y + 28);
+
+          ctx.restore();
+        }
+      };
+    }
+
+    function calculateNetWorth(){
+      const totalAssets =
+        getVal(els.cash) +
+        getVal(els.investments) +
+        getVal(els.retirement) +
+        getVal(els.realEstate) +
+        getVal(els.crypto) +
+        getVal(els.otherAssets);
+
+      const totalLiabilities =
+        getVal(els.mortgage) +
+        getVal(els.studentLoans) +
+        getVal(els.autoLoans) +
+        getVal(els.creditCards) +
+        getVal(els.otherDebts);
+
+      if (totalAssets === 0 && totalLiabilities === 0){
+        alert("Add at least one value.");
+        return;
+      }
+
+      const netWorth = totalAssets - totalLiabilities;
+
+      els.assetsOut.textContent = formatMoney(totalAssets);
+      els.liabilitiesOut.textContent = formatMoney(totalLiabilities);
+      els.netWorthOut.textContent = formatMoney(netWorth);
+
+      els.netWorthOut.style.color = netWorth >= 0 ? "#22c55e" : "#ef4444";
+      els.assetsOut.style.color = "#cbd5e1";
+      els.liabilitiesOut.style.color = "#cbd5e1";
+
+      els.resultCard.classList.remove("negative", "neutral");
+      if (netWorth < 0) els.resultCard.classList.add("negative");
+      else if (netWorth === 0) els.resultCard.classList.add("neutral");
+
+      els.resultCard.style.display = "block";
+      els.chartShell.style.display = "block";
+
+      drawChart(totalAssets, totalLiabilities, netWorth);
+      document.getElementById("resultCard").scrollIntoView({ behavior: "smooth", block: "start" });
+    }
+
+    function drawChart(totalAssets, totalLiabilities, netWorth){
+      const canvas = document.getElementById("myChart");
+      const ctx = canvas.getContext("2d");
+
+      if (chart){
+        chart.destroy();
+      }
+
+      const assetsBreakdown = [
+        { label: "Cash & Savings", value: getVal(els.cash), color: "#60a5fa" },
+        { label: "Investments", value: getVal(els.investments), color: "#3b82f6" },
+        { label: "Retirement", value: getVal(els.retirement), color: "#2563eb" },
+        { label: "Real Estate", value: getVal(els.realEstate), color: "#22c55e" },
+        { label: "Crypto", value: getVal(els.crypto), color: "#14b8a6" },
+        { label: "Other Assets", value: getVal(els.otherAssets), color: "#a78bfa" }
+      ].filter(item => item.value > 0);
+
+      const liabilitiesBreakdown = [
+        { label: "Mortgage", value: getVal(els.mortgage), color: "#ef4444" },
+        { label: "Student Loans", value: getVal(els.studentLoans), color: "#f97316" },
+        { label: "Auto Loans", value: getVal(els.autoLoans), color: "#f59e0b" },
+        { label: "Credit Cards", value: getVal(els.creditCards), color: "#fb7185" },
+        { label: "Other Debts", value: getVal(els.otherDebts), color: "#dc2626" }
+      ].filter(item => item.value > 0);
+
+      const labels = [
+        ...assetsBreakdown.map(item => item.label),
+        ...liabilitiesBreakdown.map(item => item.label)
+      ];
+
+      const values = [
+        ...assetsBreakdown.map(item => item.value),
+        ...liabilitiesBreakdown.map(item => item.value)
+      ];
+
+      const colors = [
+        ...assetsBreakdown.map(item => item.color),
+        ...liabilitiesBreakdown.map(item => item.color)
+      ];
+
+      const borderColors = colors.map(c => c);
+
+      chart = new Chart(ctx, {
+        type: "doughnut",
+        data: {
+          labels,
+          datasets: [{
+            data: values,
+            backgroundColor: colors.map(c => c + "E6"),
+            borderColor: borderColors.map(c => c + "FF"),
+            borderWidth: 2,
+            hoverOffset: 8,
+            spacing: 2,
+            cutout: "68%"
+          }]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          animation: {
+            duration: 900,
+            easing: "easeOutQuart"
+          },
+          plugins: {
+            legend: {
+              position: "bottom",
+              labels: {
+                color: "#e2e8f0",
+                boxWidth: 12,
+                boxHeight: 12,
+                usePointStyle: true,
+                pointStyle: "circle",
+                padding: 16,
+                font: {
+                  size: 12
+                }
+              }
+            },
+            tooltip: {
+              backgroundColor: "#0f172a",
+              titleColor: "#fff",
+              bodyColor: "#e2e8f0",
+              borderColor: "rgba(255,255,255,0.08)",
+              borderWidth: 1,
+              padding: 12,
+              callbacks: {
+                label: function(context){
+                  const label = context.label || "";
+                  const value = context.parsed || 0;
+                  const pct = (value / (totalAssets + totalLiabilities)) * 100;
+                  return `${label}: ${formatMoney(value)} (${pct.toFixed(1)}%)`;
+                }
+              }
+            }
+          }
+        },
+        plugins: [centerTextPlugin()]
+      });
+
+      chart.$netWorthData = { totalAssets, totalLiabilities, netWorth };
+    }
+
+    document.addEventListener("DOMContentLoaded", function(){
+      els.calcBtn.addEventListener("click", calculateNetWorth);
+
+      document.querySelectorAll(".faq-question").forEach(btn => {
+        btn.addEventListener("click", () => {
+          const item = btn.parentElement;
+
+          document.querySelectorAll(".faq-item").forEach(i => {
+            if(i !== item) i.classList.remove("active");
+          });
+
+          item.classList.toggle("active");
+        });
+      });
+    });
+
+    window.addEventListener("resize", () => {
+      if (chart){
+        chart.resize();
+      }
+    });
+  </script>
+</body>
+    </html>
