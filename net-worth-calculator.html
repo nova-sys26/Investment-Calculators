@@ -27,6 +27,7 @@
 
   <link rel="preconnect" href="https://cdn.jsdelivr.net">
   <link rel="dns-prefetch" href="https://cdn.jsdelivr.net">
+  <script src="https://unpkg.com/lucide@latest"></script>
 
   <link rel="stylesheet" href="style.css">
   <link rel="icon" href="favicon.png" type="image/png">
@@ -92,17 +93,16 @@
   </script>
 
   <style>
-    *{
-      box-sizing:border-box;
-    }
+    *{ box-sizing:border-box; }
 
-    html{
-      scroll-behavior:smooth;
-    }
+    html{ scroll-behavior:smooth; }
 
     body{
       font-family: Arial, sans-serif;
-      background:#0b1a33;
+      background:
+        radial-gradient(circle at top, rgba(59,130,246,0.16), transparent 36%),
+        radial-gradient(circle at bottom right, rgba(34,197,94,0.10), transparent 32%),
+        #0b1a33;
       color:white;
       display:flex;
       justify-content:center;
@@ -119,9 +119,7 @@
       margin-bottom:5px;
     }
 
-    .menu{
-      margin-bottom:25px;
-    }
+    .menu{ margin-bottom:25px; }
 
     .menu a{
       color:#3b82f6;
@@ -179,9 +177,7 @@
       gap:12px;
     }
 
-    .field{
-      margin:0;
-    }
+    .field{ margin:0; }
 
     .field label{
       display:block;
@@ -202,9 +198,7 @@
       outline:none;
     }
 
-    input:focus{
-      box-shadow:0 0 0 3px rgba(59,130,246,0.18);
-    }
+    input:focus{ box-shadow:0 0 0 3px rgba(59,130,246,0.18); }
 
     button{
       padding:14px;
@@ -220,19 +214,18 @@
       transition:0.2s;
     }
 
-    button:hover{
-      background:#2563eb;
-      transform:translateY(-1px);
-    }
+    button:hover{ background:#2563eb; transform:translateY(-1px); }
 
     .result-card{
-      background:#273449;
+      background:linear-gradient(180deg, rgba(39,52,73,0.98), rgba(30,41,59,0.98));
       padding:20px 20px 20px 24px;
-      border-radius:14px;
+      border-radius:18px;
       margin-top:20px;
       position:relative;
       display:none;
       overflow:hidden;
+      border:1px solid rgba(255,255,255,0.08);
+      box-shadow:0 18px 35px rgba(0,0,0,0.24);
     }
 
     .result-card::before{
@@ -243,16 +236,11 @@
       bottom:20px;
       width:4px;
       background:#22c55e;
-      border-radius:2px;
+      border-radius:999px;
     }
 
-    .result-card.negative::before{
-      background:#ef4444;
-    }
-
-    .result-card.neutral::before{
-      background:#facc15;
-    }
+    .result-card.negative::before{ background:#ef4444; }
+    .result-card.neutral::before{ background:#facc15; }
 
     .result-line{
       padding-left:18px;
@@ -262,13 +250,9 @@
       line-height:1.4;
     }
 
-    .result-line strong{
-      color:#cbd5f5;
-    }
+    .result-line strong{ color:#cbd5f5; }
 
-    .result-value{
-      font-weight:700;
-    }
+    .result-value{ font-weight:700; }
 
     .result-note{
       padding-left:18px;
@@ -278,37 +262,207 @@
       line-height:1.5;
     }
 
+    .summary-grid{
+      display:grid;
+      grid-template-columns:repeat(2, minmax(0, 1fr));
+      gap:12px;
+      margin-top:16px;
+      padding-left:18px;
+    }
+
+    .summary-card{
+      display:flex;
+      align-items:center;
+      gap:12px;
+      padding:14px 15px;
+      border-radius:16px;
+      background:rgba(15,23,42,0.78);
+      border:1px solid rgba(255,255,255,0.06);
+      min-height:74px;
+    }
+
+    .summary-icon{
+      width:42px;
+      height:42px;
+      border-radius:12px;
+      display:grid;
+      place-items:center;
+      flex:0 0 42px;
+      background:rgba(255,255,255,0.04);
+      border:1px solid rgba(255,255,255,0.07);
+    }
+
+    .summary-icon svg{
+      width:20px;
+      height:20px;
+      stroke:currentColor;
+      fill:none;
+      stroke-width:2;
+    }
+
+    .summary-icon.wallet{ color:#60a5fa; }
+    .summary-icon.home{ color:#22c55e; }
+    .summary-icon.lock{ color:#ef4444; }
+    .summary-icon.scale{ color:#a78bfa; }
+
+    .summary-card small{
+      display:block;
+      color:#94a3b8;
+      font-size:12px;
+      font-weight:700;
+      text-transform:uppercase;
+      letter-spacing:0.08em;
+      margin-bottom:4px;
+    }
+
+    .summary-card strong{
+      display:block;
+      font-size:16px;
+      line-height:1.2;
+      color:#f8fafc;
+    }
+
     .chart-shell{
       margin-top:18px;
-      padding:16px;
-      border-radius:16px;
-      background:rgba(255,255,255,0.04);
+      padding:18px;
+      border-radius:18px;
+      background:linear-gradient(180deg, rgba(255,255,255,0.045), rgba(255,255,255,0.03));
       border:1px solid rgba(255,255,255,0.08);
       display:none;
+      box-shadow:0 18px 35px rgba(0,0,0,0.18);
     }
 
     .chart-shell h3{
       margin:0 0 8px;
-      font-size:16px;
+      font-size:18px;
+      letter-spacing:-0.02em;
     }
 
     .chart-sub{
-      margin:0 0 12px;
+      margin:0 0 14px;
       color:#94a3b8;
+      font-size:13px;
+      line-height:1.55;
+    }
+
+    .chart-top-grid{
+      display:grid;
+      grid-template-columns:repeat(2, minmax(0, 1fr));
+      gap:12px;
+      margin-bottom:14px;
+    }
+
+    .chart-top-card{
+      padding:14px 15px;
+      border-radius:16px;
+      background:rgba(15,23,42,0.74);
+      border:1px solid rgba(255,255,255,0.06);
+      display:flex;
+      align-items:center;
+      gap:12px;
+    }
+
+    .chart-top-card .mini-icon{
+      width:38px;
+      height:38px;
+      border-radius:12px;
+      display:grid;
+      place-items:center;
+      background:rgba(255,255,255,0.04);
+      border:1px solid rgba(255,255,255,0.06);
+      flex:0 0 38px;
+    }
+
+    .chart-top-card .mini-icon svg{
+      width:18px;
+      height:18px;
+      stroke:currentColor;
+      fill:none;
+      stroke-width:2;
+    }
+
+    .chart-top-card .mini-icon.wallet{ color:#60a5fa; }
+    .chart-top-card .mini-icon.home{ color:#22c55e; }
+    .chart-top-card .mini-icon.lock{ color:#ef4444; }
+    .chart-top-card .mini-icon.scale{ color:#a78bfa; }
+
+    .chart-top-card small{
+      display:block;
       font-size:12px;
-      line-height:1.5;
+      color:#94a3b8;
+      text-transform:uppercase;
+      letter-spacing:0.08em;
+      font-weight:700;
+      margin-bottom:3px;
+    }
+
+    .chart-top-card strong{
+      display:block;
+      font-size:15px;
+      line-height:1.25;
+      color:#eef2ff;
     }
 
     .chart-wrap{
       width:100%;
       height:340px;
       position:relative;
+      margin-top:6px;
     }
 
     canvas{
       width:100% !important;
       height:100% !important;
       display:block;
+    }
+
+    .breakdown-grid{
+      display:grid;
+      grid-template-columns:repeat(2, minmax(0, 1fr));
+      gap:10px;
+      margin-top:14px;
+    }
+
+    .breakdown-item{
+      display:flex;
+      justify-content:space-between;
+      gap:12px;
+      align-items:center;
+      padding:12px 14px;
+      border-radius:14px;
+      background:rgba(15,23,42,0.72);
+      border:1px solid rgba(255,255,255,0.06);
+    }
+
+    .breakdown-left{
+      display:flex;
+      align-items:center;
+      gap:10px;
+      min-width:0;
+    }
+
+    .legend-dot{
+      width:10px;
+      height:10px;
+      border-radius:999px;
+      flex:0 0 10px;
+      box-shadow:0 0 0 3px rgba(255,255,255,0.04);
+    }
+
+    .breakdown-item .label{
+      color:#e2e8f0;
+      font-size:13px;
+      font-weight:600;
+      white-space:nowrap;
+      overflow:hidden;
+      text-overflow:ellipsis;
+    }
+
+    .breakdown-item .value{
+      color:#94a3b8;
+      font-size:13px;
+      font-weight:700;
+      white-space:nowrap;
     }
 
     .content{
@@ -330,9 +484,7 @@
       font-size:15px;
     }
 
-    .content ul{
-      padding-left:20px;
-    }
+    .content ul{ padding-left:20px; }
 
     .formula{
       background:rgba(255,255,255,0.05);
@@ -345,13 +497,9 @@
       line-height:1.7;
     }
 
-    .faq{
-      margin-top:24px;
-    }
+    .faq{ margin-top:24px; }
 
-    .faq-item{
-      border-bottom:1px solid rgba(255,255,255,0.08);
-    }
+    .faq-item{ border-bottom:1px solid rgba(255,255,255,0.08); }
 
     .faq-question{
       width:100%;
@@ -367,17 +515,11 @@
       cursor:pointer;
     }
 
-    .faq-question:hover{
-      color:#93c5fd;
-    }
+    .faq-question:hover{ color:#93c5fd; }
 
-    .arrow{
-      transition:0.25s;
-    }
+    .arrow{ transition:0.25s; }
 
-    .faq-item.active .arrow{
-      transform:rotate(180deg);
-    }
+    .faq-item.active .arrow{ transform:rotate(180deg); }
 
     .faq-answer{
       max-height:0;
@@ -404,9 +546,7 @@
       text-decoration:none;
     }
 
-    .related a:hover{
-      text-decoration:underline;
-    }
+    .related a:hover{ text-decoration:underline; }
 
     .disclaimer{
       margin-top:40px;
@@ -421,40 +561,21 @@
     }
 
     @media (max-width: 760px){
-      .container{
-        padding:22px;
-      }
-
-      h1{
-        font-size:28px;
-      }
-
-      .content h2{
-        font-size:24px;
-      }
-
-      .grid{
-        grid-template-columns:1fr;
-      }
-
-      .chart-shell{
-        height:320px;
-      }
-
-      .chart-wrap{
-        height:260px;
-      }
+      .container{ padding:22px; }
+      h1{ font-size:28px; }
+      .content h2{ font-size:24px; }
+      .grid{ grid-template-columns:1fr; }
+      .summary-grid{ grid-template-columns:1fr; }
+      .chart-top-grid{ grid-template-columns:1fr; }
+      .breakdown-grid{ grid-template-columns:1fr; }
+      .chart-shell{ padding:16px; }
+      .chart-wrap{ height:280px; }
     }
 
     @media (max-width: 560px){
-      .page-shell{
-        width:min(1180px, calc(100% - 20px));
-      }
-
-      .menu-btn{
-        width:42px;
-        height:42px;
-      }
+      .page-shell{ width:min(1180px, calc(100% - 20px)); }
+      .menu-btn{ width:42px; height:42px; }
+      .result-line{ font-size:17px; }
     }
   </style>
 </head>
@@ -550,17 +671,86 @@
       <div class="result-line">
         <strong>Net Worth:</strong> <span id="netWorthOut" class="result-value">—</span>
       </div>
-      <div class="result-note" id="formulaNote">
-        Net worth = assets − liabilities
+      <div class="result-note" id="formulaNote">Net worth = assets − liabilities</div>
+
+      <div class="summary-grid">
+        <div class="summary-card">
+          <span class="summary-icon wallet"><i data-lucide="wallet"></i></span>
+          <div>
+            <small>Total Assets</small>
+            <strong id="assetsMiniOut">—</strong>
+          </div>
+        </div>
+
+        <div class="summary-card">
+          <span class="summary-icon home"><i data-lucide="home"></i></span>
+          <div>
+            <small>Real Estate</small>
+            <strong id="realEstateOut">—</strong>
+          </div>
+        </div>
+
+        <div class="summary-card">
+          <span class="summary-icon lock"><i data-lucide="lock"></i></span>
+          <div>
+            <small>Total Liabilities</small>
+            <strong id="liabilitiesMiniOut">—</strong>
+          </div>
+        </div>
+
+        <div class="summary-card">
+          <span class="summary-icon scale"><i data-lucide="scale"></i></span>
+          <div>
+            <small>Net Worth</small>
+            <strong id="netWorthMiniOut">—</strong>
+          </div>
+        </div>
       </div>
     </div>
 
     <div id="chartShell" class="chart-shell">
       <h3>Financial breakdown</h3>
-      <p class="chart-sub">Hover the chart for category details. Blue/green segments are assets, red/orange segments are liabilities.</p>
+      <p class="chart-sub">Blue and green segments are assets, red and orange segments are liabilities. The center shows your current net worth.</p>
+
+      <div class="chart-top-grid">
+        <div class="chart-top-card">
+          <span class="mini-icon wallet"><i data-lucide="wallet"></i></span>
+          <div>
+            <small>Assets</small>
+            <strong id="assetsChartOut">—</strong>
+          </div>
+        </div>
+
+        <div class="chart-top-card">
+          <span class="mini-icon lock"><i data-lucide="lock"></i></span>
+          <div>
+            <small>Liabilities</small>
+            <strong id="liabilitiesChartOut">—</strong>
+          </div>
+        </div>
+
+        <div class="chart-top-card">
+          <span class="mini-icon home"><i data-lucide="home"></i></span>
+          <div>
+            <small>Real Estate</small>
+            <strong id="realEstateChartOut">—</strong>
+          </div>
+        </div>
+
+        <div class="chart-top-card">
+          <span class="mini-icon scale"><i data-lucide="scale"></i></span>
+          <div>
+            <small>Net Worth</small>
+            <strong id="netWorthChartOut">—</strong>
+          </div>
+        </div>
+      </div>
+
       <div class="chart-wrap">
         <canvas id="myChart"></canvas>
       </div>
+
+      <div id="breakdownLegend" class="breakdown-grid"></div>
     </div>
   </div>
 
@@ -721,7 +911,16 @@
       chartShell: document.getElementById("chartShell"),
       assetsOut: document.getElementById("assetsOut"),
       liabilitiesOut: document.getElementById("liabilitiesOut"),
-      netWorthOut: document.getElementById("netWorthOut")
+      netWorthOut: document.getElementById("netWorthOut"),
+      assetsMiniOut: document.getElementById("assetsMiniOut"),
+      liabilitiesMiniOut: document.getElementById("liabilitiesMiniOut"),
+      netWorthMiniOut: document.getElementById("netWorthMiniOut"),
+      assetsChartOut: document.getElementById("assetsChartOut"),
+      liabilitiesChartOut: document.getElementById("liabilitiesChartOut"),
+      realEstateChartOut: document.getElementById("realEstateChartOut"),
+      netWorthChartOut: document.getElementById("netWorthChartOut"),
+      realEstateOut: document.getElementById("realEstateOut"),
+      breakdownLegend: document.getElementById("breakdownLegend")
     };
 
     function formatMoney(value){
@@ -740,22 +939,17 @@
       return Number.isFinite(v) && v > 0 ? v : 0;
     }
 
-    function centerTextPlugin(){
+    function centerTextPlugin(state){
       return {
         id: "centerText",
         afterDraw(chart){
           const { ctx, chartArea } = chart;
           if (!chartArea) return;
 
-          const totalAssets = chart.$netWorthData?.totalAssets ?? 0;
-          const totalLiabilities = chart.$netWorthData?.totalLiabilities ?? 0;
-          const netWorth = chart.$netWorthData?.netWorth ?? 0;
-
           const x = (chartArea.left + chartArea.right) / 2;
           const y = (chartArea.top + chartArea.bottom) / 2;
 
           ctx.save();
-
           ctx.textAlign = "center";
           ctx.textBaseline = "middle";
 
@@ -763,17 +957,29 @@
           ctx.font = "600 12px Arial";
           ctx.fillText("Net Worth", x, y - 18);
 
-          ctx.fillStyle = netWorth >= 0 ? "#22c55e" : "#ef4444";
+          ctx.fillStyle = state.netWorth >= 0 ? "#22c55e" : "#ef4444";
           ctx.font = "700 24px Arial";
-          ctx.fillText(formatMoney(netWorth), x, y + 6);
+          ctx.fillText(formatMoney(state.netWorth), x, y + 6);
 
           ctx.fillStyle = "#94a3b8";
           ctx.font = "12px Arial";
-          ctx.fillText(`${formatMoney(totalAssets)} assets • ${formatMoney(totalLiabilities)} liabilities`, x, y + 28);
+          ctx.fillText(`${formatMoney(state.totalAssets)} assets • ${formatMoney(state.totalLiabilities)} liabilities`, x, y + 28);
 
           ctx.restore();
         }
       };
+    }
+
+    function buildLegend(items){
+      return items.map(item => `
+        <div class="breakdown-item">
+          <div class="breakdown-left">
+            <span class="legend-dot" style="background:${item.color}"></span>
+            <span class="label">${item.label}</span>
+          </div>
+          <span class="value">${formatMoney(item.value)}</span>
+        </div>
+      `).join("");
     }
 
     function calculateNetWorth(){
@@ -802,6 +1008,14 @@
       els.assetsOut.textContent = formatMoney(totalAssets);
       els.liabilitiesOut.textContent = formatMoney(totalLiabilities);
       els.netWorthOut.textContent = formatMoney(netWorth);
+      els.assetsMiniOut.textContent = formatMoney(totalAssets);
+      els.liabilitiesMiniOut.textContent = formatMoney(totalLiabilities);
+      els.netWorthMiniOut.textContent = formatMoney(netWorth);
+      els.assetsChartOut.textContent = formatMoney(totalAssets);
+      els.liabilitiesChartOut.textContent = formatMoney(totalLiabilities);
+      els.realEstateOut.textContent = formatMoney(getVal(els.realEstate));
+      els.realEstateChartOut.textContent = formatMoney(getVal(els.realEstate));
+      els.netWorthChartOut.textContent = formatMoney(netWorth);
 
       els.netWorthOut.style.color = netWorth >= 0 ? "#22c55e" : "#ef4444";
       els.assetsOut.style.color = "#cbd5e1";
@@ -822,9 +1036,7 @@
       const canvas = document.getElementById("myChart");
       const ctx = canvas.getContext("2d");
 
-      if (chart){
-        chart.destroy();
-      }
+      if (chart) chart.destroy();
 
       const assetsBreakdown = [
         { label: "Cash & Savings", value: getVal(els.cash), color: "#60a5fa" },
@@ -843,22 +1055,16 @@
         { label: "Other Debts", value: getVal(els.otherDebts), color: "#dc2626" }
       ].filter(item => item.value > 0);
 
-      const labels = [
-        ...assetsBreakdown.map(item => item.label),
-        ...liabilitiesBreakdown.map(item => item.label)
+      const labels = [...assetsBreakdown.map(item => item.label), ...liabilitiesBreakdown.map(item => item.label)];
+      const values = [...assetsBreakdown.map(item => item.value), ...liabilitiesBreakdown.map(item => item.value)];
+      const colors = [...assetsBreakdown.map(item => item.color), ...liabilitiesBreakdown.map(item => item.color)];
+
+      const legendItems = [
+        ...assetsBreakdown,
+        ...liabilitiesBreakdown
       ];
 
-      const values = [
-        ...assetsBreakdown.map(item => item.value),
-        ...liabilitiesBreakdown.map(item => item.value)
-      ];
-
-      const colors = [
-        ...assetsBreakdown.map(item => item.color),
-        ...liabilitiesBreakdown.map(item => item.color)
-      ];
-
-      const borderColors = colors.map(c => c);
+      els.breakdownLegend.innerHTML = buildLegend(legendItems);
 
       chart = new Chart(ctx, {
         type: "doughnut",
@@ -867,11 +1073,13 @@
           datasets: [{
             data: values,
             backgroundColor: colors.map(c => c + "E6"),
-            borderColor: borderColors.map(c => c + "FF"),
+            borderColor: colors.map(c => c + "FF"),
             borderWidth: 2,
-            hoverOffset: 8,
+            hoverOffset: 7,
             spacing: 2,
-            cutout: "68%"
+            cutout: "72%",
+            rotation: -90,
+            circumference: 360
           }]
         },
         options: {
@@ -882,20 +1090,7 @@
             easing: "easeOutQuart"
           },
           plugins: {
-            legend: {
-              position: "bottom",
-              labels: {
-                color: "#e2e8f0",
-                boxWidth: 12,
-                boxHeight: 12,
-                usePointStyle: true,
-                pointStyle: "circle",
-                padding: 16,
-                font: {
-                  size: 12
-                }
-              }
-            },
+            legend: { display: false },
             tooltip: {
               backgroundColor: "#0f172a",
               titleColor: "#fff",
@@ -914,10 +1109,8 @@
             }
           }
         },
-        plugins: [centerTextPlugin()]
+        plugins: [centerTextPlugin({ totalAssets, totalLiabilities, netWorth })]
       });
-
-      chart.$netWorthData = { totalAssets, totalLiabilities, netWorth };
     }
 
     document.addEventListener("DOMContentLoaded", function(){
@@ -926,21 +1119,19 @@
       document.querySelectorAll(".faq-question").forEach(btn => {
         btn.addEventListener("click", () => {
           const item = btn.parentElement;
-
           document.querySelectorAll(".faq-item").forEach(i => {
             if(i !== item) i.classList.remove("active");
           });
-
           item.classList.toggle("active");
         });
       });
+
+      if (window.lucide) lucide.createIcons();
     });
 
     window.addEventListener("resize", () => {
-      if (chart){
-        chart.resize();
-      }
+      if (chart) chart.resize();
     });
   </script>
 </body>
-    </html>
+  </html>
