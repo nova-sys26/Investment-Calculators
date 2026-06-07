@@ -231,43 +231,149 @@
     }
 
     .result-card{
-      background:#273449;
-      padding:20px 20px 20px 24px;
-      border-radius:14px;
-      margin-top:20px;
-      position:relative;
       display:none;
+      margin-top:20px;
+      padding:18px;
+      border-radius:18px;
+      background:linear-gradient(180deg, rgba(15,23,42,0.92), rgba(17,24,39,0.88));
+      border:1px solid rgba(255,255,255,0.08);
+      box-shadow:0 18px 40px rgba(0,0,0,0.22);
+      overflow:hidden;
+      position:relative;
     }
 
     .result-card::before{
       content:"";
       position:absolute;
-      left:12px;
-      top:20px;
-      bottom:20px;
-      width:4px;
-      background:#22c55e;
-      border-radius:2px;
+      inset:0;
+      background:radial-gradient(circle at top right, rgba(59,130,246,0.12), transparent 35%);
+      pointer-events:none;
     }
 
-    .result-line{
-      padding-left:18px;
-      margin:15px 0;
-      font-size:18px;
-      color:#e5e7eb;
-      line-height:1.4;
+    .result-top{
+      display:flex;
+      flex-direction:column;
+      gap:8px;
+      padding-bottom:16px;
+      border-bottom:1px solid rgba(255,255,255,0.06);
+      margin-bottom:16px;
+      position:relative;
+      z-index:1;
     }
 
-    .result-line strong{
-      color:#cbd5f5;
+    .result-kicker{
+      display:inline-flex;
+      align-items:center;
+      width:max-content;
+      padding:5px 10px;
+      border-radius:999px;
+      font-size:11px;
+      font-weight:800;
+      letter-spacing:0.08em;
+      text-transform:uppercase;
+      background:rgba(59,130,246,0.12);
+      color:#bfdbfe;
+      border:1px solid rgba(59,130,246,0.20);
     }
 
-    .result-line small{
-      display:block;
-      margin-top:4px;
+    .result-title{
+      margin:0;
+      font-size:14px;
+      font-weight:700;
+      color:#cbd5e1;
+      letter-spacing:0.01em;
+    }
+
+    .result-main{
+      display:flex;
+      flex-wrap:wrap;
+      align-items:baseline;
+      gap:10px;
+    }
+
+    .result-value-big{
+      font-size:clamp(2.1rem, 6vw, 3.2rem);
+      line-height:1;
+      font-weight:800;
+      letter-spacing:-0.04em;
+      color:#ffffff;
+    }
+
+    .result-unit{
+      font-size:14px;
+      color:#94a3b8;
+      font-weight:600;
+      letter-spacing:0.02em;
+    }
+
+    .result-sub{
       color:#94a3b8;
       font-size:13px;
-      line-height:1.5;
+      line-height:1.55;
+      margin:0;
+      max-width:46ch;
+    }
+
+    .result-grid{
+      display:grid;
+      grid-template-columns:repeat(3, minmax(0, 1fr));
+      gap:12px;
+      position:relative;
+      z-index:1;
+    }
+
+    .metric{
+      background:rgba(255,255,255,0.03);
+      border:1px solid rgba(255,255,255,0.06);
+      border-radius:14px;
+      padding:14px;
+      transition:0.2s ease;
+      min-height:92px;
+    }
+
+    .metric:hover{
+      transform:translateY(-1px);
+      border-color:rgba(59,130,246,0.18);
+      background:rgba(255,255,255,0.05);
+    }
+
+    .metric-label{
+      display:block;
+      color:#94a3b8;
+      font-size:11px;
+      text-transform:uppercase;
+      letter-spacing:0.10em;
+      font-weight:800;
+      margin-bottom:8px;
+    }
+
+    .metric-value{
+      display:block;
+      font-size:18px;
+      line-height:1.2;
+      font-weight:800;
+      color:#e2e8f0;
+      word-break:break-word;
+    }
+
+    .metric-note{
+      display:block;
+      margin-top:6px;
+      color:#94a3b8;
+      font-size:12px;
+      line-height:1.45;
+    }
+
+    .metric-value.good{
+      color:#22c55e;
+    }
+
+    .metric-value.warn{
+      color:#f59e0b;
+    }
+
+    .metric-value.bad{
+      color:#ef4444;
     }
 
     canvas{
@@ -422,6 +528,10 @@
       .content h2{
         font-size:24px;
       }
+
+      .result-grid{
+        grid-template-columns:1fr;
+      }
     }
   </style>
 </head>
@@ -463,10 +573,37 @@
     <button type="button" onclick="calculate()">Calculate</button>
 
     <div id="resultCard" class="result-card">
-      <p class="result-line"><strong>Position Size:</strong> <span id="positionSizeOut">—</span> <small id="positionNote">—</small></p>
-      <p class="result-line"><strong>Position Value:</strong> <span id="positionValueOut">—</span> <small>Estimated trade value at entry</small></p>
-      <p class="result-line"><strong>Risk Amount:</strong> <span id="riskAmountOut">—</span> <small>Total capital at risk on this trade</small></p>
-      <p class="result-line"><strong>Effective Stop Distance:</strong> <span id="stopDistanceOut">—</span> <small id="stopNote">—</small></p>
+      <div class="result-top">
+        <span class="result-kicker">Trade size result</span>
+        <h2 class="result-title">Recommended position size</h2>
+
+        <div class="result-main">
+          <span id="positionSizeOut" class="result-value-big">—</span>
+          <span class="result-unit" id="positionUnitOut">units</span>
+        </div>
+
+        <p id="positionNote" class="result-sub">—</p>
+      </div>
+
+      <div class="result-grid">
+        <div class="metric">
+          <span class="metric-label">Position Value</span>
+          <span id="positionValueOut" class="metric-value">—</span>
+          <span class="metric-note">Estimated trade value at entry</span>
+        </div>
+
+        <div class="metric">
+          <span class="metric-label">Risk Amount</span>
+          <span id="riskAmountOut" class="metric-value">—</span>
+          <span class="metric-note">Capital at risk on this setup</span>
+        </div>
+
+        <div class="metric">
+          <span class="metric-label">Effective Stop</span>
+          <span id="stopDistanceOut" class="metric-value">—</span>
+          <span id="stopNote" class="metric-note">—</span>
+        </div>
+      </div>
     </div>
 
     <canvas id="myChart"></canvas>
@@ -693,6 +830,10 @@
     }
 
     function formatNumber(num){
+      const abs = Math.abs(num);
+      if (abs >= 1e9) return (num / 1e9).toFixed(2) + "B";
+      if (abs >= 1e6) return (num / 1e6).toFixed(2) + "M";
+      if (abs >= 1e3) return (num / 1e3).toFixed(2) + "K";
       return Number.isInteger(num)
         ? num.toString()
         : num.toLocaleString(undefined, {
@@ -752,7 +893,8 @@
       const positionSize = riskAmount / stopDistance;
       const positionValue = positionSize * entry;
 
-      document.getElementById("positionSizeOut").innerHTML = `${formatNumber(positionSize)} units`;
+      document.getElementById("positionSizeOut").innerHTML = `${formatNumber(positionSize)}`;
+      document.getElementById("positionUnitOut").innerHTML = "units";
       document.getElementById("positionValueOut").innerHTML = money(positionValue);
       document.getElementById("riskAmountOut").innerHTML = money(riskAmount);
       document.getElementById("stopDistanceOut").innerHTML = `${stopDistance.toFixed(4)} price units`;
@@ -766,6 +908,10 @@
         mode === "advanced"
           ? `Effective distance after trading costs.`
           : `Distance between entry and stop loss.`;
+
+      const sizeValueEl = document.getElementById("positionSizeOut");
+      sizeValueEl.classList.remove("good","warn","bad");
+      if (positionSize > 0) sizeValueEl.classList.add("good");
 
       document.getElementById("resultCard").style.display = "block";
       document.getElementById("tipBox").style.display = "block";
@@ -788,19 +934,36 @@
           datasets: [{
             label: "Trade Overview",
             data: [riskAmount, positionValue, stopDistance],
-            backgroundColor: ["#ef4444", "#22c55e", "#3b82f6"]
+            backgroundColor: ["#ef4444", "#22c55e", "#3b82f6"],
+            borderRadius: 10,
+            borderSkipped: false
           }]
         },
         options: {
           responsive: true,
+          maintainAspectRatio: false,
+          animation: {
+            duration: 850,
+            easing: "easeOutQuart"
+          },
           plugins: {
             legend: {
               labels: { color: "white" }
             },
             tooltip: {
+              backgroundColor: "#0f172a",
+              borderColor: "rgba(255,255,255,0.08)",
+              borderWidth: 1,
+              titleColor: "#fff",
+              bodyColor: "#e2e8f0",
               callbacks: {
                 label: function(context){
-                  return `${context.dataset.label}: ${context.parsed.y.toFixed(2)}`;
+                  const label = context.label || "";
+                  const value = context.parsed.y;
+                  if (context.dataIndex === 2) {
+                    return `${label}: ${Number(value).toFixed(4)}`;
+                  }
+                  return `${label}: ${money(value)}`;
                 }
               }
             }
@@ -839,4 +1002,4 @@
     });
   </script>
 </body>
-        </html>
+  </html>
