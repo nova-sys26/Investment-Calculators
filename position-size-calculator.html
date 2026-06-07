@@ -31,8 +31,6 @@
   <link rel="icon" href="favicon.png" type="image/png">
   <link rel="apple-touch-icon" href="favicon.png">
 
-  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-
   <script type="application/ld+json">
   {
     "@context": "https://schema.org",
@@ -297,6 +295,7 @@
       font-weight:800;
       letter-spacing:-0.04em;
       color:#ffffff;
+      word-break:break-word;
     }
 
     .result-unit{
@@ -374,11 +373,6 @@
 
     .metric-value.bad{
       color:#ef4444;
-    }
-
-    canvas{
-      margin-top:24px;
-      max-width:100%;
     }
 
     .tip-box{
@@ -572,7 +566,7 @@
 
     <button type="button" onclick="calculate()">Calculate</button>
 
-    <div id="resultCard" class="result-card">
+    <div id="resultCard" class="result-card" aria-live="polite">
       <div class="result-top">
         <span class="result-kicker">Trade size result</span>
         <h2 class="result-title">Recommended position size</h2>
@@ -605,8 +599,6 @@
         </div>
       </div>
     </div>
-
-    <canvas id="myChart"></canvas>
 
     <div id="tipBox" class="tip-box">
       <strong>Professional Trading Note</strong>
@@ -819,7 +811,6 @@
   <script src="footer.js"></script>
 
   <script>
-    let chart = null;
     let mode = "basic";
 
     function switchMode(m){
@@ -916,75 +907,7 @@
       document.getElementById("resultCard").style.display = "block";
       document.getElementById("tipBox").style.display = "block";
 
-      drawChart(riskAmount, positionValue, stopDistance);
       document.getElementById("resultCard").scrollIntoView({ behavior: "smooth", block: "start" });
-    }
-
-    function drawChart(riskAmount, positionValue, stopDistance){
-      const ctx = document.getElementById("myChart").getContext("2d");
-
-      if (chart) {
-        chart.destroy();
-      }
-
-      chart = new Chart(ctx, {
-        type: "bar",
-        data: {
-          labels: ["Risk Amount", "Position Value", "Stop Distance"],
-          datasets: [{
-            label: "Trade Overview",
-            data: [riskAmount, positionValue, stopDistance],
-            backgroundColor: ["#ef4444", "#22c55e", "#3b82f6"],
-            borderRadius: 10,
-            borderSkipped: false
-          }]
-        },
-        options: {
-          responsive: true,
-          maintainAspectRatio: false,
-          animation: {
-            duration: 850,
-            easing: "easeOutQuart"
-          },
-          plugins: {
-            legend: {
-              labels: { color: "white" }
-            },
-            tooltip: {
-              backgroundColor: "#0f172a",
-              borderColor: "rgba(255,255,255,0.08)",
-              borderWidth: 1,
-              titleColor: "#fff",
-              bodyColor: "#e2e8f0",
-              callbacks: {
-                label: function(context){
-                  const label = context.label || "";
-                  const value = context.parsed.y;
-                  if (context.dataIndex === 2) {
-                    return `${label}: ${Number(value).toFixed(4)}`;
-                  }
-                  return `${label}: ${money(value)}`;
-                }
-              }
-            }
-          },
-          scales: {
-            x: {
-              ticks: { color: "white" },
-              grid: { color: "rgba(255,255,255,0.08)" }
-            },
-            y: {
-              ticks: {
-                color: "white",
-                callback: function(value){
-                  return Number(value).toLocaleString();
-                }
-              },
-              grid: { color: "rgba(255,255,255,0.08)" }
-            }
-          }
-        }
-      });
     }
 
     document.addEventListener("DOMContentLoaded", function(){
@@ -1002,4 +925,4 @@
     });
   </script>
 </body>
-  </html>
+        </html>
