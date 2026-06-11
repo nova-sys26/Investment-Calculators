@@ -124,7 +124,7 @@
     }
 
     body{
-      font-family:Arial, sans-serif;
+      font-family: Arial, sans-serif;
       background:#0f172a;
       color:white;
       display:flex;
@@ -161,7 +161,7 @@
       max-width:620px;
       box-shadow:0 10px 25px rgba(0,0,0,0.35);
       border:1px solid rgba(255,255,255,0.05);
-      backdrop-filter:blur(6px);
+      backdrop-filter: blur(6px);
     }
 
     h1{
@@ -172,14 +172,14 @@
     }
 
     .quick-answer{
-      background:rgba(59,130,246,0.12);
-      border:1px solid rgba(59,130,246,0.25);
-      padding:12px 14px;
-      border-radius:10px;
-      font-size:15px;
-      line-height:1.6;
-      color:#e2e8f0;
-      margin:0 0 18px;
+      background: rgba(59,130,246,0.12);
+      border: 1px solid rgba(59,130,246,0.25);
+      padding: 12px 14px;
+      border-radius: 10px;
+      font-size: 15px;
+      line-height: 1.6;
+      color: #e2e8f0;
+      margin: 0 0 18px;
     }
 
     .subhead{
@@ -279,26 +279,6 @@
       pointer-events:none;
     }
 
-    .result-card.state-green{
-      box-shadow:0 18px 40px rgba(0,0,0,0.22), 0 0 26px rgba(34,197,94,0.12);
-      border-color:rgba(34,197,94,0.18);
-    }
-
-    .result-card.state-yellow{
-      box-shadow:0 18px 40px rgba(0,0,0,0.22), 0 0 26px rgba(250,204,21,0.12);
-      border-color:rgba(250,204,21,0.18);
-    }
-
-    .result-card.state-orange{
-      box-shadow:0 18px 40px rgba(0,0,0,0.22), 0 0 26px rgba(249,115,22,0.12);
-      border-color:rgba(249,115,22,0.18);
-    }
-
-    .result-card.state-red{
-      box-shadow:0 18px 40px rgba(0,0,0,0.22), 0 0 26px rgba(239,68,68,0.14);
-      border-color:rgba(239,68,68,0.18);
-    }
-
     .result-top{
       display:flex;
       flex-direction:column;
@@ -347,22 +327,6 @@
       letter-spacing:-0.04em;
       color:#ffffff;
       word-break:break-word;
-    }
-
-    .result-card.state-green .result-value-big{
-      color:#22c55e;
-    }
-
-    .result-card.state-yellow .result-value-big{
-      color:#facc15;
-    }
-
-    .result-card.state-orange .result-value-big{
-      color:#fb923c;
-    }
-
-    .result-card.state-red .result-value-big{
-      color:#f87171;
     }
 
     .result-unit{
@@ -440,6 +404,117 @@
 
     .metric-value.bad{
       color:#ef4444;
+    }
+
+    .insight-stack{
+      margin-top:16px;
+      display:grid;
+      gap:12px;
+      position:relative;
+      z-index:1;
+    }
+
+    .insight-row{
+      padding:14px 14px 14px 14px;
+      border-radius:14px;
+      background:rgba(255,255,255,0.035);
+      border:1px solid rgba(255,255,255,0.08);
+      line-height:1.6;
+      box-shadow:0 10px 24px rgba(0,0,0,0.10);
+      transition:0.2s ease;
+    }
+
+    .insight-row:hover{
+      transform:translateY(-1px);
+    }
+
+    .insight-row strong{
+      display:block;
+      margin-bottom:4px;
+      font-size:13px;
+      letter-spacing:0.03em;
+      text-transform:uppercase;
+      font-weight:800;
+    }
+
+    .insight-row span{
+      display:block;
+      font-size:14px;
+      color:#e5e7eb;
+    }
+
+    .insight-good{
+      background:rgba(34,197,94,0.08);
+      border-color:rgba(34,197,94,0.18);
+      box-shadow:0 0 18px rgba(34,197,94,0.08);
+    }
+
+    .insight-good strong{
+      color:#86efac;
+    }
+
+    .insight-medium{
+      background:rgba(250,204,21,0.08);
+      border-color:rgba(250,204,21,0.18);
+      box-shadow:0 0 18px rgba(250,204,21,0.08);
+    }
+
+    .insight-medium strong{
+      color:#fde68a;
+    }
+
+    .insight-weak{
+      background:rgba(239,68,68,0.08);
+      border-color:rgba(239,68,68,0.18);
+      box-shadow:0 0 18px rgba(239,68,68,0.08);
+    }
+
+    .insight-weak strong{
+      color:#fca5a5;
+    }
+
+    .insight-muted{
+      background:rgba(59,130,246,0.07);
+      border-color:rgba(59,130,246,0.14);
+      box-shadow:0 0 18px rgba(59,130,246,0.06);
+    }
+
+    .insight-muted strong{
+      color:#93c5fd;
+    }
+
+    .chart-shell{
+      display:none;
+      margin-top:20px;
+      padding:18px;
+      border-radius:18px;
+      background:rgba(255,255,255,0.04);
+      border:1px solid rgba(255,255,255,0.08);
+      box-shadow:0 18px 40px rgba(0,0,0,0.18);
+    }
+
+    .chart-shell h3{
+      margin:0 0 8px;
+      font-size:16px;
+    }
+
+    .chart-sub{
+      margin:0 0 12px;
+      color:#94a3b8;
+      font-size:13px;
+      line-height:1.55;
+    }
+
+    .chart-wrap{
+      width:100%;
+      height:320px;
+      position:relative;
+    }
+
+    canvas{
+      width:100% !important;
+      height:100% !important;
+      display:block;
     }
 
     .content{
@@ -567,6 +642,10 @@
       .result-grid{
         grid-template-columns:1fr;
       }
+
+      .chart-wrap{
+        height:260px;
+      }
     }
   </style>
 </head>
@@ -646,7 +725,15 @@
         </div>
       </div>
 
-      <div class="insight-stack" id="insightStack"></div>
+      <div id="insightStack" class="insight-stack"></div>
+    </div>
+
+    <div id="chartShell" class="chart-shell">
+      <h3>Growth projection chart</h3>
+      <p class="chart-sub">Blue line shows projected balance. Gray dashed line shows your starting investment.</p>
+      <div class="chart-wrap">
+        <canvas id="myChart"></canvas>
+      </div>
     </div>
   </div>
 
@@ -823,32 +910,6 @@
       return `${value.toFixed(2)}x`;
     }
 
-    function setResultTone(rate, years, growthMultiple){
-      const card = document.getElementById("resultCard");
-      card.classList.remove("state-green", "state-yellow", "state-orange", "state-red");
-
-      if (rate <= 0){
-        card.classList.add("state-yellow");
-      } else if (rate < 3){
-        card.classList.add("state-yellow");
-      } else if (rate < 8){
-        card.classList.add("state-green");
-      } else if (rate < 12){
-        card.classList.add("state-orange");
-      } else {
-        card.classList.add("state-red");
-      }
-
-      if (years >= 50 && rate >= 8){
-        card.classList.remove("state-green", "state-yellow", "state-orange", "state-red");
-        card.classList.add("state-red");
-      }
-
-      if (growthMultiple >= 10 && rate >= 8){
-        card.classList.add("state-orange");
-      }
-    }
-
     function buildInsight({ principal, rate, years, futureValue, balanceSeries }){
       const totalGain = futureValue - principal;
       const gainPct = principal > 0 ? ((futureValue / principal) - 1) * 100 : 0;
@@ -968,11 +1029,11 @@
       });
 
       let planningText = "";
-      let planningClass = "insight-medium";
+      let planningClass = "insight-muted";
 
       if (roundedYears >= 50){
         planningText = "Use this as a scenario model. The main lesson is how compounding behaves over time, not what the exact final number will be.";
-        planningClass = "insight-good";
+        planningClass = "insight-muted";
       } else if (growthMultiple >= 3){
         planningText = "The projection is powerful enough that staying invested matters more than small short-term noise. Time is doing real work here.";
         planningClass = "insight-good";
@@ -1049,9 +1110,8 @@
         resultSub.textContent = "Compounding is active, but the projection remains relatively moderate.";
       }
 
-      setResultTone(rate, years, growthMultiple);
-
       document.getElementById("resultCard").style.display = "block";
+      document.getElementById("chartShell").style.display = "block";
       document.getElementById("insightStack").innerHTML = buildInsight({
         principal,
         rate,
@@ -1074,86 +1134,86 @@
       const labels = balanceSeries.map((_, index) => Math.min(index, balanceSeries.length - 1));
 
       chart = new Chart(ctx, {
-        type:'line',
+        type: "line",
         data: {
           labels,
           datasets: [
             {
-              label:'Projected balance',
-              data:balanceSeries,
-              borderColor:'#3b82f6',
-              backgroundColor:'rgba(59,130,246,0.12)',
-              tension:0.25,
-              fill:true,
-              pointRadius:3,
-              pointHoverRadius:5,
-              borderWidth:2.5
+              label: "Projected balance",
+              data: balanceSeries,
+              borderColor: "#3b82f6",
+              backgroundColor: "rgba(59,130,246,0.12)",
+              tension: 0.25,
+              fill: true,
+              pointRadius: 3,
+              pointHoverRadius: 5,
+              borderWidth: 2.5
             },
             {
-              label:'Initial investment',
-              data:labels.map(() => balanceSeries[0]),
-              borderColor:'#94a3b8',
-              backgroundColor:'rgba(148,163,184,0.04)',
-              tension:0,
-              fill:false,
-              pointRadius:0,
-              borderDash:[6,6],
-              borderWidth:2
+              label: "Initial investment",
+              data: labels.map(() => balanceSeries[0]),
+              borderColor: "#94a3b8",
+              backgroundColor: "rgba(148,163,184,0.04)",
+              tension: 0,
+              fill: false,
+              pointRadius: 0,
+              borderDash: [6, 6],
+              borderWidth: 2
             }
           ]
         },
-        options:{
-          responsive:true,
-          maintainAspectRatio:false,
-          animation:{
-            duration:850,
-            easing:'easeOutQuart'
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          animation: {
+            duration: 850,
+            easing: "easeOutQuart"
           },
-          plugins:{
-            legend:{
-              labels:{ color:'white' }
+          plugins: {
+            legend: {
+              labels: { color: "white" }
             },
-            tooltip:{
-              backgroundColor:'#0f172a',
-              borderColor:'rgba(255,255,255,0.08)',
-              borderWidth:1,
-              titleColor:'#fff',
-              bodyColor:'#e2e8f0',
-              callbacks:{
+            tooltip: {
+              backgroundColor: "#0f172a",
+              borderColor: "rgba(255,255,255,0.08)",
+              borderWidth: 1,
+              titleColor: "#fff",
+              bodyColor: "#e2e8f0",
+              callbacks: {
                 label: function(context){
                   return `${context.dataset.label}: ${money(context.parsed.y)}`;
                 }
               }
             }
           },
-          scales:{
-            x:{
-              ticks:{
-                color:'white'
+          scales: {
+            x: {
+              ticks: {
+                color: "white"
               },
-              grid:{
-                color:'rgba(255,255,255,0.08)'
+              grid: {
+                color: "rgba(255,255,255,0.08)"
               },
-              title:{
-                display:true,
-                text:'Years',
-                color:'white'
+              title: {
+                display: true,
+                text: "Years",
+                color: "white"
               }
             },
-            y:{
-              ticks:{
-                color:'white',
+            y: {
+              ticks: {
+                color: "white",
                 callback: function(value){
                   return "$" + Number(value).toLocaleString();
                 }
               },
-              grid:{
-                color:'rgba(255,255,255,0.08)'
+              grid: {
+                color: "rgba(255,255,255,0.08)"
               },
-              title:{
-                display:true,
-                text:'Balance ($)',
-                color:'white'
+              title: {
+                display: true,
+                text: "Balance ($)",
+                color: "white"
               }
             }
           }
@@ -1176,4 +1236,5 @@
     });
   </script>
 </body>
+            </html>
                                                            </html>           
