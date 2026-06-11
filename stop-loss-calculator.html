@@ -31,8 +31,6 @@
   <link rel="icon" href="favicon.png" type="image/png">
   <link rel="apple-touch-icon" href="favicon.png">
 
-  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-
   <script type="application/ld+json">
   {
     "@context": "https://schema.org",
@@ -100,8 +98,8 @@
     }
 
     body{
-      font-family: Arial, sans-serif;
-      background:#0b1a33;
+      font-family:Arial, sans-serif;
+      background:#0f172a;
       color:white;
       display:flex;
       justify-content:center;
@@ -134,8 +132,10 @@
       padding:30px;
       border-radius:16px;
       width:90%;
-      max-width:520px;
+      max-width:640px;
       box-shadow:0 10px 25px rgba(0,0,0,0.35);
+      border:1px solid rgba(255,255,255,0.05);
+      backdrop-filter: blur(6px);
     }
 
     h1{
@@ -146,14 +146,14 @@
     }
 
     .quick-answer{
-      background:rgba(59,130,246,0.12);
-      border:1px solid rgba(59,130,246,0.25);
-      padding:12px 14px;
-      border-radius:10px;
-      font-size:15px;
-      line-height:1.6;
-      color:#e2e8f0;
-      margin-bottom:18px;
+      background: rgba(59,130,246,0.12);
+      border: 1px solid rgba(59,130,246,0.25);
+      padding: 12px 14px;
+      border-radius: 10px;
+      font-size: 15px;
+      line-height: 1.6;
+      color: #e2e8f0;
+      margin: 0 0 18px;
     }
 
     .subhead{
@@ -161,6 +161,81 @@
       font-size:15px;
       line-height:1.6;
       margin-bottom:18px;
+    }
+
+    h2{
+      font-size:22px;
+      font-weight:600;
+      margin-top:50px;
+      margin-bottom:15px;
+      position:relative;
+      padding-bottom:8px;
+      color:#e2e8f0;
+    }
+
+    h2::after{
+      content:"";
+      position:absolute;
+      left:0;
+      bottom:0;
+      width:100%;
+      height:3px;
+      background:linear-gradient(90deg,#3b82f6,#22c55e);
+      border-radius:2px;
+    }
+
+    h3{
+      font-size:20px;
+      font-weight:600;
+      color:#ffffff;
+      margin-top:28px;
+      margin-bottom:12px;
+      position:relative;
+      padding-left:14px;
+      letter-spacing:0.3px;
+    }
+
+    h3::before{
+      content:"";
+      position:absolute;
+      left:0;
+      top:4px;
+      width:4px;
+      height:70%;
+      background:linear-gradient(180deg, #4facfe, #00f2fe);
+      border-radius:2px;
+    }
+
+    h3{
+      transition:all 0.2s ease;
+    }
+
+    h3:hover{
+      color:#4facfe;
+    }
+
+    .badge-row{
+      display:flex;
+      gap:10px;
+      flex-wrap:wrap;
+      margin:14px 0 6px;
+    }
+
+    .badge{
+      display:inline-flex;
+      padding:5px 10px;
+      border-radius:999px;
+      font-size:12px;
+      font-weight:700;
+      background:rgba(59,130,246,0.12);
+      color:#bfdbfe;
+      border:1px solid rgba(59,130,246,0.22);
+    }
+
+    .badge.soft{
+      background:rgba(255,255,255,0.05);
+      border-color:rgba(255,255,255,0.08);
+      color:#dbeafe;
     }
 
     .toggle{
@@ -223,74 +298,196 @@
       margin-top:10px;
       width:100%;
       font-size:16px;
-      font-weight:600;
+      font-weight:700;
+      transition:0.2s;
     }
 
     button:hover{
       background:#2563eb;
+      transform:translateY(-1px);
     }
 
     .result-card{
-      background:#273449;
-      padding:20px 20px 20px 24px;
-      border-radius:14px;
-      margin-top:20px;
-      position:relative;
       display:none;
+      margin-top:20px;
+      padding:18px;
+      border-radius:18px;
+      background:linear-gradient(180deg, rgba(15,23,42,0.92), rgba(17,24,39,0.88));
+      border:1px solid rgba(255,255,255,0.08);
+      box-shadow:0 18px 40px rgba(0,0,0,0.22);
+      overflow:hidden;
+      position:relative;
     }
 
     .result-card::before{
       content:"";
       position:absolute;
-      left:12px;
-      top:20px;
-      bottom:20px;
-      width:4px;
-      background:#22c55e;
-      border-radius:2px;
+      inset:0;
+      background:radial-gradient(circle at top right, rgba(59,130,246,0.12), transparent 35%);
+      pointer-events:none;
     }
 
-    .result-line{
-      padding-left:18px;
-      margin:15px 0;
-      font-size:18px;
-      color:#e5e7eb;
-      line-height:1.4;
+    .result-card.state-green{
+      box-shadow:0 18px 40px rgba(0,0,0,0.22), 0 0 26px rgba(34,197,94,0.12);
+      border-color:rgba(34,197,94,0.18);
     }
 
-    .result-line strong{
-      color:#cbd5f5;
+    .result-card.state-yellow{
+      box-shadow:0 18px 40px rgba(0,0,0,0.22), 0 0 26px rgba(250,204,21,0.12);
+      border-color:rgba(250,204,21,0.18);
     }
 
-    canvas{
-      margin-top:24px;
-      max-width:100%;
+    .result-card.state-orange{
+      box-shadow:0 18px 40px rgba(0,0,0,0.22), 0 0 26px rgba(249,115,22,0.12);
+      border-color:rgba(249,115,22,0.18);
     }
 
-    .tip-box{
-      margin-top:22px;
-      padding:14px 16px;
-      border-radius:14px;
-      background:#243041;
-      border:1px solid rgba(255,255,255,0.08);
-      color:#dbe4f0;
-      display:none;
+    .result-card.state-red{
+      box-shadow:0 18px 40px rgba(0,0,0,0.22), 0 0 26px rgba(239,68,68,0.14);
+      border-color:rgba(239,68,68,0.18);
     }
 
-    .tip-box strong{
-      display:block;
-      margin-bottom:6px;
-      font-size:13px;
-      font-weight:700;
-      letter-spacing:0.2px;
+    .result-top{
+      display:flex;
+      flex-direction:column;
+      gap:8px;
+      padding-bottom:16px;
+      border-bottom:1px solid rgba(255,255,255,0.06);
+      margin-bottom:16px;
+      position:relative;
+      z-index:1;
+    }
+
+    .result-kicker{
+      display:inline-flex;
+      align-items:center;
+      width:max-content;
+      padding:5px 10px;
+      border-radius:999px;
+      font-size:11px;
+      font-weight:800;
+      letter-spacing:0.08em;
+      text-transform:uppercase;
+      background:rgba(59,130,246,0.12);
       color:#bfdbfe;
+      border:1px solid rgba(59,130,246,0.20);
     }
 
-    .tip-box p{
+    .result-title{
       margin:0;
       font-size:14px;
-      line-height:1.65;
+      font-weight:700;
       color:#cbd5e1;
+      letter-spacing:0.01em;
+    }
+
+    .result-main{
+      display:flex;
+      flex-wrap:wrap;
+      align-items:baseline;
+      gap:10px;
+    }
+
+    .result-value-big{
+      font-size:clamp(2.1rem, 6vw, 3.2rem);
+      line-height:1;
+      font-weight:800;
+      letter-spacing:-0.04em;
+      color:#ffffff;
+      word-break:break-word;
+    }
+
+    .result-card.state-green .result-value-big{
+      color:#22c55e;
+    }
+
+    .result-card.state-yellow .result-value-big{
+      color:#facc15;
+    }
+
+    .result-card.state-orange .result-value-big{
+      color:#fb923c;
+    }
+
+    .result-card.state-red .result-value-big{
+      color:#f87171;
+    }
+
+    .result-unit{
+      font-size:14px;
+      color:#94a3b8;
+      font-weight:600;
+      letter-spacing:0.02em;
+    }
+
+    .result-sub{
+      color:#94a3b8;
+      font-size:13px;
+      line-height:1.55;
+      margin:0;
+      max-width:46ch;
+    }
+
+    .result-grid{
+      display:grid;
+      grid-template-columns:repeat(3, minmax(0, 1fr));
+      gap:12px;
+      position:relative;
+      z-index:1;
+    }
+
+    .metric{
+      background:rgba(255,255,255,0.03);
+      border:1px solid rgba(255,255,255,0.06);
+      border-radius:14px;
+      padding:14px;
+      transition:0.2s ease;
+      min-height:92px;
+    }
+
+    .metric:hover{
+      transform:translateY(-1px);
+      border-color:rgba(59,130,246,0.18);
+      background:rgba(255,255,255,0.05);
+    }
+
+    .metric-label{
+      display:block;
+      color:#94a3b8;
+      font-size:11px;
+      text-transform:uppercase;
+      letter-spacing:0.10em;
+      font-weight:800;
+      margin-bottom:8px;
+    }
+
+    .metric-value{
+      display:block;
+      font-size:18px;
+      line-height:1.2;
+      font-weight:800;
+      color:#e2e8f0;
+      word-break:break-word;
+    }
+
+    .metric-note{
+      display:block;
+      margin-top:6px;
+      color:#94a3b8;
+      font-size:12px;
+      line-height:1.45;
+    }
+
+    .metric-value.good{
+      color:#22c55e;
+    }
+
+    .metric-value.warn{
+      color:#f59e0b;
+    }
+
+    .metric-value.bad{
+      color:#ef4444;
     }
 
     .content{
@@ -382,12 +579,19 @@
     }
 
     .related a{
-      color:#93c5fd;
+      display:block;
+      padding:10px;
+      margin:5px 0;
+      background:#0f172a;
+      border-radius:8px;
+      color:#3b82f6;
+      transition:0.2s;
       text-decoration:none;
     }
 
     .related a:hover{
-      text-decoration:underline;
+      background:#1e293b;
+      transform:translateX(4px);
     }
 
     .disclaimer{
@@ -414,12 +618,15 @@
       .content h2{
         font-size:24px;
       }
+
+      .result-grid{
+        grid-template-columns:1fr;
+      }
     }
   </style>
 </head>
 
 <body>
-
   <p class="toptext">Explore more calculators</p>
 
   <div class="menu">
@@ -437,31 +644,54 @@
       Enter your entry price and risk percentage to calculate the stop loss price for a long or short trade.
     </p>
 
+    <div class="badge-row">
+      <span class="badge">Risk control</span>
+      <span class="badge soft">Long / short</span>
+      <span class="badge soft">Trade planning</span>
+    </div>
+
     <div class="toggle">
       <button id="longBtn" class="active" type="button" onclick="setType('long')">Long</button>
       <button id="shortBtn" type="button" onclick="setType('short')">Short</button>
     </div>
 
-    <input id="entry" placeholder="Entry price">
-    <input id="risk" placeholder="Risk % (e.g. 2)">
+    <input id="entry" type="number" min="0" step="any" placeholder="Entry price">
+    <input id="risk" type="number" min="0" step="any" placeholder="Risk % (e.g. 2)">
 
     <button type="button" onclick="calculate()">Calculate</button>
 
-    <div id="resultCard" class="result-card">
-      <p class="result-line"><strong>Stop Loss Price:</strong> <span id="stopLossOut">—</span></p>
-      <p class="result-line"><strong>Distance From Entry:</strong> <span id="distanceOut">—</span></p>
-    </div>
+    <div id="resultCard" class="result-card" aria-live="polite">
+      <div class="result-top">
+        <span id="resultKicker" class="result-kicker">Stop loss result</span>
+        <h2 id="resultTitle" class="result-title">Calculated stop loss price</h2>
 
-    <canvas id="myChart"></canvas>
+        <div class="result-main">
+          <span id="stopLossOut" class="result-value-big">—</span>
+          <span class="result-unit">stop price</span>
+        </div>
 
-    <div id="tipBox" class="tip-box">
-      <strong>Professional Trading Note</strong>
-      <p>
-        Stop losses are not purely mechanical and should not be placed using fixed percentages alone.
-        Their placement depends on the trading strategy, market conditions, and trade setup.
-        Many traders use factors such as liquidity zones, volatility, support and resistance, swing levels,
-        or technical invalidation areas when determining stop placement.
-      </p>
+        <p id="resultSub" class="result-sub">—</p>
+      </div>
+
+      <div class="result-grid">
+        <div class="metric">
+          <span class="metric-label">Distance From Entry</span>
+          <span id="distanceOut" class="metric-value">—</span>
+          <span class="metric-note">Price move to stop level</span>
+        </div>
+
+        <div class="metric">
+          <span class="metric-label">Risk %</span>
+          <span id="riskOut" class="metric-value">—</span>
+          <span class="metric-note">Distance as a percentage</span>
+        </div>
+
+        <div class="metric">
+          <span class="metric-label">Placement</span>
+          <span id="placementOut" class="metric-value">—</span>
+          <span class="metric-note">Stop location versus entry</span>
+        </div>
+      </div>
     </div>
   </div>
 
@@ -477,12 +707,12 @@
 
     <h2>How This Calculator Works</h2>
     <p>
-      You enter your entry price, choose long or short, and define how much risk you are willing to take as a percentage. The calculator then converts that risk into a stop loss price.
+      You enter your entry price, choose long or short, and define how much price movement you are willing to risk as a percentage. The calculator then converts that risk into a stop loss price.
     </p>
 
     <ul>
       <li><strong>Entry Price</strong> = the price where your trade begins</li>
-      <li><strong>Risk %</strong> = how much you are willing to lose on the trade</li>
+      <li><strong>Risk %</strong> = the stop distance as a percentage of entry</li>
       <li><strong>Trade Type</strong> = long or short position</li>
     </ul>
 
@@ -603,7 +833,6 @@
 
   <script src="footer.js"></script>
   <script>
-    let chart = null;
     let type = "long";
 
     function setType(selected){
@@ -612,11 +841,60 @@
       document.getElementById("shortBtn").classList.toggle("active", selected === "short");
     }
 
+    function money(value){
+      return "$" + Number(value).toLocaleString(undefined, {
+        minimumFractionDigits: 2,
+        maximumFractionDigits: 2
+      });
+    }
+
+    function updateStateCard(risk){
+      const card = document.getElementById("resultCard");
+      card.classList.remove("state-green", "state-yellow", "state-orange", "state-red");
+
+      if (risk <= 0.5){
+        card.classList.add("state-yellow");
+      } else if (risk <= 2){
+        card.classList.add("state-green");
+      } else if (risk <= 5){
+        card.classList.add("state-orange");
+      } else {
+        card.classList.add("state-red");
+      }
+    }
+
+    function buildResultText({ stopLoss, distance, risk, selected }){
+      const sub = document.getElementById("resultSub");
+      const kicker = document.getElementById("resultKicker");
+      const title = document.getElementById("resultTitle");
+      const placement = document.getElementById("placementOut");
+
+      if (selected === "long"){
+        kicker.textContent = "Long stop result";
+        title.textContent = "Calculated stop loss below entry";
+        placement.textContent = "Below entry";
+      } else {
+        kicker.textContent = "Short stop result";
+        title.textContent = "Calculated stop loss above entry";
+        placement.textContent = "Above entry";
+      }
+
+      if (risk <= 0.5){
+        sub.textContent = "Very tight stop. Less room for normal market fluctuation.";
+      } else if (risk <= 2){
+        sub.textContent = "Balanced stop distance for many trading strategies.";
+      } else if (risk <= 5){
+        sub.textContent = "Wide stop. Gives the trade more room, but increases exposure.";
+      } else {
+        sub.textContent = "Very wide stop. Make sure the risk fits your strategy.";
+      }
+    }
+
     function calculate(){
       const entry = parseFloat(document.getElementById("entry").value);
       const risk = parseFloat(document.getElementById("risk").value);
 
-      if (isNaN(entry) || isNaN(risk) || entry <= 0 || risk <= 0) {
+      if (Number.isNaN(entry) || Number.isNaN(risk) || entry <= 0 || risk <= 0) {
         alert("Fill all fields with valid values.");
         return;
       }
@@ -634,51 +912,27 @@
 
       const distance = Math.abs(entry - stopLoss);
 
-      document.getElementById("stopLossOut").innerHTML = `$${stopLoss.toFixed(2)}`;
-      document.getElementById("distanceOut").innerHTML = `$${distance.toFixed(2)} (${risk.toFixed(2)}%)`;
+      document.getElementById("stopLossOut").textContent = money(stopLoss);
+      document.getElementById("distanceOut").textContent = `${money(distance)} (${risk.toFixed(2)}%)`;
+      document.getElementById("riskOut").textContent = `${risk.toFixed(2)}%`;
 
-      document.getElementById("resultCard").style.display = "block";
-      document.getElementById("tipBox").style.display = "block";
-
-      drawChart(entry, stopLoss);
-    }
-
-    function drawChart(entry, stopLoss){
-      const ctx = document.getElementById("myChart").getContext("2d");
-
-      if (chart) {
-        chart.destroy();
+      const riskValueEl = document.getElementById("riskOut");
+      riskValueEl.classList.remove("good", "warn", "bad");
+      if (risk <= 0.5){
+        riskValueEl.classList.add("warn");
+      } else if (risk <= 2){
+        riskValueEl.classList.add("good");
+      } else if (risk <= 5){
+        riskValueEl.classList.add("warn");
+      } else {
+        riskValueEl.classList.add("bad");
       }
 
-      chart = new Chart(ctx, {
-        type: "bar",
-        data: {
-          labels: ["Entry Price", "Stop Loss"],
-          datasets: [{
-            label: "Trade Levels",
-            data: [entry, stopLoss],
-            backgroundColor: ["#22c55e", "#3b82f6"]
-          }]
-        },
-        options: {
-          responsive: true,
-          plugins: {
-            legend: {
-              labels: { color: "white" }
-            }
-          },
-          scales: {
-            x: {
-              ticks: { color: "white" },
-              grid: { color: "rgba(255,255,255,0.08)" }
-            },
-            y: {
-              ticks: { color: "white" },
-              grid: { color: "rgba(255,255,255,0.08)" }
-            }
-          }
-        }
-      });
+      buildResultText({ stopLoss, distance, risk, selected: type });
+      updateStateCard(risk);
+
+      document.getElementById("resultCard").style.display = "block";
+      document.getElementById("resultCard").scrollIntoView({ behavior: "smooth", block: "start" });
     }
 
     document.addEventListener("DOMContentLoaded", function(){
@@ -696,4 +950,4 @@
     });
   </script>
 </body>
-  </html>
+                                                             </html>
