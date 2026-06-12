@@ -107,10 +107,54 @@
   </script>
 
   <style>
-    *{ box-sizing:border-box; }
-    html{ scroll-behavior:smooth; }
+    *{
+      box-sizing:border-box;
+    }
 
-    
+    html{
+      scroll-behavior:smooth;
+    }
+
+    body{
+      font-family: Arial, sans-serif;
+      background:#0f172a;
+      color:white;
+      display:flex;
+      justify-content:center;
+      align-items:center;
+      flex-direction:column;
+      min-height:100vh;
+      margin:0;
+      padding:24px 0;
+    }
+
+    .toptext{
+      font-size:14px;
+      color:#6b7a99;
+      margin-bottom:5px;
+    }
+
+    .menu{
+      margin-bottom:25px;
+    }
+
+    .menu a{
+      color:#3b82f6;
+      margin:10px;
+      text-decoration:none;
+      font-weight:600;
+    }
+
+    .container{
+      background:#1e293b;
+      padding:30px;
+      border-radius:16px;
+      width:90%;
+      max-width:620px;
+      box-shadow:0 10px 25px rgba(0,0,0,0.35);
+      border:1px solid rgba(255,255,255,0.05);
+      backdrop-filter: blur(6px);
+    }
 
     h1{
       margin-top:0;
@@ -119,7 +163,23 @@
       line-height:1.15;
     }
 
-    
+    .quick-answer{
+      background: rgba(59,130,246,0.12);
+      border: 1px solid rgba(59,130,246,0.25);
+      padding: 12px 14px;
+      border-radius: 10px;
+      font-size: 15px;
+      line-height: 1.6;
+      color: #e2e8f0;
+      margin: 0 0 18px;
+    }
+
+    .subhead{
+      color:#94a3b8;
+      font-size:15px;
+      line-height:1.6;
+      margin-bottom:18px;
+    }
 
     .toggle{
       display:flex;
@@ -141,9 +201,17 @@
       font-weight:700;
     }
 
-    .toggle button:first-child{ border-radius:10px 0 0 10px; }
-    .toggle button:last-child{ border-radius:0 10px 10px 0; }
-    .toggle button.active{ background:#3b82f6; }
+    .toggle button:first-child{
+      border-radius:10px 0 0 10px;
+    }
+
+    .toggle button:last-child{
+      border-radius:0 10px 10px 0;
+    }
+
+    .toggle button.active{
+      background:#3b82f6;
+    }
 
     .field-label{
       display:block;
@@ -188,24 +256,95 @@
 
     .result-card{
       margin-top:18px;
-      padding:16px;
-      border-radius:14px;
-      background:rgba(255,255,255,0.05);
+      padding:18px;
+      border-radius:18px;
+      background:linear-gradient(180deg, rgba(15,23,42,0.94), rgba(17,24,39,0.90));
       border:1px solid rgba(255,255,255,0.08);
+      box-shadow:0 18px 40px rgba(0,0,0,0.24);
+      overflow:hidden;
+      position:relative;
       display:none;
     }
 
-    .result-sentence{
-      margin:0 0 14px;
-      font-size:16px;
-      line-height:1.6;
-      color:#e5e7eb;
+    .result-card::before{
+      content:"";
+      position:absolute;
+      inset:0;
+      background:radial-gradient(circle at top right, rgba(59,130,246,0.12), transparent 35%);
+      pointer-events:none;
+    }
+
+    .result-top{
+      display:flex;
+      flex-direction:column;
+      gap:8px;
+      padding-bottom:16px;
+      border-bottom:1px solid rgba(255,255,255,0.06);
+      margin-bottom:16px;
+      position:relative;
+      z-index:1;
+    }
+
+    .result-kicker{
+      display:inline-flex;
+      align-items:center;
+      width:max-content;
+      padding:5px 10px;
+      border-radius:999px;
+      font-size:11px;
+      font-weight:800;
+      letter-spacing:0.08em;
+      text-transform:uppercase;
+      background:rgba(59,130,246,0.12);
+      color:#bfdbfe;
+      border:1px solid rgba(59,130,246,0.20);
+    }
+
+    .result-title{
+      margin:0;
+      font-size:14px;
+      font-weight:700;
+      color:#cbd5e1;
+      letter-spacing:0.01em;
+    }
+
+    .result-main{
+      display:flex;
+      flex-wrap:wrap;
+      align-items:baseline;
+      gap:10px;
+    }
+
+    .result-value-big{
+      font-size:clamp(2.1rem, 6vw, 3.2rem);
+      line-height:1;
+      font-weight:800;
+      letter-spacing:-0.04em;
+      color:#ffffff;
+      word-break:break-word;
+    }
+
+    .result-unit{
+      font-size:14px;
+      color:#94a3b8;
+      font-weight:600;
+      letter-spacing:0.02em;
+    }
+
+    .result-sub{
+      color:#94a3b8;
+      font-size:13px;
+      line-height:1.55;
+      margin:0;
+      max-width:48ch;
     }
 
     .result-grid{
       display:grid;
-      grid-template-columns:repeat(auto-fit, minmax(220px, 1fr));
+      grid-template-columns:repeat(auto-fit, minmax(170px, 1fr));
       gap:12px;
+      position:relative;
+      z-index:1;
     }
 
     .result-box{
@@ -217,16 +356,29 @@
 
     .result-label{
       display:block;
-      color:#cbd5f5;
-      font-size:13px;
-      font-weight:700;
-      margin-bottom:4px;
+      color:#94a3b8;
+      font-size:11px;
+      text-transform:uppercase;
+      letter-spacing:0.10em;
+      font-weight:800;
+      margin-bottom:8px;
     }
 
     .result-value{
+      display:block;
       font-size:18px;
+      line-height:1.2;
       font-weight:800;
-      color:#e5e7eb;
+      color:#e2e8f0;
+      word-break:break-word;
+    }
+
+    .result-note{
+      display:block;
+      margin-top:6px;
+      color:#94a3b8;
+      font-size:12px;
+      line-height:1.45;
     }
 
     .insight-banner{
@@ -240,16 +392,19 @@
     .insight-banner.insight-good{
       border-color:rgba(34,197,94,0.25);
       background:rgba(34,197,94,0.08);
+      box-shadow:0 0 0 1px rgba(34,197,94,0.08) inset, 0 10px 24px rgba(34,197,94,0.06);
     }
 
     .insight-banner.insight-medium{
       border-color:rgba(250,204,21,0.25);
       background:rgba(250,204,21,0.08);
+      box-shadow:0 0 0 1px rgba(250,204,21,0.08) inset, 0 10px 24px rgba(250,204,21,0.05);
     }
 
     .insight-banner.insight-weak{
       border-color:rgba(239,68,68,0.25);
       background:rgba(239,68,68,0.08);
+      box-shadow:0 0 0 1px rgba(239,68,68,0.08) inset, 0 10px 24px rgba(239,68,68,0.05);
     }
 
     .insight-kicker{
@@ -282,15 +437,35 @@
     .insight-grid{
       display:grid;
       grid-template-columns:repeat(auto-fit, minmax(180px, 1fr));
-      gap:12px;
-      margin-top:12px;
+      gap:14px;
+      margin-top:14px;
     }
 
     .insight-card{
       background:rgba(15,23,42,0.72);
       border:1px solid rgba(255,255,255,0.06);
-      border-radius:14px;
+      border-radius:16px;
       padding:14px;
+      min-height:128px;
+      transition:0.2s ease;
+    }
+
+    .insight-card.tone-good{
+      border-color:rgba(34,197,94,0.25);
+      background:linear-gradient(180deg, rgba(34,197,94,0.09), rgba(15,23,42,0.74));
+      box-shadow:0 0 0 1px rgba(34,197,94,0.07) inset, 0 12px 22px rgba(34,197,94,0.05);
+    }
+
+    .insight-card.tone-warn{
+      border-color:rgba(250,204,21,0.24);
+      background:linear-gradient(180deg, rgba(250,204,21,0.09), rgba(15,23,42,0.74));
+      box-shadow:0 0 0 1px rgba(250,204,21,0.07) inset, 0 12px 22px rgba(250,204,21,0.05);
+    }
+
+    .insight-card.tone-bad{
+      border-color:rgba(239,68,68,0.24);
+      background:linear-gradient(180deg, rgba(239,68,68,0.09), rgba(15,23,42,0.74));
+      box-shadow:0 0 0 1px rgba(239,68,68,0.07) inset, 0 12px 22px rgba(239,68,68,0.05);
     }
 
     .insight-card span{
@@ -307,10 +482,11 @@
       display:block;
       font-size:16px;
       line-height:1.25;
+      margin-bottom:4px;
     }
 
     .insight-card p{
-      margin:6px 0 0;
+      margin:0;
       color:#cbd5e1;
       font-size:13px;
       line-height:1.55;
@@ -467,6 +643,14 @@
       .chart-wrap{
         height:300px;
       }
+
+      .result-grid{
+        grid-template-columns:1fr;
+      }
+
+      .insight-grid{
+        grid-template-columns:1fr;
+      }
     }
   </style>
 </head>
@@ -507,7 +691,37 @@
     <button class="action-btn" onclick="calculate()" type="button">Calculate</button>
 
     <div id="resultCard" class="result-card" aria-live="polite">
-      <p id="resultSentence" class="result-sentence">—</p>
+      <div class="result-top">
+        <span id="resultKicker" class="result-kicker">Loan result</span>
+        <h2 id="resultTitle" class="result-title">APR overview</h2>
+
+        <div class="result-main">
+          <span id="resultPrimaryOut" class="result-value-big">—</span>
+          <span id="resultPrimaryUnit" class="result-unit">APR</span>
+        </div>
+
+        <p id="resultSentence" class="result-sub">—</p>
+      </div>
+
+      <div class="result-grid">
+        <div class="result-box">
+          <span id="metric1Label" class="result-label">Monthly payment</span>
+          <strong id="metric1Out" class="result-value">—</strong>
+          <span id="metric1Note" class="result-note">—</span>
+        </div>
+
+        <div class="result-box">
+          <span class="result-label">Total paid</span>
+          <strong id="totalPaidOut" class="result-value">—</strong>
+          <span class="result-note">Loan amount plus interest</span>
+        </div>
+
+        <div class="result-box">
+          <span class="result-label">Total interest</span>
+          <strong id="totalInterestOut" class="result-value">—</strong>
+          <span class="result-note">Cost of borrowing</span>
+        </div>
+      </div>
 
       <div id="insightBanner" class="insight-banner">
         <span id="insightKicker" class="insight-kicker">—</span>
@@ -515,49 +729,33 @@
         <p id="insightBody" class="insight-body">—</p>
       </div>
 
-      <div class="result-grid">
-        <div class="result-box">
-          <span class="result-label" id="resultPrimaryLabel">APR</span>
-          <span id="resultPrimaryOut" class="result-value">—</span>
-        </div>
-        <div class="result-box">
-          <span class="result-label">Total paid</span>
-          <span id="totalPaidOut" class="result-value">—</span>
-        </div>
-        <div class="result-box">
-          <span class="result-label">Total interest</span>
-          <span id="totalInterestOut" class="result-value">—</span>
-        </div>
-        <div class="result-box">
-          <span class="result-label">Insight</span>
-          <span id="insightOut" class="result-value">—</span>
-        </div>
-      </div>
-
       <div class="insight-grid">
-        <div class="insight-card">
+        <div id="insightAprCard" class="insight-card">
           <span>APR quality</span>
           <strong id="insightAprLevel">—</strong>
           <p id="insightAprNote">—</p>
         </div>
-        <div class="insight-card">
+
+        <div id="insightPaymentCard" class="insight-card">
           <span>Payment burden</span>
           <strong id="insightPaymentLevel">—</strong>
           <p id="insightPaymentNote">—</p>
         </div>
-        <div class="insight-card">
+
+        <div id="insightInterestCard" class="insight-card">
           <span>Interest load</span>
           <strong id="insightInterestLevel">—</strong>
           <p id="insightInterestNote">—</p>
         </div>
-        <div class="insight-card">
+
+        <div id="insightActionCard" class="insight-card">
           <span>Best next move</span>
           <strong id="insightActionLevel">—</strong>
           <p id="insightActionNote">—</p>
         </div>
       </div>
 
-      <div class="chart-shell">
+      <div id="chartShell" class="chart-shell">
         <h3>Amortization breakdown</h3>
         <div class="chart-wrap">
           <canvas id="myChart"></canvas>
@@ -680,7 +878,7 @@
         </button>
         <div class="faq-answer">
           <p>
-            Yes. If one loan has extra fees and the other does not, their APR values can differ even when the interest rates are the same.
+            Yes. If one loan has extra fees and the other does not, the APR values can be different even when the interest rates match.
           </p>
         </div>
       </div>
@@ -739,6 +937,8 @@
       }
 
       document.getElementById("resultCard").style.display = "none";
+      document.getElementById("chartShell").style.display = "none";
+
       if(chart){
         chart.destroy();
         chart = null;
@@ -820,15 +1020,34 @@
       const totalInterest = totalPaid - loan;
 
       document.getElementById("resultCard").style.display = "block";
-      document.getElementById("resultPrimaryLabel").innerText = "Monthly Payment";
-      document.getElementById("resultPrimaryOut").innerText = money(payment);
-      document.getElementById("totalPaidOut").innerText = money(totalPaid);
-      document.getElementById("totalInterestOut").innerText = money(totalInterest);
+      document.getElementById("chartShell").style.display = "block";
 
-      renderInsights({ loan, months, payment, apr, totalPaid, totalInterest, monthlyRate, mode: "payment" });
-      drawChart(loan, payment, months, monthlyRate);
+      document.getElementById("resultKicker").textContent = "Loan result";
+      document.getElementById("resultTitle").textContent = "Payment overview";
+      document.getElementById("resultPrimaryOut").textContent = money(payment);
+      document.getElementById("resultPrimaryUnit").textContent = "per month";
+
+      document.getElementById("metric1Label").textContent = "APR";
+      document.getElementById("metric1Out").textContent = `${apr.toFixed(2)}%`;
+      document.getElementById("metric1Note").textContent = `Effective yearly borrowing cost.`;
+
+      document.getElementById("totalPaidOut").textContent = money(totalPaid);
+      document.getElementById("totalInterestOut").textContent = money(totalInterest);
+
       document.getElementById("resultSentence").textContent = `With an APR of ${apr.toFixed(2)}%, the monthly payment is about ${money(payment)}.`;
 
+      renderInsights({
+        loan,
+        months,
+        payment,
+        apr,
+        totalPaid,
+        totalInterest,
+        monthlyRate,
+        mode: "payment"
+      });
+
+      drawChart(loan, payment, months, monthlyRate);
       document.getElementById("resultCard").scrollIntoView({ behavior: "smooth", block: "start" });
     }
 
@@ -838,25 +1057,48 @@
       const totalInterest = totalPaid - loan;
 
       document.getElementById("resultCard").style.display = "block";
-      document.getElementById("resultPrimaryLabel").innerText = "APR";
-      document.getElementById("resultPrimaryOut").innerText = `${apr.toFixed(2)}%`;
-      document.getElementById("totalPaidOut").innerText = money(totalPaid);
-      document.getElementById("totalInterestOut").innerText = money(totalInterest);
+      document.getElementById("chartShell").style.display = "block";
 
-      renderInsights({ loan, months, payment, apr, totalPaid, totalInterest, monthlyRate, mode: "apr" });
-      drawChart(loan, payment, months, monthlyRate);
+      document.getElementById("resultKicker").textContent = "Loan result";
+      document.getElementById("resultTitle").textContent = "APR overview";
+      document.getElementById("resultPrimaryOut").textContent = `${apr.toFixed(2)}%`;
+      document.getElementById("resultPrimaryUnit").textContent = "effective yearly cost";
+
+      document.getElementById("metric1Label").textContent = "Monthly payment";
+      document.getElementById("metric1Out").textContent = money(payment);
+      document.getElementById("metric1Note").textContent = `Based on ${months} months of amortization.`;
+
+      document.getElementById("totalPaidOut").textContent = money(totalPaid);
+      document.getElementById("totalInterestOut").textContent = money(totalInterest);
+
       document.getElementById("resultSentence").textContent = `A monthly payment of ${money(payment)} over ${months} months implies an APR of about ${apr.toFixed(2)}%.`;
 
+      renderInsights({
+        loan,
+        months,
+        payment,
+        apr,
+        totalPaid,
+        totalInterest,
+        monthlyRate,
+        mode: "apr"
+      });
+
+      drawChart(loan, payment, months, monthlyRate);
       document.getElementById("resultCard").scrollIntoView({ behavior: "smooth", block: "start" });
     }
 
-    function renderInsights({ loan, months, payment, apr, totalPaid, totalInterest, monthlyRate, mode }) {
+    function applyTone(el, tone){
+      el.classList.remove("tone-good", "tone-warn", "tone-bad");
+      el.classList.add(tone);
+    }
+
+    function renderInsights({ loan, months, payment, apr, totalPaid, totalInterest, monthlyRate }) {
       const minPayment = loan / months;
       const paymentPressure = payment / minPayment;
       const interestShare = totalPaid > 0 ? (totalInterest / totalPaid) * 100 : 0;
       const interestToPrincipal = loan > 0 ? (totalInterest / loan) * 100 : 0;
       const monthlyRatePct = monthlyRate * 100;
-      const affordabilityGap = payment - minPayment;
 
       let overallClass = "insight-good";
       let headline = "Borrowing cost looks reasonable";
@@ -881,6 +1123,10 @@
         apr < 12 ? "Fair APR" :
         apr < 20 ? "High APR" : "Very high APR";
 
+      const aprTone =
+        apr < 7 ? "tone-good" :
+        apr < 15 ? "tone-warn" : "tone-bad";
+
       const aprNote =
         apr < 3 ? "Very cheap borrowing for most normal use cases." :
         apr < 7 ? "Still competitive if the fees are clean." :
@@ -893,6 +1139,10 @@
         paymentPressure <= 1.25 ? "Manageable" :
         paymentPressure <= 1.5 ? "Tight" : "Aggressive";
 
+      const burdenTone =
+        paymentPressure <= 1.1 ? "tone-good" :
+        paymentPressure <= 1.45 ? "tone-warn" : "tone-bad";
+
       const burdenNote =
         paymentPressure <= 1.05 ? "Payment is close to the minimum amortized amount." :
         paymentPressure <= 1.25 ? "Payment is only modestly above the baseline." :
@@ -904,6 +1154,10 @@
         interestShare < 25 ? "Moderate interest load" :
         interestShare < 40 ? "Heavy interest load" : "Very heavy load";
 
+      const interestTone =
+        interestShare < 15 ? "tone-good" :
+        interestShare < 35 ? "tone-warn" : "tone-bad";
+
       const interestNote =
         interestShare < 10 ? "Most of what you pay goes to principal." :
         interestShare < 25 ? "Interest is present, but not dominating." :
@@ -914,6 +1168,10 @@
         (apr >= 15 || interestToPrincipal >= 50) ? "Compare a shorter term" :
         (paymentPressure >= 1.35) ? "Check monthly cash flow" :
         (apr >= 7) ? "Compare another lender" : "Still compare fees";
+
+      const actionTone =
+        (apr >= 15 || interestToPrincipal >= 50) ? "tone-bad" :
+        (paymentPressure >= 1.35) ? "tone-warn" : "tone-good";
 
       const actionNote =
         (apr >= 15 || interestToPrincipal >= 50)
@@ -928,25 +1186,23 @@
       document.getElementById("insightKicker").textContent = kicker;
       document.getElementById("insightHeadline").textContent = headline;
       document.getElementById("insightBody").textContent = body;
-      document.getElementById("insightOut").innerHTML = `<span class="${overallClass}">${headline}</span>`;
+
+      applyTone(document.getElementById("insightAprCard"), aprTone);
+      applyTone(document.getElementById("insightPaymentCard"), burdenTone);
+      applyTone(document.getElementById("insightInterestCard"), interestTone);
+      applyTone(document.getElementById("insightActionCard"), actionTone);
 
       document.getElementById("insightAprLevel").textContent = aprLevel;
       document.getElementById("insightAprNote").textContent = `${aprNote} Monthly rate ≈ ${monthlyRatePct.toFixed(3)}%.`;
 
       document.getElementById("insightPaymentLevel").textContent = `${burdenLevel} (${paymentPressure.toFixed(2)}x)`;
-      document.getElementById("insightPaymentNote").textContent = `${burdenNote} Minimum payment baseline: ${money(minPayment)}. Extra over minimum: ${money(Math.max(0, affordabilityGap))}.`;
+      document.getElementById("insightPaymentNote").textContent = `${burdenNote} Minimum payment baseline: ${money(minPayment)}.`;
 
       document.getElementById("insightInterestLevel").textContent = `${interestLevel} (${interestShare.toFixed(1)}%)`;
       document.getElementById("insightInterestNote").textContent = `${interestNote} Interest vs principal: ${interestToPrincipal.toFixed(1)}%.`;
 
       document.getElementById("insightActionLevel").textContent = actionLevel;
       document.getElementById("insightActionNote").textContent = actionNote;
-
-      if (mode === "apr") {
-        document.getElementById("resultSentence").textContent = `A monthly payment of ${money(payment)} over ${months} months implies an APR of about ${apr.toFixed(2)}%.`;
-      } else {
-        document.getElementById("resultSentence").textContent = `With an APR of ${apr.toFixed(2)}%, the monthly payment is about ${money(payment)}.`;
-      }
     }
 
     function buildAmortizationSeries(principal, monthlyPayment, monthlyRate, months) {
@@ -980,7 +1236,9 @@
     function drawChart(principal, payment, months, monthlyRate){
       const ctx = document.getElementById("myChart").getContext("2d");
 
-      if(chart){ chart.destroy(); }
+      if(chart){
+        chart.destroy();
+      }
 
       const series = buildAmortizationSeries(principal, payment, monthlyRate, months);
 
