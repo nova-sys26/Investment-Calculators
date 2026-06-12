@@ -537,7 +537,9 @@
       font-size:15px;
     }
 
-    .content ul{ padding-left:20px; }
+    .content ul{
+      padding-left:20px;
+    }
 
     .formula{
       background:rgba(255,255,255,0.05);
@@ -550,7 +552,9 @@
       line-height:1.7;
     }
 
-    .faq{ margin-top:14px; }
+    .faq{
+      margin-top:14px;
+    }
 
     .faq-item{
       border-bottom:1px solid rgba(255,255,255,0.08);
@@ -721,6 +725,12 @@
           <strong id="totalInterestOut" class="result-value">—</strong>
           <span class="result-note">Cost of borrowing</span>
         </div>
+
+        <div class="result-box">
+          <span class="result-label">Repayment multiple</span>
+          <strong id="costMultipleOut" class="result-value">—</strong>
+          <span id="costMultipleNote" class="result-note">—</span>
+        </div>
       </div>
 
       <div id="insightBanner" class="insight-banner">
@@ -737,7 +747,7 @@
         </div>
 
         <div id="insightPaymentCard" class="insight-card">
-          <span>Payment burden</span>
+          <span>Payment structure</span>
           <strong id="insightPaymentLevel">—</strong>
           <p id="insightPaymentNote">—</p>
         </div>
@@ -917,6 +927,11 @@
       });
     }
 
+    function formatPercent(value, digits = 2){
+      const sign = value < 0 ? "-" : "";
+      return `${sign}${Math.abs(value).toFixed(digits)}%`;
+    }
+
     function setMode(selected){
       mode = selected;
 
@@ -1033,6 +1048,8 @@
 
       document.getElementById("totalPaidOut").textContent = money(totalPaid);
       document.getElementById("totalInterestOut").textContent = money(totalInterest);
+      document.getElementById("costMultipleOut").textContent = `${(totalPaid / loan).toFixed(2)}x`;
+      document.getElementById("costMultipleNote").textContent = `You repay ${formatPercent(((totalPaid / loan) - 1) * 100, 1)} more than the amount borrowed.`;
 
       document.getElementById("resultSentence").textContent = `With an APR of ${apr.toFixed(2)}%, the monthly payment is about ${money(payment)}.`;
 
@@ -1043,8 +1060,7 @@
         apr,
         totalPaid,
         totalInterest,
-        monthlyRate,
-        mode: "payment"
+        monthlyRate
       });
 
       drawChart(loan, payment, months, monthlyRate);
@@ -1070,6 +1086,8 @@
 
       document.getElementById("totalPaidOut").textContent = money(totalPaid);
       document.getElementById("totalInterestOut").textContent = money(totalInterest);
+      document.getElementById("costMultipleOut").textContent = `${(totalPaid / loan).toFixed(2)}x`;
+      document.getElementById("costMultipleNote").textContent = `You repay ${formatPercent(((totalPaid / loan) - 1) * 100, 1)} more than the amount borrowed.`;
 
       document.getElementById("resultSentence").textContent = `A monthly payment of ${money(payment)} over ${months} months implies an APR of about ${apr.toFixed(2)}%.`;
 
@@ -1080,8 +1098,7 @@
         apr,
         totalPaid,
         totalInterest,
-        monthlyRate,
-        mode: "apr"
+        monthlyRate
       });
 
       drawChart(loan, payment, months, monthlyRate);
@@ -1094,34 +1111,40 @@
     }
 
     function renderInsights({ loan, months, payment, apr, totalPaid, totalInterest, monthlyRate }) {
-      const minPayment = loan / months;
-      const paymentPressure = payment / minPayment;
+      const principalOnlyPayment = loan / months;
+      const paymentLift = payment / principalOnlyPayment;
       const interestShare = totalPaid > 0 ? (totalInterest / totalPaid) * 100 : 0;
       const interestToPrincipal = loan > 0 ? (totalInterest / loan) * 100 : 0;
+      const totalCostMultiplier = totalPaid / loan;
       const monthlyRatePct = monthlyRate * 100;
 
       let overallClass = "insight-good";
-      let headline = "Borrowing cost looks reasonable";
-      let body = "This structure is not screaming danger, but you still want to compare offers and watch the fee load.";
+      let headline = "Loan structure looks fairly clean";
+      let body = "Nothing here looks especially alarming, but the fees and term still deserve a quick comparison before you commit.";
       let kicker = "Balanced";
 
-      if (apr >= 20 || interestShare >= 40 || paymentPressure >= 1.6) {
+      const concernScore =
+        (apr >= 20 ? 2 : apr >= 10 ? 1 : 0) +
+        (interestShare >= 40 ? 2 : interestShare >= 25 ? 1 : 0) +
+        (paymentLift >= 1.5 ? 2 : paymentLift >= 1.25 ? 1 : 0);
+
+      if (concernScore >= 4) {
         overallClass = "insight-weak";
         kicker = "Expensive";
-        headline = "This loan is costly";
-        body = "The APR, payment burden, or interest share is high enough that a shorter term or a cheaper lender could save real money.";
-      } else if (apr >= 10 || interestShare >= 25 || paymentPressure >= 1.25) {
+        headline = "This loan is getting costly";
+        body = "The APR, interest share, and repayment multiple point to a materially expensive loan. A cheaper lender or shorter term could save real money.";
+      } else if (concernScore >= 2) {
         overallClass = "insight-medium";
         kicker = "Caution";
         headline = "Costs are noticeable";
-        body = "The loan is usable, but the fee and interest drag are meaningful. Compare alternatives before locking it in.";
+        body = "The loan is usable, but the interest and repayment drag are meaningful. Compare alternatives before locking it in.";
       }
 
       const aprLevel =
         apr < 3 ? "Excellent APR" :
         apr < 7 ? "Good APR" :
         apr < 12 ? "Fair APR" :
-        apr < 20 ? "High APR" : "Very high APR";
+        apr < 20 ? "Expensive APR" : "Very expensive APR";
 
       const aprTone =
         apr < 7 ? "tone-good" :
@@ -1134,52 +1157,47 @@
         apr < 20 ? "Starts to get expensive fast." :
         "Usually too expensive unless the loan is special-purpose.";
 
-      const burdenLevel =
-        paymentPressure <= 1.05 ? "Very light" :
-        paymentPressure <= 1.25 ? "Manageable" :
-        paymentPressure <= 1.5 ? "Tight" : "Aggressive";
+      const paymentLevel =
+        paymentLift <= 1.05 ? "Close to baseline" :
+        paymentLift <= 1.20 ? "Moderate lift" :
+        paymentLift <= 1.40 ? "Noticeable lift" : "Heavy lift";
 
-      const burdenTone =
-        paymentPressure <= 1.1 ? "tone-good" :
-        paymentPressure <= 1.45 ? "tone-warn" : "tone-bad";
+      const paymentTone =
+        paymentLift <= 1.10 ? "tone-good" :
+        paymentLift <= 1.45 ? "tone-warn" : "tone-bad";
 
-      const burdenNote =
-        paymentPressure <= 1.05 ? "Payment is close to the minimum amortized amount." :
-        paymentPressure <= 1.25 ? "Payment is only modestly above the baseline." :
-        paymentPressure <= 1.5 ? "Monthly cash flow is starting to feel tight." :
-        "You are paying much more than the minimum structure suggests.";
+      const paymentNote =
+        `Monthly payment is ${money(payment - principalOnlyPayment)} above the principal-only baseline of ${money(principalOnlyPayment)}.`;
 
       const interestLevel =
-        interestShare < 10 ? "Low interest load" :
-        interestShare < 25 ? "Moderate interest load" :
-        interestShare < 40 ? "Heavy interest load" : "Very heavy load";
+        interestShare < 15 ? "Low interest load" :
+        interestShare < 30 ? "Moderate interest load" :
+        interestShare < 45 ? "Heavy interest load" : "Very heavy load";
 
       const interestTone =
         interestShare < 15 ? "tone-good" :
         interestShare < 35 ? "tone-warn" : "tone-bad";
 
       const interestNote =
-        interestShare < 10 ? "Most of what you pay goes to principal." :
-        interestShare < 25 ? "Interest is present, but not dominating." :
-        interestShare < 40 ? "A large share of total paid is interest." :
-        "Interest is taking a very large cut of the total cost.";
+        `Interest makes up ${interestShare.toFixed(1)}% of the total paid and ${interestToPrincipal.toFixed(1)}% of the amount borrowed.`;
 
       const actionLevel =
-        (apr >= 15 || interestToPrincipal >= 50) ? "Compare a shorter term" :
-        (paymentPressure >= 1.35) ? "Check monthly cash flow" :
-        (apr >= 7) ? "Compare another lender" : "Still compare fees";
+        (apr >= 15 || totalCostMultiplier >= 1.6) ? "Compare lenders" :
+        (paymentLift >= 1.35) ? "Check term length" :
+        (interestShare >= 35) ? "Reduce fee drag" :
+        "Still compare fees";
 
       const actionTone =
-        (apr >= 15 || interestToPrincipal >= 50) ? "tone-bad" :
-        (paymentPressure >= 1.35) ? "tone-warn" : "tone-good";
+        (apr >= 15 || totalCostMultiplier >= 1.6) ? "tone-bad" :
+        (paymentLift >= 1.35) ? "tone-warn" : "tone-good";
 
       const actionNote =
-        (apr >= 15 || interestToPrincipal >= 50)
-          ? "A shorter term or lower fee structure could materially improve the deal."
-          : (paymentPressure >= 1.35)
-            ? "Make sure the payment will not squeeze your monthly budget."
-            : (apr >= 7)
-              ? "A slightly better APR or fewer fees can still make a meaningful difference."
+        (apr >= 15 || totalCostMultiplier >= 1.6)
+          ? "A lower APR or shorter term could materially improve the deal."
+          : (paymentLift >= 1.35)
+            ? "The monthly payment is carrying a noticeable premium over the principal-only baseline."
+            : (interestShare >= 35)
+              ? "The total interest share is high enough that shaving even small fees can matter."
               : "Even good loans deserve a quick comparison before you accept.";
 
       document.getElementById("insightBanner").className = `insight-banner ${overallClass}`;
@@ -1188,18 +1206,18 @@
       document.getElementById("insightBody").textContent = body;
 
       applyTone(document.getElementById("insightAprCard"), aprTone);
-      applyTone(document.getElementById("insightPaymentCard"), burdenTone);
+      applyTone(document.getElementById("insightPaymentCard"), paymentTone);
       applyTone(document.getElementById("insightInterestCard"), interestTone);
       applyTone(document.getElementById("insightActionCard"), actionTone);
 
       document.getElementById("insightAprLevel").textContent = aprLevel;
       document.getElementById("insightAprNote").textContent = `${aprNote} Monthly rate ≈ ${monthlyRatePct.toFixed(3)}%.`;
 
-      document.getElementById("insightPaymentLevel").textContent = `${burdenLevel} (${paymentPressure.toFixed(2)}x)`;
-      document.getElementById("insightPaymentNote").textContent = `${burdenNote} Minimum payment baseline: ${money(minPayment)}.`;
+      document.getElementById("insightPaymentLevel").textContent = `${paymentLevel} (${paymentLift.toFixed(2)}x)`;
+      document.getElementById("insightPaymentNote").textContent = paymentNote;
 
       document.getElementById("insightInterestLevel").textContent = `${interestLevel} (${interestShare.toFixed(1)}%)`;
-      document.getElementById("insightInterestNote").textContent = `${interestNote} Interest vs principal: ${interestToPrincipal.toFixed(1)}%.`;
+      document.getElementById("insightInterestNote").textContent = interestNote;
 
       document.getElementById("insightActionLevel").textContent = actionLevel;
       document.getElementById("insightActionNote").textContent = actionNote;
