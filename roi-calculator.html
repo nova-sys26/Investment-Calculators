@@ -100,7 +100,7 @@
     }
 
     body{
-      font-family: Arial, sans-serif;
+      font-family:Arial, sans-serif;
       background:#0f172a;
       color:white;
       display:flex;
@@ -136,6 +136,8 @@
       width:90%;
       max-width:560px;
       box-shadow:0 10px 25px rgba(0,0,0,0.35);
+      border:1px solid rgba(255,255,255,0.05);
+      backdrop-filter: blur(6px);
     }
 
     h1{
@@ -146,14 +148,14 @@
     }
 
     .quick-answer{
-      background: rgba(59,130,246,0.12);
-      border: 1px solid rgba(59,130,246,0.25);
-      padding: 12px 14px;
-      border-radius: 10px;
-      font-size: 15px;
-      line-height: 1.6;
-      color: #e2e8f0;
-      margin-bottom: 18px;
+      background:rgba(59,130,246,0.12);
+      border:1px solid rgba(59,130,246,0.25);
+      padding:12px 14px;
+      border-radius:10px;
+      font-size:15px;
+      line-height:1.6;
+      color:#e2e8f0;
+      margin:0 0 18px;
     }
 
     .subhead{
@@ -207,52 +209,150 @@
     }
 
     .result-card{
-      margin-top:18px;
-      padding:16px;
-      border-radius:14px;
-      background:rgba(255,255,255,0.05);
-      border:1px solid rgba(255,255,255,0.08);
       display:none;
+      margin-top:20px;
+      padding:18px;
+      border-radius:18px;
+      background:linear-gradient(180deg, rgba(15,23,42,0.92), rgba(17,24,39,0.88));
+      border:1px solid rgba(255,255,255,0.08);
+      box-shadow:0 18px 40px rgba(0,0,0,0.22);
+      overflow:hidden;
+      position:relative;
+    }
+
+    .result-card::before{
+      content:"";
+      position:absolute;
+      inset:0;
+      background:radial-gradient(circle at top right, rgba(59,130,246,0.12), transparent 35%);
+      pointer-events:none;
+    }
+
+    .result-top{
+      display:flex;
+      flex-direction:column;
+      gap:8px;
+      padding-bottom:16px;
+      border-bottom:1px solid rgba(255,255,255,0.06);
+      margin-bottom:16px;
+      position:relative;
+      z-index:1;
+    }
+
+    .result-kicker{
+      display:inline-flex;
+      align-items:center;
+      width:max-content;
+      padding:5px 10px;
+      border-radius:999px;
+      font-size:11px;
+      font-weight:800;
+      letter-spacing:0.08em;
+      text-transform:uppercase;
+      background:rgba(59,130,246,0.12);
+      color:#bfdbfe;
+      border:1px solid rgba(59,130,246,0.20);
+    }
+
+    .result-title{
+      margin:0;
+      font-size:14px;
+      font-weight:700;
+      color:#cbd5e1;
+      letter-spacing:0.01em;
+    }
+
+    .result-main{
+      display:flex;
+      flex-wrap:wrap;
+      align-items:baseline;
+      gap:10px;
+    }
+
+    .result-value-big{
+      font-size:clamp(2.1rem, 6vw, 3.2rem);
+      line-height:1;
+      font-weight:800;
+      letter-spacing:-0.04em;
+      color:#ffffff;
+      word-break:break-word;
+    }
+
+    .result-unit{
+      font-size:14px;
+      color:#94a3b8;
+      font-weight:600;
+      letter-spacing:0.02em;
+    }
+
+    .result-sub{
+      color:#94a3b8;
+      font-size:13px;
+      line-height:1.55;
+      margin:0;
+      max-width:46ch;
     }
 
     .result-grid{
       display:grid;
-      grid-template-columns:repeat(auto-fit, minmax(170px, 1fr));
+      grid-template-columns:repeat(3, minmax(0, 1fr));
       gap:12px;
+      position:relative;
+      z-index:1;
     }
 
-    .result-box{
-      background:rgba(15,23,42,0.72);
+    .metric{
+      background:rgba(255,255,255,0.03);
       border:1px solid rgba(255,255,255,0.06);
       border-radius:14px;
       padding:14px;
+      transition:0.2s ease;
+      min-height:92px;
     }
 
-    .result-box span{
+    .metric:hover{
+      transform:translateY(-1px);
+      border-color:rgba(59,130,246,0.18);
+      background:rgba(255,255,255,0.05);
+    }
+
+    .metric-label{
       display:block;
       color:#94a3b8;
-      font-size:12px;
+      font-size:11px;
       text-transform:uppercase;
-      letter-spacing:0.08em;
-      font-weight:700;
-      margin-bottom:6px;
+      letter-spacing:0.10em;
+      font-weight:800;
+      margin-bottom:8px;
     }
 
-    .result-box strong{
+    .metric-value{
       display:block;
       font-size:18px;
-      line-height:1.25;
+      line-height:1.2;
+      font-weight:800;
+      color:#e2e8f0;
+      word-break:break-word;
     }
 
-    .mini-line{
-      margin-top:12px;
-      padding:12px 14px;
-      border-radius:12px;
-      background:rgba(15,23,42,0.72);
-      border:1px solid rgba(255,255,255,0.06);
-      color:#cbd5e1;
-      font-size:14px;
-      line-height:1.6;
+    .metric-note{
+      display:block;
+      margin-top:6px;
+      color:#94a3b8;
+      font-size:12px;
+      line-height:1.45;
+    }
+
+    .metric-value.good{
+      color:#22c55e;
+    }
+
+    .metric-value.warn{
+      color:#f59e0b;
+    }
+
+    .metric-value.bad{
+      color:#ef4444;
     }
 
     .chart-shell{
@@ -417,6 +517,10 @@
       .chart-wrap{
         height:230px;
       }
+
+      .result-grid{
+        grid-template-columns:1fr;
+      }
     }
   </style>
 </head>
@@ -449,36 +553,43 @@
 
     <button onclick="calculateROI()" type="button">Calculate ROI</button>
 
-    <div id="resultCard" class="result-card">
-      <div class="result-grid">
-        <div class="result-box">
-          <span>Profit</span>
-          <strong id="profitOut">—</strong>
+    <div id="resultCard" class="result-card" aria-live="polite">
+      <div class="result-top">
+        <span class="result-kicker">ROI result</span>
+        <h2 class="result-title">Projected return on investment</h2>
+
+        <div class="result-main">
+          <span id="roiOut" class="result-value-big">—</span>
+          <span class="result-unit">ROI</span>
         </div>
 
-        <div class="result-box">
-          <span>ROI</span>
-          <strong id="roiOut">—</strong>
-        </div>
-
-        <div class="result-box">
-          <span>Fees paid</span>
-          <strong id="feesOut">—</strong>
-        </div>
-
-        <div class="result-box">
-          <span>Annual ROI</span>
-          <strong id="annualROIOut">—</strong>
-        </div>
-
-        <div class="result-box">
-          <span>Net final value</span>
-          <strong id="netFinalOut">—</strong>
-        </div>
+        <p id="resultSub" class="result-sub">—</p>
       </div>
 
-      <div class="mini-line">
-        ROI is calculated from your starting investment and final value after fees.
+      <div class="result-grid">
+        <div class="metric">
+          <span class="metric-label">Profit</span>
+          <span id="profitOut" class="metric-value">—</span>
+          <span class="metric-note">Net gain after fees</span>
+        </div>
+
+        <div class="metric">
+          <span class="metric-label">Fees Paid</span>
+          <span id="feesOut" class="metric-value">—</span>
+          <span class="metric-note">Estimated fee drag</span>
+        </div>
+
+        <div class="metric">
+          <span class="metric-label">Annual ROI</span>
+          <span id="annualROIOut" class="metric-value">—</span>
+          <span class="metric-note">Adjusted for time</span>
+        </div>
+
+        <div class="metric">
+          <span class="metric-label">Net Final Value</span>
+          <span id="netFinalOut" class="metric-value">—</span>
+          <span class="metric-note">Final value after fees</span>
+        </div>
       </div>
     </div>
 
@@ -661,6 +772,7 @@
     }
 
     function formatPercent(value, digits = 2){
+      if (!Number.isFinite(value)) return "—";
       const sign = value < 0 ? "-" : "";
       return `${sign}${Math.abs(value).toFixed(digits)}%`;
     }
@@ -695,8 +807,17 @@
       document.getElementById("profitOut").style.color = profit >= 0 ? "#22c55e" : "#f87171";
       document.getElementById("roiOut").style.color = roi >= 0 ? "#22c55e" : "#f87171";
       document.getElementById("feesOut").style.color = "#cbd5e1";
-      document.getElementById("annualROIOut").style.color = annualROI !== null && annualROI >= 0 ? "#22c55e" : "#cbd5e1";
+      document.getElementById("annualROIOut").style.color = annualROI !== null && annualROI >= 0 ? "#22c55e" : "#f87171";
       document.getElementById("netFinalOut").style.color = netFinal >= investment ? "#22c55e" : "#f87171";
+
+      const resultSub = document.getElementById("resultSub");
+      if (profit >= 0 && roi >= 20) {
+        resultSub.textContent = "Strong return. The result is comfortably above your starting capital.";
+      } else if (profit >= 0) {
+        resultSub.textContent = "Positive return. Fees and time still matter, but the trade or investment worked.";
+      } else {
+        resultSub.textContent = "Negative return. The final value did not recover the starting capital after fees.";
+      }
 
       document.getElementById("resultCard").style.display = "block";
       document.getElementById("chartShell").style.display = "block";
