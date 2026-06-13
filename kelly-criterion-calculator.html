@@ -1,0 +1,1245 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <link rel="canonical" href="https://novainvesttools.com/kelly-criterion-calculator.html">
+
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-ZPCXDVE8C5"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-ZPCXDVE8C5');
+  </script>
+
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Kelly Criterion Calculator – Position Sizing & Trade Risk</title>
+  <meta name="description" content="Calculate Kelly Criterion position size, fractional Kelly, break-even win rate, and bankroll allocation for trading and investing decisions.">
+  <meta name="theme-color" content="#0f172a">
+  <meta name="robots" content="index,follow,max-image-preview:large">
+
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://novainvesttools.com/kelly-criterion-calculator.html">
+  <meta property="og:title" content="Kelly Criterion Calculator – Position Sizing & Trade Risk">
+  <meta property="og:description" content="Calculate Kelly Criterion position size, fractional Kelly, break-even win rate, and bankroll allocation.">
+
+  <link rel="preconnect" href="https://cdn.jsdelivr.net">
+  <link rel="dns-prefetch" href="https://cdn.jsdelivr.net">
+
+  <link rel="stylesheet" href="style.css">
+  <link rel="icon" href="favicon.png" type="image/png">
+  <link rel="apple-touch-icon" href="favicon.png">
+
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "WebApplication",
+    "name": "Kelly Criterion Calculator",
+    "url": "https://novainvesttools.com/kelly-criterion-calculator.html",
+    "applicationCategory": "FinanceApplication",
+    "operatingSystem": "All",
+    "browserRequirements": "Requires JavaScript",
+    "description": "Calculate Kelly Criterion position size, fractional Kelly, break-even win rate, and bankroll allocation.",
+    "featureList": [
+      "Kelly Criterion calculation",
+      "Fractional Kelly sizing",
+      "Break-even win rate",
+      "Bankroll allocation estimate",
+      "Trade risk visualization"
+    ],
+    "offers": {
+      "@type": "Offer",
+      "price": "0",
+      "priceCurrency": "USD"
+    }
+  }
+  </script>
+
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": [
+      {
+        "@type": "Question",
+        "name": "What is the Kelly Criterion?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "The Kelly Criterion is a position sizing formula that estimates how much of your bankroll to risk when you have an edge."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "How is Kelly Criterion calculated?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Kelly is calculated as win rate minus the losing probability divided by the average win-to-loss ratio."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Should I use full Kelly?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Full Kelly is mathematically optimal for long-term growth in theory, but many traders use fractional Kelly because full Kelly can be too volatile."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "What does a negative Kelly value mean?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "A negative Kelly value means the inputs do not show a positive edge. In practice, that suggests no bet or a need to improve the setup."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "How is Kelly related to position size?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Kelly gives a percentage of bankroll to risk, which makes it directly useful for position sizing and capital allocation."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Can Kelly Criterion be used for crypto, forex, and stocks?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Yes. Kelly can be applied anywhere you can estimate win rate and reward-to-risk ratio."
+        }
+      }
+    ]
+  }
+  </script>
+
+  <style>
+    *{
+      box-sizing:border-box;
+    }
+
+    html{
+      scroll-behavior:smooth;
+    }
+
+    body{
+      font-family:Arial, sans-serif;
+      background:#0f172a;
+      color:white;
+      display:flex;
+      justify-content:center;
+      align-items:center;
+      flex-direction:column;
+      min-height:100vh;
+      margin:0;
+      padding:24px 0;
+    }
+
+    .toptext{
+      font-size:14px;
+      color:#6b7a99;
+      margin-bottom:5px;
+    }
+
+    .menu{
+      margin-bottom:25px;
+    }
+
+    .menu a{
+      color:#3b82f6;
+      margin:10px;
+      text-decoration:none;
+      font-weight:600;
+    }
+
+    .container{
+      background:#1e293b;
+      padding:30px;
+      border-radius:16px;
+      width:90%;
+      max-width:680px;
+      box-shadow:0 10px 25px rgba(0,0,0,0.35);
+      border:1px solid rgba(255,255,255,0.05);
+      backdrop-filter:blur(6px);
+    }
+
+    h1{
+      margin-top:0;
+      margin-bottom:10px;
+      font-size:32px;
+      line-height:1.15;
+    }
+
+    .quick-answer{
+      background:rgba(59,130,246,0.12);
+      border:1px solid rgba(59,130,246,0.25);
+      padding:12px 14px;
+      border-radius:10px;
+      font-size:15px;
+      line-height:1.6;
+      color:#e2e8f0;
+      margin:0 0 18px;
+    }
+
+    .subhead{
+      color:#94a3b8;
+      font-size:15px;
+      line-height:1.6;
+      margin-bottom:18px;
+    }
+
+    .field-label{
+      display:block;
+      font-size:13px;
+      color:#cbd5e1;
+      font-weight:600;
+      margin:12px 0 6px;
+    }
+
+    input{
+      width:100%;
+      padding:14px;
+      border-radius:10px;
+      border:none;
+      background:#e5e7eb;
+      font-size:16px;
+      outline:none;
+    }
+
+    input:focus{
+      box-shadow:0 0 0 3px rgba(59,130,246,0.18);
+    }
+
+    .action-btn{
+      padding:14px;
+      background:#3b82f6;
+      border:none;
+      border-radius:10px;
+      color:white;
+      cursor:pointer;
+      margin-top:14px;
+      width:100%;
+      font-size:16px;
+      font-weight:700;
+      transition:0.2s;
+    }
+
+    .action-btn:hover{
+      background:#2563eb;
+      transform:translateY(-1px);
+    }
+
+    .result-card{
+      margin-top:18px;
+      padding:18px;
+      border-radius:18px;
+      background:linear-gradient(180deg, rgba(15,23,42,0.94), rgba(17,24,39,0.90));
+      border:1px solid rgba(255,255,255,0.08);
+      box-shadow:0 18px 40px rgba(0,0,0,0.24);
+      overflow:hidden;
+      position:relative;
+      display:none;
+    }
+
+    .result-card::before{
+      content:"";
+      position:absolute;
+      inset:0;
+      background:radial-gradient(circle at top right, rgba(59,130,246,0.12), transparent 35%);
+      pointer-events:none;
+    }
+
+    .result-top{
+      display:flex;
+      flex-direction:column;
+      gap:8px;
+      padding-bottom:16px;
+      border-bottom:1px solid rgba(255,255,255,0.06);
+      margin-bottom:16px;
+      position:relative;
+      z-index:1;
+    }
+
+    .result-kicker{
+      display:inline-flex;
+      align-items:center;
+      width:max-content;
+      padding:5px 10px;
+      border-radius:999px;
+      font-size:11px;
+      font-weight:800;
+      letter-spacing:0.08em;
+      text-transform:uppercase;
+      background:rgba(59,130,246,0.12);
+      color:#bfdbfe;
+      border:1px solid rgba(59,130,246,0.20);
+    }
+
+    .result-title{
+      margin:0;
+      font-size:14px;
+      font-weight:700;
+      color:#cbd5e1;
+      letter-spacing:0.01em;
+    }
+
+    .result-main{
+      display:flex;
+      flex-wrap:wrap;
+      align-items:baseline;
+      gap:10px;
+    }
+
+    .result-value-big{
+      font-size:clamp(2.1rem, 6vw, 3.2rem);
+      line-height:1;
+      font-weight:800;
+      letter-spacing:-0.04em;
+      color:#ffffff;
+      word-break:break-word;
+    }
+
+    .result-value-big.good{
+      color:#22c55e;
+    }
+
+    .result-value-big.warn{
+      color:#f59e0b;
+    }
+
+    .result-value-big.bad{
+      color:#ef4444;
+    }
+
+    .result-unit{
+      font-size:14px;
+      color:#94a3b8;
+      font-weight:600;
+      letter-spacing:0.02em;
+    }
+
+    .result-sub{
+      color:#94a3b8;
+      font-size:13px;
+      line-height:1.55;
+      margin:0;
+      max-width:48ch;
+    }
+
+    .result-grid{
+      display:grid;
+      grid-template-columns:repeat(auto-fit, minmax(170px, 1fr));
+      gap:12px;
+      position:relative;
+      z-index:1;
+    }
+
+    .result-box{
+      background:rgba(15,23,42,0.72);
+      border:1px solid rgba(255,255,255,0.06);
+      border-radius:14px;
+      padding:14px;
+    }
+
+    .result-label{
+      display:block;
+      color:#94a3b8;
+      font-size:11px;
+      text-transform:uppercase;
+      letter-spacing:0.10em;
+      font-weight:800;
+      margin-bottom:8px;
+    }
+
+    .result-value{
+      display:block;
+      font-size:18px;
+      line-height:1.2;
+      font-weight:800;
+      color:#e2e8f0;
+      word-break:break-word;
+    }
+
+    .result-note{
+      display:block;
+      margin-top:6px;
+      color:#94a3b8;
+      font-size:12px;
+      line-height:1.45;
+    }
+
+    .insight-banner{
+      margin-top:14px;
+      padding:16px;
+      border-radius:16px;
+      background:rgba(15,23,42,0.88);
+      border:1px solid rgba(255,255,255,0.08);
+    }
+
+    .insight-banner.insight-good{
+      border-color:rgba(34,197,94,0.25);
+      background:rgba(34,197,94,0.08);
+      box-shadow:0 0 0 1px rgba(34,197,94,0.08) inset, 0 10px 24px rgba(34,197,94,0.06);
+    }
+
+    .insight-banner.insight-medium{
+      border-color:rgba(250,204,21,0.25);
+      background:rgba(250,204,21,0.08);
+      box-shadow:0 0 0 1px rgba(250,204,21,0.08) inset, 0 10px 24px rgba(250,204,21,0.05);
+    }
+
+    .insight-banner.insight-weak{
+      border-color:rgba(239,68,68,0.25);
+      background:rgba(239,68,68,0.08);
+      box-shadow:0 0 0 1px rgba(239,68,68,0.08) inset, 0 10px 24px rgba(239,68,68,0.05);
+    }
+
+    .insight-kicker{
+      display:inline-flex;
+      align-items:center;
+      padding:5px 10px;
+      border-radius:999px;
+      font-size:11px;
+      font-weight:800;
+      letter-spacing:0.08em;
+      text-transform:uppercase;
+      background:rgba(255,255,255,0.06);
+      color:#cbd5e1;
+    }
+
+    .insight-headline{
+      display:block;
+      margin-top:8px;
+      font-size:18px;
+      line-height:1.25;
+    }
+
+    .insight-body{
+      margin:8px 0 0;
+      color:#cbd5e1;
+      line-height:1.6;
+      font-size:14px;
+    }
+
+    .insight-grid{
+      display:grid;
+      grid-template-columns:repeat(auto-fit, minmax(180px, 1fr));
+      gap:14px;
+      margin-top:14px;
+    }
+
+    .insight-card{
+      background:rgba(15,23,42,0.72);
+      border:1px solid rgba(255,255,255,0.06);
+      border-radius:16px;
+      padding:14px;
+      min-height:128px;
+      transition:0.2s ease;
+    }
+
+    .insight-card.tone-good{
+      border-color:rgba(34,197,94,0.25);
+      background:linear-gradient(180deg, rgba(34,197,94,0.09), rgba(15,23,42,0.74));
+      box-shadow:0 0 0 1px rgba(34,197,94,0.07) inset, 0 12px 22px rgba(34,197,94,0.05);
+    }
+
+    .insight-card.tone-warn{
+      border-color:rgba(250,204,21,0.24);
+      background:linear-gradient(180deg, rgba(250,204,21,0.09), rgba(15,23,42,0.74));
+      box-shadow:0 0 0 1px rgba(250,204,21,0.07) inset, 0 12px 22px rgba(250,204,21,0.05);
+    }
+
+    .insight-card.tone-bad{
+      border-color:rgba(239,68,68,0.24);
+      background:linear-gradient(180deg, rgba(239,68,68,0.09), rgba(15,23,42,0.74));
+      box-shadow:0 0 0 1px rgba(239,68,68,0.07) inset, 0 12px 22px rgba(239,68,68,0.05);
+    }
+
+    .insight-card span{
+      display:block;
+      color:#94a3b8;
+      font-size:12px;
+      text-transform:uppercase;
+      letter-spacing:0.08em;
+      font-weight:700;
+      margin-bottom:6px;
+    }
+
+    .insight-card strong{
+      display:block;
+      font-size:16px;
+      line-height:1.25;
+      margin-bottom:4px;
+    }
+
+    .insight-card p{
+      margin:0;
+      color:#cbd5e1;
+      font-size:13px;
+      line-height:1.55;
+    }
+
+    .chart-shell{
+      margin-top:18px;
+      padding:16px;
+      border-radius:16px;
+      background:rgba(255,255,255,0.04);
+      border:1px solid rgba(255,255,255,0.08);
+    }
+
+    .chart-shell h3{
+      margin:0 0 8px;
+      font-size:16px;
+    }
+
+    .chart-wrap{
+      position:relative;
+      height:360px;
+      width:100%;
+    }
+
+    .chart-note{
+      margin:8px 0 0;
+      color:#94a3b8;
+      font-size:12px;
+      line-height:1.6;
+    }
+
+    .content{
+      width:90%;
+      max-width:900px;
+      margin-top:34px;
+    }
+
+    .content h2{
+      margin-top:34px;
+      margin-bottom:10px;
+      font-size:28px;
+    }
+
+    .content p,
+    .content li{
+      color:#cbd5e1;
+      line-height:1.7;
+      font-size:15px;
+    }
+
+    .content ul{
+      padding-left:20px;
+    }
+
+    .formula{
+      background:rgba(255,255,255,0.05);
+      border:1px solid rgba(255,255,255,0.08);
+      padding:14px 16px;
+      border-radius:12px;
+      margin:12px 0;
+      color:#e2e8f0;
+      overflow:auto;
+      line-height:1.7;
+    }
+
+    .faq{
+      margin-top:14px;
+    }
+
+    .faq-item{
+      border-bottom:1px solid rgba(255,255,255,0.08);
+    }
+
+    .faq-question{
+      width:100%;
+      background:none;
+      border:none;
+      color:white;
+      text-align:left;
+      padding:14px 8px;
+      font-size:15px;
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      cursor:pointer;
+    }
+
+    .faq-question:hover{
+      color:#93c5fd;
+    }
+
+    .arrow{
+      transition:0.25s;
+    }
+
+    .faq-item.active .arrow{
+      transform:rotate(180deg);
+    }
+
+    .faq-answer{
+      max-height:0;
+      overflow:hidden;
+      transition:max-height 0.3s ease;
+      color:#cbd5e1;
+      font-size:14px;
+      padding:0 8px;
+    }
+
+    .faq-item.active .faq-answer{
+      max-height:260px;
+      padding-bottom:12px;
+    }
+
+    .related{
+      width:90%;
+      max-width:900px;
+      margin-top:34px;
+    }
+
+    .related a{
+      color:#93c5fd;
+      text-decoration:none;
+    }
+
+    .related a:hover{
+      text-decoration:underline;
+    }
+
+    .disclaimer{
+      margin-top:40px;
+      padding-top:20px;
+      border-top:1px solid rgba(255,255,255,0.1);
+      font-size:13px;
+      color:#9ca3af;
+      max-width:900px;
+      text-align:center;
+      line-height:1.6;
+      width:90%;
+    }
+
+    @media (max-width: 700px){
+      .container{
+        padding:22px;
+      }
+
+      h1{
+        font-size:28px;
+      }
+
+      .content h2{
+        font-size:24px;
+      }
+
+      .chart-wrap{
+        height:300px;
+      }
+
+      .result-grid{
+        grid-template-columns:1fr;
+      }
+
+      .insight-grid{
+        grid-template-columns:1fr;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <p class="toptext">Explore more calculators</p>
+
+  <div class="menu">
+    <a href="index.html">Home</a>
+  </div>
+
+  <div class="container" data-search="kelly criterion calculator bankroll position sizing fractional kelly trading edge risk management">
+    <h1>Kelly Criterion Calculator</h1>
+
+    <p class="quick-answer">
+      Kelly Criterion estimates how much of your bankroll to risk when you have a measurable edge.
+    </p>
+
+    <p class="subhead">
+      Enter your win rate and average reward-to-risk ratio to estimate full Kelly, fractional Kelly, break-even win rate, and bankroll allocation.
+    </p>
+
+    <label class="field-label" for="bankroll">Bankroll ($) <span style="color:#94a3b8;font-weight:500;">optional</span></label>
+    <input id="bankroll" type="number" min="0" step="any" placeholder="e.g. 10000">
+
+    <label class="field-label" for="winRate">Win Rate (%)</label>
+    <input id="winRate" type="number" min="0" max="100" step="any" placeholder="e.g. 55">
+
+    <label class="field-label" for="rrRatio">Average Win / Average Loss Ratio</label>
+    <input id="rrRatio" type="number" min="0" step="any" placeholder="e.g. 2">
+
+    <button class="action-btn" onclick="calculate()" type="button">Calculate Kelly</button>
+
+    <div id="resultCard" class="result-card" aria-live="polite">
+      <div class="result-top">
+        <span id="resultKicker" class="result-kicker">Sizing result</span>
+        <h2 id="resultTitle" class="result-title">Kelly Criterion overview</h2>
+
+        <div class="result-main">
+          <span id="resultPrimaryOut" class="result-value-big">—</span>
+          <span id="resultPrimaryUnit" class="result-unit">of bankroll</span>
+        </div>
+
+        <p id="resultSentence" class="result-sub">—</p>
+      </div>
+
+      <div class="result-grid">
+        <div class="result-box">
+          <span id="metric1Label" class="result-label">Full Kelly</span>
+          <strong id="metric1Out" class="result-value">—</strong>
+          <span id="metric1Note" class="result-note">Raw Kelly allocation</span>
+        </div>
+
+        <div class="result-box">
+          <span id="metric2Label" class="result-label">Half Kelly</span>
+          <strong id="metric2Out" class="result-value">—</strong>
+          <span id="metric2Note" class="result-note">Lower-volatility version</span>
+        </div>
+
+        <div class="result-box">
+          <span id="metric3Label" class="result-label">Quarter Kelly</span>
+          <strong id="metric3Out" class="result-value">—</strong>
+          <span id="metric3Note" class="result-note">More conservative sizing</span>
+        </div>
+
+        <div class="result-box">
+          <span id="metric4Label" class="result-label">Break-even win rate</span>
+          <strong id="metric4Out" class="result-value">—</strong>
+          <span id="metric4Note" class="result-note">Minimum win rate for zero edge</span>
+        </div>
+      </div>
+
+      <div id="insightBanner" class="insight-banner">
+        <span id="insightKicker" class="insight-kicker">—</span>
+        <strong id="insightHeadline" class="insight-headline">—</strong>
+        <p id="insightBody" class="insight-body">—</p>
+      </div>
+
+      <div class="insight-grid">
+        <div id="insightEdgeCard" class="insight-card">
+          <span>Edge strength</span>
+          <strong id="insightEdgeLevel">—</strong>
+          <p id="insightEdgeNote">—</p>
+        </div>
+
+        <div id="insightRiskCard" class="insight-card">
+          <span>Risk intensity</span>
+          <strong id="insightRiskLevel">—</strong>
+          <p id="insightRiskNote">—</p>
+        </div>
+
+        <div id="insightThresholdCard" class="insight-card">
+          <span>Break-even check</span>
+          <strong id="insightThresholdLevel">—</strong>
+          <p id="insightThresholdNote">—</p>
+        </div>
+
+        <div id="insightActionCard" class="insight-card">
+          <span>Best next move</span>
+          <strong id="insightActionLevel">—</strong>
+          <p id="insightActionNote">—</p>
+        </div>
+      </div>
+
+      <div id="chartShell" class="chart-shell">
+        <h3>Kelly allocation comparison</h3>
+        <div class="chart-wrap">
+          <canvas id="myChart"></canvas>
+        </div>
+        <p class="chart-note">
+          The chart compares full, half, and quarter Kelly as a share of bankroll.
+        </p>
+      </div>
+    </div>
+  </div>
+
+  <div class="content">
+    <h2>What is the Kelly Criterion?</h2>
+    <p>
+      The Kelly Criterion is a position sizing formula used to estimate how much capital to risk when you have an edge.
+      It is popular in trading and investing because it tries to balance growth and risk instead of blindly going all in.
+    </p>
+
+    <p>
+      Kelly is not a prediction tool. It is a sizing tool.
+      The formula turns your win rate and payoff ratio into a bankroll fraction, which makes it useful for trade planning and capital allocation.
+    </p>
+
+    <h2>Kelly Formula</h2>
+    <div class="formula">
+      Kelly Fraction = Win Rate − (Loss Rate ÷ Reward-to-Risk Ratio)<br>
+      where Loss Rate = 1 − Win Rate<br>
+      Full Kelly % = Kelly Fraction × 100
+    </div>
+
+    <p>
+      The reward-to-risk ratio in this calculator means your average win divided by your average loss.
+      For example, a ratio of 2 means your average win is twice your average loss.
+    </p>
+
+    <h2>Why Kelly matters</h2>
+    <p>
+      Kelly helps answer a simple question: how much should I risk when the trade has positive expectancy?
+      That makes it especially useful when you want to size positions based on edge instead of emotion.
+    </p>
+
+    <ul>
+      <li>Turns win rate and payoff ratio into a bankroll allocation</li>
+      <li>Shows when a setup has no positive edge</li>
+      <li>Helps compare full, half, and quarter Kelly sizing</li>
+      <li>Supports long-term growth planning</li>
+    </ul>
+
+    <h2>Full Kelly vs fractional Kelly</h2>
+    <p>
+      Full Kelly is the theoretical growth-optimal position size, but it can be very aggressive.
+      Many traders prefer half Kelly or quarter Kelly because it reduces drawdown pressure and keeps the system more survivable.
+    </p>
+
+    <p>
+      In practice, fractional Kelly is often the more realistic choice.
+      It gives up some theoretical growth in exchange for a smoother equity curve and less account damage during losing streaks.
+    </p>
+
+    <h2>How to use this calculator</h2>
+    <ul>
+      <li>Enter your win rate</li>
+      <li>Enter your average win-to-loss ratio</li>
+      <li>Add bankroll if you want dollar amounts</li>
+      <li>Click calculate to see full Kelly and fractional Kelly</li>
+    </ul>
+
+    <h2>Frequently Asked Questions</h2>
+
+    <div class="faq">
+      <div class="faq-item">
+        <button class="faq-question" type="button">
+          Is full Kelly too aggressive?
+          <span class="arrow">▼</span>
+        </button>
+        <div class="faq-answer">
+          <p>
+            Often yes. Full Kelly can be mathematically optimal in theory, but it is usually too volatile for real trading. Many traders scale it down to half Kelly or quarter Kelly.
+          </p>
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <button class="faq-question" type="button">
+          What does a negative Kelly value mean?
+          <span class="arrow">▼</span>
+        </button>
+        <div class="faq-answer">
+          <p>
+            A negative Kelly value means your win rate and payoff ratio do not create a positive edge. In practical terms, that suggests no trade or a need to improve the setup.
+          </p>
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <button class="faq-question" type="button">
+          How is Kelly related to position size?
+          <span class="arrow">▼</span>
+        </button>
+        <div class="faq-answer">
+          <p>
+            Kelly gives a percentage of your bankroll to risk. That makes it directly useful for position sizing, because it tells you how large the trade should be relative to capital.
+          </p>
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <button class="faq-question" type="button">
+          Can Kelly Criterion be used for crypto and forex?
+          <span class="arrow">▼</span>
+        </button>
+        <div class="faq-answer">
+          <p>
+            Yes. Kelly can be used anywhere you can estimate win rate and average reward-to-risk ratio, including crypto, forex, stocks, and other markets.
+          </p>
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <button class="faq-question" type="button">
+          Why do traders use fractional Kelly?
+          <span class="arrow">▼</span>
+        </button>
+        <div class="faq-answer">
+          <p>
+            Fractional Kelly reduces volatility and drawdown risk. It is often easier to stick with over time, especially when real-world results do not perfectly match the model.
+          </p>
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <button class="faq-question" type="button">
+          What inputs matter most in Kelly?
+          <span class="arrow">▼</span>
+        </button>
+        <div class="faq-answer">
+          <p>
+            Win rate and average reward-to-risk ratio matter most. Small changes in either input can noticeably change the suggested Kelly allocation.
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="related">
+    <h3>Related Calculators</h3>
+    <p>You may also find these tools useful:</p>
+    <ul>
+      <li><a href="position-size-calculator.html">Position Size Calculator</a></li>
+      <li><a href="risk-reward-calculator.html">Risk Reward Calculator</a></li>
+      <li><a href="risk-of-ruin-calculator.html">Risk of Ruin Calculator</a></li>
+      <li><a href="expectancy-calculator.html">Expectancy Calculator</a></li>
+      <li><a href="drawdown-calculator.html">Drawdown Calculator</a></li>
+    </ul>
+  </div>
+
+  <div class="disclaimer">
+    <p>
+      <strong>Disclaimer:</strong> The calculators on this website are provided for informational and educational purposes only.
+      All results are estimates based on the values entered and do not constitute financial, investment, or trading advice.
+      Always conduct your own research before making financial decisions.
+    </p>
+  </div>
+
+  <script src="footer.js"></script>
+  <script>
+    let chart = null;
+
+    function money(value){
+      if (!Number.isFinite(value)) return "—";
+      const sign = value < 0 ? "-" : "";
+      const abs = Math.abs(value);
+
+      if (abs >= 1e12) return `${sign}$${(abs / 1e12).toFixed(2)}T`;
+      if (abs >= 1e9) return `${sign}$${(abs / 1e9).toFixed(2)}B`;
+      if (abs >= 1e6) return `${sign}$${(abs / 1e6).toFixed(2)}M`;
+      return `${sign}$${abs.toFixed(2)}`;
+    }
+
+    function pct(value, digits = 2){
+      if (!Number.isFinite(value)) return "—";
+      const sign = value < 0 ? "-" : "";
+      return `${sign}${Math.abs(value).toFixed(digits)}%`;
+    }
+
+    function applyTone(el, tone){
+      el.classList.remove("tone-good", "tone-warn", "tone-bad");
+      el.classList.add(tone);
+    }
+
+    function renderInsights({ rawKelly, recommendedKelly, halfKelly, quarterKelly, winRate, rrRatio, breakEven, bankroll, fullDollar, halfDollar, quarterDollar }){
+      let bannerClass = "insight-good";
+      let kicker = "Positive edge";
+      let headline = "Kelly supports a real position size";
+      let body = "The inputs show a positive edge. Full Kelly is the theoretical maximum, but most traders reduce it for stability.";
+
+      if (rawKelly <= 0){
+        bannerClass = "insight-weak";
+        kicker = "No edge";
+        headline = "Kelly says do not size up";
+        body = "The win rate and payoff ratio do not create a positive Kelly edge. In practice, that means no bet until the setup improves.";
+      } else if (rawKelly < 0.05){
+        bannerClass = "insight-medium";
+        kicker = "Thin edge";
+        headline = "The edge exists, but it is small";
+        body = "This setup has some positive edge, but the allocation is still modest. Fractional Kelly is usually the safer interpretation here.";
+      } else if (rawKelly < 0.15){
+        bannerClass = "insight-good";
+        kicker = "Healthy edge";
+        headline = "The Kelly edge is workable";
+        body = "This is a decent setup for bankroll growth. Full Kelly is still aggressive, so many traders would size below it.";
+      } else {
+        bannerClass = "insight-medium";
+        kicker = "Aggressive edge";
+        headline = "The formula allows a large allocation";
+        body = "A high Kelly result usually means the edge looks strong on paper, but it also tends to produce more volatility in live trading.";
+      }
+
+      const edgeLevel =
+        rawKelly <= 0 ? "No positive edge" :
+        rawKelly < 0.05 ? "Thin edge" :
+        rawKelly < 0.15 ? "Positive edge" : "Strong edge";
+
+      const edgeTone =
+        rawKelly <= 0 ? "tone-bad" :
+        rawKelly < 0.15 ? "tone-warn" : "tone-good";
+
+      const edgeNote =
+        rawKelly <= 0 ? "The formula does not justify risk on these inputs." :
+        rawKelly < 0.05 ? "Positive, but not large enough for aggressive sizing." :
+        rawKelly < 0.15 ? "Reasonable edge for a cautious size." :
+        "Large theoretical edge, but not necessarily easy to exploit.";
+
+      const riskLevel =
+        recommendedKelly <= 0.02 ? "Very conservative" :
+        recommendedKelly <= 0.05 ? "Conservative" :
+        recommendedKelly <= 0.12 ? "Balanced" : "Aggressive";
+
+      const riskTone =
+        recommendedKelly <= 0.05 ? "tone-good" :
+        recommendedKelly <= 0.12 ? "tone-warn" : "tone-bad";
+
+      const riskNote =
+        recommendedKelly <= 0.02 ? "The model suggests only a tiny allocation." :
+        recommendedKelly <= 0.05 ? "This is a small bankroll fraction." :
+        recommendedKelly <= 0.12 ? "Meaningful, but still manageable if executed well." :
+        "High allocation. Expect bigger swings.";
+
+      const thresholdLevel = pct(breakEven, 2);
+      const thresholdTone =
+        winRate > breakEven + 10 ? "tone-good" :
+        winRate > breakEven ? "tone-warn" : "tone-bad";
+
+      const thresholdNote =
+        winRate > breakEven + 10 ? "Your win rate is comfortably above break-even." :
+        winRate > breakEven ? "You are above break-even, but the margin is not huge." :
+        "Your win rate is at or below break-even on these assumptions.";
+
+      let actionLevel = "";
+      let actionTone = "tone-warn";
+      let actionNote = "";
+
+      if (rawKelly <= 0){
+        actionLevel = "No bet";
+        actionTone = "tone-bad";
+        actionNote = "Improve win rate, increase payoff ratio, or both before risking capital.";
+      } else if (recommendedKelly < 0.05){
+        actionLevel = "Use fractional Kelly";
+        actionTone = "tone-good";
+        actionNote = "Half Kelly or quarter Kelly is usually the safer practical choice.";
+      } else if (recommendedKelly < 0.15){
+        actionLevel = "Size below full Kelly";
+        actionTone = "tone-good";
+        actionNote = "The edge is good enough to use, but full Kelly is still more aggressive than necessary.";
+      } else {
+        actionLevel = "Scale down hard";
+        actionTone = "tone-bad";
+        actionNote = "The result is high enough that full Kelly would likely be too volatile for live trading.";
+      }
+
+      document.getElementById("insightBanner").className = `insight-banner ${bannerClass}`;
+      document.getElementById("insightKicker").textContent = kicker;
+      document.getElementById("insightHeadline").textContent = headline;
+      document.getElementById("insightBody").textContent = body;
+
+      applyTone(document.getElementById("insightEdgeCard"), edgeTone);
+      applyTone(document.getElementById("insightRiskCard"), riskTone);
+      applyTone(document.getElementById("insightThresholdCard"), thresholdTone);
+      applyTone(document.getElementById("insightActionCard"), actionTone);
+
+      document.getElementById("insightEdgeLevel").textContent = edgeLevel;
+      document.getElementById("insightEdgeNote").textContent = edgeNote;
+
+      document.getElementById("insightRiskLevel").textContent = `${riskLevel} (${pct(recommendedKelly * 100, 2)} of bankroll)`;
+      document.getElementById("insightRiskNote").textContent = riskNote;
+
+      document.getElementById("insightThresholdLevel").textContent = thresholdLevel;
+      document.getElementById("insightThresholdNote").textContent = thresholdNote;
+
+      document.getElementById("insightActionLevel").textContent = actionLevel;
+      document.getElementById("insightActionNote").textContent = actionNote;
+
+      const resultPrimary = document.getElementById("resultPrimaryOut");
+      resultPrimary.classList.remove("good", "warn", "bad");
+
+      if (rawKelly <= 0){
+        resultPrimary.classList.add("bad");
+      } else if (recommendedKelly < 0.05){
+        resultPrimary.classList.add("warn");
+      } else {
+        resultPrimary.classList.add("good");
+      }
+
+      if (bankroll > 0){
+        const fullText = fullDollar !== null ? money(fullDollar) : "—";
+        const halfText = halfDollar !== null ? money(halfDollar) : "—";
+        const quarterText = quarterDollar !== null ? money(quarterDollar) : "—";
+
+        return {
+          resultSentence:
+            rawKelly <= 0
+              ? `The formula does not show a positive edge here. Raw Kelly is ${pct(rawKelly * 100, 2)}, so the practical recommendation is to avoid sizing up until the setup improves.`
+              : `On a ${money(bankroll)} bankroll, full Kelly equals about ${fullText}, half Kelly about ${halfText}, and quarter Kelly about ${quarterText}.`,
+        };
+      }
+
+      return {
+        resultSentence:
+          rawKelly <= 0
+            ? `The formula does not show a positive edge here. Raw Kelly is ${pct(rawKelly * 100, 2)}, so the practical recommendation is to avoid sizing up until the setup improves.`
+            : `Raw Kelly is ${pct(rawKelly * 100, 2)}. Fractional Kelly is usually the safer practical choice for live trading.`
+      };
+    }
+
+    function drawChart(fullKellyPct, halfKellyPct, quarterKellyPct){
+      const canvas = document.getElementById("myChart");
+      const ctx = canvas.getContext("2d");
+
+      if (chart){
+        chart.destroy();
+      }
+
+      chart = new Chart(ctx, {
+        type: "bar",
+        data: {
+          labels: ["Full Kelly", "Half Kelly", "Quarter Kelly"],
+          datasets: [{
+            label: "Bankroll allocation",
+            data: [fullKellyPct, halfKellyPct, quarterKellyPct],
+            backgroundColor: ["#3b82f6", "#22c55e", "#f59e0b"],
+            borderRadius: 10,
+            borderSkipped: false,
+            maxBarThickness: 56
+          }]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          animation: {
+            duration: 850,
+            easing: "easeOutQuart"
+          },
+          plugins: {
+            legend: {
+              display: false
+            },
+            tooltip: {
+              backgroundColor: "#0f172a",
+              borderColor: "rgba(255,255,255,0.08)",
+              borderWidth: 1,
+              titleColor: "#fff",
+              bodyColor: "#e2e8f0",
+              callbacks: {
+                label: function(context){
+                  return `${context.dataset.label}: ${context.parsed.y.toFixed(2)}%`;
+                }
+              }
+            }
+          },
+          scales: {
+            x: {
+              ticks: { color: "#cbd5e1" },
+              grid: { display: false }
+            },
+            y: {
+              ticks: {
+                color: "#cbd5e1",
+                callback: value => `${Number(value).toFixed(0)}%`
+              },
+              grid: {
+                color: "rgba(255,255,255,0.06)"
+              }
+            }
+          }
+        }
+      });
+    }
+
+    function calculate(){
+      const bankroll = parseFloat(document.getElementById("bankroll").value);
+      const winRate = parseFloat(document.getElementById("winRate").value);
+      const rrRatio = parseFloat(document.getElementById("rrRatio").value);
+
+      if ([bankroll, winRate, rrRatio].some(v => Number.isNaN(v))){
+        alert("Fill all fields.");
+        return;
+      }
+
+      if (bankroll < 0){
+        alert("Bankroll cannot be negative.");
+        return;
+      }
+
+      if (winRate <= 0 || winRate >= 100){
+        alert("Win rate must be between 0 and 100.");
+        return;
+      }
+
+      if (rrRatio <= 0){
+        alert("Reward-to-risk ratio must be greater than zero.");
+        return;
+      }
+
+      const p = winRate / 100;
+      const b = rrRatio;
+      const rawKelly = p - ((1 - p) / b);
+
+      const recommendedKelly = Math.max(0, rawKelly);
+      const halfKelly = recommendedKelly / 2;
+      const quarterKelly = recommendedKelly / 4;
+      const breakEven = 100 / (b + 1);
+
+      const fullDollar = bankroll > 0 ? bankroll * recommendedKelly : null;
+      const halfDollar = bankroll > 0 ? bankroll * halfKelly : null;
+      const quarterDollar = bankroll > 0 ? bankroll * quarterKelly : null;
+
+      const resultSentenceData = renderInsights({
+        rawKelly,
+        recommendedKelly,
+        halfKelly,
+        quarterKelly,
+        winRate,
+        rrRatio,
+        breakEven,
+        bankroll,
+        fullDollar,
+        halfDollar,
+        quarterDollar
+      });
+
+      document.getElementById("resultCard").style.display = "block";
+      document.getElementById("chartShell").style.display = "block";
+
+      document.getElementById("resultKicker").textContent = rawKelly <= 0 ? "No edge" : "Sizing result";
+      document.getElementById("resultTitle").textContent = "Kelly Criterion overview";
+      document.getElementById("resultPrimaryOut").textContent = pct(recommendedKelly * 100, 2);
+      document.getElementById("resultPrimaryUnit").textContent = "of bankroll";
+      document.getElementById("resultSentence").textContent = resultSentenceData.resultSentence;
+
+      document.getElementById("metric1Label").textContent = "Full Kelly";
+      document.getElementById("metric1Out").textContent = pct(rawKelly * 100, 2);
+      document.getElementById("metric1Note").textContent = rawKelly <= 0 ? "Negative Kelly means no positive edge." : "Theoretical maximum growth allocation.";
+
+      document.getElementById("metric2Label").textContent = "Half Kelly";
+      document.getElementById("metric2Out").textContent = pct(halfKelly * 100, 2);
+      document.getElementById("metric2Note").textContent = bankroll > 0 ? `${money(halfDollar)} on a ${money(bankroll)} bankroll.` : "Safer fractional sizing.";
+
+      document.getElementById("metric3Label").textContent = "Quarter Kelly";
+      document.getElementById("metric3Out").textContent = pct(quarterKelly * 100, 2);
+      document.getElementById("metric3Note").textContent = bankroll > 0 ? `${money(quarterDollar)} on a ${money(bankroll)} bankroll.` : "Very conservative sizing.";
+
+      document.getElementById("metric4Label").textContent = "Break-even win rate";
+      document.getElementById("metric4Out").textContent = pct(breakEven, 2);
+      document.getElementById("metric4Note").textContent = "Win rate required before fees and risk drag are considered.";
+
+      drawChart(
+        Math.max(0, rawKelly * 100),
+        Math.max(0, halfKelly * 100),
+        Math.max(0, quarterKelly * 100)
+      );
+
+      document.getElementById("resultCard").scrollIntoView({ behavior: "smooth", block: "start" });
+    }
+
+    document.addEventListener("DOMContentLoaded", function(){
+      document.querySelectorAll(".faq-question").forEach(btn => {
+        btn.addEventListener("click", () => {
+          const item = btn.parentElement;
+          document.querySelectorAll(".faq-item").forEach(i => {
+            if (i !== item) i.classList.remove("active");
+          });
+          item.classList.toggle("active");
+        });
+      });
+    });
+  </script>
+</body>
+  </html>
