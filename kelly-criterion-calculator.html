@@ -14,15 +14,15 @@
 
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Kelly Criterion Calculator – Position Sizing & Trade Risk</title>
-  <meta name="description" content="Calculate Kelly Criterion position size, fractional Kelly, break-even win rate, and bankroll allocation for trading and investing decisions.">
+  <title>Kelly Criterion Calculator – Fractional Kelly, Position Sizing & Bankroll Allocation</title>
+  <meta name="description" content="Use this Kelly Criterion calculator to estimate position size, fractional Kelly, bankroll allocation, break-even win rate, and optimal bet size for trading, investing, and betting models.">
   <meta name="theme-color" content="#0f172a">
   <meta name="robots" content="index,follow,max-image-preview:large">
 
   <meta property="og:type" content="website">
   <meta property="og:url" content="https://novainvesttools.com/kelly-criterion-calculator.html">
-  <meta property="og:title" content="Kelly Criterion Calculator – Position Sizing & Trade Risk">
-  <meta property="og:description" content="Calculate Kelly Criterion position size, fractional Kelly, break-even win rate, and bankroll allocation.">
+  <meta property="og:title" content="Kelly Criterion Calculator – Fractional Kelly, Position Sizing & Bankroll Allocation">
+  <meta property="og:description" content="Estimate Kelly Criterion, fractional Kelly, break-even win rate, and bankroll allocation for trading, investing, and betting models.">
 
   <link rel="preconnect" href="https://cdn.jsdelivr.net">
   <link rel="dns-prefetch" href="https://cdn.jsdelivr.net">
@@ -42,13 +42,14 @@
     "applicationCategory": "FinanceApplication",
     "operatingSystem": "All",
     "browserRequirements": "Requires JavaScript",
-    "description": "Calculate Kelly Criterion position size, fractional Kelly, break-even win rate, and bankroll allocation.",
+    "description": "Calculate Kelly Criterion position size, fractional Kelly, break-even win rate, bankroll allocation, and optimal bet size.",
     "featureList": [
       "Kelly Criterion calculation",
       "Fractional Kelly sizing",
       "Break-even win rate",
       "Bankroll allocation estimate",
-      "Trade risk visualization"
+      "Position sizing calculator",
+      "Optimal bet size estimate"
     ],
     "offers": {
       "@type": "Offer",
@@ -68,7 +69,7 @@
         "name": "What is the Kelly Criterion?",
         "acceptedAnswer": {
           "@type": "Answer",
-          "text": "The Kelly Criterion is a position sizing formula that estimates how much of your bankroll to risk when you have an edge."
+          "text": "The Kelly Criterion is a bankroll and position sizing formula used to estimate how much capital to risk when you believe you have an edge."
         }
       },
       {
@@ -76,15 +77,15 @@
         "name": "How is Kelly Criterion calculated?",
         "acceptedAnswer": {
           "@type": "Answer",
-          "text": "Kelly is calculated as win rate minus the losing probability divided by the average win-to-loss ratio."
+          "text": "Kelly is calculated from win rate and reward-to-risk ratio. It estimates the fraction of bankroll that can be risked for maximum long-term growth in theory."
         }
       },
       {
         "@type": "Question",
-        "name": "Should I use full Kelly?",
+        "name": "Should I use full Kelly or fractional Kelly?",
         "acceptedAnswer": {
           "@type": "Answer",
-          "text": "Full Kelly is mathematically optimal for long-term growth in theory, but many traders use fractional Kelly because full Kelly can be too volatile."
+          "text": "Full Kelly is mathematically aggressive. Many traders and bettors prefer fractional Kelly, such as half Kelly or quarter Kelly, to reduce volatility and drawdown risk."
         }
       },
       {
@@ -92,7 +93,7 @@
         "name": "What does a negative Kelly value mean?",
         "acceptedAnswer": {
           "@type": "Answer",
-          "text": "A negative Kelly value means the inputs do not show a positive edge. In practice, that suggests no bet or a need to improve the setup."
+          "text": "A negative Kelly value means the win rate and payoff ratio do not show a positive edge. In practice, that suggests no bet or no trade."
         }
       },
       {
@@ -100,15 +101,15 @@
         "name": "How is Kelly related to position size?",
         "acceptedAnswer": {
           "@type": "Answer",
-          "text": "Kelly gives a percentage of bankroll to risk, which makes it directly useful for position sizing and capital allocation."
+          "text": "Kelly gives a percentage of bankroll to allocate, which makes it directly useful for position sizing, bet sizing, and capital allocation."
         }
       },
       {
         "@type": "Question",
-        "name": "Can Kelly Criterion be used for crypto, forex, and stocks?",
+        "name": "Can Kelly Criterion be used for trading, betting, crypto, forex, and stocks?",
         "acceptedAnswer": {
           "@type": "Answer",
-          "text": "Yes. Kelly can be applied anywhere you can estimate win rate and reward-to-risk ratio."
+          "text": "Yes. Kelly can be applied anywhere you can estimate win rate and average reward-to-risk ratio, including trading, sports betting models, crypto, forex, and stocks."
         }
       }
     ]
@@ -651,15 +652,16 @@
     <a href="index.html">Home</a>
   </div>
 
-  <div class="container" data-search="kelly criterion calculator bankroll position sizing fractional kelly trading edge risk management">
+  <div class="container" data-search="kelly criterion calculator kelly formula calculator fractional kelly calculator kelly betting calculator bankroll calculator optimal bet size position sizing calculator trading investing forex crypto stocks">
     <h1>Kelly Criterion Calculator</h1>
 
     <p class="quick-answer">
-      Kelly Criterion estimates how much of your bankroll to risk when you have a measurable edge.
+      Kelly Criterion is a bankroll sizing method for trading, investing, and betting models. It estimates how much of your bankroll to risk when you have a measurable edge.
     </p>
 
     <p class="subhead">
       Enter your win rate and average reward-to-risk ratio to estimate full Kelly, fractional Kelly, break-even win rate, and bankroll allocation.
+      This works as a Kelly formula calculator, a fractional Kelly calculator, and a practical position sizing calculator.
     </p>
 
     <label class="field-label" for="bankroll">Bankroll ($) <span style="color:#94a3b8;font-weight:500;">optional</span></label>
@@ -725,10 +727,10 @@
           <p id="insightEdgeNote">—</p>
         </div>
 
-        <div id="insightRiskCard" class="insight-card">
-          <span>Risk intensity</span>
-          <strong id="insightRiskLevel">—</strong>
-          <p id="insightRiskNote">—</p>
+        <div id="insightSizeCard" class="insight-card">
+          <span>Suggested stake</span>
+          <strong id="insightSizeLevel">—</strong>
+          <p id="insightSizeNote">—</p>
         </div>
 
         <div id="insightThresholdCard" class="insight-card">
@@ -759,13 +761,13 @@
   <div class="content">
     <h2>What is the Kelly Criterion?</h2>
     <p>
-      The Kelly Criterion is a position sizing formula used to estimate how much capital to risk when you have an edge.
-      It is popular in trading and investing because it tries to balance growth and risk instead of blindly going all in.
+      The Kelly Criterion is a bankroll sizing formula used in trading, sports betting models, investing, and other probability-based decisions.
+      It estimates how much capital to risk when you believe you have an edge.
     </p>
 
     <p>
-      Kelly is not a prediction tool. It is a sizing tool.
-      The formula turns your win rate and payoff ratio into a bankroll fraction, which makes it useful for trade planning and capital allocation.
+      A Kelly Criterion calculator is not a prediction tool. It is a sizing tool.
+      It turns your win rate and reward-to-risk ratio into a bankroll fraction, which makes it useful as a position sizing calculator, an optimal bet size calculator, and a fractional Kelly calculator.
     </p>
 
     <h2>Kelly Formula</h2>
@@ -778,11 +780,12 @@
     <p>
       The reward-to-risk ratio in this calculator means your average win divided by your average loss.
       For example, a ratio of 2 means your average win is twice your average loss.
+      That is why this page also works as a Kelly formula calculator for trading and betting-style models.
     </p>
 
     <h2>Why Kelly matters</h2>
     <p>
-      Kelly helps answer a simple question: how much should I risk when the trade has positive expectancy?
+      Kelly helps answer a simple question: how much should I risk when the trade or bet has positive expectancy?
       That makes it especially useful when you want to size positions based on edge instead of emotion.
     </p>
 
@@ -791,12 +794,13 @@
       <li>Shows when a setup has no positive edge</li>
       <li>Helps compare full, half, and quarter Kelly sizing</li>
       <li>Supports long-term growth planning</li>
+      <li>Works as a practical bankroll calculator for trading and betting models</li>
     </ul>
 
     <h2>Full Kelly vs fractional Kelly</h2>
     <p>
       Full Kelly is the theoretical growth-optimal position size, but it can be very aggressive.
-      Many traders prefer half Kelly or quarter Kelly because it reduces drawdown pressure and keeps the system more survivable.
+      Many traders and bettors prefer half Kelly or quarter Kelly because it reduces drawdown pressure and keeps the system more survivable.
     </p>
 
     <p>
@@ -810,6 +814,7 @@
       <li>Enter your average win-to-loss ratio</li>
       <li>Add bankroll if you want dollar amounts</li>
       <li>Click calculate to see full Kelly and fractional Kelly</li>
+      <li>Use the result as a guide for bet sizing, position sizing, or capital allocation</li>
     </ul>
 
     <h2>Frequently Asked Questions</h2>
@@ -817,12 +822,24 @@
     <div class="faq">
       <div class="faq-item">
         <button class="faq-question" type="button">
+          Is Kelly Criterion a good betting calculator too?
+          <span class="arrow">▼</span>
+        </button>
+        <div class="faq-answer">
+          <p>
+            Yes. Kelly Criterion is commonly used as a betting calculator and bankroll calculator because it estimates how much of a bankroll to risk when a model shows an edge.
+          </p>
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <button class="faq-question" type="button">
           Is full Kelly too aggressive?
           <span class="arrow">▼</span>
         </button>
         <div class="faq-answer">
           <p>
-            Often yes. Full Kelly can be mathematically optimal in theory, but it is usually too volatile for real trading. Many traders scale it down to half Kelly or quarter Kelly.
+            Often yes. Full Kelly can be mathematically optimal in theory, but it is usually too volatile for real trading. Many people scale it down to half Kelly or quarter Kelly.
           </p>
         </div>
       </div>
@@ -834,7 +851,7 @@
         </button>
         <div class="faq-answer">
           <p>
-            A negative Kelly value means your win rate and payoff ratio do not create a positive edge. In practical terms, that suggests no trade or a need to improve the setup.
+            A negative Kelly value means your win rate and payoff ratio do not create a positive edge. In practical terms, that suggests no trade, no bet, or a need to improve the setup.
           </p>
         </div>
       </div>
@@ -853,7 +870,7 @@
 
       <div class="faq-item">
         <button class="faq-question" type="button">
-          Can Kelly Criterion be used for crypto and forex?
+          Can Kelly Criterion be used for crypto, forex, and stocks?
           <span class="arrow">▼</span>
         </button>
         <div class="faq-answer">
@@ -935,7 +952,19 @@
       el.classList.add(tone);
     }
 
-    function renderInsights({ rawKelly, recommendedKelly, halfKelly, quarterKelly, winRate, rrRatio, breakEven, bankroll, fullDollar, halfDollar, quarterDollar }){
+    function renderInsights({
+      rawKelly,
+      recommendedKelly,
+      halfKelly,
+      quarterKelly,
+      winRate,
+      rrRatio,
+      breakEven,
+      bankroll,
+      fullDollar,
+      halfDollar,
+      quarterDollar
+    }){
       let bannerClass = "insight-good";
       let kicker = "Positive edge";
       let headline = "Kelly supports a real position size";
@@ -945,7 +974,7 @@
         bannerClass = "insight-weak";
         kicker = "No edge";
         headline = "Kelly says do not size up";
-        body = "The win rate and payoff ratio do not create a positive Kelly edge. In practice, that means no bet until the setup improves.";
+        body = "The win rate and payoff ratio do not create a positive Kelly edge. In practice, that means no bet or no trade until the setup improves.";
       } else if (rawKelly < 0.05){
         bannerClass = "insight-medium";
         kicker = "Thin edge";
@@ -955,12 +984,12 @@
         bannerClass = "insight-good";
         kicker = "Healthy edge";
         headline = "The Kelly edge is workable";
-        body = "This is a decent setup for bankroll growth. Full Kelly is still aggressive, so many traders would size below it.";
+        body = "This is a decent setup for bankroll growth. Full Kelly is still aggressive, so many users would size below it.";
       } else {
         bannerClass = "insight-medium";
         kicker = "Aggressive edge";
         headline = "The formula allows a large allocation";
-        body = "A high Kelly result usually means the edge looks strong on paper, but it also tends to produce more volatility in live trading.";
+        body = "A high Kelly result usually means the edge looks strong on paper, but it also tends to produce more volatility in live trading or betting models.";
       }
 
       const edgeLevel =
@@ -978,16 +1007,16 @@
         rawKelly < 0.15 ? "Reasonable edge for a cautious size." :
         "Large theoretical edge, but not necessarily easy to exploit.";
 
-      const riskLevel =
+      const sizeLevel =
         recommendedKelly <= 0.02 ? "Very conservative" :
         recommendedKelly <= 0.05 ? "Conservative" :
         recommendedKelly <= 0.12 ? "Balanced" : "Aggressive";
 
-      const riskTone =
+      const sizeTone =
         recommendedKelly <= 0.05 ? "tone-good" :
         recommendedKelly <= 0.12 ? "tone-warn" : "tone-bad";
 
-      const riskNote =
+      const sizeNote =
         recommendedKelly <= 0.02 ? "The model suggests only a tiny allocation." :
         recommendedKelly <= 0.05 ? "This is a small bankroll fraction." :
         recommendedKelly <= 0.12 ? "Meaningful, but still manageable if executed well." :
@@ -1022,7 +1051,7 @@
       } else {
         actionLevel = "Scale down hard";
         actionTone = "tone-bad";
-        actionNote = "The result is high enough that full Kelly would likely be too volatile for live trading.";
+        actionNote = "The result is high enough that full Kelly would likely be too volatile for live trading or betting.";
       }
 
       document.getElementById("insightBanner").className = `insight-banner ${bannerClass}`;
@@ -1031,15 +1060,17 @@
       document.getElementById("insightBody").textContent = body;
 
       applyTone(document.getElementById("insightEdgeCard"), edgeTone);
-      applyTone(document.getElementById("insightRiskCard"), riskTone);
+      applyTone(document.getElementById("insightSizeCard"), sizeTone);
       applyTone(document.getElementById("insightThresholdCard"), thresholdTone);
       applyTone(document.getElementById("insightActionCard"), actionTone);
 
       document.getElementById("insightEdgeLevel").textContent = edgeLevel;
       document.getElementById("insightEdgeNote").textContent = edgeNote;
 
-      document.getElementById("insightRiskLevel").textContent = `${riskLevel} (${pct(recommendedKelly * 100, 2)} of bankroll)`;
-      document.getElementById("insightRiskNote").textContent = riskNote;
+      document.getElementById("insightSizeLevel").textContent = `${sizeLevel} (${pct(recommendedKelly * 100, 2)} of bankroll)`;
+      document.getElementById("insightSizeNote").textContent = bankroll > 0
+        ? `${sizeNote} Full Kelly ≈ ${money(fullDollar)}; half Kelly ≈ ${money(halfDollar)}; quarter Kelly ≈ ${money(quarterDollar)} on a ${money(bankroll)} bankroll.`
+        : `${sizeNote} Add bankroll if you want dollar amounts.`;
 
       document.getElementById("insightThresholdLevel").textContent = thresholdLevel;
       document.getElementById("insightThresholdNote").textContent = thresholdNote;
@@ -1067,7 +1098,7 @@
           resultSentence:
             rawKelly <= 0
               ? `The formula does not show a positive edge here. Raw Kelly is ${pct(rawKelly * 100, 2)}, so the practical recommendation is to avoid sizing up until the setup improves.`
-              : `On a ${money(bankroll)} bankroll, full Kelly equals about ${fullText}, half Kelly about ${halfText}, and quarter Kelly about ${quarterText}.`,
+              : `On a ${money(bankroll)} bankroll, full Kelly equals about ${fullText}, half Kelly about ${halfText}, and quarter Kelly about ${quarterText}.`
         };
       }
 
@@ -1075,7 +1106,7 @@
         resultSentence:
           rawKelly <= 0
             ? `The formula does not show a positive edge here. Raw Kelly is ${pct(rawKelly * 100, 2)}, so the practical recommendation is to avoid sizing up until the setup improves.`
-            : `Raw Kelly is ${pct(rawKelly * 100, 2)}. Fractional Kelly is usually the safer practical choice for live trading.`
+            : `Raw Kelly is ${pct(rawKelly * 100, 2)}. Fractional Kelly is usually the safer practical choice for live trading and betting models.`
       };
     }
 
@@ -1218,7 +1249,7 @@
 
       document.getElementById("metric4Label").textContent = "Break-even win rate";
       document.getElementById("metric4Out").textContent = pct(breakEven, 2);
-      document.getElementById("metric4Note").textContent = "Win rate required before fees and risk drag are considered.";
+      document.getElementById("metric4Note").textContent = "Win rate required before the formula turns positive.";
 
       drawChart(
         Math.max(0, rawKelly * 100),
