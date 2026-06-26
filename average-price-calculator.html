@@ -90,8 +90,12 @@
       box-sizing:border-box;
     }
 
+    html{
+      scroll-behavior:smooth;
+    }
+
     body{
-      font-family: Arial, sans-serif;
+      font-family:Arial, sans-serif;
       background:#0b1a33;
       color:white;
       display:flex;
@@ -128,7 +132,7 @@
       max-width:620px;
       box-shadow:0 10px 25px rgba(0,0,0,0.35);
       border:1px solid rgba(255,255,255,0.05);
-      backdrop-filter: blur(6px);
+      backdrop-filter:blur(6px);
     }
 
     h1{
@@ -139,14 +143,14 @@
     }
 
     .quick-answer{
-      background: rgba(59,130,246,0.12);
-      border: 1px solid rgba(59,130,246,0.25);
-      padding: 12px 14px;
-      border-radius: 10px;
-      font-size: 15px;
-      line-height: 1.6;
-      color: #e2e8f0;
-      margin: 0 0 18px;
+      background:rgba(59,130,246,0.12);
+      border:1px solid rgba(59,130,246,0.25);
+      padding:12px 14px;
+      border-radius:10px;
+      font-size:15px;
+      line-height:1.6;
+      color:#e2e8f0;
+      margin:0 0 18px;
     }
 
     .subhead{
@@ -156,22 +160,48 @@
       margin-bottom:18px;
     }
 
+    .section-title{
+      font-size:13px;
+      color:#94a3b8;
+      margin:14px 0 6px;
+      text-transform:uppercase;
+      letter-spacing:0.08em;
+      font-weight:700;
+    }
+
+    .buy-list{
+      display:grid;
+      gap:10px;
+      margin-top:8px;
+    }
+
     .buy-row{
       display:grid;
-      grid-template-columns: 1fr 1fr auto;
+      grid-template-columns:1fr 1fr auto;
       gap:10px;
-      margin-bottom:10px;
       align-items:center;
+      padding:12px;
+      border-radius:14px;
+      background:rgba(255,255,255,0.03);
+      border:1px solid rgba(255,255,255,0.06);
+    }
+
+    .buy-row input{
+      margin:0;
     }
 
     input{
       width:100%;
-      padding:12px;
-      border-radius:8px;
+      padding:14px;
+      border-radius:10px;
       border:none;
       background:#e5e7eb;
       font-size:16px;
       outline:none;
+    }
+
+    input::placeholder{
+      color:#64748b;
     }
 
     input:focus{
@@ -205,43 +235,317 @@
       background:rgba(255,255,255,0.14);
     }
 
+    .remove{
+      width:auto;
+      min-width:92px;
+      margin:0;
+      padding:12px 14px;
+      background:rgba(239,68,68,0.14);
+      border:1px solid rgba(239,68,68,0.18);
+      color:#fecaca;
+      font-weight:700;
+    }
+
+    .remove:hover{
+      background:rgba(239,68,68,0.22);
+      transform:translateY(-1px);
+    }
+
     .result-card{
       margin-top:18px;
-      padding:16px;
-      border-radius:14px;
-      background:rgba(255,255,255,0.05);
+      padding:18px;
+      border-radius:18px;
+      background:linear-gradient(180deg, rgba(15,23,42,0.94), rgba(17,24,39,0.90));
       border:1px solid rgba(255,255,255,0.08);
+      box-shadow:0 18px 40px rgba(0,0,0,0.24);
+      overflow:hidden;
+      position:relative;
       display:none;
     }
 
-    .result-line{
-      margin:10px 0;
-      font-size:16px;
-      line-height:1.5;
-      color:#e5e7eb;
+    .result-card::before{
+      content:"";
+      position:absolute;
+      inset:0;
+      background:radial-gradient(circle at top right, rgba(59,130,246,0.12), transparent 35%);
+      pointer-events:none;
     }
 
-    .result-line strong{
-      color:#cbd5f5;
+    .result-top{
+      display:flex;
+      flex-direction:column;
+      gap:8px;
+      padding-bottom:16px;
+      border-bottom:1px solid rgba(255,255,255,0.06);
+      margin-bottom:16px;
+      position:relative;
+      z-index:1;
     }
 
-    .insight-good{
+    .result-kicker{
+      display:inline-flex;
+      align-items:center;
+      width:max-content;
+      padding:5px 10px;
+      border-radius:999px;
+      font-size:11px;
+      font-weight:800;
+      letter-spacing:0.08em;
+      text-transform:uppercase;
+      background:rgba(59,130,246,0.12);
+      color:#bfdbfe;
+      border:1px solid rgba(59,130,246,0.20);
+    }
+
+    .result-title{
+      margin:0;
+      font-size:14px;
+      font-weight:700;
+      color:#cbd5e1;
+      letter-spacing:0.01em;
+    }
+
+    .result-main{
+      display:flex;
+      flex-wrap:wrap;
+      align-items:baseline;
+      gap:10px;
+    }
+
+    .result-value-big{
+      font-size:clamp(2.1rem, 6vw, 3.2rem);
+      line-height:1;
+      font-weight:800;
+      letter-spacing:-0.04em;
+      color:#ffffff;
+      word-break:break-word;
+    }
+
+    .result-unit{
+      font-size:14px;
+      color:#94a3b8;
+      font-weight:600;
+      letter-spacing:0.02em;
+    }
+
+    .result-sub{
+      color:#94a3b8;
+      font-size:13px;
+      line-height:1.55;
+      margin:0;
+      max-width:46ch;
+    }
+
+    .result-grid{
+      display:grid;
+      grid-template-columns:repeat(3, minmax(0, 1fr));
+      gap:12px;
+      position:relative;
+      z-index:1;
+    }
+
+    .metric{
+      background:rgba(255,255,255,0.03);
+      border:1px solid rgba(255,255,255,0.06);
+      border-radius:14px;
+      padding:14px;
+      transition:0.2s ease;
+      min-height:92px;
+    }
+
+    .metric:hover{
+      transform:translateY(-1px);
+      border-color:rgba(59,130,246,0.18);
+      background:rgba(255,255,255,0.05);
+    }
+
+    .metric-label{
+      display:block;
+      color:#94a3b8;
+      font-size:11px;
+      text-transform:uppercase;
+      letter-spacing:0.10em;
+      font-weight:800;
+      margin-bottom:8px;
+    }
+
+    .metric-value{
+      display:block;
+      font-size:18px;
+      line-height:1.2;
+      font-weight:800;
+      color:#e2e8f0;
+      word-break:break-word;
+    }
+
+    .metric-note{
+      display:block;
+      margin-top:6px;
+      color:#94a3b8;
+      font-size:12px;
+      line-height:1.45;
+    }
+
+    .metric-value.good{
       color:#22c55e;
-      font-weight:700;
     }
 
-    .insight-medium{
-      color:#facc15;
-      font-weight:700;
+    .metric-value.warn{
+      color:#f59e0b;
     }
 
-    .insight-weak{
+    .metric-value.bad{
       color:#ef4444;
+    }
+
+    .result-box{
+      background:rgba(15,23,42,0.72);
+      border:1px solid rgba(255,255,255,0.06);
+      border-radius:14px;
+      padding:14px;
+    }
+
+    .result-label{
+      display:block;
+      color:#94a3b8;
+      font-size:11px;
+      text-transform:uppercase;
+      letter-spacing:0.10em;
+      font-weight:800;
+      margin-bottom:8px;
+    }
+
+    .result-value{
+      display:block;
+      font-size:18px;
+      line-height:1.2;
+      font-weight:800;
+      color:#e2e8f0;
+      word-break:break-word;
+    }
+
+    .result-note{
+      display:block;
+      margin-top:6px;
+      color:#94a3b8;
+      font-size:12px;
+      line-height:1.45;
+    }
+
+    .insight-banner{
+      margin-top:14px;
+      padding:16px;
+      border-radius:16px;
+      background:rgba(15,23,42,0.88);
+      border:1px solid rgba(255,255,255,0.08);
+    }
+
+    .insight-banner.insight-good{
+      border-color:rgba(34,197,94,0.25);
+      background:rgba(34,197,94,0.08);
+      box-shadow:0 0 0 1px rgba(34,197,94,0.08) inset, 0 10px 24px rgba(34,197,94,0.06);
+    }
+
+    .insight-banner.insight-medium{
+      border-color:rgba(250,204,21,0.25);
+      background:rgba(250,204,21,0.08);
+      box-shadow:0 0 0 1px rgba(250,204,21,0.08) inset, 0 10px 24px rgba(250,204,21,0.05);
+    }
+
+    .insight-banner.insight-weak{
+      border-color:rgba(239,68,68,0.25);
+      background:rgba(239,68,68,0.08);
+      box-shadow:0 0 0 1px rgba(239,68,68,0.08) inset, 0 10px 24px rgba(239,68,68,0.05);
+    }
+
+    .insight-kicker{
+      display:inline-flex;
+      align-items:center;
+      padding:5px 10px;
+      border-radius:999px;
+      font-size:11px;
+      font-weight:800;
+      letter-spacing:0.08em;
+      text-transform:uppercase;
+      background:rgba(255,255,255,0.06);
+      color:#cbd5e1;
+    }
+
+    .insight-headline{
+      display:block;
+      margin-top:8px;
+      font-size:18px;
+      line-height:1.25;
+    }
+
+    .insight-body{
+      margin:8px 0 0;
+      color:#cbd5e1;
+      line-height:1.6;
+      font-size:14px;
+    }
+
+    .insight-grid{
+      display:grid;
+      grid-template-columns:repeat(auto-fit, minmax(180px, 1fr));
+      gap:14px;
+      margin-top:14px;
+    }
+
+    .insight-card{
+      background:rgba(15,23,42,0.72);
+      border:1px solid rgba(255,255,255,0.06);
+      border-radius:16px;
+      padding:14px;
+      min-height:128px;
+      transition:0.2s ease;
+    }
+
+    .insight-card.tone-good{
+      border-color:rgba(34,197,94,0.25);
+      background:linear-gradient(180deg, rgba(34,197,94,0.09), rgba(15,23,42,0.74));
+      box-shadow:0 0 0 1px rgba(34,197,94,0.07) inset, 0 12px 22px rgba(34,197,94,0.05);
+    }
+
+    .insight-card.tone-warn{
+      border-color:rgba(250,204,21,0.24);
+      background:linear-gradient(180deg, rgba(250,204,21,0.09), rgba(15,23,42,0.74));
+      box-shadow:0 0 0 1px rgba(250,204,21,0.07) inset, 0 12px 22px rgba(250,204,21,0.05);
+    }
+
+    .insight-card.tone-bad{
+      border-color:rgba(239,68,68,0.24);
+      background:linear-gradient(180deg, rgba(239,68,68,0.09), rgba(15,23,42,0.74));
+      box-shadow:0 0 0 1px rgba(239,68,68,0.07) inset, 0 12px 22px rgba(239,68,68,0.05);
+    }
+
+    .insight-card span{
+      display:block;
+      color:#94a3b8;
+      font-size:12px;
+      text-transform:uppercase;
+      letter-spacing:0.08em;
       font-weight:700;
+      margin-bottom:6px;
+    }
+
+    .insight-card strong{
+      display:block;
+      font-size:16px;
+      line-height:1.25;
+      margin-bottom:4px;
+    }
+
+    .insight-card p{
+      margin:0;
+      color:#cbd5e1;
+      font-size:13px;
+      line-height:1.55;
     }
 
     canvas{
       margin-top:26px;
+      max-width:100%;
     }
 
     .content{
@@ -369,6 +673,18 @@
       .buy-row{
         grid-template-columns:1fr;
       }
+
+      .remove{
+        width:100%;
+      }
+
+      .result-grid{
+        grid-template-columns:1fr;
+      }
+
+      .insight-grid{
+        grid-template-columns:1fr;
+      }
     }
   </style>
 </head>
@@ -391,16 +707,76 @@
       Calculate your average entry price after multiple buys. Useful for stock, crypto, and DCA investors managing cost basis and break-even levels.
     </p>
 
-    <div id="buys"></div>
+    <div class="section-title">Buy entries</div>
+    <div id="buys" class="buy-list"></div>
 
-    <button class="secondary-btn" onclick="addBuy()">Add Buy</button>
-    <button onclick="calculate()">Calculate</button>
+    <button class="secondary-btn" onclick="addBuy()" type="button">Add Buy</button>
+    <button onclick="calculate()" type="button">Calculate</button>
 
-    <div id="resultCard" class="result-card">
-      <div class="result-line"><strong>Average price:</strong> <span id="avgOut">—</span></div>
-      <div class="result-line"><strong>Total cost:</strong> <span id="costOut">—</span></div>
-      <div class="result-line"><strong>Total quantity:</strong> <span id="qtyOut">—</span></div>
-      <div class="result-line"><strong>Insight:</strong> <span id="insightOut">—</span></div>
+    <div id="resultCard" class="result-card" aria-live="polite">
+      <div class="result-top">
+        <span class="result-kicker">Cost basis result</span>
+        <h2 class="result-title">Average price overview</h2>
+
+        <div class="result-main">
+          <span id="avgOut" class="result-value-big">—</span>
+          <span class="result-unit">average price</span>
+        </div>
+
+        <p id="resultSentence" class="result-sub">—</p>
+      </div>
+
+      <div class="result-grid">
+        <div class="result-box">
+          <span class="result-label">Total cost</span>
+          <strong id="costOut" class="result-value">—</strong>
+          <span class="result-note">All buys combined</span>
+        </div>
+
+        <div class="result-box">
+          <span class="result-label">Total quantity</span>
+          <strong id="qtyOut" class="result-value">—</strong>
+          <span class="result-note">Units, shares, or coins</span>
+        </div>
+
+        <div class="result-box">
+          <span class="result-label">Buy count</span>
+          <strong id="countOut" class="result-value">—</strong>
+          <span class="result-note">Number of filled rows</span>
+        </div>
+      </div>
+
+      <div id="insightBanner" class="insight-banner">
+        <span id="insightKicker" class="insight-kicker">—</span>
+        <strong id="insightHeadline" class="insight-headline">—</strong>
+        <p id="insightBody" class="insight-body">—</p>
+      </div>
+
+      <div class="insight-grid">
+        <div id="insightCostCard" class="insight-card">
+          <span>Cost basis</span>
+          <strong id="insightCostLevel">—</strong>
+          <p id="insightCostNote">—</p>
+        </div>
+
+        <div id="insightMixCard" class="insight-card">
+          <span>Entry mix</span>
+          <strong id="insightMixLevel">—</strong>
+          <p id="insightMixNote">—</p>
+        </div>
+
+        <div id="insightBreakEvenCard" class="insight-card">
+          <span>Break-even clue</span>
+          <strong id="insightBreakEvenLevel">—</strong>
+          <p id="insightBreakEvenNote">—</p>
+        </div>
+
+        <div id="insightActionCard" class="insight-card">
+          <span>Best next move</span>
+          <strong id="insightActionLevel">—</strong>
+          <p id="insightActionNote">—</p>
+        </div>
+      </div>
     </div>
 
     <canvas id="myChart"></canvas>
@@ -425,10 +801,8 @@
     </p>
 
     <div class="formula">
-      Average Price = Total Cost ÷ Total Quantity
-      <br>
-      Total Cost = sum of all (price × amount) entries
-      <br>
+      Average Price = Total Cost ÷ Total Quantity<br>
+      Total Cost = sum of all (price × amount) entries<br>
       Total Quantity = sum of all amounts
     </div>
 
@@ -468,7 +842,7 @@
 
     <div class="faq">
       <div class="faq-item">
-        <button class="faq-question">
+        <button class="faq-question" type="button">
           What is a good average price?
           <span class="arrow">▼</span>
         </button>
@@ -480,7 +854,7 @@
       </div>
 
       <div class="faq-item">
-        <button class="faq-question">
+        <button class="faq-question" type="button">
           Can I lower my average price after a loss?
           <span class="arrow">▼</span>
         </button>
@@ -492,7 +866,7 @@
       </div>
 
       <div class="faq-item">
-        <button class="faq-question">
+        <button class="faq-question" type="button">
           Does average price include fees?
           <span class="arrow">▼</span>
         </button>
@@ -504,7 +878,7 @@
       </div>
 
       <div class="faq-item">
-        <button class="faq-question">
+        <button class="faq-question" type="button">
           Is average price the same as break-even price?
           <span class="arrow">▼</span>
         </button>
@@ -516,7 +890,7 @@
       </div>
 
       <div class="faq-item">
-        <button class="faq-question">
+        <button class="faq-question" type="button">
           Can average price be used for crypto and stocks?
           <span class="arrow">▼</span>
         </button>
@@ -551,123 +925,260 @@
 
   <script src="footer.js"></script>
   <script>
-    let chart;
+    let chart = null;
 
-    function addBuy(){
-      const div = document.createElement("div");
-      div.className = "buy-row";
-      div.innerHTML = `
+    function addBuy() {
+      const row = document.createElement("div");
+      row.className = "buy-row";
+      row.innerHTML = `
         <input class="price" placeholder="Price">
         <input class="amount" placeholder="Amount">
         <button class="remove" onclick="removeBuy(this)" type="button">Remove</button>
       `;
-      document.getElementById("buys").appendChild(div);
+      document.getElementById("buys").appendChild(row);
     }
 
-    function removeBuy(button){
-      button.parentElement.remove();
+    function removeBuy(button) {
+      const row = button.parentElement;
+      row.remove();
     }
 
-    function calculate(){
-      const prices = document.querySelectorAll(".price");
-      const amounts = document.querySelectorAll(".amount");
+    function formatMoney(value){
+      const sign = value < 0 ? "-" : "";
+      const abs = Math.abs(value);
+      if (abs >= 1e12) return `${sign}$${(abs / 1e12).toFixed(2)}T`;
+      if (abs >= 1e9) return `${sign}$${(abs / 1e9).toFixed(2)}B`;
+      if (abs >= 1e6) return `${sign}$${(abs / 1e6).toFixed(2)}M`;
+      return `${sign}$${abs.toFixed(2)}`;
+    }
+
+    function formatQty(value){
+      return Number(value).toLocaleString(undefined, {
+        minimumFractionDigits: 0,
+        maximumFractionDigits: 6
+      });
+    }
+
+    function applyTone(el, tone){
+      el.classList.remove("tone-good", "tone-warn", "tone-bad");
+      el.classList.add(tone);
+    }
+
+    function renderInsights({ avg, totalCost, totalAmount, buyCount }) {
+      let bannerClass = "insight-good";
+      let kicker = "Cost basis result";
+      let headline = "Clean average price";
+      let body = "The weighted entry is straightforward and easy to read.";
+
+      if (buyCount >= 8) {
+        bannerClass = "insight-medium";
+        kicker = "Many entries";
+        headline = "Your cost basis is heavily averaged";
+        body = "You have spread entries across many buys, so the average price reflects a more blended position.";
+      } else if (buyCount >= 4) {
+        bannerClass = "insight-good";
+        kicker = "Smoothed entry";
+        headline = "Your entries are averaging well";
+        body = "The position is getting a meaningful weighted cost basis from multiple buys.";
+      } else if (buyCount === 2 || buyCount === 3) {
+        bannerClass = "insight-medium";
+        kicker = "Simple blend";
+        headline = "A small number of buys defines the cost basis";
+        body = "The average price is still useful, but each entry has a stronger impact on the result.";
+      } else {
+        bannerClass = "insight-good";
+        kicker = "Single entry";
+        headline = "This is basically a plain entry price";
+        body = "With one buy, average price equals your entry price exactly.";
+      }
+
+      const costLevel =
+        avg < totalCost / Math.max(totalAmount, 1) ? "Weighted low" : "Weighted normal";
+
+      const costTone =
+        buyCount <= 2 ? "tone-good" :
+        buyCount <= 5 ? "tone-warn" : "tone-good";
+
+      const costNote =
+        buyCount <= 1
+          ? "One entry means no blending yet."
+          : "The total cost is being spread across multiple buys.";
+
+      const mixLevel =
+        buyCount <= 1 ? "Single buy" :
+        buyCount <= 3 ? "Light mix" :
+        buyCount <= 6 ? "Balanced mix" : "Heavy mix";
+
+      const mixTone =
+        buyCount <= 1 ? "tone-good" :
+        buyCount <= 3 ? "tone-good" :
+        buyCount <= 6 ? "tone-warn" : "tone-warn";
+
+      const mixNote =
+        buyCount <= 1
+          ? "No averaging effect yet."
+          : "Different entry levels are shaping the average.";
+
+      const breakEvenLevel =
+        avg > 0 ? `≈ ${formatMoney(avg)}` : "—";
+
+      const breakEvenTone =
+        avg > 0 ? "tone-good" : "tone-bad";
+
+      const breakEvenNote =
+        "Before fees, this is the price you need to recover your cost basis.";
+
+      const actionLevel =
+        buyCount <= 1 ? "Track future buys" :
+        buyCount <= 3 ? "Compare against target" :
+        "Check break-even and exit zones";
+
+      const actionTone =
+        buyCount <= 1 ? "tone-good" :
+        buyCount <= 3 ? "tone-warn" : "tone-good";
+
+      const actionNote =
+        buyCount <= 1
+          ? "Add more buys only when the plan still makes sense."
+          : "Use the average price to plan exits and manage risk.";
+
+      document.getElementById("insightBanner").className = `insight-banner ${bannerClass}`;
+      document.getElementById("insightKicker").textContent = kicker;
+      document.getElementById("insightHeadline").textContent = headline;
+      document.getElementById("insightBody").textContent = body;
+
+      applyTone(document.getElementById("insightCostCard"), costTone);
+      applyTone(document.getElementById("insightMixCard"), mixTone);
+      applyTone(document.getElementById("insightBreakEvenCard"), breakEvenTone);
+      applyTone(document.getElementById("insightActionCard"), actionTone);
+
+      document.getElementById("insightCostLevel").textContent = formatMoney(avg);
+      document.getElementById("insightCostNote").textContent = costNote;
+
+      document.getElementById("insightMixLevel").textContent = mixLevel;
+      document.getElementById("insightMixNote").textContent = mixNote;
+
+      document.getElementById("insightBreakEvenLevel").textContent = breakEvenLevel;
+      document.getElementById("insightBreakEvenNote").textContent = breakEvenNote;
+
+      document.getElementById("insightActionLevel").textContent = actionLevel;
+      document.getElementById("insightActionNote").textContent = actionNote;
+
+      return {
+        resultSentence:
+          buyCount === 1
+            ? "With one filled buy row, your average price equals that entry price."
+            : `Your weighted average entry price is ${formatMoney(avg)} across ${buyCount} buys.`
+      };
+    }
+
+    function calculate() {
+      const priceInputs = document.querySelectorAll(".price");
+      const amountInputs = document.querySelectorAll(".amount");
 
       let totalCost = 0;
       let totalAmount = 0;
+      let buyCount = 0;
 
-      for(let i = 0; i < prices.length; i++){
-        const p = parseFloat(prices[i].value);
-        const a = parseFloat(amounts[i].value);
+      for (let i = 0; i < priceInputs.length; i++) {
+        const p = parseFloat(priceInputs[i].value);
+        const a = parseFloat(amountInputs[i].value);
 
-        if(!isNaN(p) && !isNaN(a)){
+        if (!Number.isNaN(p) && !Number.isNaN(a) && p > 0 && a > 0) {
           totalCost += p * a;
           totalAmount += a;
+          buyCount++;
         }
       }
 
-      const resultCard = document.getElementById("resultCard");
-      const avgOut = document.getElementById("avgOut");
-      const costOut = document.getElementById("costOut");
-      const qtyOut = document.getElementById("qtyOut");
-      const insightOut = document.getElementById("insightOut");
-
-      if(totalAmount === 0){
+      if (totalAmount === 0) {
         alert("Enter at least one valid buy row.");
         return;
       }
 
       const avg = totalCost / totalAmount;
+      const resultSentenceData = renderInsights({
+        avg,
+        totalCost,
+        totalAmount,
+        buyCount
+      });
 
-      avgOut.innerText = `$${avg.toFixed(2)}`;
-      costOut.innerText = `$${totalCost.toFixed(2)}`;
-      qtyOut.innerText = parseFloat(totalAmount.toFixed(6));
+      document.getElementById("resultCard").style.display = "block";
+      document.getElementById("avgOut").textContent = formatMoney(avg);
+      document.getElementById("costOut").textContent = formatMoney(totalCost);
+      document.getElementById("qtyOut").textContent = formatQty(totalAmount);
+      document.getElementById("countOut").textContent = buyCount.toString();
+      document.getElementById("resultSentence").textContent = resultSentenceData.resultSentence;
 
-      let insight = "";
-      let insightClass = "";
-
-      if (prices.length <= 2) {
-        insight = "This shows your entry cost clearly with a simple average.";
-        insightClass = "insight-good";
-      } else if (prices.length <= 5) {
-        insight = "Multiple entries are smoothing your cost basis.";
-        insightClass = "insight-medium";
-      } else {
-        insight = "Your cost basis is highly diversified across entries.";
-        insightClass = "insight-medium";
-      }
-
-      insightOut.innerHTML = `<span class="${insightClass}">${insight}</span>`;
-      resultCard.style.display = "block";
+      const avgEl = document.getElementById("avgOut");
+      avgEl.classList.remove("good", "warn", "bad");
+      avgEl.classList.add(buyCount <= 1 ? "good" : buyCount <= 4 ? "warn" : "good");
 
       drawChart(totalCost, totalAmount, avg);
+      document.getElementById("resultCard").scrollIntoView({ behavior: "smooth", block: "start" });
     }
 
     function drawChart(totalCost, totalAmount, avg){
-      const ctx = document.getElementById('myChart').getContext('2d');
+      const ctx = document.getElementById("myChart").getContext("2d");
 
-      if(chart){
+      if (chart) {
         chart.destroy();
       }
 
-      chart = new Chart(ctx,{
-        type:'bar',
-        data:{
-          labels:['Total Cost','Total Quantity','Average Price'],
-          datasets:[{
-            label:'Average Price Overview',
-            data:[totalCost, totalAmount, avg],
-            backgroundColor:['#3b82f6','#22c55e','#facc15']
+      chart = new Chart(ctx, {
+        type: "bar",
+        data: {
+          labels: ["Total Cost", "Total Quantity", "Average Price"],
+          datasets: [{
+            label: "Average Price Overview",
+            data: [totalCost, totalAmount, avg],
+            backgroundColor: ["#3b82f6", "#22c55e", "#facc15"],
+            borderRadius: 10,
+            borderSkipped: false,
+            maxBarThickness: 56
           }]
         },
-        options:{
-          responsive:true,
-          plugins:{
-            legend:{
-              labels:{ color:'white' }
+        options: {
+          responsive: true,
+          maintainAspectRatio: true,
+          animation: {
+            duration: 850,
+            easing: "easeOutQuart"
+          },
+          plugins: {
+            legend: {
+              display: false
             },
-            tooltip:{
-              callbacks:{
+            tooltip: {
+              backgroundColor: "#0f172a",
+              borderColor: "rgba(255,255,255,0.08)",
+              borderWidth: 1,
+              titleColor: "#fff",
+              bodyColor: "#e2e8f0",
+              callbacks: {
                 label: function(context){
-                  const value = Number(context.parsed.y);
-                  if (context.label === "Total Quantity") return `Quantity: ${value.toFixed(6)}`;
-                  return `$${value.toFixed(2)}`;
+                  if (context.dataIndex === 1) {
+                    return ` Quantity: ${Number(context.parsed.y).toFixed(6)}`;
+                  }
+                  return ` ${formatMoney(context.parsed.y)}`;
                 }
               }
             }
           },
-          scales:{
-            x:{
-              ticks:{ color:'white' },
-              grid:{ color:'rgba(255,255,255,0.08)' }
+          scales: {
+            x: {
+              ticks: { color: "#cbd5e1" },
+              grid: { display: false }
             },
-            y:{
-              ticks:{
-                color:'white',
-                callback: function(value){
-                  return "$" + Number(value).toLocaleString();
-                }
+            y: {
+              ticks: {
+                color: "#cbd5e1",
+                callback: value => formatMoney(Number(value))
               },
-              grid:{ color:'rgba(255,255,255,0.08)' }
+              grid: {
+                color: "rgba(255,255,255,0.06)"
+              }
             }
           }
         }
@@ -683,7 +1194,7 @@
           const item = btn.parentElement;
 
           document.querySelectorAll(".faq-item").forEach(i => {
-            if(i !== item) i.classList.remove("active");
+            if (i !== item) i.classList.remove("active");
           });
 
           item.classList.toggle("active");
