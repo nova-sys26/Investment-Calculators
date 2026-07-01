@@ -97,7 +97,48 @@
 
     html{
       scroll-behavior:smooth;
-    }    
+    }
+
+    body{
+      font-family:Arial, sans-serif;
+      background:#0f172a;
+      color:white;
+      display:flex;
+      justify-content:center;
+      align-items:center;
+      flex-direction:column;
+      min-height:100vh;
+      margin:0;
+      padding:24px 0;
+    }
+
+    .toptext{
+      font-size:14px;
+      color:#6b7a99;
+      margin-bottom:5px;
+    }
+
+    .menu{
+      margin-bottom:25px;
+    }
+
+    .menu a{
+      color:#3b82f6;
+      margin:10px;
+      text-decoration:none;
+      font-weight:600;
+    }
+
+    .container{
+      background:#1e293b;
+      padding:30px;
+      border-radius:16px;
+      width:90%;
+      max-width:680px;
+      box-shadow:0 10px 25px rgba(0,0,0,0.35);
+      border:1px solid rgba(255,255,255,0.05);
+      backdrop-filter:blur(6px);
+    }
 
     h1{
       margin-top:0;
@@ -106,7 +147,23 @@
       line-height:1.15;
     }
 
+    .quick-answer{
+      background:rgba(59,130,246,0.12);
+      border:1px solid rgba(59,130,246,0.25);
+      padding:12px 14px;
+      border-radius:10px;
+      font-size:15px;
+      line-height:1.6;
+      color:#e2e8f0;
+      margin:0 0 18px;
+    }
 
+    .subhead{
+      color:#94a3b8;
+      font-size:15px;
+      line-height:1.6;
+      margin-bottom:18px;
+    }
 
     .field-label{
       display:block;
@@ -114,6 +171,13 @@
       color:#cbd5e1;
       font-weight:600;
       margin:12px 0 6px;
+    }
+
+    input,
+    button,
+    textarea,
+    select{
+      font-family:inherit;
     }
 
     input{
@@ -124,6 +188,8 @@
       background:#e5e7eb;
       font-size:16px;
       outline:none;
+      appearance:none;
+      -webkit-appearance:none;
     }
 
     input:focus{
@@ -149,19 +215,370 @@
       transform:translateY(-1px);
     }
 
-    .insight-good{
+    .secondary-btn{
+      background:rgba(255,255,255,0.08);
+    }
+
+    .secondary-btn:hover{
+      background:rgba(255,255,255,0.14);
+    }
+
+    .result-card{
+      margin-top:18px;
+      padding:18px;
+      border-radius:18px;
+      background:linear-gradient(180deg, rgba(15,23,42,0.94), rgba(17,24,39,0.90));
+      border:1px solid rgba(255,255,255,0.08);
+      box-shadow:0 18px 40px rgba(0,0,0,0.24);
+      overflow:hidden;
+      position:relative;
+      display:none;
+    }
+
+    .result-card::before{
+      content:"";
+      position:absolute;
+      inset:0;
+      background:radial-gradient(circle at top right, rgba(59,130,246,0.12), transparent 35%);
+      pointer-events:none;
+    }
+
+    .result-top{
+      display:flex;
+      flex-direction:column;
+      gap:8px;
+      padding-bottom:16px;
+      border-bottom:1px solid rgba(255,255,255,0.06);
+      margin-bottom:16px;
+      position:relative;
+      z-index:1;
+    }
+
+    .result-kicker{
+      display:inline-flex;
+      align-items:center;
+      width:max-content;
+      padding:5px 10px;
+      border-radius:999px;
+      font-size:11px;
+      font-weight:800;
+      letter-spacing:0.08em;
+      text-transform:uppercase;
+      background:rgba(59,130,246,0.12);
+      color:#bfdbfe;
+      border:1px solid rgba(59,130,246,0.20);
+    }
+
+    .result-title{
+      margin:0;
+      font-size:14px;
+      font-weight:700;
+      color:#cbd5e1;
+      letter-spacing:0.01em;
+    }
+
+    .result-main{
+      display:flex;
+      flex-wrap:wrap;
+      align-items:baseline;
+      gap:10px;
+    }
+
+    .result-value-big{
+      font-size:clamp(2.1rem, 6vw, 3.2rem);
+      line-height:1;
+      font-weight:800;
+      letter-spacing:-0.04em;
+      color:#ffffff;
+      word-break:break-word;
+    }
+
+    .result-value-big.good{
       color:#22c55e;
-      font-weight:700;
     }
 
-    .insight-medium{
-      color:#facc15;
-      font-weight:700;
+    .result-value-big.warn{
+      color:#f59e0b;
     }
 
-    .insight-weak{
+    .result-value-big.bad{
       color:#ef4444;
+    }
+
+    .result-unit{
+      font-size:14px;
+      color:#94a3b8;
+      font-weight:600;
+      letter-spacing:0.02em;
+    }
+
+    .result-sub{
+      color:#94a3b8;
+      font-size:13px;
+      line-height:1.55;
+      margin:0;
+      max-width:48ch;
+    }
+
+    .result-grid{
+      display:grid;
+      grid-template-columns:repeat(auto-fit, minmax(170px, 1fr));
+      gap:12px;
+      position:relative;
+      z-index:1;
+    }
+
+    .result-box{
+      background:rgba(15,23,42,0.72);
+      border:1px solid rgba(255,255,255,0.06);
+      border-radius:14px;
+      padding:14px;
+    }
+
+    .result-label{
+      display:block;
+      color:#94a3b8;
+      font-size:11px;
+      text-transform:uppercase;
+      letter-spacing:0.10em;
+      font-weight:800;
+      margin-bottom:8px;
+    }
+
+    .result-value{
+      display:block;
+      font-size:18px;
+      line-height:1.2;
+      font-weight:800;
+      color:#e2e8f0;
+      word-break:break-word;
+    }
+
+    .result-note{
+      display:block;
+      margin-top:6px;
+      color:#94a3b8;
+      font-size:12px;
+      line-height:1.45;
+    }
+
+    .insight-banner{
+      margin-top:14px;
+      padding:16px;
+      border-radius:16px;
+      background:rgba(15,23,42,0.88);
+      border:1px solid rgba(255,255,255,0.08);
+    }
+
+    .insight-banner.insight-good{
+      border-color:rgba(34,197,94,0.25);
+      background:rgba(34,197,94,0.08);
+      box-shadow:0 0 0 1px rgba(34,197,94,0.08) inset, 0 10px 24px rgba(34,197,94,0.06);
+    }
+
+    .insight-banner.insight-medium{
+      border-color:rgba(250,204,21,0.25);
+      background:rgba(250,204,21,0.08);
+      box-shadow:0 0 0 1px rgba(250,204,21,0.08) inset, 0 10px 24px rgba(250,204,21,0.05);
+    }
+
+    .insight-banner.insight-weak{
+      border-color:rgba(239,68,68,0.25);
+      background:rgba(239,68,68,0.08);
+      box-shadow:0 0 0 1px rgba(239,68,68,0.08) inset, 0 10px 24px rgba(239,68,68,0.05);
+    }
+
+    .insight-kicker{
+      display:inline-flex;
+      align-items:center;
+      padding:5px 10px;
+      border-radius:999px;
+      font-size:11px;
+      font-weight:800;
+      letter-spacing:0.08em;
+      text-transform:uppercase;
+      background:rgba(255,255,255,0.06);
+      color:#cbd5e1;
+    }
+
+    .insight-headline{
+      display:block;
+      margin-top:8px;
+      font-size:18px;
+      line-height:1.25;
+    }
+
+    .insight-body{
+      margin:8px 0 0;
+      color:#cbd5e1;
+      line-height:1.6;
+      font-size:14px;
+    }
+
+    .insight-grid{
+      display:grid;
+      grid-template-columns:repeat(auto-fit, minmax(180px, 1fr));
+      gap:14px;
+      margin-top:14px;
+    }
+
+    .insight-card{
+      background:rgba(15,23,42,0.72);
+      border:1px solid rgba(255,255,255,0.06);
+      border-radius:16px;
+      padding:14px;
+      min-height:128px;
+      transition:0.2s ease;
+    }
+
+    .insight-card.tone-good{
+      border-color:rgba(34,197,94,0.25);
+      background:linear-gradient(180deg, rgba(34,197,94,0.09), rgba(15,23,42,0.74));
+      box-shadow:0 0 0 1px rgba(34,197,94,0.07) inset, 0 12px 22px rgba(34,197,94,0.05);
+    }
+
+    .insight-card.tone-warn{
+      border-color:rgba(250,204,21,0.24);
+      background:linear-gradient(180deg, rgba(250,204,21,0.09), rgba(15,23,42,0.74));
+      box-shadow:0 0 0 1px rgba(250,204,21,0.07) inset, 0 12px 22px rgba(250,204,21,0.05);
+    }
+
+    .insight-card.tone-bad{
+      border-color:rgba(239,68,68,0.24);
+      background:linear-gradient(180deg, rgba(239,68,68,0.09), rgba(15,23,42,0.74));
+      box-shadow:0 0 0 1px rgba(239,68,68,0.07) inset, 0 12px 22px rgba(239,68,68,0.05);
+    }
+
+    .insight-card span{
+      display:block;
+      color:#94a3b8;
+      font-size:12px;
+      text-transform:uppercase;
+      letter-spacing:0.08em;
       font-weight:700;
+      margin-bottom:6px;
+    }
+
+    .insight-card strong{
+      display:block;
+      font-size:16px;
+      line-height:1.25;
+      margin-bottom:4px;
+    }
+
+    .insight-card p{
+      margin:0;
+      color:#cbd5e1;
+      font-size:13px;
+      line-height:1.55;
+    }
+
+    .chart-shell{
+      margin-top:18px;
+      padding:16px;
+      border-radius:16px;
+      background:rgba(255,255,255,0.04);
+      border:1px solid rgba(255,255,255,0.08);
+    }
+
+    .chart-shell h3{
+      margin:0 0 8px;
+      font-size:16px;
+    }
+
+    .chart-wrap{
+      position:relative;
+      height:360px;
+      width:100%;
+    }
+
+    .chart-note{
+      margin:8px 0 0;
+      color:#94a3b8;
+      font-size:12px;
+      line-height:1.6;
+    }
+
+    .content{
+      width:90%;
+      max-width:900px;
+      margin-top:34px;
+    }
+
+    .content h2{
+      margin-top:34px;
+      margin-bottom:10px;
+      font-size:28px;
+    }
+
+    .content p,
+    .content li{
+      color:#cbd5e1;
+      line-height:1.7;
+      font-size:15px;
+    }
+
+    .content ul{
+      padding-left:20px;
+    }
+
+    .formula{
+      background:rgba(255,255,255,0.05);
+      border:1px solid rgba(255,255,255,0.08);
+      padding:14px 16px;
+      border-radius:12px;
+      margin:12px 0;
+      color:#e2e8f0;
+      overflow:auto;
+      line-height:1.7;
+    }
+
+    .faq{
+      margin-top:14px;
+    }
+
+    .faq-item{
+      border-bottom:1px solid rgba(255,255,255,0.08);
+    }
+
+    .faq-question{
+      width:100%;
+      background:none;
+      border:none;
+      color:white;
+      text-align:left;
+      padding:14px 8px;
+      font-size:15px;
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      cursor:pointer;
+    }
+
+    .faq-question:hover{
+      color:#93c5fd;
+    }
+
+    .arrow{
+      transition:0.25s;
+    }
+
+    .faq-item.active .arrow{
+      transform:rotate(180deg);
+    }
+
+    .faq-answer{
+      max-height:0;
+      overflow:hidden;
+      transition:max-height 0.3s ease;
+      color:#cbd5e1;
+      font-size:14px;
+      padding:0 8px;
+    }
+
+    .faq-item.active .faq-answer{
+      max-height:260px;
+      padding-bottom:12px;
     }
 
     .table-wrap{
@@ -191,20 +608,56 @@
       color:#cbd5e1;
     }
 
-    canvas{
-      margin-top:26px;
+    .related{
+      width:90%;
+      max-width:900px;
+      margin-top:34px;
     }
 
+    .related a{
+      color:#93c5fd;
+      text-decoration:none;
+    }
+
+    .related a:hover{
+      text-decoration:underline;
+    }
+
+    .disclaimer{
+      margin-top:40px;
+      padding-top:20px;
+      border-top:1px solid rgba(255,255,255,0.1);
+      font-size:13px;
+      color:#9ca3af;
+      max-width:900px;
+      text-align:center;
+      line-height:1.6;
+      width:90%;
+    }
 
     @media (max-width: 700px){
       .container{
         padding:22px;
       }
 
-      
+      h1{
+        font-size:28px;
+      }
 
       .content h2{
         font-size:24px;
+      }
+
+      .chart-wrap{
+        height:300px;
+      }
+
+      .result-grid{
+        grid-template-columns:1fr;
+      }
+
+      .insight-grid{
+        grid-template-columns:1fr;
       }
     }
   </style>
@@ -217,7 +670,7 @@
     <a href="index.html">Home</a>
   </div>
 
-  <div class="container" data-search="amortization calculator loan schedule monthly payment interest principal balance">
+  <div class="container" data-search="amortization calculator loan schedule monthly payment interest principal balance mortgage car loan personal loan fixed rate borrowing">
     <h1>Amortization Calculator</h1>
 
     <p class="quick-answer">
@@ -238,31 +691,93 @@
     <label class="field-label" for="years">Loan Term (Years)</label>
     <input id="years" type="number" min="0" step="any" placeholder="e.g. 5">
 
-    <button onclick="calculate()">Calculate</button>
+    <button type="button" onclick="calculate()">Calculate</button>
 
-    <div id="resultCard" class="result-card">
+    <div id="resultCard" class="result-card" aria-live="polite">
+      <div class="result-top">
+        <span id="resultKicker" class="result-kicker">Loan result</span>
+        <h2 id="resultTitle" class="result-title">Monthly payment overview</h2>
+
+        <div class="result-main">
+          <span id="resultPrimaryOut" class="result-value-big">—</span>
+          <span id="resultPrimaryUnit" class="result-unit">per month</span>
+        </div>
+
+        <p id="resultSentence" class="result-sub">—</p>
+      </div>
+
       <div class="result-grid">
         <div class="result-box">
-          <span class="result-label">Monthly payment</span>
-          <span id="paymentOut" class="result-value">—</span>
-        </div>
-        <div class="result-box">
           <span class="result-label">Total paid</span>
-          <span id="totalPaidOut" class="result-value">—</span>
+          <strong id="totalPaidOut" class="result-value">—</strong>
+          <span class="result-note">Loan amount plus interest</span>
         </div>
+
         <div class="result-box">
           <span class="result-label">Total interest</span>
-          <span id="interestOut" class="result-value">—</span>
+          <strong id="interestOut" class="result-value">—</strong>
+          <span class="result-note">Cost of borrowing</span>
         </div>
+
         <div class="result-box">
-          <span class="result-label">Insight</span>
-          <span id="insightOut" class="result-value">—</span>
+          <span class="result-label">Interest share</span>
+          <strong id="interestShareOut" class="result-value">—</strong>
+          <span class="result-note">Interest as a share of total paid</span>
+        </div>
+      </div>
+
+      <div id="insightBanner" class="insight-banner">
+        <span id="insightKicker" class="insight-kicker">—</span>
+        <strong id="insightHeadline" class="insight-headline">—</strong>
+        <p id="insightBody" class="insight-body">—</p>
+      </div>
+
+      <div class="insight-grid">
+        <div id="insightPaymentCard" class="insight-card">
+          <span>Payment size</span>
+          <strong id="insightPaymentLevel">—</strong>
+          <p id="insightPaymentNote">—</p>
+        </div>
+
+        <div id="insightInterestCard" class="insight-card">
+          <span>Interest load</span>
+          <strong id="insightInterestLevel">—</strong>
+          <p id="insightInterestNote">—</p>
+        </div>
+
+        <div id="insightTermCard" class="insight-card">
+          <span>Term effect</span>
+          <strong id="insightTermLevel">—</strong>
+          <p id="insightTermNote">—</p>
+        </div>
+
+        <div id="insightActionCard" class="insight-card">
+          <span>Best next move</span>
+          <strong id="insightActionLevel">—</strong>
+          <p id="insightActionNote">—</p>
         </div>
       </div>
     </div>
 
-    <canvas id="balanceChart"></canvas>
-    <canvas id="interestChart"></canvas>
+    <div id="chartShell" class="chart-shell">
+      <h3>Loan balance chart</h3>
+      <div class="chart-wrap">
+        <canvas id="balanceChart"></canvas>
+      </div>
+      <p class="chart-note">
+        The balance chart shows how the loan principal decreases over time.
+      </p>
+    </div>
+
+    <div id="chartShell2" class="chart-shell">
+      <h3>Interest vs principal by year</h3>
+      <div class="chart-wrap">
+        <canvas id="interestChart"></canvas>
+      </div>
+      <p class="chart-note">
+        This chart shows how much of each year’s payments went to interest and principal.
+      </p>
+    </div>
 
     <div id="tableContainer" class="table-wrap"></div>
   </div>
@@ -286,10 +801,8 @@
     </p>
 
     <div class="formula">
-      Payment = Loan × (r × (1 + r)^n) / ((1 + r)^n − 1)
-      <br>
-      r = monthly interest rate
-      <br>
+      Payment = Loan × (r × (1 + r)^n) / ((1 + r)^n − 1)<br>
+      r = monthly interest rate<br>
       n = total number of months
     </div>
 
@@ -313,7 +826,7 @@
 
     <div class="faq">
       <div class="faq-item">
-        <button class="faq-question">
+        <button class="faq-question" type="button">
           What is an amortization schedule?
           <span class="arrow">▼</span>
         </button>
@@ -325,7 +838,7 @@
       </div>
 
       <div class="faq-item">
-        <button class="faq-question">
+        <button class="faq-question" type="button">
           Why do I pay more interest at the beginning?
           <span class="arrow">▼</span>
         </button>
@@ -337,7 +850,7 @@
       </div>
 
       <div class="faq-item">
-        <button class="faq-question">
+        <button class="faq-question" type="button">
           Can I reduce the total interest I pay?
           <span class="arrow">▼</span>
         </button>
@@ -349,7 +862,7 @@
       </div>
 
       <div class="faq-item">
-        <button class="faq-question">
+        <button class="faq-question" type="button">
           What happens if I pay off my loan early?
           <span class="arrow">▼</span>
         </button>
@@ -361,7 +874,7 @@
       </div>
 
       <div class="faq-item">
-        <button class="faq-question">
+        <button class="faq-question" type="button">
           Is a longer loan term better?
           <span class="arrow">▼</span>
         </button>
@@ -373,7 +886,7 @@
       </div>
 
       <div class="faq-item">
-        <button class="faq-question">
+        <button class="faq-question" type="button">
           What is the difference between APR and interest rate?
           <span class="arrow">▼</span>
         </button>
@@ -408,7 +921,8 @@
 
   <script src="footer.js"></script>
   <script>
-    let balanceChart, interestChart;
+    let balanceChart = null;
+    let interestChart = null;
 
     function money(value) {
       return "$" + Number(value).toLocaleString(undefined, {
@@ -417,18 +931,164 @@
       });
     }
 
+    function formatPercent(value, digits = 2) {
+      const sign = value < 0 ? "-" : "";
+      return `${sign}${Math.abs(value).toFixed(digits)}%`;
+    }
+
+    function applyTone(el, tone){
+      el.classList.remove("tone-good", "tone-warn", "tone-bad");
+      el.classList.add(tone);
+    }
+
+    function buildYearlySeries(loan, payment, monthlyRate, months) {
+      let balance = loan;
+      const yearsCount = Math.max(1, Math.ceil(months / 12));
+
+      const yearly = Array.from({ length: yearsCount }, () => ({
+        interest: 0,
+        principal: 0,
+        balance: 0
+      }));
+
+      for (let m = 1; m <= months; m++) {
+        const interest = monthlyRate > 0 ? balance * monthlyRate : 0;
+        let principal = payment - interest;
+
+        if (monthlyRate === 0) {
+          principal = payment;
+        }
+
+        if (principal < 0) principal = 0;
+        if (principal > balance) principal = balance;
+
+        balance = Math.max(0, balance - principal);
+
+        const yearIndex = Math.min(yearly.length - 1, Math.floor((m - 1) / 12));
+        yearly[yearIndex].interest += interest;
+        yearly[yearIndex].principal += principal;
+        yearly[yearIndex].balance = balance;
+      }
+
+      return yearly;
+    }
+
+    function renderInsights({ payment, loan, totalInterest, totalPaid, months, annualRate }) {
+      const paymentToLoan = loan > 0 ? (payment / (loan / months)) : 0;
+      const interestShare = totalPaid > 0 ? (totalInterest / totalPaid) * 100 : 0;
+      const interestToPrincipal = loan > 0 ? (totalInterest / loan) * 100 : 0;
+
+      let bannerClass = "insight-good";
+      let kicker = "Balanced";
+      let headline = "Loan structure looks manageable";
+      let body = "The payment and interest load are not extreme, but term length still matters if you want to lower total cost.";
+
+      if (interestShare >= 45 || annualRate >= 20) {
+        bannerClass = "insight-weak";
+        kicker = "Expensive";
+        headline = "This loan is costly";
+        body = "A large share of the money goes to interest, so a lower rate or shorter term could save a lot.";
+      } else if (interestShare >= 25 || annualRate >= 10) {
+        bannerClass = "insight-medium";
+        kicker = "Caution";
+        headline = "Costs are noticeable";
+        body = "The loan is usable, but the interest drag is meaningful. Compare terms before locking it in.";
+      }
+
+      const paymentLevel =
+        paymentToLoan <= 0.9 ? "Light payment" :
+        paymentToLoan <= 1.1 ? "Normal payment" :
+        paymentToLoan <= 1.3 ? "Tight payment" : "Heavy payment";
+
+      const paymentTone =
+        paymentToLoan <= 1.05 ? "tone-good" :
+        paymentToLoan <= 1.25 ? "tone-warn" : "tone-bad";
+
+      const paymentNote =
+        paymentToLoan <= 0.9 ? "Monthly payment is relatively easy to carry." :
+        paymentToLoan <= 1.1 ? "Payment size is close to the baseline." :
+        paymentToLoan <= 1.3 ? "The payment is getting noticeable." :
+        "The payment is high relative to the borrowed amount.";
+
+      const interestLevel =
+        interestShare < 15 ? "Low interest load" :
+        interestShare < 30 ? "Moderate interest load" :
+        interestShare < 45 ? "Heavy interest load" : "Very heavy load";
+
+      const interestTone =
+        interestShare < 20 ? "tone-good" :
+        interestShare < 40 ? "tone-warn" : "tone-bad";
+
+      const interestNote =
+        interestShare < 15 ? "Most of the money goes to principal." :
+        interestShare < 30 ? "Interest matters, but it is still controlled." :
+        interestShare < 45 ? "A large share of the cost is interest." :
+        "Interest is taking a very large bite.";
+
+      const termLevel =
+        months <= 60 ? "Short term" :
+        months <= 120 ? "Medium term" : "Long term";
+
+      const termTone =
+        months <= 60 ? "tone-good" :
+        months <= 120 ? "tone-warn" : "tone-bad";
+
+      const termNote =
+        months <= 60 ? "Shorter term usually means lower total interest." :
+        months <= 120 ? "A balanced term with moderate cost." :
+        "Long terms often reduce the payment but raise total interest.";
+
+      const actionLevel =
+        interestShare >= 45 ? "Consider a shorter term" :
+        annualRate >= 10 ? "Compare lower-rate options" :
+        paymentToLoan >= 1.3 ? "Stress-test affordability" : "Keep comparing offers";
+
+      const actionTone =
+        interestShare >= 45 ? "tone-bad" :
+        annualRate >= 10 ? "tone-warn" : "tone-good";
+
+      const actionNote =
+        interestShare >= 45
+          ? "A shorter term or lower APR could materially reduce the total cost."
+          : annualRate >= 10
+            ? "Even a slightly better rate can make a real difference."
+            : paymentToLoan >= 1.3
+              ? "Make sure the monthly payment fits comfortably in your budget."
+              : "You still want to compare terms, even when the numbers look fine.";
+
+      document.getElementById("insightBanner").className = `insight-banner ${bannerClass}`;
+      document.getElementById("insightKicker").textContent = kicker;
+      document.getElementById("insightHeadline").textContent = headline;
+      document.getElementById("insightBody").textContent = body;
+
+      applyTone(document.getElementById("insightPaymentCard"), paymentTone);
+      applyTone(document.getElementById("insightInterestCard"), interestTone);
+      applyTone(document.getElementById("insightTermCard"), termTone);
+      applyTone(document.getElementById("insightActionCard"), actionTone);
+
+      document.getElementById("insightPaymentLevel").textContent = paymentLevel;
+      document.getElementById("insightPaymentNote").textContent = `${paymentNote} Estimated monthly payment is ${money(payment)}.`;
+
+      document.getElementById("insightInterestLevel").textContent = `${interestLevel} (${formatPercent(interestShare, 1)})`;
+      document.getElementById("insightInterestNote").textContent = `${interestNote} Interest vs principal: ${formatPercent(interestToPrincipal, 1)}.`;
+
+      document.getElementById("insightTermLevel").textContent = termLevel;
+      document.getElementById("insightTermNote").textContent = termNote;
+
+      document.getElementById("insightActionLevel").textContent = actionLevel;
+      document.getElementById("insightActionNote").textContent = actionNote;
+
+      return {
+        resultSentence: `With a loan amount of ${money(loan)} at ${annualRate.toFixed(2)}% over ${months} months, the monthly payment is ${money(payment)}.`
+      };
+    }
+
     function calculate(){
       const loan = parseFloat(document.getElementById("loan").value);
       const annualRate = parseFloat(document.getElementById("rate").value);
       const years = parseFloat(document.getElementById("years").value);
 
-      const resultCard = document.getElementById("resultCard");
-      const paymentOut = document.getElementById("paymentOut");
-      const totalPaidOut = document.getElementById("totalPaidOut");
-      const interestOut = document.getElementById("interestOut");
-      const insightOut = document.getElementById("insightOut");
-
-      if ([loan, annualRate, years].some(v => isNaN(v))) {
+      if ([loan, annualRate, years].some(v => Number.isNaN(v))) {
         alert("Please fill all fields.");
         return;
       }
@@ -438,24 +1098,196 @@
         return;
       }
 
-      const rate = annualRate / 100 / 12;
+      const monthlyRate = annualRate / 100 / 12;
       const months = Math.round(years * 12);
 
       let payment;
-      if(rate === 0){
+      if (monthlyRate === 0) {
         payment = loan / months;
       } else {
-        payment = loan * (rate * Math.pow(1 + rate, months)) / (Math.pow(1 + rate, months) - 1);
+        payment = loan * (monthlyRate * Math.pow(1 + monthlyRate, months)) / (Math.pow(1 + monthlyRate, months) - 1);
       }
 
       let balance = loan;
-      const yearlyData = [];
-      const balanceData = [];
-      const interestData = [];
-      const principalData = [];
-      let totalInterest = 0;
+      const yearlySeries = buildYearlySeries(loan, payment, monthlyRate, months);
+      const labels = yearlySeries.map((_, index) => `Year ${index + 1}`);
 
-      let table = `
+      const balanceData = yearlySeries.map(row => Number(row.balance.toFixed(2)));
+      const interestData = yearlySeries.map(row => Number(row.interest.toFixed(2)));
+      const principalData = yearlySeries.map(row => Number(row.principal.toFixed(2)));
+
+      const totalPaid = payment * months;
+      const totalInterest = totalPaid - loan;
+      const interestShare = totalPaid > 0 ? (totalInterest / totalPaid) * 100 : 0;
+
+      const resultSentenceData = renderInsights({
+        payment,
+        loan,
+        totalInterest,
+        totalPaid,
+        months,
+        annualRate
+      });
+
+      document.getElementById("resultCard").style.display = "block";
+      document.getElementById("resultKicker").textContent = "Loan result";
+      document.getElementById("resultTitle").textContent = "Monthly payment overview";
+      document.getElementById("resultPrimaryOut").textContent = money(payment);
+      document.getElementById("resultPrimaryUnit").textContent = "per month";
+      document.getElementById("resultSentence").textContent = resultSentenceData.resultSentence;
+
+      document.getElementById("totalPaidOut").textContent = money(totalPaid);
+      document.getElementById("interestOut").textContent = money(totalInterest);
+      document.getElementById("interestShareOut").textContent = formatPercent(interestShare, 1);
+
+      const primaryEl = document.getElementById("resultPrimaryOut");
+      primaryEl.classList.remove("good", "warn", "bad");
+      if (interestShare >= 45) {
+        primaryEl.classList.add("bad");
+      } else if (interestShare >= 25) {
+        primaryEl.classList.add("warn");
+      } else {
+        primaryEl.classList.add("good");
+      }
+
+      drawBalanceChart(labels, balanceData);
+      drawInterestChart(labels, interestData, principalData);
+      buildTable(yearlySeries);
+
+      document.getElementById("resultCard").scrollIntoView({ behavior: "smooth", block: "start" });
+    }
+
+    function drawBalanceChart(labels, balanceData){
+      const ctx = document.getElementById("balanceChart").getContext("2d");
+
+      if (balanceChart) {
+        balanceChart.destroy();
+      }
+
+      balanceChart = new Chart(ctx, {
+        type: "line",
+        data: {
+          labels,
+          datasets: [{
+            label: "Remaining balance",
+            data: balanceData,
+            borderColor: "#3b82f6",
+            backgroundColor: "rgba(59,130,246,0.10)",
+            tension: 0.25,
+            fill: false,
+            pointRadius: 3,
+            pointHoverRadius: 5,
+            borderWidth: 2
+          }]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          plugins: {
+            legend: {
+              labels: { color: "white" }
+            },
+            tooltip: {
+              backgroundColor: "#0f172a",
+              borderColor: "rgba(255,255,255,0.08)",
+              borderWidth: 1,
+              titleColor: "#fff",
+              bodyColor: "#e2e8f0",
+              callbacks: {
+                label: function(context){
+                  return ` ${money(context.parsed.y)}`;
+                }
+              }
+            }
+          },
+          scales: {
+            x: {
+              ticks: { color: "white" },
+              grid: { color: "rgba(255,255,255,0.08)" }
+            },
+            y: {
+              ticks: {
+                color: "white",
+                callback: function(value){
+                  return "$" + Number(value).toLocaleString();
+                }
+              },
+              grid: { color: "rgba(255,255,255,0.08)" }
+            }
+          }
+        }
+      });
+    }
+
+    function drawInterestChart(labels, interestData, principalData){
+      const ctx = document.getElementById("interestChart").getContext("2d");
+
+      if (interestChart) {
+        interestChart.destroy();
+      }
+
+      interestChart = new Chart(ctx, {
+        type: "bar",
+        data: {
+          labels,
+          datasets: [
+            {
+              label: "Interest",
+              data: interestData,
+              backgroundColor: "#ef4444",
+              borderRadius: 8,
+              borderSkipped: false
+            },
+            {
+              label: "Principal",
+              data: principalData,
+              backgroundColor: "#22c55e",
+              borderRadius: 8,
+              borderSkipped: false
+            }
+          ]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          plugins: {
+            legend: {
+              labels: { color: "white" }
+            },
+            tooltip: {
+              backgroundColor: "#0f172a",
+              borderColor: "rgba(255,255,255,0.08)",
+              borderWidth: 1,
+              titleColor: "#fff",
+              bodyColor: "#e2e8f0",
+              callbacks: {
+                label: function(context){
+                  return `${context.dataset.label}: ${money(context.parsed.y)}`;
+                }
+              }
+            }
+          },
+          scales: {
+            x: {
+              ticks: { color: "white" },
+              grid: { color: "rgba(255,255,255,0.08)" }
+            },
+            y: {
+              ticks: {
+                color: "white",
+                callback: function(value){
+                  return "$" + Number(value).toLocaleString();
+                }
+              },
+              grid: { color: "rgba(255,255,255,0.08)" }
+            }
+          }
+        }
+      });
+    }
+
+    function buildTable(yearlySeries){
+      let html = `
         <table>
           <tr>
             <th>Year</th>
@@ -465,159 +1297,19 @@
           </tr>
       `;
 
-      for (let m = 1; m <= months; m++) {
-        const interest = balance * rate;
-        let principal = payment - interest;
-
-        if (rate === 0) {
-          principal = payment;
-        }
-
-        balance -= principal;
-        if (balance < 0) balance = 0;
-
-        totalInterest += interest;
-
-        const yearIndex = Math.ceil(m / 12) - 1;
-        if (!yearlyData[yearIndex]) {
-          yearlyData[yearIndex] = { interest: 0, principal: 0 };
-        }
-
-        yearlyData[yearIndex].interest += interest;
-        yearlyData[yearIndex].principal += principal;
-
-        if (m % 12 === 0 || m === months) {
-          balanceData.push(balance.toFixed(2));
-          interestData.push(yearlyData[yearIndex].interest.toFixed(2));
-          principalData.push(yearlyData[yearIndex].principal.toFixed(2));
-
-          table += `
-            <tr>
-              <td>${yearIndex + 1}</td>
-              <td>${yearlyData[yearIndex].interest.toFixed(2)}</td>
-              <td>${yearlyData[yearIndex].principal.toFixed(2)}</td>
-              <td>${balance.toFixed(2)}</td>
-            </tr>
-          `;
-        }
-      }
-
-      table += `</table>`;
-      document.getElementById("tableContainer").innerHTML = table;
-
-      const totalPaid = payment * months;
-
-      paymentOut.innerText = money(payment);
-      totalPaidOut.innerText = money(totalPaid);
-      interestOut.innerText = money(totalInterest);
-
-      let insight = "";
-      let insightClass = "";
-
-      if (totalInterest < loan * 0.15) {
-        insight = "This loan keeps interest costs relatively low.";
-        insightClass = "insight-good";
-      } else if (totalInterest < loan * 0.4) {
-        insight = "Interest costs are noticeable, so term length matters.";
-        insightClass = "insight-medium";
-      } else {
-        insight = "Total interest is high. A shorter term or lower rate would save a lot.";
-        insightClass = "insight-weak";
-      }
-
-      insightOut.innerHTML = `<span class="${insightClass}">${insight}</span>`;
-      resultCard.style.display = "block";
-
-      drawCharts(balanceData, interestData, principalData);
-    }
-
-    function drawCharts(balanceData, interestData, principalData){
-      const yearsCount = balanceData.length;
-      const labels = Array.from({length: yearsCount}, (_, i) => "Year " + (i + 1));
-
-      if(balanceChart) balanceChart.destroy();
-      if(interestChart) interestChart.destroy();
-
-      balanceChart = new Chart(document.getElementById("balanceChart"),{
-        type:'line',
-        data:{
-          labels:labels,
-          datasets:[{
-            label:'Remaining Balance',
-            data:balanceData,
-            borderColor:'#3b82f6',
-            backgroundColor:'rgba(59,130,246,0.10)',
-            tension:0.25,
-            fill:false,
-            pointRadius:3
-          }]
-        },
-        options:{
-          responsive:true,
-          plugins:{
-            legend:{
-              labels:{ color:'white' }
-            }
-          },
-          scales:{
-            x:{
-              ticks:{ color:'white' },
-              grid:{ color:'rgba(255,255,255,0.08)' }
-            },
-            y:{
-              ticks:{
-                color:'white',
-                callback: function(value){
-                  return "$" + Number(value).toLocaleString();
-                }
-              },
-              grid:{ color:'rgba(255,255,255,0.08)' }
-            }
-          }
-        }
+      yearlySeries.forEach((row, index) => {
+        html += `
+          <tr>
+            <td>${index + 1}</td>
+            <td>${row.interest.toFixed(2)}</td>
+            <td>${row.principal.toFixed(2)}</td>
+            <td>${row.balance.toFixed(2)}</td>
+          </tr>
+        `;
       });
 
-      interestChart = new Chart(document.getElementById("interestChart"),{
-        type:'bar',
-        data:{
-          labels:labels,
-          datasets:[
-            {
-              label:'Interest',
-              data:interestData,
-              backgroundColor:'#ef4444'
-            },
-            {
-              label:'Principal',
-              data:principalData,
-              backgroundColor:'#22c55e'
-            }
-          ]
-        },
-        options:{
-          responsive:true,
-          plugins:{
-            legend:{
-              labels:{ color:'white' }
-            }
-          },
-          scales:{
-            x:{
-              ticks:{ color:'white' },
-              grid:{ color:'rgba(255,255,255,0.08)' }
-            },
-            y:{
-              ticks:{
-                color:'white',
-                callback: function(value){
-                  return "$" + Number(value).toLocaleString();
-                }
-              },
-              grid:{ color:'rgba(255,255,255,0.08)' }
-            }
-          }
-        }
-      });
+      html += `</table>`;
+      document.getElementById("tableContainer").innerHTML = html;
     }
 
     document.addEventListener("DOMContentLoaded", function(){
