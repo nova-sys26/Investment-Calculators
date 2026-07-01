@@ -99,128 +99,12 @@
       scroll-behavior:smooth;
     }
 
-    body{
-      font-family:Arial, sans-serif;
-      background:#0f172a;
-      color:white;
-      display:flex;
-      justify-content:center;
-      align-items:center;
-      flex-direction:column;
-      min-height:100vh;
-      margin:0;
-      padding:24px 0;
-    }
-
-    .toptext{
-      font-size:14px;
-      color:#6b7a99;
-      margin-bottom:5px;
-    }
-
-    .menu{
-      margin-bottom:25px;
-    }
-
-    .menu a{
-      color:#3b82f6;
-      margin:10px;
-      text-decoration:none;
-      font-weight:600;
-    }
-
-    .container{
-      background:#1e293b;
-      padding:30px;
-      border-radius:16px;
-      width:90%;
-      max-width:680px;
-      box-shadow:0 10px 25px rgba(0,0,0,0.35);
-      border:1px solid rgba(255,255,255,0.05);
-      backdrop-filter:blur(6px);
-    }
-
-    h1{
-      margin-top:0;
-      margin-bottom:10px;
-      font-size:32px;
-      line-height:1.15;
-    }
-
-    .quick-answer{
-      background:rgba(59,130,246,0.12);
-      border:1px solid rgba(59,130,246,0.25);
-      padding:12px 14px;
-      border-radius:10px;
-      font-size:15px;
-      line-height:1.6;
-      color:#e2e8f0;
-      margin:0 0 18px;
-    }
-
-    .subhead{
-      color:#94a3b8;
-      font-size:15px;
-      line-height:1.6;
-      margin-bottom:18px;
-    }
-
     .field-label{
       display:block;
       font-size:13px;
       color:#cbd5e1;
       font-weight:600;
       margin:12px 0 6px;
-    }
-
-    input,
-    button,
-    textarea,
-    select{
-      font-family:inherit;
-    }
-
-    input{
-      width:100%;
-      padding:14px;
-      border-radius:10px;
-      border:none;
-      background:#e5e7eb;
-      font-size:16px;
-      outline:none;
-      appearance:none;
-      -webkit-appearance:none;
-    }
-
-    input:focus{
-      box-shadow:0 0 0 3px rgba(59,130,246,0.18);
-    }
-
-    button{
-      padding:14px;
-      background:#3b82f6;
-      border:none;
-      border-radius:10px;
-      color:white;
-      cursor:pointer;
-      margin-top:14px;
-      width:100%;
-      font-size:16px;
-      font-weight:700;
-      transition:0.2s;
-    }
-
-    button:hover{
-      background:#2563eb;
-      transform:translateY(-1px);
-    }
-
-    .secondary-btn{
-      background:rgba(255,255,255,0.08);
-    }
-
-    .secondary-btn:hover{
-      background:rgba(255,255,255,0.14);
     }
 
     .result-card{
@@ -291,18 +175,6 @@
       letter-spacing:-0.04em;
       color:#ffffff;
       word-break:break-word;
-    }
-
-    .result-value-big.good{
-      color:#22c55e;
-    }
-
-    .result-value-big.warn{
-      color:#f59e0b;
-    }
-
-    .result-value-big.bad{
-      color:#ef4444;
     }
 
     .result-unit{
@@ -479,6 +351,7 @@
       border-radius:16px;
       background:rgba(255,255,255,0.04);
       border:1px solid rgba(255,255,255,0.08);
+      display:none;
     }
 
     .chart-shell h3{
@@ -488,8 +361,12 @@
 
     .chart-wrap{
       position:relative;
-      height:360px;
+      height:320px;
       width:100%;
+    }
+
+    .chart-wrap + .chart-wrap{
+      margin-top:18px;
     }
 
     .chart-note{
@@ -499,91 +376,10 @@
       line-height:1.6;
     }
 
-    .content{
-      width:90%;
-      max-width:900px;
-      margin-top:34px;
-    }
-
-    .content h2{
-      margin-top:34px;
-      margin-bottom:10px;
-      font-size:28px;
-    }
-
-    .content p,
-    .content li{
-      color:#cbd5e1;
-      line-height:1.7;
-      font-size:15px;
-    }
-
-    .content ul{
-      padding-left:20px;
-    }
-
-    .formula{
-      background:rgba(255,255,255,0.05);
-      border:1px solid rgba(255,255,255,0.08);
-      padding:14px 16px;
-      border-radius:12px;
-      margin:12px 0;
-      color:#e2e8f0;
-      overflow:auto;
-      line-height:1.7;
-    }
-
-    .faq{
-      margin-top:14px;
-    }
-
-    .faq-item{
-      border-bottom:1px solid rgba(255,255,255,0.08);
-    }
-
-    .faq-question{
-      width:100%;
-      background:none;
-      border:none;
-      color:white;
-      text-align:left;
-      padding:14px 8px;
-      font-size:15px;
-      display:flex;
-      justify-content:space-between;
-      align-items:center;
-      cursor:pointer;
-    }
-
-    .faq-question:hover{
-      color:#93c5fd;
-    }
-
-    .arrow{
-      transition:0.25s;
-    }
-
-    .faq-item.active .arrow{
-      transform:rotate(180deg);
-    }
-
-    .faq-answer{
-      max-height:0;
-      overflow:hidden;
-      transition:max-height 0.3s ease;
-      color:#cbd5e1;
-      font-size:14px;
-      padding:0 8px;
-    }
-
-    .faq-item.active .faq-answer{
-      max-height:260px;
-      padding-bottom:12px;
-    }
-
     .table-wrap{
       overflow-x:auto;
       margin-top:18px;
+      display:none;
     }
 
     table{
@@ -608,48 +404,9 @@
       color:#cbd5e1;
     }
 
-    .related{
-      width:90%;
-      max-width:900px;
-      margin-top:34px;
-    }
-
-    .related a{
-      color:#93c5fd;
-      text-decoration:none;
-    }
-
-    .related a:hover{
-      text-decoration:underline;
-    }
-
-    .disclaimer{
-      margin-top:40px;
-      padding-top:20px;
-      border-top:1px solid rgba(255,255,255,0.1);
-      font-size:13px;
-      color:#9ca3af;
-      max-width:900px;
-      text-align:center;
-      line-height:1.6;
-      width:90%;
-    }
-
     @media (max-width: 700px){
-      .container{
-        padding:22px;
-      }
-
-      h1{
-        font-size:28px;
-      }
-
-      .content h2{
-        font-size:24px;
-      }
-
       .chart-wrap{
-        height:300px;
+        height:260px;
       }
 
       .result-grid{
@@ -670,7 +427,7 @@
     <a href="index.html">Home</a>
   </div>
 
-  <div class="container" data-search="amortization calculator loan schedule monthly payment interest principal balance mortgage car loan personal loan fixed rate borrowing">
+  <div class="container" data-search="amortization calculator loan schedule monthly payment interest principal balance">
     <h1>Amortization Calculator</h1>
 
     <p class="quick-answer">
@@ -696,11 +453,11 @@
     <div id="resultCard" class="result-card" aria-live="polite">
       <div class="result-top">
         <span id="resultKicker" class="result-kicker">Loan result</span>
-        <h2 id="resultTitle" class="result-title">Monthly payment overview</h2>
+        <h2 id="resultTitle" class="result-title">Amortization overview</h2>
 
         <div class="result-main">
-          <span id="resultPrimaryOut" class="result-value-big">—</span>
-          <span id="resultPrimaryUnit" class="result-unit">per month</span>
+          <span id="paymentOut" class="result-value-big">—</span>
+          <span class="result-unit">per month</span>
         </div>
 
         <p id="resultSentence" class="result-sub">—</p>
@@ -710,19 +467,19 @@
         <div class="result-box">
           <span class="result-label">Total paid</span>
           <strong id="totalPaidOut" class="result-value">—</strong>
-          <span class="result-note">Loan amount plus interest</span>
+          <span class="result-note">Principal + interest across the full term</span>
         </div>
 
         <div class="result-box">
           <span class="result-label">Total interest</span>
           <strong id="interestOut" class="result-value">—</strong>
-          <span class="result-note">Cost of borrowing</span>
+          <span class="result-note">Cost of borrowing over time</span>
         </div>
 
         <div class="result-box">
           <span class="result-label">Interest share</span>
           <strong id="interestShareOut" class="result-value">—</strong>
-          <span class="result-note">Interest as a share of total paid</span>
+          <span class="result-note">Share of total payments that goes to interest</span>
         </div>
       </div>
 
@@ -733,20 +490,20 @@
       </div>
 
       <div class="insight-grid">
-        <div id="insightPaymentCard" class="insight-card">
-          <span>Payment size</span>
-          <strong id="insightPaymentLevel">—</strong>
-          <p id="insightPaymentNote">—</p>
+        <div id="insightCostCard" class="insight-card">
+          <span>Borrowing cost</span>
+          <strong id="insightCostLevel">—</strong>
+          <p id="insightCostNote">—</p>
         </div>
 
-        <div id="insightInterestCard" class="insight-card">
-          <span>Interest load</span>
-          <strong id="insightInterestLevel">—</strong>
-          <p id="insightInterestNote">—</p>
+        <div id="insightStructureCard" class="insight-card">
+          <span>Payment structure</span>
+          <strong id="insightStructureLevel">—</strong>
+          <p id="insightStructureNote">—</p>
         </div>
 
         <div id="insightTermCard" class="insight-card">
-          <span>Term effect</span>
+          <span>Loan term profile</span>
           <strong id="insightTermLevel">—</strong>
           <p id="insightTermNote">—</p>
         </div>
@@ -757,29 +514,26 @@
           <p id="insightActionNote">—</p>
         </div>
       </div>
-    </div>
 
-    <div id="chartShell" class="chart-shell">
-      <h3>Loan balance chart</h3>
-      <div class="chart-wrap">
-        <canvas id="balanceChart"></canvas>
+      <div id="chartShell" class="chart-shell">
+        <h3>Amortization breakdown</h3>
+        <div class="chart-wrap">
+          <canvas id="balanceChart"></canvas>
+        </div>
+        <p class="chart-note">
+          Remaining balance over time.
+        </p>
+
+        <div class="chart-wrap">
+          <canvas id="interestChart"></canvas>
+        </div>
+        <p class="chart-note">
+          Yearly interest and principal split.
+        </p>
       </div>
-      <p class="chart-note">
-        The balance chart shows how the loan principal decreases over time.
-      </p>
-    </div>
 
-    <div id="chartShell2" class="chart-shell">
-      <h3>Interest vs principal by year</h3>
-      <div class="chart-wrap">
-        <canvas id="interestChart"></canvas>
-      </div>
-      <p class="chart-note">
-        This chart shows how much of each year’s payments went to interest and principal.
-      </p>
+      <div id="tableContainer" class="table-wrap"></div>
     </div>
-
-    <div id="tableContainer" class="table-wrap"></div>
   </div>
 
   <div class="content">
@@ -801,8 +555,10 @@
     </p>
 
     <div class="formula">
-      Payment = Loan × (r × (1 + r)^n) / ((1 + r)^n − 1)<br>
-      r = monthly interest rate<br>
+      Payment = Loan × (r × (1 + r)^n) / ((1 + r)^n − 1)
+      <br>
+      r = monthly interest rate
+      <br>
       n = total number of months
     </div>
 
@@ -921,37 +677,43 @@
 
   <script src="footer.js"></script>
   <script>
-    let balanceChart = null;
-    let interestChart = null;
+    let balanceChartInstance = null;
+    let interestChartInstance = null;
 
     function money(value) {
-      return "$" + Number(value).toLocaleString(undefined, {
-        minimumFractionDigits: 2,
-        maximumFractionDigits: 2
-      });
+      if (!Number.isFinite(value)) return "—";
+      const sign = value < 0 ? "-" : "";
+      const abs = Math.abs(value);
+
+      if (abs >= 1e12) return `${sign}$${(abs / 1e12).toFixed(2)}T`;
+      if (abs >= 1e9) return `${sign}$${(abs / 1e9).toFixed(2)}B`;
+      if (abs >= 1e6) return `${sign}$${(abs / 1e6).toFixed(2)}M`;
+      return `${sign}$${abs.toFixed(2)}`;
     }
 
-    function formatPercent(value, digits = 2) {
+    function pct(value, digits = 2) {
+      if (!Number.isFinite(value)) return "—";
       const sign = value < 0 ? "-" : "";
       return `${sign}${Math.abs(value).toFixed(digits)}%`;
     }
 
-    function applyTone(el, tone){
+    function applyTone(el, tone) {
       el.classList.remove("tone-good", "tone-warn", "tone-bad");
       el.classList.add(tone);
     }
 
-    function buildYearlySeries(loan, payment, monthlyRate, months) {
+    function buildSchedule(loan, monthlyRate, months, payment) {
       let balance = loan;
-      const yearsCount = Math.max(1, Math.ceil(months / 12));
+      let totalInterest = 0;
+      let totalPaid = 0;
 
-      const yearly = Array.from({ length: yearsCount }, () => ({
-        interest: 0,
-        principal: 0,
-        balance: 0
-      }));
+      const yearlyBuckets = [];
+      const balanceSeries = [];
+      const interestSeries = [];
+      const principalSeries = [];
+      const tableRows = [];
 
-      for (let m = 1; m <= months; m++) {
+      for (let month = 1; month <= months; month++) {
         const interest = monthlyRate > 0 ? balance * monthlyRate : 0;
         let principal = payment - interest;
 
@@ -959,118 +721,180 @@
           principal = payment;
         }
 
-        if (principal < 0) principal = 0;
         if (principal > balance) principal = balance;
+        if (principal < 0) principal = 0;
 
-        balance = Math.max(0, balance - principal);
+        const actualPayment = interest + principal;
+        const endingBalance = Math.max(0, balance - principal);
 
-        const yearIndex = Math.min(yearly.length - 1, Math.floor((m - 1) / 12));
-        yearly[yearIndex].interest += interest;
-        yearly[yearIndex].principal += principal;
-        yearly[yearIndex].balance = balance;
+        totalInterest += interest;
+        totalPaid += actualPayment;
+
+        const yearIndex = Math.ceil(month / 12) - 1;
+        if (!yearlyBuckets[yearIndex]) {
+          yearlyBuckets[yearIndex] = { interest: 0, principal: 0 };
+        }
+        yearlyBuckets[yearIndex].interest += interest;
+        yearlyBuckets[yearIndex].principal += principal;
+
+        if (month % 12 === 0 || month === months) {
+          balanceSeries.push(Number(endingBalance.toFixed(2)));
+          interestSeries.push(Number(yearlyBuckets[yearIndex].interest.toFixed(2)));
+          principalSeries.push(Number(yearlyBuckets[yearIndex].principal.toFixed(2)));
+
+          tableRows.push({
+            year: yearIndex + 1,
+            interest: yearlyBuckets[yearIndex].interest,
+            principal: yearlyBuckets[yearIndex].principal,
+            balance: endingBalance
+          });
+        }
+
+        balance = endingBalance;
       }
 
-      return yearly;
+      return { totalInterest, totalPaid, balanceSeries, interestSeries, principalSeries, tableRows, yearlyBuckets };
     }
 
-    function renderInsights({ payment, loan, totalInterest, totalPaid, months, annualRate }) {
-      const paymentToLoan = loan > 0 ? (payment / (loan / months)) : 0;
-      const interestShare = totalPaid > 0 ? (totalInterest / totalPaid) * 100 : 0;
+    function renderInsights({
+      loan,
+      annualRate,
+      years,
+      months,
+      payment,
+      totalPaid,
+      totalInterest,
+      interestSeries,
+      principalSeries,
+      yearlyBuckets
+    }) {
       const interestToPrincipal = loan > 0 ? (totalInterest / loan) * 100 : 0;
+      const interestShareOfTotal = totalPaid > 0 ? (totalInterest / totalPaid) * 100 : 0;
+
+      const firstYear = yearlyBuckets[0] || { interest: 0, principal: 0 };
+      const firstYearPaid = firstYear.interest + firstYear.principal;
+      const firstYearPrincipalShare = loan > 0 ? (firstYear.principal / loan) * 100 : 0;
+      const firstYearInterestShare = firstYearPaid > 0 ? (firstYear.interest / firstYearPaid) * 100 : 0;
+
+      const finalYear = yearlyBuckets[yearlyBuckets.length - 1] || { interest: 0, principal: 0 };
+      const finalYearPaid = finalYear.interest + finalYear.principal;
+      const finalYearPrincipalShare = loan > 0 ? (finalYear.principal / loan) * 100 : 0;
 
       let bannerClass = "insight-good";
       let kicker = "Balanced";
-      let headline = "Loan structure looks manageable";
-      let body = "The payment and interest load are not extreme, but term length still matters if you want to lower total cost.";
+      let headline = "The loan structure looks manageable";
+      let body = `You are paying ${money(totalInterest)} in interest, which is ${pct(interestToPrincipal, 1)} of the amount borrowed. Longer terms lower the monthly payment, but they usually raise total interest.`;
 
-      if (interestShare >= 45 || annualRate >= 20) {
+      if (annualRate >= 10 || interestToPrincipal >= 60 || interestShareOfTotal >= 40) {
         bannerClass = "insight-weak";
-        kicker = "Expensive";
-        headline = "This loan is costly";
-        body = "A large share of the money goes to interest, so a lower rate or shorter term could save a lot.";
-      } else if (interestShare >= 25 || annualRate >= 10) {
+        kicker = "High cost";
+        headline = "This loan is expensive";
+        body = `The borrowing cost is heavy. The total interest is ${money(totalInterest)}, or ${pct(interestToPrincipal, 1)} of the principal. A lower rate, shorter term, or extra principal payments could save a lot.`;
+      } else if (annualRate >= 6 || interestToPrincipal >= 25 || interestShareOfTotal >= 25) {
         bannerClass = "insight-medium";
-        kicker = "Caution";
-        headline = "Costs are noticeable";
-        body = "The loan is usable, but the interest drag is meaningful. Compare terms before locking it in.";
+        kicker = "Noticeable cost";
+        headline = "The loan cost is meaningful";
+        body = `The structure is usable, but the interest drag is not small. You are paying ${pct(interestShareOfTotal, 1)} of all payments as interest, so comparing APR and term length still matters.`;
+      } else if (annualRate < 4 && interestToPrincipal < 15) {
+        bannerClass = "insight-good";
+        kicker = "Lower cost";
+        headline = "The borrowing cost is relatively light";
+        body = `The loan cost is comparatively mild. The total interest is ${money(totalInterest)}, which is ${pct(interestToPrincipal, 1)} of the amount borrowed.`;
       }
 
-      const paymentLevel =
-        paymentToLoan <= 0.9 ? "Light payment" :
-        paymentToLoan <= 1.1 ? "Normal payment" :
-        paymentToLoan <= 1.3 ? "Tight payment" : "Heavy payment";
+      const costLevel =
+        interestToPrincipal < 15 ? "Low interest load" :
+        interestToPrincipal < 35 ? "Moderate interest load" :
+        interestToPrincipal < 60 ? "High interest load" : "Very high interest load";
 
-      const paymentTone =
-        paymentToLoan <= 1.05 ? "tone-good" :
-        paymentToLoan <= 1.25 ? "tone-warn" : "tone-bad";
+      const costTone =
+        interestToPrincipal < 15 ? "tone-good" :
+        interestToPrincipal < 35 ? "tone-warn" : "tone-bad";
 
-      const paymentNote =
-        paymentToLoan <= 0.9 ? "Monthly payment is relatively easy to carry." :
-        paymentToLoan <= 1.1 ? "Payment size is close to the baseline." :
-        paymentToLoan <= 1.3 ? "The payment is getting noticeable." :
-        "The payment is high relative to the borrowed amount.";
+      const costNote =
+        interestToPrincipal < 15
+          ? `Total interest is only ${pct(interestToPrincipal, 1)} of principal.`
+          : interestToPrincipal < 35
+            ? `You are paying a meaningful but still manageable interest load.`
+            : interestToPrincipal < 60
+              ? `Interest is becoming a major part of the loan cost.`
+              : `Interest is very heavy relative to the amount borrowed.`;
 
-      const interestLevel =
-        interestShare < 15 ? "Low interest load" :
-        interestShare < 30 ? "Moderate interest load" :
-        interestShare < 45 ? "Heavy interest load" : "Very heavy load";
+      const structureLevel =
+        firstYearPrincipalShare < 3 ? "Very front-loaded" :
+        firstYearPrincipalShare < 8 ? "Front-loaded" :
+        firstYearPrincipalShare < 20 ? "Balanced early payments" : "Fast principal reduction";
 
-      const interestTone =
-        interestShare < 20 ? "tone-good" :
-        interestShare < 40 ? "tone-warn" : "tone-bad";
+      const structureTone =
+        firstYearPrincipalShare < 3 ? "tone-warn" :
+        firstYearPrincipalShare < 8 ? "tone-warn" :
+        firstYearPrincipalShare < 20 ? "tone-good" : "tone-good";
 
-      const interestNote =
-        interestShare < 15 ? "Most of the money goes to principal." :
-        interestShare < 30 ? "Interest matters, but it is still controlled." :
-        interestShare < 45 ? "A large share of the cost is interest." :
-        "Interest is taking a very large bite.";
+      const structureNote =
+        firstYearPrincipalShare < 3
+          ? `In year 1, only ${pct(firstYearPrincipalShare, 1)} of the original loan goes to principal, while ${pct(firstYearInterestShare, 1)} of year-1 payments goes to interest.`
+          : firstYearPrincipalShare < 8
+            ? `In year 1, principal falls by ${pct(firstYearPrincipalShare, 1)} of the original loan. Early payments are still mostly interest-heavy.`
+            : firstYearPrincipalShare < 20
+              ? `In year 1, principal reduction is meaningful and the schedule is reasonably balanced.`
+              : `The loan pays down principal quickly, which usually helps reduce total interest.`;
 
       const termLevel =
-        months <= 60 ? "Short term" :
-        months <= 120 ? "Medium term" : "Long term";
+        years <= 3 ? "Short term" :
+        years <= 7 ? "Medium term" :
+        years <= 15 ? "Long term" : "Very long term";
 
       const termTone =
-        months <= 60 ? "tone-good" :
-        months <= 120 ? "tone-warn" : "tone-bad";
+        years <= 3 ? "tone-good" :
+        years <= 7 ? "tone-good" :
+        years <= 15 ? "tone-warn" : "tone-warn";
 
       const termNote =
-        months <= 60 ? "Shorter term usually means lower total interest." :
-        months <= 120 ? "A balanced term with moderate cost." :
-        "Long terms often reduce the payment but raise total interest.";
+        years <= 3
+          ? `A shorter term usually means higher payments but much less interest overall.`
+          : years <= 7
+            ? `This is a practical middle ground between monthly payment and total cost.`
+            : years <= 15
+              ? `A longer term lowers the payment, but the extra interest starts to matter.`
+              : `Very long terms are convenient month to month, but they can be expensive overall.`;
 
-      const actionLevel =
-        interestShare >= 45 ? "Consider a shorter term" :
-        annualRate >= 10 ? "Compare lower-rate options" :
-        paymentToLoan >= 1.3 ? "Stress-test affordability" : "Keep comparing offers";
+      let actionLevel = "";
+      let actionTone = "tone-warn";
+      let actionNote = "";
 
-      const actionTone =
-        interestShare >= 45 ? "tone-bad" :
-        annualRate >= 10 ? "tone-warn" : "tone-good";
-
-      const actionNote =
-        interestShare >= 45
-          ? "A shorter term or lower APR could materially reduce the total cost."
-          : annualRate >= 10
-            ? "Even a slightly better rate can make a real difference."
-            : paymentToLoan >= 1.3
-              ? "Make sure the monthly payment fits comfortably in your budget."
-              : "You still want to compare terms, even when the numbers look fine.";
+      if (annualRate >= 8 || interestToPrincipal >= 50) {
+        actionLevel = "Compare a shorter term";
+        actionTone = "tone-bad";
+        actionNote = "A shorter loan or a lower APR can materially reduce the total cost. Extra principal payments also have a bigger effect early in the schedule.";
+      } else if (firstYearPrincipalShare < 5) {
+        actionLevel = "Extra payments matter most";
+        actionTone = "tone-warn";
+        actionNote = "Because the schedule is front-loaded, additional principal payments early on will cut future interest faster.";
+      } else if (years > 10) {
+        actionLevel = "Check prepayment rules";
+        actionTone = "tone-good";
+        actionNote = "If your lender allows it, occasional extra principal payments can save a meaningful amount of interest.";
+      } else {
+        actionLevel = "Compare APR and fees";
+        actionTone = "tone-good";
+        actionNote = "The loan structure is reasonable, but comparing APR and prepayment flexibility can still improve the deal.";
+      }
 
       document.getElementById("insightBanner").className = `insight-banner ${bannerClass}`;
       document.getElementById("insightKicker").textContent = kicker;
       document.getElementById("insightHeadline").textContent = headline;
       document.getElementById("insightBody").textContent = body;
 
-      applyTone(document.getElementById("insightPaymentCard"), paymentTone);
-      applyTone(document.getElementById("insightInterestCard"), interestTone);
+      applyTone(document.getElementById("insightCostCard"), costTone);
+      applyTone(document.getElementById("insightStructureCard"), structureTone);
       applyTone(document.getElementById("insightTermCard"), termTone);
       applyTone(document.getElementById("insightActionCard"), actionTone);
 
-      document.getElementById("insightPaymentLevel").textContent = paymentLevel;
-      document.getElementById("insightPaymentNote").textContent = `${paymentNote} Estimated monthly payment is ${money(payment)}.`;
+      document.getElementById("insightCostLevel").textContent = costLevel;
+      document.getElementById("insightCostNote").textContent = costNote;
 
-      document.getElementById("insightInterestLevel").textContent = `${interestLevel} (${formatPercent(interestShare, 1)})`;
-      document.getElementById("insightInterestNote").textContent = `${interestNote} Interest vs principal: ${formatPercent(interestToPrincipal, 1)}.`;
+      document.getElementById("insightStructureLevel").textContent = structureLevel;
+      document.getElementById("insightStructureNote").textContent = structureNote;
 
       document.getElementById("insightTermLevel").textContent = termLevel;
       document.getElementById("insightTermNote").textContent = termNote;
@@ -1078,106 +902,33 @@
       document.getElementById("insightActionLevel").textContent = actionLevel;
       document.getElementById("insightActionNote").textContent = actionNote;
 
-      return {
-        resultSentence: `With a loan amount of ${money(loan)} at ${annualRate.toFixed(2)}% over ${months} months, the monthly payment is ${money(payment)}.`
-      };
+      document.getElementById("resultSentence").textContent =
+        `A loan of ${money(loan)} at ${annualRate.toFixed(2)}% for ${years.toFixed(2)} years works out to a monthly payment of ${money(payment)}.`;
+
+      document.getElementById("interestShareOut").textContent = pct(interestShareOfTotal, 2);
     }
 
-    function calculate(){
-      const loan = parseFloat(document.getElementById("loan").value);
-      const annualRate = parseFloat(document.getElementById("rate").value);
-      const years = parseFloat(document.getElementById("years").value);
+    function drawCharts(balanceSeries, interestSeries, principalSeries) {
+      const yearLabels = balanceSeries.map((_, index) => `Year ${index + 1}`);
 
-      if ([loan, annualRate, years].some(v => Number.isNaN(v))) {
-        alert("Please fill all fields.");
-        return;
-      }
+      const balanceCtx = document.getElementById("balanceChart").getContext("2d");
+      const interestCtx = document.getElementById("interestChart").getContext("2d");
 
-      if (loan <= 0 || annualRate < 0 || years <= 0) {
-        alert("Loan amount and term must be greater than zero. Interest rate cannot be negative.");
-        return;
-      }
+      if (balanceChartInstance) balanceChartInstance.destroy();
+      if (interestChartInstance) interestChartInstance.destroy();
 
-      const monthlyRate = annualRate / 100 / 12;
-      const months = Math.round(years * 12);
-
-      let payment;
-      if (monthlyRate === 0) {
-        payment = loan / months;
-      } else {
-        payment = loan * (monthlyRate * Math.pow(1 + monthlyRate, months)) / (Math.pow(1 + monthlyRate, months) - 1);
-      }
-
-      let balance = loan;
-      const yearlySeries = buildYearlySeries(loan, payment, monthlyRate, months);
-      const labels = yearlySeries.map((_, index) => `Year ${index + 1}`);
-
-      const balanceData = yearlySeries.map(row => Number(row.balance.toFixed(2)));
-      const interestData = yearlySeries.map(row => Number(row.interest.toFixed(2)));
-      const principalData = yearlySeries.map(row => Number(row.principal.toFixed(2)));
-
-      const totalPaid = payment * months;
-      const totalInterest = totalPaid - loan;
-      const interestShare = totalPaid > 0 ? (totalInterest / totalPaid) * 100 : 0;
-
-      const resultSentenceData = renderInsights({
-        payment,
-        loan,
-        totalInterest,
-        totalPaid,
-        months,
-        annualRate
-      });
-
-      document.getElementById("resultCard").style.display = "block";
-      document.getElementById("resultKicker").textContent = "Loan result";
-      document.getElementById("resultTitle").textContent = "Monthly payment overview";
-      document.getElementById("resultPrimaryOut").textContent = money(payment);
-      document.getElementById("resultPrimaryUnit").textContent = "per month";
-      document.getElementById("resultSentence").textContent = resultSentenceData.resultSentence;
-
-      document.getElementById("totalPaidOut").textContent = money(totalPaid);
-      document.getElementById("interestOut").textContent = money(totalInterest);
-      document.getElementById("interestShareOut").textContent = formatPercent(interestShare, 1);
-
-      const primaryEl = document.getElementById("resultPrimaryOut");
-      primaryEl.classList.remove("good", "warn", "bad");
-      if (interestShare >= 45) {
-        primaryEl.classList.add("bad");
-      } else if (interestShare >= 25) {
-        primaryEl.classList.add("warn");
-      } else {
-        primaryEl.classList.add("good");
-      }
-
-      drawBalanceChart(labels, balanceData);
-      drawInterestChart(labels, interestData, principalData);
-      buildTable(yearlySeries);
-
-      document.getElementById("resultCard").scrollIntoView({ behavior: "smooth", block: "start" });
-    }
-
-    function drawBalanceChart(labels, balanceData){
-      const ctx = document.getElementById("balanceChart").getContext("2d");
-
-      if (balanceChart) {
-        balanceChart.destroy();
-      }
-
-      balanceChart = new Chart(ctx, {
+      balanceChartInstance = new Chart(balanceCtx, {
         type: "line",
         data: {
-          labels,
+          labels: yearLabels,
           datasets: [{
             label: "Remaining balance",
-            data: balanceData,
+            data: balanceSeries,
             borderColor: "#3b82f6",
             backgroundColor: "rgba(59,130,246,0.10)",
             tension: 0.25,
             fill: false,
-            pointRadius: 3,
-            pointHoverRadius: 5,
-            borderWidth: 2
+            pointRadius: 3
           }]
         },
         options: {
@@ -1209,7 +960,7 @@
               ticks: {
                 color: "white",
                 callback: function(value){
-                  return "$" + Number(value).toLocaleString();
+                  return money(Number(value));
                 }
               },
               grid: { color: "rgba(255,255,255,0.08)" }
@@ -1217,30 +968,22 @@
           }
         }
       });
-    }
 
-    function drawInterestChart(labels, interestData, principalData){
-      const ctx = document.getElementById("interestChart").getContext("2d");
-
-      if (interestChart) {
-        interestChart.destroy();
-      }
-
-      interestChart = new Chart(ctx, {
+      interestChartInstance = new Chart(interestCtx, {
         type: "bar",
         data: {
-          labels,
+          labels: yearLabels,
           datasets: [
             {
               label: "Interest",
-              data: interestData,
+              data: interestSeries,
               backgroundColor: "#ef4444",
               borderRadius: 8,
               borderSkipped: false
             },
             {
               label: "Principal",
-              data: principalData,
+              data: principalSeries,
               backgroundColor: "#22c55e",
               borderRadius: 8,
               borderSkipped: false
@@ -1262,7 +1005,7 @@
               bodyColor: "#e2e8f0",
               callbacks: {
                 label: function(context){
-                  return `${context.dataset.label}: ${money(context.parsed.y)}`;
+                  return ` ${context.dataset.label}: ${money(context.parsed.y)}`;
                 }
               }
             }
@@ -1276,7 +1019,7 @@
               ticks: {
                 color: "white",
                 callback: function(value){
-                  return "$" + Number(value).toLocaleString();
+                  return money(Number(value));
                 }
               },
               grid: { color: "rgba(255,255,255,0.08)" }
@@ -1286,45 +1029,106 @@
       });
     }
 
-    function buildTable(yearlySeries){
+    function buildTable(rows) {
       let html = `
         <table>
-          <tr>
-            <th>Year</th>
-            <th>Interest</th>
-            <th>Principal</th>
-            <th>Balance</th>
-          </tr>
+          <thead>
+            <tr>
+              <th>Year</th>
+              <th>Interest</th>
+              <th>Principal</th>
+              <th>Balance</th>
+            </tr>
+          </thead>
+          <tbody>
       `;
 
-      yearlySeries.forEach((row, index) => {
+      rows.forEach(row => {
         html += `
           <tr>
-            <td>${index + 1}</td>
-            <td>${row.interest.toFixed(2)}</td>
-            <td>${row.principal.toFixed(2)}</td>
-            <td>${row.balance.toFixed(2)}</td>
+            <td>${row.year}</td>
+            <td>${money(row.interest)}</td>
+            <td>${money(row.principal)}</td>
+            <td>${money(row.balance)}</td>
           </tr>
         `;
       });
 
-      html += `</table>`;
-      document.getElementById("tableContainer").innerHTML = html;
+      html += `</tbody></table>`;
+      return html;
+    }
+
+    function calculate(){
+      const loan = parseFloat(document.getElementById("loan").value);
+      const annualRate = parseFloat(document.getElementById("rate").value);
+      const years = parseFloat(document.getElementById("years").value);
+
+      if ([loan, annualRate, years].some(v => Number.isNaN(v))) {
+        alert("Please fill all fields.");
+        return;
+      }
+
+      if (loan <= 0 || annualRate < 0 || years <= 0) {
+        alert("Loan amount and term must be greater than zero. Interest rate cannot be negative.");
+        return;
+      }
+
+      const months = Math.max(1, Math.round(years * 12));
+      const monthlyRate = annualRate / 100 / 12;
+
+      let payment;
+      if (monthlyRate === 0) {
+        payment = loan / months;
+      } else {
+        payment = loan * (monthlyRate * Math.pow(1 + monthlyRate, months)) / (Math.pow(1 + monthlyRate, months) - 1);
+      }
+
+      const schedule = buildSchedule(loan, monthlyRate, months, payment);
+      const totalPaid = schedule.totalPaid;
+      const totalInterest = schedule.totalInterest;
+      const interestShareOfTotal = totalPaid > 0 ? (totalInterest / totalPaid) * 100 : 0;
+
+      document.getElementById("resultCard").style.display = "block";
+      document.getElementById("chartShell").style.display = "block";
+      document.getElementById("tableContainer").style.display = "block";
+
+      document.getElementById("resultKicker").textContent = annualRate === 0 ? "Interest-free" : "Loan result";
+      document.getElementById("resultTitle").textContent = "Amortization overview";
+      document.getElementById("paymentOut").textContent = money(payment);
+      document.getElementById("totalPaidOut").textContent = money(totalPaid);
+      document.getElementById("interestOut").textContent = money(totalInterest);
+      document.getElementById("interestShareOut").textContent = pct(interestShareOfTotal, 2);
+
+      renderInsights({
+        loan,
+        annualRate,
+        years,
+        months,
+        payment,
+        totalPaid,
+        totalInterest,
+        interestSeries: schedule.interestSeries,
+        principalSeries: schedule.principalSeries,
+        yearlyBuckets: schedule.yearlyBuckets
+      });
+
+      drawCharts(schedule.balanceSeries, schedule.interestSeries, schedule.principalSeries);
+      document.getElementById("tableContainer").innerHTML = buildTable(schedule.tableRows);
+
+      document.getElementById("resultCard").scrollIntoView({ behavior: "smooth", block: "start" });
     }
 
     document.addEventListener("DOMContentLoaded", function(){
       document.querySelectorAll(".faq-question").forEach(btn => {
         btn.addEventListener("click", () => {
           const item = btn.parentElement;
-
           document.querySelectorAll(".faq-item").forEach(i => {
-            if(i !== item) i.classList.remove("active");
+            if (i !== item) i.classList.remove("active");
           });
-
           item.classList.toggle("active");
         });
       });
     });
   </script>
 </body>
-  </html>
+</html>
